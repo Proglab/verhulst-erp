@@ -94,6 +94,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
      *
      * @see UserInterface
      */
+    public function getUsername(): string
+    {
+        return (string) $this->email;
+    }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
     public function getUserIdentifier(): string
     {
         return (string) $this->email;

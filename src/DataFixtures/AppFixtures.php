@@ -15,13 +15,22 @@ class AppFixtures extends Fixture
         UserFactory::new()
             ->enabled()
             ->verified()
-            ->many(10)
+            ->many(9)
             ->create();
 
         UserFactory::new()
             ->enabled()
             ->verified()
+            ->create([
+                'email' => 'user@user.fr',
+            ]);
+
+        UserFactory::new()
+            ->enabled()
+            ->verified()
             ->admin()
-            ->create();
+            ->create([
+                'email' => 'admin@admin.fr',
+            ]);
     }
 }

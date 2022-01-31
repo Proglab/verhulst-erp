@@ -65,7 +65,7 @@ final class UserFactory extends ModelFactory
             'lastName' => self::faker()->lastName(),
             'firstName' => self::faker()->firstName(),
             'roles' => [],
-            'password' => self::faker()->text(),
+            'password' => 'Password123!',
             'enabled' => false,
             'verified' => false,
         ];
