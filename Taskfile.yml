@@ -1,0 +1,71 @@
+version: '3'
+
+tasks:
+    composer:
+        desc: Install PHP vendors
+        cmds:
+            - symfony composer install
+        sources:
+            - composer.lock
+        generates:
+            - vendor/**/*
+
+    recipes:
+        desc: Sync Symfony Flex recipes
+        cmds:
+            - symfony composer sync-recipes --force
+
+    start:
+        desc: Start Docker containers & Symfony server
+        cmds:
+            - docker-compose up -d
+            - symfony serve -d
+
+    stop:
+        desc: Stop Docker containers & Symfony server
+        cmds:
+            - symfony server:stop
+            - docker-compose stop
+
+    coverage:
+        desc: Run tests with coverage
+        cmds:
+            - task: setup_tests
+            - symfony php -dpcov.enabled=1 vendor/bin/phpunit --coverage-html=public/coverage
+
+    test:
+        desc: Run tests
+        cmds:
+            - task: setup_tests
+            - symfony php vendor/bin/phpunit
+
+    setup_tests:
+        cmds:
+            - rm -rf var/cache/test/*
+            -   task: fixtures_test
+
+    fixtures_test:
+        desc: Launch fixtures for test environment
+        cmds:
+            - rm -rf var/cache/test/*
+            - symfony console d:d:d -f --if-exists --quiet --env=test
+            - symfony console d:d:c --quiet --env=test
+            - symfony console d:s:u -f --quiet --env=test
+            - symfony console d:m:sync-metadata-storage --quiet --env=test
+            - symfony console d:m:v --add --all --quiet --env=test
+            - symfony console d:f:l --quiet --env=test
+
+    ci:
+        desc: Check code style, static analysis...
+        cmds:
+            - symfony composer ci
+
+    phpstan:
+        desc: Run PhpStan command
+        cmds:
+            - symfony composer phpstan
+
+    cs-fix:
+        desc: Fix code style
+        cmds:
+            - symfony composer cs:fix

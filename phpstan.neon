@@ -1,0 +1,14 @@
+includes:
+  - phpstan-baseline.neon
+
+parameters:
+    paths:
+        - bin/console
+        - config
+        - migrations
+        - public/index.php
+        - src
+        - tests
+    level: 6
+    checkGenericClassInNonGenericObjectType: false
+    checkMissingIterableValueType: false

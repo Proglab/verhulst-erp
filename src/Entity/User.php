@@ -1,33 +1,80 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
+use App\Entity\Trait\CreatedAtTrait;
+use App\Entity\Trait\EnabledTrait;
+use App\Entity\Trait\PrimaryKeyTrait;
+use App\Entity\Trait\VerifiedTrait;
 use App\Repository\UserRepository;
+use DateTimeImmutable;
+use function array_search;
+use function array_values;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation\Slug;
+use function strtolower;
+use function strtoupper;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use function ucfirst;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, EquatableInterface
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
+    use CreatedAtTrait;
+    use EnabledTrait;
+    use PrimaryKeyTrait;
+    use VerifiedTrait;
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
-    private $email;
+    #[Assert\NotBlank]
+    #[Assert\Email(message: 'Veuillez renseigner un email valide')]
+    #[Assert\Length(max: 180)]
+    private ?string $email = null;
 
     #[ORM\Column(type: 'json')]
-    private $roles = [];
+    private array $roles = [];
 
     #[ORM\Column(type: 'string')]
-    private $password;
+    private ?string $password = null;
 
-    public function getId(): ?int
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(min: 1, max: 20, minMessage: 'Le prénom doit contenir au moins 1 caractère', maxMessage: 'Le prénom doit contenir au plus 20 caractères')]
+    #[Assert\NotBlank(message: 'Veuillez renseigner un prénom')]
+    private ?string $firstName = null;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(min: 1, max: 20, minMessage: 'Le nom doit contenir au plus 20 caractères')]
+    #[Assert\NotBlank(message: 'Veuillez renseigner un nom')]
+    private ?string $lastName = null;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Slug(fields: ['lastName', 'firstName'])]
+    private ?string $slug = null;
+
+    public function __construct()
     {
-        return $this->id;
+        $this->createdAt = new DateTimeImmutable();
+        $this->enabled = false;
+        $this->verified = false;
+    }
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function setFullNameCharacteristics(): void
+    {
+        if ($this->lastName !== ucfirst(strtolower($this->lastName))) {
+            $this->lastName = ucfirst(strtolower($this->lastName));
+        }
+        if ($this->firstName !== ucfirst(strtolower($this->firstName))) {
+            $this->firstName = ucfirst(strtolower($this->firstName));
+        }
     }
 
     public function getEmail(): ?string
@@ -71,6 +118,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function addRole(string $role): self
+    {
+        if (!\in_array($role, $this->roles, true)) {
+            $this->roles[] = $role;
+        }
+
+        return $this;
+    }
+
+    public function hasRole(string $role): bool
+    {
+        return \in_array(strtoupper($role), $this->getRoles(), true);
+    }
+
+    public function removeRole(string $role): self
+    {
+        if (false !== $key = array_search(strtoupper($role), $this->roles, true)) {
+            unset($this->roles[$key]);
+            $this->roles = array_values($this->roles);
+        }
+
+        return $this;
+    }
+
     /**
      * @see PasswordAuthenticatedUserInterface
      */
@@ -89,9 +160,48 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(string $firstName): self
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(string $lastName): self
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function isEqualTo(UserInterface $user): bool
+    {
+        return !(false === $user->getEnabled() && $user->getVerified());
     }
 }
