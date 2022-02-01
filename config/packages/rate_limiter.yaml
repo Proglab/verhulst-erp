@@ -1,0 +1,11 @@
+framework:
+    rate_limiter:
+        account_creation:
+            policy: 'fixed_window'
+            limit: 1
+            interval: '1 hour'
+
+        resend_confirmation_email:
+            policy: 'fixed_window'
+            limit: 1
+            interval: '5 minutes'

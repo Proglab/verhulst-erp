@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réinitialisation du mot de passe{% endblock %}
+
+{% block login %}
+    <div class="row g-0 app-auth-wrapper">
+        <div class="col-12 col-md-7 col-lg-6 auth-main-col text-center p-5">
+            <div class="d-flex flex-column align-content-end">
+                <div class="app-auth-body mx-auto">
+                    <div class="app-auth-branding mb-4">
+                        <div class="app-logo">
+                            <img class="logo-icon" src="{{ asset('build/portal/images/app-logo.png') }}" alt="logo-icon">
+                        </div>
+                    </div>
+                    <h2 class="auth-heading text-center mb-4">Réinitialisation du mot de passe</h2>
+
+                    <div class="auth-form-container text-left">
+{#                        {% include "general/notifications.html.twig" %}#}
+                        {{ form_start(resetForm) }}
+                        {{ form_row(resetForm.plainPassword.first) }}
+                        {{ form_row(resetForm.plainPassword.second) }}
+                        <small>
+                            Votre mot de passe doit comporter :
+                            <ul>
+                                <li>Au moins 8 caractères</li>
+                                <li>Au moins 1 majuscule</li>
+                                <li>Au moins 1 chiffre</li>
+                                <li>Au moins 1 caractère spécial (!@#$%^&*-)</li>
+                            </ul>
+                        </small>
+                        <div class="text-center">
+                            <button type="submit" class="btn app-btn-primary-fill btn-block theme-btn mx-auto">Réinitialiser</button>
+                        </div>
+                        {{ form_end(resetForm) }}
+
+                        <div class="auth-option text-center pt-5"><a class="app-link" href="{{ path('app_login') }}">Connexion</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-5 col-lg-6 h-100 auth-background-col">
+            <div class="auth-background-holder">
+            </div>
+            <div class="auth-background-mask"></div>
+        </div>
+    </div>
+{% endblock %}

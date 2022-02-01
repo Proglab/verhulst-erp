@@ -12,16 +12,21 @@ use App\Repository\UserRepository;
 use function array_search;
 use function array_values;
 use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\Slug;
 use function strtolower;
 use function strtoupper;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use function ucfirst;
 
+/**
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ */
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, EquatableInterface
@@ -30,31 +35,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     use EnabledTrait;
     use PrimaryKeyTrait;
     use VerifiedTrait;
-    public const ROLE_ADMIN = 'ROLE_ADMIN';
 
-    #[ORM\Column(type: 'string', length: 180, unique: true)]
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
+    public const ROLE_USER = 'ROLE_USER';
+
+    #[ORM\Column(type: Types::STRING, length: 180, unique: true)]
     #[Assert\NotBlank]
     #[Assert\Email(message: 'Veuillez renseigner un email valide')]
     #[Assert\Length(max: 180)]
     private ?string $email = null;
 
-    #[ORM\Column(type: 'json')]
+    #[ORM\Column(type: Types::JSON)]
     private array $roles = [];
 
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: Types::STRING)]
     private ?string $password = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: Types::STRING, length: 255)]
     #[Assert\Length(min: 1, max: 20, minMessage: 'Le prénom doit contenir au moins 1 caractère', maxMessage: 'Le prénom doit contenir au plus 20 caractères')]
     #[Assert\NotBlank(message: 'Veuillez renseigner un prénom')]
     private ?string $firstName = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: Types::STRING, length: 255)]
     #[Assert\Length(min: 1, max: 20, minMessage: 'Le nom doit contenir au plus 20 caractères')]
     #[Assert\NotBlank(message: 'Veuillez renseigner un nom')]
     private ?string $lastName = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: Types::STRING, length: 255)]
     #[Slug(fields: ['lastName', 'firstName'])]
     private ?string $slug = null;
 
@@ -62,7 +69,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     {
         $this->createdAt = new DateTimeImmutable();
         $this->enabled = false;
-        $this->verified = false;
     }
 
     #[ORM\PrePersist]
@@ -213,5 +219,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     public function isEqualTo(UserInterface $user): bool
     {
         return !(false === $user->getEnabled() && $user->getVerified());
+    }
+
+    public function getFullname(): string
+    {
+        return $this->lastName . ' ' . $this->firstName;
     }
 }

@@ -1,0 +1,33 @@
+{% apply inky_to_html|inline_css(encore_entry_css_source('email')) %}
+    <spacer size="50"></spacer>
+    <container>
+        <row class="header">
+            <columns>
+                <a href="{{ url('home') }}">
+                    <center>
+                        <img src="{{ asset('build/portal/images/app-logo.png') }}" alt="{{ 'layout.site_name'|trans }}">
+                    </center>
+                </a>
+            </columns>
+        </row>
+
+        {% block content %}{% endblock %}
+
+        <row class="footer">
+            <columns>
+                <p>Merci de votre confiance,</p>
+                <p>L'équipe <em>{{ 'layout.site_name'|trans }}</em></p>
+            </columns>
+        </row>
+        <row class="bottom">
+            <columns>
+                <center>
+                    <spacer size="20"></spacer>
+                    <div>
+                        Envoyé avec ❤️ par l'équipe {{ 'layout.site_name'|trans }}
+                    </div>
+                </center>
+            </columns>
+        </row>
+    </container>
+{% endapply %}

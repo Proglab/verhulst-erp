@@ -24,6 +24,20 @@ Encore
      */
     .addEntry('app', './assets/app.js')
 
+    // Mailer
+    .addStyleEntry("email", "./assets/email/email.scss")
+
+    // Portal
+    .addEntry('portal', './assets/portal/js/app.ts')
+
+    // Lib
+    .addEntry('lib', './assets/lib/lib.js')
+
+    .copyFiles({
+        from: "./assets/portal/images",
+        to: "portal/images/[path][name].[hash:8].[ext]",
+    })
+
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
 
@@ -61,7 +75,7 @@ Encore
     .enableSassLoader()
 
     // uncomment if you use TypeScript
-    //.enableTypeScriptLoader()
+    .enableTypeScriptLoader()
 
     // uncomment if you use React
     //.enableReactPreset()

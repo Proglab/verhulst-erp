@@ -1,0 +1,41 @@
+{% extends "email/emailBase.html.twig" %}
+
+{% block content %}
+    <row class="welcome">
+        <columns>
+            <spacer size="35"></spacer>
+            <h1>
+                <center>
+                    Bonjour {{ email.toName }}!
+                </center>
+            </h1>
+            <spacer size="10"></spacer>
+        </columns>
+    </row>
+    <spacer size="30"></spacer>
+    <row>
+        <columns>
+            <p>
+                {% if freeTrialValidationEnabled %}
+                    Pour valider votre demande d'essai gratuit, vous devez prouver votre identité.
+                {% else %}
+                    Une dernière étape avant de pouvoir profiter de nos services !
+                {% endif %}
+                Il vous suffit de confirmer votre inscription en cliquant sur le bouton ci-dessous !
+                Ce lien expirera dans {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
+            </p>
+            <p>
+                <b>Ça n'est pas vous ?</b> Ignorez simplement ce mail, et le compte
+                qui y est associé sera prochainement supprimé.
+            </p>
+        </columns>
+    </row>
+    <row>
+        <columns>
+            <center>
+                <button href="{{ signedUrl|sanitize }}">Confirmer mon inscription</button>
+            </center>
+        </columns>
+    </row>
+{% endblock %}
+

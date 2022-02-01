@@ -55,6 +55,17 @@ tasks:
             - symfony console d:m:v --add --all --quiet --env=test
             - symfony console d:f:l --quiet --env=test
 
+    fixtures_dev:
+        desc: Launch fixtures for dev environment
+        cmds:
+            - rm -rf var/cache/dev/*
+            - symfony console d:d:d -f --if-exists --quiet
+            - symfony console d:d:c --quiet
+            - symfony console d:s:u -f --quiet
+            - symfony console d:m:sync-metadata-storage --quiet
+            - symfony console d:m:v --add --all --quiet
+            - symfony console d:f:l --quiet
+
     ci:
         desc: Check code style, static analysis...
         cmds:
@@ -69,3 +80,8 @@ tasks:
         desc: Fix code style
         cmds:
             - symfony composer cs:fix
+
+    maildev:
+        desc: Launch Maildev
+        cmds:
+            - maildev --hide-extensions STARTTLS

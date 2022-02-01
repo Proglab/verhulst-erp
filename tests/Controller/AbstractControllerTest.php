@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Controller;
 
 use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Zenstruck\Foundry\Test\Factories;
@@ -14,6 +15,7 @@ abstract class AbstractControllerTest extends WebTestCase
     use Factories;
 
     protected KernelBrowser $client;
+    protected EntityManagerInterface $manager;
 
     public static function setUpBeforeClass(): void
     {
@@ -29,6 +31,7 @@ abstract class AbstractControllerTest extends WebTestCase
     {
         parent::setUp();
         $this->client = static::createClient();
+        $this->manager = self::getContainer()->get(EntityManagerInterface::class);
     }
 
     protected function tearDown(): void
@@ -42,14 +45,6 @@ abstract class AbstractControllerTest extends WebTestCase
     {
         $this->client->request('GET', $url);
         self::assertResponseIsSuccessful();
-    }
-
-    /**
-     * @throws \Doctrine\ORM\ORMException
-     */
-    protected function refreshEntity(object $entity): void
-    {
-        $this->manager->refresh($entity);
     }
 
     protected function assertSelectorEx(string $selector): void
