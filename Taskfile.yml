@@ -42,7 +42,7 @@ tasks:
     setup_tests:
         cmds:
             - rm -rf var/cache/test/*
-            -   task: fixtures_test
+            - task: fixtures_test
 
     fixtures_test:
         desc: Launch fixtures for test environment
@@ -85,3 +85,19 @@ tasks:
         desc: Launch Maildev
         cmds:
             - maildev --hide-extensions STARTTLS
+
+    update:
+        desc: Update the project
+        cmds:
+            - git pull
+            - task: install
+
+    install:
+        desc: Install the project
+        cmds:
+            - composer install
+            - yarn install --force
+            - yarn run build
+            - task: fixtures_dev
+            - task: ci
+            - task: test

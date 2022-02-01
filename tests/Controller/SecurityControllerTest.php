@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
-use App\Application\Service\PhpunitService;
 use App\Entity\User;
 use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use function sprintf;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;

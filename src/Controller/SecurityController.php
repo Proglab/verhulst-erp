@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Form\Model\PasswordUpdate;
-use App\Form\Type\PasswordUpdateType;
 use App\Entity\ResendConfirmationEmailRequest;
 use App\Entity\User;
+use App\Form\Model\PasswordUpdate;
+use App\Form\Type\PasswordUpdateType;
 use App\Repository\ResendConfirmationEmailRequestRepository;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
@@ -15,12 +15,12 @@ use App\Security\Voter\ExtraVoter;
 use App\Service\Mailer;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use function serialize;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
