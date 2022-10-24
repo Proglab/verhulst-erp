@@ -35,7 +35,11 @@ Des fonctionnalités ont également été implémentées (voir ci-dessous)
 
 - Création d'un validateur permettant de vérifier qu'un mot de passe est sécurisé (SecurePasswordValidator)
 
-### Code interne, helpers, validators
+### Code interne, helpers
 
 - Création des principaux Traits pour les entités
 - Mise en place de classes d'helpers (monnaie)
+
+### Tests
+
+Mise en place de tous les tests (controllers, entities, forms, repositories)
