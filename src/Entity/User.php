@@ -12,6 +12,8 @@ use App\Repository\UserRepository;
 use function array_search;
 use function array_values;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\Slug;
@@ -65,10 +67,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     #[Slug(fields: ['lastName', 'firstName'])]
     private ?string $slug = null;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ResendConfirmationEmailRequest::class, cascade: ['remove'], orphanRemoval: true)]
+    private Collection $resendConfirmationEmailRequests;
+
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable();
         $this->enabled = false;
+        $this->resendConfirmationEmailRequests = new ArrayCollection();
     }
 
     #[ORM\PrePersist]
@@ -212,6 +218,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getResendConfirmationEmailRequests(): Collection
+    {
+        return $this->resendConfirmationEmailRequests;
+    }
+
+    public function addResendConfirmationEmailRequest(ResendConfirmationEmailRequest $resendConfirmationEmailRequest): self
+    {
+        if (!$this->resendConfirmationEmailRequests->contains($resendConfirmationEmailRequest)) {
+            $this->resendConfirmationEmailRequests[] = $resendConfirmationEmailRequest;
+            $resendConfirmationEmailRequest->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResendConfirmationEmailRequest(ResendConfirmationEmailRequest $resendConfirmationEmailRequest): self
+    {
+        // set the owning side to null (unless already changed)
+        if ($this->resendConfirmationEmailRequests->removeElement($resendConfirmationEmailRequest) && $resendConfirmationEmailRequest->getUser() === $this) {
+            $resendConfirmationEmailRequest->setUser(null);
+        }
 
         return $this;
     }
