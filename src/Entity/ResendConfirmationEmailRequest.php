@@ -10,6 +10,7 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+
 use function time;
 
 #[ORM\Entity(repositoryClass: ResendConfirmationEmailRequestRepository::class)]

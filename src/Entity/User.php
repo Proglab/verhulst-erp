@@ -9,21 +9,26 @@ use App\Entity\Trait\EnabledTrait;
 use App\Entity\Trait\PrimaryKeyTrait;
 use App\Entity\Trait\VerifiedTrait;
 use App\Repository\UserRepository;
+
 use function array_search;
 use function array_values;
+
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\Slug;
+
 use function strtolower;
 use function strtoupper;
+
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+
 use function ucfirst;
 
 /**
