@@ -105,7 +105,7 @@ tasks:
     git:reset:
         desc: Detach skeleton repository to start from new repository
         cmds:
-            - rm .git
+            - rm -rf .git
             - git init
             - git add .
             - git commit -m "First commit"
