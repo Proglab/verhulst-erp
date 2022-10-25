@@ -101,3 +101,14 @@ tasks:
             - task: fixtures_dev
             - task: ci
             - task: test
+
+    git:reset:
+        desc: Detach skeleton repository to start from new repository
+        cmds:
+            - rm .git
+            - git init
+            - git add .
+            - git commit -m "First commit"
+            - git branch -M main
+            - echo 'Lancez la commande "git remote add origin git@github.com:bastien70/[votreRepository].git"'
+            - echo 'Puis lancez la commande "git push -u origin main"'
