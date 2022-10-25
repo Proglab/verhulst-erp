@@ -1,3 +1,5 @@
+# Sommaire
+
 1. [Installation de Mercure](#mercure)
    1. [Installation des dépendances avec Composer](mercure-composer)
    1. [Modification du docker-compose](mercure-docker)
