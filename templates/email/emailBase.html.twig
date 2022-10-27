@@ -1,4 +1,12 @@
 {% apply inky_to_html|inline_css(encore_entry_css_source('email')) %}
+    {% if locale is not defined %}
+        {% if user is defined %}
+            {% set locale = user.locale %}
+        {% else %}
+            {% set locale = 'fr' %}
+        {% endif %}
+    {% endif %}
+
     <spacer size="50"></spacer>
     <container>
         <row class="header">
@@ -11,12 +19,18 @@
             </columns>
         </row>
 
+        <row>
+            <columns>
+                <p>{{ 'email.global.hello'|trans({}, null, locale) }} <b>{{ email.toName }}</b>!</p>
+            </columns>
+        </row>
+        <spacer size="30"></spacer>
         {% block content %}{% endblock %}
 
         <row class="footer">
             <columns>
-                <p>Merci de votre confiance,</p>
-                <p>L'équipe <em>{{ 'layout.site_name'|trans }}</em></p>
+                <p>{{ 'email.global.thanks'|trans({}, null, locale) }}</p>
+                <p>{{ 'email.global.team'|trans({}, null, locale) }} <em>{{ 'layout.site_name'|trans }}</em></p>
             </columns>
         </row>
         <row class="bottom">
@@ -24,7 +38,7 @@
                 <center>
                     <spacer size="20"></spacer>
                     <div>
-                        Envoyé avec ❤️ par l'équipe {{ 'layout.site_name'|trans }}
+                        {{ 'email.global.send_with_love'|trans({}, null, locale) }} {{ 'layout.site_name'|trans }}
                     </div>
                 </center>
             </columns>

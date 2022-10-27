@@ -3,7 +3,6 @@
 {% block title %}Mot de passe oublié{% endblock %}
 
 {% block login %}
-
     <div class="row g-0 app-auth-wrapper">
         <div class="col-12 col-md-7 col-lg-6 auth-main-col text-center p-5">
             <div class="d-flex flex-column align-content-end">
@@ -13,24 +12,25 @@
                             <img class="logo-icon" src="{{ asset('build/portal/images/app-logo.png') }}" alt="logo-icon">
                         </div>
                     </div>
-                    <h2 class="auth-heading text-center mb-4">Mot de passe oublié</h2>
+                    <div class="mt-2 mb-4">{{ component('locale_choice') }}</div>
+                    <h2 class="auth-heading text-center mb-4">{{ 'reset_password.forgotten_password'|trans }}</h2>
 
                     <div class="auth-intro mb-4 text-center">
+                        <p>{{ 'reset_password.check_email.intro'|trans }}</p>
                         <p>
-                            Un email vous a été envoyé. Celui-ci contient un lien vous permettant
-                            de réinitialiser votre mot de passe. Ce lien expirera dans
-                            {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
+                            {{ 'reset_password.check_email.expires_message'|trans({
+                                '%expires_in%': resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle')
+                            }) }}
                         </p>
                         <p>
-                            Si vous n'avez pas reçu d'email, veuillez vérifier dans vos spams ou
-                            <a href="{{ path('app_forgot_password_request') }}">
-                                réessayez de réinitialiser votre mot de passe
-                            </a>.
+                            {{ 'reset_password.check_email.not_received'|trans({
+                                '%app_forgot_password_request_route%': path('app_forgot_password_request')
+                            })|sanitize }}
                         </p>
                     </div>
 
                     <div class="auth-form-container text-left">
-                        <div class="auth-option text-center pt-5"><a class="app-link" href="{{ path('app_login') }}">Connexion</a></div>
+                        <div class="auth-option text-center pt-5"><a class="app-link" href="{{ path('app_login') }}">{{ 'login.form.submit'|trans }}</a></div>
                     </div>
                 </div>
             </div>
