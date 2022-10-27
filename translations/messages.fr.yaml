@@ -1,7 +1,106 @@
-You have already requested a reset password email. Please check your email or try again soon.: Vous avez déjà demandé un e-mail de réinitialisation du mot de passe. Veuillez vérifier votre e-mail ou réessayer bientôt.
-The link in your email is expired. Please try to reset your password again.: Le lien dans votre e-mail a expiré. Veuillez réessayer de réinitialiser votre mot de passe.
-Please update the request_password_repository configuration in config/packages/reset_password.yaml to point to your "request password repository` service.: Veuillez mettre à jour la configuration de request_password_repository dans config/packages/reset_password.yaml pour pointer vers votre service "request password repository".
-The reset password link is invalid. Please try to reset your password again.: Le lien de réinitialisation du mot de passe n'est pas valide. Veuillez réessayer de réinitialiser votre mot de passe.
+global:
+    confirmation_message: 'Modifications enregistrées !'
+
+navbar:
+    language: 'Langue'
 
 layout:
-    site_name: CheckMark
+    site_name: MonSite
+
+form_theme:
+    secure_password:
+        intro: Votre mot de passe doit comporter
+        characters_count: Au moins 8 caractères
+        maj_count: Au moins 1 majuscule
+        number_count: Au moins 1 chiffre
+        special_character_count: Au moins 1 caractère spécial (!@#$%^&*-)
+
+login:
+    title: Connexion
+    page_title: Se connecter à
+    form:
+        email: Email
+        email_placeholder: Adresse email
+        password: Mot de passe
+        password_placeholder: Mot de passe
+        submit: Connexion
+    remember_me: Se souvenir de moi
+    forgotten_password: Mot de passe oublié ?
+    already_logged: Vous êtes connecté en tant que
+    no_account: Pas de compte ? Je m'inscris
+    logout: Déconnexion
+
+register:
+    title: 'Inscription'
+    already_account: "Vous avez déjà un compte ?"
+    already_account_link: 'Me connecter'
+    flash_message_success: 'Un email vient de vous être envoyé afin de confirmer votre compte.'
+    verified_account_message_success: Votre compte a bien été vérifié !
+    form:
+        email: 'Email'
+        agreeTerms: "J'accepte les Conditions Générales d'Utilisation"
+        hasValidatedCGU:
+            is_true_message: "Vous devez accepter nos conditions générales d'utilisation"
+        password_confirm:
+            placeholder: 'Confirmer le mot de passe'
+        password:
+            placeholder: 'Mot de passe'
+            not_blank_message: 'Veuillez saisir un mot de passe'
+            not_identical_passwords_message: Les mots de passes ne sont pas identiques
+        firstName: 'Prénom'
+        lastName: 'Nom'
+        submit: "Confirmer"
+
+reset_password:
+    forgotten_password: Mot de passe oublié
+    request:
+        title: Réinitialiser mon mot de passe
+        help: Entrez votre adresse email ci-dessous. Nous vous enverrons par email un lien vers une page où vous pourrez facilement créer un nouveau mot de passe.
+        submit: Envoyer
+        field:
+            email: Adresse email
+            email_not_blank: Veuillez entrer votre adresse email
+    check_email:
+        intro: S'il existe un compte correspondant à votre email, un email vient d'être envoyé contenant un lien que vous pouvez utiliser pour réinitialiser votre mot de passe.
+        expires_message: Ce lien va expirer dans %expires_in%.
+        not_received: Si vous ne recevez pas d'email, veuillez vérifier votre dossier spam ou <a href="%app_forgot_password_request_route%">réessayez</a>.
+    reset:
+        title: Réinitialiser mon mot de passe
+        submit: Réinitialiser
+        field:
+            new_password: Nouveau mot de passe
+            repeat_password: Répétez le mot de passe
+        flash_success: 'Votre mot de passe a bien été réinitialisé ! Vous pouvez désormais vous connecter.'
+        flash_error: 'Un problème est survenu lors de la validation de votre demande de réinitialisation : %message%'
+
+password_update:
+    title: Modifier mon mot de passe
+    back: Retour
+    form:
+        oldPassword: Ancien mot de passe
+        newPassword: Nouveau mot de passe
+        newPassword_confirm: Répéter le mot de passe
+        not_identical_passwords_message: Les mots de passes ne sont pas identiques
+        submit: Modifier
+
+email:
+    global:
+        hello: 'Bonjour'
+        thanks: Merci de votre confiance,
+        team: L'équipe
+        send_with_love: Envoyé avec ❤️ par l'équipe
+        buttons:
+            user_dashboard: "Accéder à l'application"
+    user:
+        reset_password:
+            subject: 'Votre demande de réinitialisation de mot de passe'
+            content:
+                intro: 'Pour réinitialiser votre mot de passe, merci de cliquer sur le lien ci-dessous.'
+                expires_in: 'Ce lien expirera dans %expires_in%'
+                button_text: 'Réinitialiser mon mot de passe'
+        account_confirmation:
+            subject: 'Confirmez votre inscription'
+            body1: "Une dernière étape avant de pouvoir profiter de nos services ! Il vous suffit de confirmer votre inscription en cliquant sur le bouton ci-dessous !"
+            body2: Ce lien expirera dans
+            body3: Ça n'est pas vous ? Ignorez simplement ce mail, et le compte qui y est associé sera prochainement supprimé.
+            submit: Confirmer mon inscription
