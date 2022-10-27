@@ -8,6 +8,7 @@ use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Bundle\SecurityBundle\DataCollector\SecurityDataCollector;
 use Zenstruck\Foundry\Test\Factories;
 
 abstract class AbstractControllerTest extends WebTestCase
@@ -67,5 +68,11 @@ abstract class AbstractControllerTest extends WebTestCase
         $form['email'] = $email;
         $form['password'] = $password;
         $this->client->submit($form);
+    }
+
+    protected function getSecurityDataCollector(): SecurityDataCollector
+    {
+        /* @phpstan-ignore-next-line */
+        return $this->client->getProfile()->getCollector('security');
     }
 }
