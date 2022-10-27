@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mot de passe oublié{% endblock %}
+{% block title %}{{ 'reset_password.forgotten_password'|trans }}{% endblock %}
 
 {% block login %}
     <div class="row g-0 app-auth-wrapper">
@@ -12,9 +12,10 @@
                             <img class="logo-icon" src="{{ asset('build/portal/images/app-logo.png') }}" alt="logo-icon">
                         </div>
                     </div>
-                    <h2 class="auth-heading text-center mb-4">Mot de passe oublié</h2>
+                    <div class="mt-2 mb-4">{{ component('locale_choice') }}</div>
+                    <h2 class="auth-heading text-center mb-4">{{ 'reset_password.forgotten_password'|trans }}</h2>
 
-                    <div class="auth-intro mb-4 text-center">Entrez votre adresse email ci-dessous. Nous vous enverrons par email un lien vers une page où vous pourrez facilement créer un nouveau mot de passe.</div>
+                    <div class="auth-intro mb-4 text-center">{{ 'reset_password.request.help'|trans }}</div>
 
                     {% for type, messages in app.flashes %}
                         {% if type == "reset_password_error" %}
@@ -36,11 +37,11 @@
                             {{ form_row(requestForm.email) }}
                         </div>
                         <div class="text-center">
-                            <button type="submit" class="btn app-btn-primary-fill btn-block theme-btn mx-auto">Envoyer</button>
+                            <button type="submit" name="_submit" class="btn app-btn-primary-fill btn-block theme-btn mx-auto">{{ 'reset_password.request.submit'|trans }}</button>
                         </div>
                         {{ form_end(requestForm) }}
 
-                        <div class="auth-option text-center pt-5"><a class="app-link" href="{{ path('app_login') }}">Connexion</a></div>
+                        <div class="auth-option text-center pt-5"><a class="app-link" href="{{ path('app_login') }}">{{ 'login.form.submit'|trans }}</a></div>
                     </div>
                 </div>
             </div>

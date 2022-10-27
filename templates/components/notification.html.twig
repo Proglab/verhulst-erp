@@ -1,0 +1,18 @@
+<div{{ attributes }}>
+    {% for type, options in app.flashes %}
+        {% for option in options %}
+            {% if type == "toast" %}
+                <div class="{{ type }} mt-3" data-label="{{ option['label'] }}" data-message="{{ option['message']|sanitize }}"></div>
+            {% else %}
+                {% if type == "flash" %}
+                    <div class="container">
+                        <div class="alert alert-{{ option['label'] }} alert-dismissible fade show" role="alert">
+                            <p>{{ option['message']|sanitize }}</p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+</div>

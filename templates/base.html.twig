@@ -22,12 +22,11 @@
         </head>
     {% if is_granted(constant('App\\Entity\\User::ROLE_USER')) %}
         <body class="app">
-
-        {% include "partials/_header.html.twig" %}
+            {% include "partials/_header.html.twig" %}
             <div class="app-wrapper">
                 <div class="app-content pt-3 p-md-3 p-lg-4">
                     <div class="container-xl">
-        {#                {% include "general/notifications.html.twig" %}#}
+                        {{ component('notification') }}
                         {% block body %}{% endblock %}
                     </div>
                 </div>
@@ -35,7 +34,7 @@
         </body>
     {% else %}
         <body class="app {% if element is defined and element == 'reset-password' %}app-reset-password{% else %}app-login{% endif %} p-0">
-            {% block login %}{% endblock %}
+        {% block login %}{% endblock %}
         </body>
     {% endif %}
 </html>

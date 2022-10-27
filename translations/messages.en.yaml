@@ -1,0 +1,105 @@
+global:
+    confirmation_message: 'Changes saved!'
+
+navbar:
+    language: 'Language'
+
+layout:
+    site_name: MyWebsite
+
+form_theme:
+    secure_password:
+        intro: Your password must include
+        characters_count: At least 8 characters
+        maj_count: At least 1 capital letter
+        number_count: At least 1 digit
+        special_character_count: At least 1 special character (!@#$%^&*-)
+
+login:
+    title: Login
+    page_title: Connect to
+    form:
+        email: Email
+        email_placeholder: Email address
+        password: Password
+        password_placeholder: Password
+        submit: Login
+    remember_me: Remember me
+    forgotten_password: Forgot your password ?
+    already_logged: You are logged in as
+    no_account: No account? I'm registering
+    logout: Logout
+
+register:
+    title: 'Registration'
+    already_account: "Already have an account ?"
+    already_account_link: 'Log in'
+    flash_message_success: 'An email has just been sent to you to confirm your account.'
+    verified_account_message_success: Your account has been verified!
+    form:
+        email: 'Email'
+        agreeTerms: "I accept the general terms of use"
+        hasValidatedCGU:
+            is_true_message: "You must agree to our Terms of Service"
+        password_confirm:
+            placeholder: 'Confirm password'
+        password:
+            placeholder: 'Password'
+            not_blank_message: 'Please enter a password'
+        firstName: 'First name'
+        lastName: 'Last name'
+        submit: "Confirm"
+
+reset_password:
+    forgotten_password: Forgot your password
+    request:
+        title: Reset your password
+        help: Enter your email address below. We'll email you a link to a page where you can easily create a new password.
+        submit: Send
+        field:
+            email: Email address
+            email_not_blank: Please enter your email address
+    check_email:
+        intro: If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.
+        expires_message: This link will expire in %expires_in%.
+        not_received: If you don't receive an email please check your spam folder or <a href="%app_forgot_password_request_route%">try again</a>.
+    reset:
+        title: Reset your password
+        submit: Reset
+        field:
+            new_password: New password
+            repeat_password: Repeat Password
+        flash_success: 'Your password has been reset! You can now log in.'
+        flash_error: 'A problem occurred while validating your reset request: %message%'
+
+password_update:
+    title: 'Update my password'
+    back: Back
+    form:
+        oldPassword: 'Old password'
+        newPassword: 'New password'
+        newPassword_confirm: 'Repeat password'
+        not_identical_passwords_message: 'Passwords are not the same'
+        submit: Update
+
+email:
+    global:
+        hello: 'Hello'
+        thanks: Thank you for your confidence,
+        team: Team
+        send_with_love: Sent with ❤️ by the team
+        buttons:
+            user_dashboard: "Access the app"
+    user:
+        reset_password:
+            subject: 'Your password reset request'
+            content:
+                intro: 'To reset your password, please visit the link below'
+                expires_in: 'This link will expire in %expires_in%'
+                button_text: 'Reset my password'
+        account_confirmation:
+            subject: 'Confirm your registration'
+            body1: "One last step before you can take advantage of our services! All you have to do is confirm your registration by clicking on the button below!"
+            body2: This link will expire in
+            body3: That's not you? Simply ignore this email, and the account associated with it will soon be deleted.
+            submit: Confirm my registration

@@ -9,25 +9,20 @@ use App\Entity\User;
 use App\Form\Model\PasswordUpdate;
 use App\Form\Type\PasswordUpdateType;
 use App\Repository\ResendConfirmationEmailRequestRepository;
-use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use App\Security\Voter\ExtraVoter;
 use App\Service\Mailer;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-
-use function serialize;
-
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SecurityController extends BaseController
 {
@@ -37,14 +32,13 @@ class SecurityController extends BaseController
         private RateLimiterFactory $resendConfirmationEmailLimiter,
         private ResendConfirmationEmailRequestRepository $resendConfirmationEmailRequestRepository,
         private Mailer $mailer,
-        private UserRepository $userRepository,
         private UserPasswordHasherInterface $hasher,
+        private TranslatorInterface $translator,
+        private array $enabledLocales,
     ) {
     }
 
-    /**
-     * @Route("/connexion", name="app_login")
-     */
+    #[Route(path: '/connexion', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         // if ($this->getUser()) {
@@ -59,59 +53,35 @@ class SecurityController extends BaseController
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
-    /**
-     * @Route("/deconnexion", name="app_logout")
-     */
+    #[Route(path: '/deconnexion', name: 'app_logout')]
     public function logout(): void
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
     /**
-     * @throws TransportExceptionInterface
+     * Permet à l'utilisateur de modifier la langue du site.
      */
-    #[Route(path: '/verification-email', name: 'app_verify_email')]
-    public function verifyUserEmail(Request $request): Response
+    #[Route(path: '/switch-locale/{locale}', name: 'switch_locale', methods: ['GET'])]
+    public function switchLocale(Request $request, ?string $locale = null): Response
     {
-        if ($this->isGranted(User::ROLE_USER)) {
-            $this->redirectToRoute('home');
+        if (!\in_array($locale, $this->enabledLocales, true)) {
+            throw new BadRequestHttpException();
         }
 
-        $id = $request->get('id');
-
-        if (null === $id) {
-            return $this->redirectToRoute('home');
+        if ($this->getUser() instanceof User) {
+            $this->getUser()->setLocale($locale);
+            $this->manager->flush();
         }
 
-        $user = $this->userRepository->find($id);
+        $request->getSession()->set('_locale', $locale);
+        $redirectUrl = $request->headers->get('referer');
 
-        if ((null === $user) || ($user->getEnabled() && $user->getVerified())) {
-            return $this->redirectToRoute('home');
+        if (empty($redirectUrl) || str_contains($redirectUrl, '/switch-locale')) {
+            $redirectUrl = $this->generateUrl('home');
         }
 
-        try {
-            $this->emailVerifier->handleEmailConfirmation($request, $user);
-        } catch (VerifyEmailExceptionInterface $exception) {
-            $this->addCustomFlash(
-                'login_flash',
-                'danger',
-                $exception->getReason()
-            );
-
-            return $this->redirectToRoute('app_login');
-        }
-
-        $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
-        $this->container->get('security.token_storage')->setToken($token);
-        $this->container->get('session')->set('_security_main', serialize($token));
-
-        $this->addCustomFlash(
-            'toast',
-            'success',
-            'Votre inscription a été validée !'
-        );
-
-        return $this->redirectToRoute('home');
+        return new RedirectResponse($redirectUrl);
     }
 
     /**
@@ -207,7 +177,7 @@ class SecurityController extends BaseController
             $this->addCustomFlash(
                 'toast',
                 'success',
-                'Mot de passe modifié !'
+                $this->translator->trans('global.confirmation_message')
             );
 
             return $this->redirectToRoute('home');

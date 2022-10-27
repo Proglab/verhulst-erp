@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
+use App\Helper\LocaleHelper;
 use App\Helper\MoneyHelper;
 use Locale;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -20,6 +21,7 @@ class TwigExtraExtension extends AbstractExtension
         private UrlGeneratorInterface $generator,
         private RequestStack $request,
         private EntrypointLookupInterface $entrypointLookup,
+        private array $enabledLocales,
     ) {
     }
 
@@ -32,6 +34,7 @@ class TwigExtraExtension extends AbstractExtension
             new TwigFilter('moneyFormat', [$this, 'getMoneyFormat']),
             new TwigFilter('badge', [$this, 'badgeFilter'], ['is_safe' => ['html']]),
             new TwigFilter('minimizeString', [$this, 'minimizeString'], ['is_safe' => ['html']]),
+            new TwigFilter('toLocaleName', [$this, 'toLocaleName']),
         ];
     }
 
@@ -40,6 +43,7 @@ class TwigExtraExtension extends AbstractExtension
         return [
             new TwigFunction('encore_entry_css_source', [$this, 'getEncoreEntryCssSource']),
             new TwigFunction('login_target_path', [$this, 'loginTargetPath']),
+            new TwigFunction('getLocales', [$this, 'getLocales']),
         ];
     }
 
@@ -130,5 +134,21 @@ class TwigExtraExtension extends AbstractExtension
             $pill,
             $content
         );
+    }
+
+    public function toLocaleName(string $locale): string
+    {
+        return LocaleHelper::getLanguageName($locale);
+    }
+
+    public function getLocales(): array
+    {
+        $locales = [];
+
+        foreach ($this->enabledLocales as $locale) {
+            $locales[$locale] = LocaleHelper::getLanguageName($locale);
+        }
+
+        return $locales;
     }
 }

@@ -1,21 +1,56 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}{{ 'register.title'|trans }}{% endblock %}
 
-{% block body %}
-    {% for flashError in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
-    {% endfor %}
+{% form_theme form.plainPassword 'form_theme/secure_password.html.twig' %}
 
-    <h1>Register</h1>
+{% block login %}
+    <div class="row g-0 app-auth-wrapper app-register">
+        <div class="col-12 col-md-7 col-lg-6 auth-main-col text-center p-5">
+            <div class="d-flex flex-column align-content-end">
+                <div class="app-auth-body mx-auto">
+                    <div class="app-auth-branding">
+                        <div class="app-logo">
+                            <img class="logo-icon" src="{{ asset('build/portal/images/app-logo.png') }}" alt="logo-icon">
+                        </div>
+                    </div>
+                    <div class="mt-2 mb-2">{{ component('locale_choice') }}</div>
+                    <h2 class="auth-heading text-center mt-2">{{ 'register.title'|trans }}</h2>
+                    <div class="auth-form-container text-start mt-4">
+                        {{ form_start(form) }}
+                        <div class="row">
+                            <div class="col-md-6">{{ form_row(form.firstName) }}</div>
+                            <div class="col-md-6">{{ form_row(form.lastName) }}</div>
+                        </div>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+                        {{ form_row(form.email) }}
+                        {{ form_errors(form.plainPassword.first) }}
+                        {{ form_label(form.plainPassword.first) }}
+                        {{ form_widget(form.plainPassword.first) }}
+                        {{ form_help(form.plainPassword) }}
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+                        {{ form_errors(form.plainPassword.second) }}
+                        {{ form_label(form.plainPassword.second) }}
+                        {{ form_widget(form.plainPassword.second) }}
+
+                        {{ form_row(form.agreeTerms) }}
+
+                        <div class="text-center">
+                            <button type="submit" class="btn app-btn-primary-fill w-100 theme-btn mx-auto">{{ 'register.form.submit'|trans }}</button>
+                        </div>
+                        <div class="text-center mt-2">
+                            {{ 'register.already_account'|trans }}
+                            <a href="{{ path('app_login') }}">{{ 'register.already_account_link'|trans }}</a>
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-5 col-lg-6 auth-background-col">
+            <div class="auth-background-holder">
+            </div>
+            <div class="auth-background-mask"></div>
+        </div>
+    </div>
 {% endblock %}
