@@ -1,0 +1,16 @@
+<div{{ attributes }}>
+    {% set locale = app.request.locale %}
+    <div class="dropdown">
+        <a class="btn btn-sm btn-app-secondary dropdown-toggle" href="#" role="button" id="user-locales-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            {{ 'navbar.language'|trans }} ({{ locale|toLocaleName }})
+        </a>
+
+        <ul class="dropdown-menu" aria-labelledby="user-locales-dropdown">
+            {% set locales = getLocales() %}
+            {% for locale, name in locales %}
+                <li><a class="dropdown-item" href="{{ path('switch_locale', {'locale': locale}) }}">{{ name }}</a></li>
+            {% endfor %}
+        </ul>
+
+    </div>
+</div>
