@@ -31,26 +31,23 @@ class PasswordUpdateType extends AbstractType
 
         $builder
             ->add('oldPassword', PasswordType::class, [
-                'label' => 'Mot de passe actuel',
+                'label' => 'password_update.form.oldPassword',
                 'attr' => [
-                    'placeholder' => 'Mot de passe actuel',
+                    'placeholder' => 'password_update.form.oldPassword',
                 ],
             ])
             ->add('newPassword', RepeatedType::class, [
-                'label' => 'Nouveau de passe',
-                'attr' => [
-                    'placeholder' => 'Votre mot de passe',
-                ],
+                'label' => 'password_update.form.newPassword',
                 'invalid_message' => 'Les mots de passe doivent être identiques.',
                 'constraints' => $passwordConstraints,
                 'type' => PasswordType::class,
                 'first_options' => [
-                    'label' => 'Nouveau de passe',
-                    'attr' => ['placeholder' => 'Nouveau mot de passe'],
+                    'label' => 'password_update.form.newPassword',
+                    'attr' => ['placeholder' => 'password_update.form.newPassword'],
                 ],
                 'second_options' => [
-                    'label' => 'Confirmer le mot de passe',
-                    'attr' => ['placeholder' => 'Confirmer le mot de passe'],
+                    'label' => 'password_update.form.newPassword_confirm',
+                    'attr' => ['placeholder' => 'password_update.form.newPassword_confirm'],
                 ],
             ]);
     }
