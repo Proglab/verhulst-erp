@@ -75,7 +75,10 @@
 
 .app-auth-wrapper {
 	background: white;
-	height: 100vh;
+
+	&:not(.app-register) {
+		height: 100vh;
+	}
 	
 	.app-auth-body {
 		width: 360px;
