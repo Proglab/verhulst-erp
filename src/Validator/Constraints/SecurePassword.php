@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraint;
 
 final class SecurePassword extends Constraint
 {
-    public string $message = 'Votre mot de passe doit suivre les consignes de sécurité';
+    public string $message = 'Your password must follow the security instructions';
 
     public function validatedBy(): string
     {

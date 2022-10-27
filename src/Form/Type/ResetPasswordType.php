@@ -35,16 +35,18 @@ class ResetPasswordType extends AbstractType
                 'first_options' => [
                     'label' => false,
                     'attr' => [
-                        'placeholder' => 'Nouveau mot de passe',
+                        'autocomplete' => 'new-password',
+                        'placeholder' => 'reset_password.reset.field.new_password',
                     ],
                 ],
                 'second_options' => [
                     'label' => false,
                     'attr' => [
-                        'placeholder' => 'Confirmer le mot de passe',
+                        'autocomplete' => 'new-password',
+                        'placeholder' => 'reset_password.reset.field.repeat_password',
                     ],
                 ],
-                'invalid_message' => 'Les 2 mots de passe ne sont pas identiques.',
+                'invalid_message' => 'reset_password.reset.form.invalid_passwords_message',
                 'constraints' => $passwordConstraints,
             ]);
     }

@@ -21,6 +21,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
@@ -101,10 +102,9 @@ class ResetPasswordController extends BaseController
             /** @var User $user */
             $user = $this->resetPasswordHelper->validateTokenAndFetchUser($token);
         } catch (ResetPasswordExceptionInterface $e) {
-            $this->addFlash('reset_password_error', sprintf(
-                'Un problème est survenu lors de la validation de votre demande de réinitialisation - %s',
-                $this->translator->trans($e->getReason())
-            ));
+            $this->addFlash('danger', new TranslatableMessage('reset_password.reset.flash_error', [
+                '%message%' => $this->translator->trans(sprintf('reset_password.errors.%s', $e->getReason())),
+            ]));
 
             return $this->redirectToRoute('app_forgot_password_request');
         }
@@ -134,7 +134,7 @@ class ResetPasswordController extends BaseController
             $this->addCustomFlash(
                 'login_flash',
                 'success',
-                'Votre mot de passe a été réinitialisé ! Vous pouvez maintenant vous connecter.'
+                $this->translator->trans('reset_password.reset.flash_success'),
             );
 
             return $this->redirectToRoute('app_login');
@@ -164,19 +164,25 @@ class ResetPasswordController extends BaseController
             $resetToken = $this->resetPasswordHelper->generateResetToken($user);
         } catch (ResetPasswordExceptionInterface $e) {
             $this->addFlash('reset_password_error', sprintf(
-                'Un problème est survenu lors du traitement de votre demande de réinitialisation de mot de passe - %s',
-                $this->translator->trans($e->getReason())
+                '%s - %s',
+                $this->translator->trans(ResetPasswordExceptionInterface::MESSAGE_PROBLEM_HANDLE, [], 'ResetPasswordBundle'),
+                $this->translator->trans(sprintf('reset_password.errors.%s', $e->getReason()))
             ));
 
             return $this->redirectToRoute('app_forgot_password_request');
         }
 
+        $locale = $user->getLocale();
+        $subject = $this->translator->trans('email.user.reset_password.subject', [], 'messages', $locale);
+
         $email = (new TemplatedEmail())
             ->to(new Address($user->getEmail(), $user->getFullName()))
-            ->subject('Réinitialisation de votre mot de passe')
+            ->subject($subject)
             ->htmlTemplate('email/user/reset_password.html.twig')
             ->context([
                 'resetToken' => $resetToken,
+                'locale' => $locale,
+                'user' => $user,
             ])
         ;
 
