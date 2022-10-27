@@ -75,6 +75,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: ResendConfirmationEmailRequest::class, cascade: ['remove'], orphanRemoval: true)]
     private Collection $resendConfirmationEmailRequests;
 
+    #[ORM\Column(type: Types::STRING, length: 2)]
+    #[Assert\NotBlank]
+    #[Assert\Locale]
+    private ?string $locale = 'fr';
+
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable();
@@ -248,6 +253,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         if ($this->resendConfirmationEmailRequests->removeElement($resendConfirmationEmailRequest) && $resendConfirmationEmailRequest->getUser() === $this) {
             $resendConfirmationEmailRequest->setUser(null);
         }
+
+        return $this;
+    }
+
+    public function getLocale(): ?string
+    {
+        return $this->locale;
+    }
+
+    public function setLocale(?string $locale): self
+    {
+        $this->locale = $locale;
 
         return $this;
     }
