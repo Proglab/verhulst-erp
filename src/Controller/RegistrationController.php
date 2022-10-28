@@ -49,6 +49,7 @@ class RegistrationController extends BaseController
             $entityManager->flush();
 
             // generate a signed url and email it to the user
+
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 $this->mailer->sendRegistrationConfirmationMail($user)
             );
