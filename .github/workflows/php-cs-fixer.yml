@@ -1,36 +1,13 @@
-name: Coding Standards
+name: Php Cs Fixer
 
-on:
-  pull_request:
-    branches:
-      - main
-  push:
-    branches:
-      - main
+on: [push, workflow_dispatch]
 
 jobs:
   php-cs-fixer:
-    name: PHP CS Fixer (PHP ${{ matrix.php-version }})
+    name: Php Cs Fixer
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        php-version:
-          - '8.1'
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Install PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          coverage: none
-          php-version: ${{ matrix.php-version }}
-          tools: cs2pr
-
-      - name: Install Composer dependencies
-        uses: ramsey/composer-install@v1
-
-      - name: Run PHP CS Fixer
-        run: 'vendor/bin/php-cs-fixer fix --dry-run --format=checkstyle | cs2pr'
+      - name: Check out the repo
+        uses: actions/checkout@v3
+      - run: docker pull jakzal/phpqa
+      - run: docker run --init --rm -v $GITHUB_WORKSPACE:/project -w /project jakzal/phpqa php-cs-fixer fix ./src --verbose --dry-run --diff --using-cache=no
