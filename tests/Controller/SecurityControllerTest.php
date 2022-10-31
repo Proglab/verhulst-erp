@@ -87,4 +87,30 @@ class SecurityControllerTest extends AbstractControllerTest
         $user->setPassword('Password123!');
         $this->manager->flush();
     }
+
+    public function testDisplay2faActivationPage(): void
+    {
+        $user = $this->userRepository->find(1);
+        $this->client->loginUser($user);
+        $this->client->request('GET', '/authentification-2-facteurs');
+        self::assertResponseStatusCodeSame(Response::HTTP_OK);
+    }
+
+    public function testDisplay2faAuthPage(): void
+    {
+        $user = $this->userRepository->find(1);
+        $user->setIsTotpEnabled(true)
+            ->setTotpSecret('totpsecret');
+        $this->manager->flush();
+        $user = $this->userRepository->find(1);
+        $this->submitLogin($user->getEmail(), 'Password123!');
+        $this->client->followRedirect();
+        $this->client->followRedirect();
+        $this->assertSelectorEx('#login_double_authentication');
+
+        $user = $this->userRepository->find(1);
+        $user->setIsTotpEnabled(false)
+            ->setTotpSecret(null);
+        $this->manager->flush();
+    }
 }

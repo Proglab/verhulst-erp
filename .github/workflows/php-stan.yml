@@ -22,5 +22,5 @@ jobs:
         uses: php-actions/phpstan@v3
         with:
           path: src/
-          level: 5
+          level: 6
           memory_limit: -1

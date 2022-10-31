@@ -1,5 +1,7 @@
 global:
     confirmation_message: 'Modifications enregistrées !'
+    form:
+        submit: 'Enregistrer'
 
 navbar:
     language: 'Langue'
@@ -82,6 +84,29 @@ password_update:
         newPassword_confirm: Répéter le mot de passe
         not_identical_passwords_message: Les mots de passes ne sont pas identiques
         submit: Modifier
+
+2fa:
+    disabled_success_message: L'authentification à double facteur a bien été désactivée
+    enable:
+        success_message: L'authentification à double facteur a bien été activée
+        title: Authentification double facteur
+        info:
+            title: Ajoutez une sécurité supplémentaire à votre compte
+            content: Pour sécuriser votre compte, vous pouvez utiliser une authentification à deux facteurs. Ces applications génèrent un code aléatoire qui vous sera demandé à chaque nouvelle connexion.
+        steps:
+            one:
+                title: Installez une application de gestion d'authentification à double facteur
+                content: Vous pouvez télécharger n’importe quelle application
+            two:
+                title: Scannez le QR Code suivant
+            three:
+                title: Saisissez ci-dessous le code de vérification qui vous a été présenté
+    form:
+        title: Authentification à deux facteurs
+        open_app: Ouvrez votre application d'authentification à deux facteurs et saisissez ci-dessous votre code de vérification.
+        field: Code de vérification
+
+
 
 email:
     global:
