@@ -86,10 +86,13 @@ password_update:
         submit: Modifier
 
 2fa:
-    disabled_success_message: L'authentification à double facteur a bien été désactivée
+    refresh_title: Actualiser la double authentification
+    disable:
+        title: Désactiver la double authentification
+        success_message: L'authentification à double facteur a bien été désactivée
     enable:
         success_message: L'authentification à double facteur a bien été activée
-        title: Authentification double facteur
+        title: Activer la double authentification
         info:
             title: Ajoutez une sécurité supplémentaire à votre compte
             content: Pour sécuriser votre compte, vous pouvez utiliser une authentification à deux facteurs. Ces applications génèrent un code aléatoire qui vous sera demandé à chaque nouvelle connexion.

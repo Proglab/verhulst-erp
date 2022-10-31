@@ -252,7 +252,7 @@ class SecurityController extends BaseController
         $this->addCustomFlash(
             'toast',
             'success',
-            $this->translator->trans('2fa.disabled_success_message')
+            $this->translator->trans('2fa.disable.success_message')
         );
 
         return $this->redirectToRoute('home');
