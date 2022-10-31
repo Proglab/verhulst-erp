@@ -22,4 +22,3 @@ jobs:
         uses: ramsey/composer-install@v2
       - run: docker pull jakzal/phpqa
       - run: docker run --init --rm -v $GITHUB_WORKSPACE:/project -w /project jakzal/phpqa phpstan analyse src
-

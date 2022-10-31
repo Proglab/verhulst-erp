@@ -82,6 +82,30 @@ password_update:
         not_identical_passwords_message: 'Passwords are not the same'
         submit: Update
 
+2fa:
+    refresh_title: Refresh two-factor authentication
+    disable:
+        title: Disable two-factor authentication
+        success_message: Two-factor authentication has been successfully disabled
+    enable:
+        success_message: Two-factor authentication has been successfully activated
+        title: Enable two-factor authentication
+        info:
+            title: Add extra security to your account
+            content: To secure your account, you can use two-factor authentication. These applications generate a random code that you will be asked for each new connection.
+        steps:
+            one:
+                title: Install a two-factor authentication management application
+                content: You can download any app
+            two:
+                title: Scan the following QR Code
+            three:
+                title: Enter the verification code presented to you below
+    form:
+        title: Two-factor authentication
+        open_app: Open your two-factor authentication app and enter your verification code below.
+        field: Verification code
+
 email:
     global:
         hello: 'Hello'

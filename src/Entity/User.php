@@ -19,6 +19,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\Slug;
+use Scheb\TwoFactorBundle\Model\Totp\TotpConfiguration;
+use Scheb\TwoFactorBundle\Model\Totp\TotpConfigurationInterface;
+use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface;
 
 use function strtolower;
 use function strtoupper;
@@ -34,7 +37,7 @@ use function ucfirst;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface, EquatableInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, EquatableInterface, TwoFactorInterface
 {
     use CreatedAtTrait;
     use EnabledTrait;
@@ -77,6 +80,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     #[Assert\NotBlank]
     #[Assert\Locale]
     private ?string $locale = 'fr';
+
+    #[ORM\Column(name: 'totpSecret', type: Types::STRING, nullable: true)]
+    private ?string $totpSecret = null;
+
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $isTotpEnabled = false;
 
     public function __construct()
     {
@@ -263,6 +272,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     public function setLocale(?string $locale): self
     {
         $this->locale = $locale;
+
+        return $this;
+    }
+
+    public function isTotpAuthenticationEnabled(): bool
+    {
+        return (true === $this->isTotpEnabled) && (null !== $this->totpSecret);
+    }
+
+    public function getTotpAuthenticationUsername(): string
+    {
+        return $this->getUserIdentifier();
+    }
+
+    public function getTotpAuthenticationConfiguration(): ?TotpConfigurationInterface
+    {
+        return new TotpConfiguration($this->totpSecret, TotpConfiguration::ALGORITHM_SHA1, 30, 6);
+    }
+
+    public function setTotpSecret(?string $totpSecret): self
+    {
+        $this->totpSecret = $totpSecret;
+
+        return $this;
+    }
+
+    public function isTotpEnabled(): bool
+    {
+        return $this->isTotpEnabled;
+    }
+
+    public function setIsTotpEnabled(bool $isTotpEnabled): self
+    {
+        $this->isTotpEnabled = $isTotpEnabled;
 
         return $this;
     }

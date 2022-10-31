@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ '2fa.enable.title'|trans }}{% endblock %}
+
+{% block body %}
+    <div id="double_fa_activation">
+        <div class="app-card alert mb-4 border-left-decoration" role="alert">
+            <div class="inner">
+                <div class="app-card-body p-3 p-lg-4">
+                    <h3 class="mb-3">{{ '2fa.enable.info.title'|trans }}</h3>
+                    <div class="row gx-5 gy-3">
+                        <div class="col-12 col-lg-9">
+                            <div>
+                                <p>
+                                    {{ '2fa.enable.info.content'|trans }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="double_fa_activation_app" class="mt-5">
+            <h5>1. {{ '2fa.enable.steps.one.title'|trans }}</h5>
+            <div class="mt-5">
+                {{ '2fa.enable.steps.one.content'|trans }} :
+                <ul>
+                    <li>
+                        <a href="https://authy.com/" target="_blank">Authy</a> :
+                        <a href="https://apps.apple.com/us/app/authy/id494168017" target="_blank">iOS</a>,
+                        <a href="https://play.google.com/store/apps/details?id=com.authy.authy" target="_blank">Android</a>
+                    </li>
+                    <li>
+                        Google Authenticator :
+                        <a href="https://apps.apple.com/us/app/google-authenticator/id388497605" target="_blank">iOS</a>,
+                        <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2" target="_blank">Android</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="double_fa_activation_qr_code" class="mt-5">
+            <h5>2. {{ '2fa.enable.steps.two.title'|trans }}</h5>
+            <div class="mt-4 p-4 text-center">
+                <img width="250" height="250" src="{{ path('app_qr_code') }}" alt="2fa QR Code">
+            </div>
+        </div>
+
+        <div id="double_fa_activation_validation_code" class="mt-5">
+            <h5>3. {{ '2fa.enable.steps.three.title'|trans }}</h5>
+
+            <div class="text-center mt-4">
+                {{ form_start(form) }}
+                <div class="row justify-content-center">
+                    <div class="col-md-4">{{ form_row(form.code) }}</div>
+                </div>
+                <button type="submit" class="btn app-btn-primary mt-3">{{ 'global.form.submit'|trans }}</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

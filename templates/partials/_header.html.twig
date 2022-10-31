@@ -30,6 +30,12 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="user-dropdown-toggle">
                                 <li><a class="dropdown-item" href="{{ path('app_password_update') }}">{{ 'password_update.title'|trans }}</a></li>
+                                {% if app.user.isTotpAuthenticationEnabled %}
+                                    <li><a class="dropdown-item" href="{{ path('app_2fa_enable') }}">{{ '2fa.refresh_title'|trans }}</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('app_2fa_disable') }}">{{ '2fa.disable.title'|trans }}</a></li>
+                                {% else %}
+                                    <li><a class="dropdown-item" href="{{ path('app_2fa_enable') }}">{{ '2fa.enable.title'|trans }}</a></li>
+                                {% endif %}
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="{{ path('app_logout') }}">{{ 'login.logout'|trans }}</a></li>
                             </ul>
