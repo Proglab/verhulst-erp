@@ -1,0 +1,172 @@
+version: '3'
+
+silent: true
+
+vars:
+    GREETING: "Ce fichier Taskfile contient toutes les commandes liées aux analyseurs statiques, linters, helpers"
+    PWD: $PWD
+    DOCKER: docker
+    DOCKER_RUN: "{{.DOCKER}} run"
+    SYMFONY: symfony
+    SYMFONY_CONSOLE: "{{.SYMFONY}} console"
+    SYMFONY_LINT: "{{.SYMFONY_CONSOLE}} lint:"
+    COMPOSER: composer
+    COMPOSER_INSTALL: "{{.COMPOSER}} install"
+    COMPOSER_UPDATE: "{{.COMPOSER}} update"
+    PHPQA: jakzal/phpqa
+    PHPQA_RUN: "{{.DOCKER_RUN}} --init -it --rm -v {{.PWD}}:/project -w /project {{.PHPQA}}"
+
+tasks:
+    default:
+        cmds:
+            - task: help
+
+    help:
+        desc: Display this help
+        cmds:
+            - echo "{{.GREETING}}"
+            - task --list
+
+    sf-perm:
+        desc: "Fix permissions"
+        cmds:
+            - "chmod -R 777 var"
+    
+    sf-sudo-perm:
+        desc: "Fix permissions with sudo"
+        cmds:
+            - "sudo chmod -R 777 var"
+    
+    sf-dump-env:
+        desc: "Dump env"
+        cmds:
+            - "{{.SYMFONY_CONSOLE}} debug:dotenv"
+    
+    sf-dump-env-container:
+        desc: "Dump env container"
+        cmds:
+            - "{{.SYMFONY_CONSOLE}} debug:container --env-vars"
+    
+    sf-dump-router:
+        desc: "Dump routes"
+        cmds:
+            - "{{.SYMFONY_CONSOLE}} debug:router"
+    
+    sf-check-requirements:
+        desc: "Check symfony requirements"
+        cmds:
+            - "{{.SYMFONY}} check:requirements"
+
+    composer-validate:
+        desc: Validate composer.json file.
+        cmds:
+            - "{{.COMPOSER}} validate"
+
+    composer-validate-deep:
+        desc: Validate composer.json and composer.lock files in strict mode.
+        cmds:
+            - "{{.COMPOSER}} validate --strict --check-lock"
+
+    cs-dry:
+        desc: "Run php-cs-fixer dry run. Run 'task cs-fix' to fix errors"
+        cmds:
+            - "{{.PHPQA_RUN}} php-cs-fixer fix ./src --verbose --dry-run --diff"
+
+    cs-fix:
+        desc: "Run php-cs-fixer"
+        cmds:
+            - "{{.PHPQA_RUN}} php-cs-fixer fix ./src --verbose"
+
+    phpstan:
+        desc: "Run phpstan"
+        cmds:
+            - "{{.PHPQA_RUN}} phpstan analyse"
+
+    security-checker:
+        desc: "Run security-checker"
+        cmds:
+            - "{{.SYMFONY}} security:check"
+
+    phpcpd:
+        desc: "Run phpcpd (copy/paste detector)"
+        cmds:
+            - "{{.PHPQA_RUN}} phpcpd ./src"
+
+    rector-dry:
+        desc: "Run rector with dr-run flag. Run 'task rector-fix' to fix errors"
+        cmds:
+            - "{{.PHPQA_RUN}} rector process src --dry-run"
+
+    rector-fix:
+        desc: "Run rector and fix errors"
+        cmds:
+            - "{{.PHPQA_RUN}} rector process src"
+
+    twigcs:
+        desc: "Run twigcs"
+        cmds:
+            - "{{.PHPQA_RUN}} twigcs templates"
+
+    php-metrics:
+        desc: "Run php-metrics"
+        cmds:
+            - "{{.PHPQA_RUN}} phpmetrics --report-html=var/phpmetrics ./src"
+
+    lint-twig:
+        desc: "Run lint:twig"
+        cmds:
+            - "{{.SYMFONY_LINT}}twig ./templates"
+
+    lint-yaml:
+        desc: "Run lint:yaml"
+        cmds:
+            - "{{.SYMFONY_LINT}}yaml ./config"
+
+    lint-container:
+        desc: "Run lint:container"
+        cmds:
+            - "{{.SYMFONY_LINT}}container"
+
+    lint-schema:
+        desc: "Lint Doctrine schema"
+        cmds:
+            - "{{.SYMFONY_CONSOLE}} doctrine:schema:validate"
+
+    coverage:
+        desc: Run tests with coverage
+        cmds:
+            -   task: setup_tests
+            - symfony php -dpcov.enabled=1 vendor/bin/phpunit --coverage-html=public/coverage
+
+    git:reset:
+        desc: Detach skeleton repository to start from new repository
+        cmds:
+            - rm -rf .git
+            - git init
+            - git add .
+            - git commit -m "First commit"
+            - git branch -M main
+            - echo 'Lancez la commande "git remote add origin git@github.com:bastien70/[votreRepository].git"'
+            - echo 'Puis lancez la commande "git push -u origin main"'
+
+    security:
+        desc: "Run security checkers, and folders permissions"
+        cmds:
+            - task: sf-check-requirements
+            - task: security-checker
+            - task: sf-perm
+
+    qa:
+        desc: "Run all configured jakzal/phpqa services, and symfony linters to validate project"
+        cmds:
+            - task: composer-validate
+            - task: composer-validate-deep
+            - task: cs-dry
+            - task: phpstan
+            - task: phpcpd
+            - task: twigcs
+            - task: rector-dry
+            - task: lint-twig
+            - task: lint-yaml
+            - task: lint-container
+            - task: lint-schema

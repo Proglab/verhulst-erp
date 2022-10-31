@@ -31,11 +31,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 use function ucfirst;
 
-/**
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
- */
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, EquatableInterface
 {
     use CreatedAtTrait;
@@ -43,8 +41,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     use PrimaryKeyTrait;
     use VerifiedTrait;
 
-    public const ROLE_ADMIN = 'ROLE_ADMIN';
-    public const ROLE_USER = 'ROLE_USER';
+    final public const ROLE_ADMIN = 'ROLE_ADMIN';
+    final public const ROLE_USER = 'ROLE_USER';
 
     #[ORM\Column(type: Types::STRING, length: 180, unique: true)]
     #[Assert\NotBlank]

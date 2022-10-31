@@ -12,8 +12,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class ExtraVoter extends Voter
 {
-    public const IS_NOT_AUTHENTICATED = 'is_not_authenticated';
-    public const IS_XML_HTTP_REQUEST = 'isXmlHttpRequest';
+    final public const IS_NOT_AUTHENTICATED = 'is_not_authenticated';
+    final public const IS_XML_HTTP_REQUEST = 'isXmlHttpRequest';
 
     protected array $attributes = [
         self::IS_NOT_AUTHENTICATED,

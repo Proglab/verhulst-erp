@@ -27,14 +27,14 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class SecurityController extends BaseController
 {
     public function __construct(
-        private EntityManagerInterface $manager,
-        private EmailVerifier $emailVerifier,
-        private RateLimiterFactory $resendConfirmationEmailLimiter,
-        private ResendConfirmationEmailRequestRepository $resendConfirmationEmailRequestRepository,
-        private Mailer $mailer,
-        private UserPasswordHasherInterface $hasher,
-        private TranslatorInterface $translator,
-        private array $enabledLocales,
+        private readonly EntityManagerInterface $manager,
+        private readonly EmailVerifier $emailVerifier,
+        private readonly RateLimiterFactory $resendConfirmationEmailLimiter,
+        private readonly ResendConfirmationEmailRequestRepository $resendConfirmationEmailRequestRepository,
+        private readonly Mailer $mailer,
+        private readonly UserPasswordHasherInterface $hasher,
+        private readonly TranslatorInterface $translator,
+        private readonly array $enabledLocales,
     ) {
     }
 
@@ -54,7 +54,7 @@ class SecurityController extends BaseController
     }
 
     #[Route(path: '/deconnexion', name: 'app_logout')]
-    public function logout(): void
+    public function logout(): never
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
@@ -89,7 +89,7 @@ class SecurityController extends BaseController
      */
     #[IsGranted(data: ExtraVoter::IS_XML_HTTP_REQUEST, subject: 'request')]
     #[Route(path: '/renvoyer-confirmation-email/{token}', name: 'app_resend_confirmation_email')]
-    public function resendConfirmationEmailAction(string $token = null, Request $request): RedirectResponse
+    public function resendConfirmationEmailAction(string $token = null): RedirectResponse
     {
         if (null === $token) {
             $this->addCustomFlash(

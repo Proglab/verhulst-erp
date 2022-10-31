@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
 
 class ResetPasswordType extends AbstractType
 {
-    public function __construct(private bool $disableSecurePassword)
+    public function __construct(private readonly bool $disableSecurePassword)
     {
     }
 

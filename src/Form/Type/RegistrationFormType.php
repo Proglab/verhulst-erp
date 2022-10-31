@@ -21,8 +21,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class RegistrationFormType extends AbstractType
 {
     public function __construct(
-        private TranslatorInterface $translator,
-        private bool $disableSecurePassword
+        private readonly TranslatorInterface $translator,
+        private readonly bool $disableSecurePassword
     ) {
     }
 

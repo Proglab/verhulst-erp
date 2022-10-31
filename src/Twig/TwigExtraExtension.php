@@ -17,33 +17,39 @@ use Twig\TwigFunction;
 class TwigExtraExtension extends AbstractExtension
 {
     public function __construct(
-        private string $publicDir,
-        private UrlGeneratorInterface $generator,
-        private RequestStack $request,
-        private EntrypointLookupInterface $entrypointLookup,
-        private array $enabledLocales,
+        private readonly string $publicDir,
+        private readonly UrlGeneratorInterface $generator,
+        private readonly RequestStack $request,
+        private readonly EntrypointLookupInterface $entrypointLookup,
+        private readonly array $enabledLocales,
     ) {
     }
 
+    /**
+     * @noRector
+     */
     public function getFilters(): array
     {
         return [
-            new TwigFilter('countryName', [$this, 'countryName']),
-            new TwigFilter('isEgal', [$this, 'isEgal']),
-            new TwigFilter('equalsString', [$this, 'equalsString']),
-            new TwigFilter('moneyFormat', [$this, 'getMoneyFormat']),
-            new TwigFilter('badge', [$this, 'badgeFilter'], ['is_safe' => ['html']]),
-            new TwigFilter('minimizeString', [$this, 'minimizeString'], ['is_safe' => ['html']]),
-            new TwigFilter('toLocaleName', [$this, 'toLocaleName']),
+            new TwigFilter('countryName', $this->countryName(...)),
+            new TwigFilter('isEgal', $this->isEgal(...)),
+            new TwigFilter('equalsString', $this->equalsString(...)),
+            new TwigFilter('moneyFormat', $this->getMoneyFormat(...)),
+            new TwigFilter('badge', $this->badgeFilter(...), ['is_safe' => ['html']]),
+            new TwigFilter('minimizeString', $this->minimizeString(...), ['is_safe' => ['html']]),
+            new TwigFilter('toLocaleName', $this->toLocaleName(...)),
         ];
     }
 
+    /**
+     * @noRector
+     */
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('encore_entry_css_source', [$this, 'getEncoreEntryCssSource']),
-            new TwigFunction('login_target_path', [$this, 'loginTargetPath']),
-            new TwigFunction('getLocales', [$this, 'getLocales']),
+            new TwigFunction('encore_entry_css_source', $this->getEncoreEntryCssSource(...)),
+            new TwigFunction('login_target_path', $this->loginTargetPath(...)),
+            new TwigFunction('getLocales', $this->getLocales(...)),
         ];
     }
 

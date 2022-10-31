@@ -12,7 +12,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class Mailer
 {
     public function __construct(
-        private TranslatorInterface $translator
+        private readonly TranslatorInterface $translator
     ) {
     }
 

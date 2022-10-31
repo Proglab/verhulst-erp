@@ -21,8 +21,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class UserChecker implements UserCheckerInterface
 {
     public function __construct(
-        private EntityManagerInterface $manager,
-        private UrlGeneratorInterface $urlGenerator
+        private readonly EntityManagerInterface $manager,
+        private readonly UrlGeneratorInterface $urlGenerator
     ) {
     }
 

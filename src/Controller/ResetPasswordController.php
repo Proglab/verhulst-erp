@@ -33,11 +33,11 @@ class ResetPasswordController extends BaseController
     use ResetPasswordControllerTrait;
 
     public function __construct(
-        private ResetPasswordHelperInterface $resetPasswordHelper,
-        private MailerInterface $mailer,
-        private TranslatorInterface $translator,
-        private UserPasswordHasherInterface $hasher,
-        private EntityManagerInterface $manager,
+        private readonly ResetPasswordHelperInterface $resetPasswordHelper,
+        private readonly MailerInterface $mailer,
+        private readonly TranslatorInterface $translator,
+        private readonly UserPasswordHasherInterface $hasher,
+        private readonly EntityManagerInterface $manager,
     ) {
     }
 

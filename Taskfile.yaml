@@ -1,37 +1,13 @@
 version: '3'
 
+includes:
+    base: ./external/Taskfile.yaml
+
 tasks:
-    composer:
-        desc: Install PHP vendors
+    qa:
+        desc: Run qa task from base file
         cmds:
-            - symfony composer install
-        sources:
-            - composer.lock
-        generates:
-            - vendor/**/*
-
-    recipes:
-        desc: Sync Symfony Flex recipes
-        cmds:
-            - symfony composer sync-recipes --force
-
-    start:
-        desc: Start Docker containers & Symfony server
-        cmds:
-            - docker-compose up -d
-            - symfony serve -d
-
-    stop:
-        desc: Stop Docker containers & Symfony server
-        cmds:
-            - symfony server:stop
-            - docker-compose stop
-
-    coverage:
-        desc: Run tests with coverage
-        cmds:
-            - task: setup_tests
-            - symfony php -dpcov.enabled=1 vendor/bin/phpunit --coverage-html=public/coverage
+            - task base:qa
 
     test:
         desc: Run tests
@@ -66,21 +42,6 @@ tasks:
             - symfony console d:m:v --add --all --quiet
             - symfony console d:f:l --quiet
 
-    ci:
-        desc: Check code style, static analysis...
-        cmds:
-            - symfony composer ci
-
-    phpstan:
-        desc: Run PhpStan command
-        cmds:
-            - symfony composer phpstan
-
-    cs-fix:
-        desc: Fix code style
-        cmds:
-            - symfony composer cs:fix
-
     maildev:
         desc: Launch Maildev
         cmds:
@@ -95,20 +56,10 @@ tasks:
     install:
         desc: Install the project
         cmds:
+            - docker pull jakzal/phpqa
             - composer install
             - yarn install --force
             - yarn run build
             - task: fixtures_dev
-            - task: ci
+            - task: qa
             - task: test
-
-    git:reset:
-        desc: Detach skeleton repository to start from new repository
-        cmds:
-            - rm -rf .git
-            - git init
-            - git add .
-            - git commit -m "First commit"
-            - git branch -M main
-            - echo 'Lancez la commande "git remote add origin git@github.com:bastien70/[votreRepository].git"'
-            - echo 'Puis lancez la commande "git push -u origin main"'

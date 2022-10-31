@@ -1,4 +1,6 @@
 {
+    "name": "bastien70/symfony_6_skeleton",
+    "description": "Description of the project",
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",
@@ -13,7 +15,6 @@
         "doctrine/orm": "^2.11",
         "gedmo/doctrine-extensions": "^3.5",
         "phpdocumentor/reflection-docblock": "^5.3",
-        "phpstan/phpdoc-parser": "^1.2",
         "sensio/framework-extra-bundle": "^6.1",
         "stof/doctrine-extensions-bundle": "^1.7",
         "symfony/asset": "6.1.*",
@@ -59,9 +60,6 @@
     "require-dev": {
         "dama/doctrine-test-bundle": "^7.1",
         "doctrine/doctrine-fixtures-bundle": "^3.4",
-        "friendsofphp/php-cs-fixer": "^3.5",
-        "phpstan/phpstan": "^1.4",
-        "phpstan/phpstan-phpunit": "^1.0",
         "phpunit/phpunit": "^9.5",
         "symfony/browser-kit": "6.1.*",
         "symfony/css-selector": "6.1.*",
@@ -111,18 +109,7 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ],
-        "ci": [
-          "symfony console doctrine:schema:validate",
-          "@cs:dry",
-          "@phpstan",
-          "symfony console lint:container",
-          "symfony console lint:twig templates",
-          "symfony console lint:yaml config"
-        ],
-        "cs:dry": "vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --diff --dry-run --no-interaction",
-        "cs:fix": "vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix",
-        "phpstan": "vendor/bin/phpstan analyse"
+        ]
     },
     "conflict": {
         "symfony/symfony": "*"

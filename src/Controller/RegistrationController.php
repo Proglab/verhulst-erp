@@ -22,9 +22,9 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 class RegistrationController extends BaseController
 {
     public function __construct(
-        private EmailVerifier $emailVerifier,
-        private Mailer $mailer,
-        private TranslatorInterface $translator
+        private readonly EmailVerifier $emailVerifier,
+        private readonly Mailer $mailer,
+        private readonly TranslatorInterface $translator
     ) {
     }
 

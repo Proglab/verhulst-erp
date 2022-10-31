@@ -14,11 +14,11 @@ use Symfony\WebpackEncoreBundle\Asset\EntrypointLookupInterface;
 class MessageEventListener implements EventSubscriberInterface
 {
     public function __construct(
-        private string $mailerFrom,
-        private string $mailerFromLabel,
-        private string $mailerSimulation,
-        private EntrypointLookupInterface $entrypointLookup,
-        private TranslatorInterface $translator,
+        private readonly string $mailerFrom,
+        private readonly string $mailerFromLabel,
+        private readonly string $mailerSimulation,
+        private readonly EntrypointLookupInterface $entrypointLookup,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 

@@ -11,15 +11,18 @@ use Twig\TwigFilter;
 class TwigStringExtension extends AbstractExtension
 {
     public function __construct(
-        private Sanitizer $sanitizer,
+        private readonly Sanitizer $sanitizer,
     ) {
     }
 
+    /**
+     * @noRector
+     */
     public function getFilters(): array
     {
         return [
-            new TwigFilter('sanitize', [$this, 'sanitize'], ['is_safe' => ['html']]),
-            new TwigFilter('isEgal', [$this, 'isEgal']),
+            new TwigFilter('sanitize', $this->sanitize(...), ['is_safe' => ['html']]),
+            new TwigFilter('isEgal', $this->isEgal(...)),
         ];
     }
 
