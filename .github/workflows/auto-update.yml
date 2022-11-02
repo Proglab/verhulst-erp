@@ -1,0 +1,25 @@
+name: Auto Update
+on:
+    schedule:
+        - cron: "0 8 * * 1"
+    workflow_dispatch:
+
+jobs:
+    auto-update:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+              with:
+                  ref: 'update'
+            
+            - name: Install Composer dependencies
+              uses: ramsey/composer-install@v2
+              with:
+                dependency-versions: "highest"
+
+            - name: Commit changes
+              uses: stefanzweifel/git-auto-commit-action@v4
+              with:
+                  commit_message: ':arrow_up: Auto update'
