@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Entity;
 
 use App\Entity\User;
-use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 
 /**
  * @group unit
@@ -18,7 +16,7 @@ class UserTest extends TestCase
     {
         $entity = new User();
         self::assertNull($entity->getId());
-        $reflection = new ReflectionClass($entity);
+        $reflection = new \ReflectionClass($entity);
         $property = $reflection->getProperty('id');
         $property->setAccessible(true);
         $property->setValue($entity, 2);
@@ -28,8 +26,8 @@ class UserTest extends TestCase
     public function testCreatedAt(): void
     {
         $entity = new User();
-        $date = new DateTimeImmutable();
-        self::assertInstanceOf(DateTimeImmutable::class, $entity->getCreatedAt());
+        $date = new \DateTimeImmutable();
+        self::assertInstanceOf(\DateTimeImmutable::class, $entity->getCreatedAt());
         $entity->setCreatedAt($date);
         self::assertSame($date, $entity->getCreatedAt());
     }

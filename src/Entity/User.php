@@ -9,11 +9,6 @@ use App\Entity\Trait\EnabledTrait;
 use App\Entity\Trait\PrimaryKeyTrait;
 use App\Entity\Trait\VerifiedTrait;
 use App\Repository\UserRepository;
-
-use function array_search;
-use function array_values;
-
-use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -22,17 +17,11 @@ use Gedmo\Mapping\Annotation\Slug;
 use Scheb\TwoFactorBundle\Model\Totp\TotpConfiguration;
 use Scheb\TwoFactorBundle\Model\Totp\TotpConfigurationInterface;
 use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface;
-
-use function strtolower;
-use function strtoupper;
-
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-
-use function ucfirst;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -89,7 +78,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
 
     public function __construct()
     {
-        $this->createdAt = new DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable();
         $this->enabled = false;
         $this->resendConfirmationEmailRequests = new ArrayCollection();
     }

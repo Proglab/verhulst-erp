@@ -12,7 +12,6 @@ use App\Form\Type\DoubleFactorAuthenticationSetupType;
 use App\Form\Type\PasswordUpdateType;
 use App\Repository\ResendConfirmationEmailRequestRepository;
 use App\Security\EmailVerifier;
-use App\Security\Voter\ExtraVoter;
 use App\Service\Mailer;
 use Doctrine\ORM\EntityManagerInterface;
 use Endroid\QrCode\Builder\Builder;
@@ -95,7 +94,6 @@ class SecurityController extends BaseController
     /**
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    #[IsGranted(data: ExtraVoter::IS_XML_HTTP_REQUEST, subject: 'request')]
     #[Route(path: '/renvoyer-confirmation-email/{token}', name: 'app_resend_confirmation_email')]
     public function resendConfirmationEmailAction(string $token = null): RedirectResponse
     {
@@ -103,7 +101,7 @@ class SecurityController extends BaseController
             $this->addCustomFlash(
                 'login_flash',
                 'danger',
-                'Le lien est invalide. Veuillez réessayer.'
+                $this->translator->trans('resend_confirmation_link.token_not_found')
             );
 
             return $this->redirectToRoute('app_login');
@@ -119,7 +117,7 @@ class SecurityController extends BaseController
             $this->addCustomFlash(
                 'login_flash',
                 'danger',
-                'Vous avez déjà demandé un nouvel e-mail de confirmation pour votre compte. Veuillez vérifier votre e-mail ou réessayez dans 5 minutes.'
+                $this->translator->trans('resend_confirmation_link.already_resent')
             );
 
             return $this->redirectToRoute('app_login');
@@ -130,7 +128,7 @@ class SecurityController extends BaseController
                 $this->addCustomFlash(
                     'login_flash',
                     'danger',
-                    'Votre compte est déjà activé.'
+                    $this->translator->trans('resend_confirmation_link.already_enabled')
                 );
                 break;
 
@@ -138,7 +136,7 @@ class SecurityController extends BaseController
                 $this->addCustomFlash(
                     'login_flash',
                     'danger',
-                    'Le lien est expiré ! Veuillez réessayer !'
+                    $this->translator->trans('resend_confirmation_link.expired_link')
                 );
                 break;
 
@@ -158,7 +156,7 @@ class SecurityController extends BaseController
                 $this->addCustomFlash(
                     'login_flash',
                     'success',
-                    'Un nouvel e-mail de confirmation vient de vous être envoyé !'
+                    $this->translator->trans('resend_confirmation_link.new_email_sent')
                 );
                 break;
         }

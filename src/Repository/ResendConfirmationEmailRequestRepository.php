@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\ResendConfirmationEmailRequest;
-use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -37,7 +36,7 @@ class ResendConfirmationEmailRequestRepository extends ServiceEntityRepository
 
     public function removeExpiredResetConfirmationEmailRequests(): int
     {
-        $time = new DateTimeImmutable('-1 week');
+        $time = new \DateTimeImmutable('-1 week');
         $query = $this->createQueryBuilder('r')
             ->delete()
             ->where('r.expiresAt <= :time')

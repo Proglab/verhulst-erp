@@ -106,6 +106,14 @@ password_update:
         open_app: Open your two-factor authentication app and enter your verification code below.
         field: Verification code
 
+resend_confirmation_link:
+    exception: "Your account is not verified. Please confirm your subscription by clicking on the link sent to you by email. Remember to check your spam. <a href='%path%' class='js-submit'> Resend confirmation email</a>"
+    token_not_found: The link is invalid. Try Again.
+    already_resent: You have already requested a new confirmation email for your account. Please check your email or try again in 5 minutes.
+    already_enabled: Your account is already activated.
+    expired_link: The link is expired! Try Again !
+    new_email_sent: A new confirmation email has just been sent to you!
+
 email:
     global:
         hello: 'Hello'

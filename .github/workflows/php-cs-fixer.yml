@@ -10,4 +10,4 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v3
       - run: docker pull jakzal/phpqa
-      - run: docker run --init --rm -v $GITHUB_WORKSPACE:/project -w /project jakzal/phpqa php-cs-fixer fix ./src --verbose --dry-run --diff --using-cache=no
+      - run: docker run --init --rm -v $GITHUB_WORKSPACE:/project -w /project jakzal/phpqa php-cs-fixer fix --config="./.php-cs-fixer.dist.php" --verbose --dry-run --diff --using-cache=no

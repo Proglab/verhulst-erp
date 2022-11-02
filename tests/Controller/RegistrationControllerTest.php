@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
-use DateTime;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -17,7 +16,7 @@ class RegistrationControllerTest extends AbstractControllerTest
         $crawler = $this->client->request('GET', '/inscription');
         self::assertResponseIsSuccessful();
 
-        $email = sprintf('test%s@mail.fr', (new DateTime())->getTimestamp());
+        $email = sprintf('test%s@mail.fr', (new \DateTime())->getTimestamp());
 
         $form = $crawler->filter('form[name=registration_form]')->form([
             'registration_form[firstName]' => 'firstname',
@@ -37,7 +36,7 @@ class RegistrationControllerTest extends AbstractControllerTest
         $crawler = $this->client->request('GET', '/inscription');
         self::assertResponseIsSuccessful();
 
-        $email = sprintf('test%s@mail.fr', (new DateTime())->getTimestamp());
+        $email = sprintf('test%s@mail.fr', (new \DateTime())->getTimestamp());
 
         $form = $crawler->filter('form[name=registration_form]')->form([
             'registration_form[firstName]' => 'firstname',

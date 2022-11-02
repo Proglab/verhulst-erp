@@ -109,7 +109,13 @@ password_update:
         open_app: Ouvrez votre application d'authentification à deux facteurs et saisissez ci-dessous votre code de vérification.
         field: Code de vérification
 
-
+resend_confirmation_link:
+    exception: "Votre compte n'est pas vérifié. Veuillez confirmer votre inscription en cliquant sur le lien qui vous a été envoyé par email. Pensez à vérifier dans vos spams. <a href='%path%' class='js-submit'>Renvoyer l'email de confirmation</a>"
+    token_not_found: Le lien est invalide. Veuillez réessayer.
+    already_resent: Vous avez déjà demandé un nouvel e-mail de confirmation pour votre compte. Veuillez vérifier votre e-mail ou réessayez dans 5 minutes.
+    already_enabled: Votre compte est déjà activé.
+    expired_link: Le lien est expiré ! Veuillez réessayer !
+    new_email_sent: Un nouvel e-mail de confirmation vient de vous être envoyé !
 
 email:
     global:

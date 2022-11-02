@@ -6,10 +6,6 @@ namespace App\Controller;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-
-use function json_decode;
-
-use JsonException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +25,7 @@ class BaseController extends AbstractController
     }
 
     /**
-     * @throws JsonException
+     * @throws \JsonException
      */
     protected function json_decode_content_request(Request $request, bool $assoc = true): mixed
     {

@@ -6,12 +6,8 @@ namespace App\Entity;
 
 use App\Entity\Trait\PrimaryKeyTrait;
 use App\Repository\ResendConfirmationEmailRequestRepository;
-use DateTimeImmutable;
-use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
-use function time;
 
 #[ORM\Entity(repositoryClass: ResendConfirmationEmailRequestRepository::class)]
 class ResendConfirmationEmailRequest
@@ -22,10 +18,10 @@ class ResendConfirmationEmailRequest
     private ?string $hashedToken = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    private ?DateTimeInterface $requestedAt;
+    private ?\DateTimeInterface $requestedAt;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    private ?DateTimeInterface $expiresAt = null;
+    private ?\DateTimeInterface $expiresAt = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'resendConfirmationEmailRequests')]
     #[ORM\JoinColumn(nullable: false)]
@@ -33,7 +29,7 @@ class ResendConfirmationEmailRequest
 
     public function __construct()
     {
-        $this->requestedAt = new DateTimeImmutable();
+        $this->requestedAt = new \DateTimeImmutable();
     }
 
     public function getHashedToken(): ?string
@@ -48,12 +44,12 @@ class ResendConfirmationEmailRequest
         return $this;
     }
 
-    public function getExpiresAt(): ?DateTimeInterface
+    public function getExpiresAt(): ?\DateTimeInterface
     {
         return $this->expiresAt;
     }
 
-    public function setExpiresAt(DateTimeInterface $expiresAt): self
+    public function setExpiresAt(\DateTimeInterface $expiresAt): self
     {
         $this->expiresAt = $expiresAt;
 
@@ -65,12 +61,12 @@ class ResendConfirmationEmailRequest
         return $this->expiresAt->getTimestamp() <= time();
     }
 
-    public function getRequestedAt(): ?DateTimeInterface
+    public function getRequestedAt(): ?\DateTimeInterface
     {
         return $this->requestedAt;
     }
 
-    public function setRequestedAt(DateTimeInterface $requestedAt): void
+    public function setRequestedAt(\DateTimeInterface $requestedAt): void
     {
         $this->requestedAt = $requestedAt;
     }

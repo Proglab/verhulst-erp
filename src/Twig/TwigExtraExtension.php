@@ -6,7 +6,6 @@ namespace App\Twig;
 
 use App\Helper\LocaleHelper;
 use App\Helper\MoneyHelper;
-use Locale;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\WebpackEncoreBundle\Asset\EntrypointLookupInterface;
@@ -64,7 +63,7 @@ class TwigExtraExtension extends AbstractExtension
 
     public function countryName(string $countryIso): string
     {
-        return Locale::getDisplayRegion('-' . $countryIso, 'fr');
+        return \Locale::getDisplayRegion('-' . $countryIso, 'fr');
     }
 
     public function loginTargetPath(): string

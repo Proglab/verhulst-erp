@@ -7,7 +7,6 @@ namespace App\Tests\Entity;
 use App\Entity\ResendConfirmationEmailRequest;
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 
 /**
  * @group unit
@@ -18,7 +17,7 @@ class ResendConfirmationEmailRequestTest extends TestCase
     {
         $entity = new ResendConfirmationEmailRequest();
         self::assertNull($entity->getId());
-        $reflection = new ReflectionClass($entity);
+        $reflection = new \ReflectionClass($entity);
         $property = $reflection->getProperty('id');
         $property->setAccessible(true);
         $property->setValue($entity, 2);

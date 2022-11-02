@@ -29,7 +29,7 @@
                                 {% endfor %}
                             {% endfor %}
                             {% if error %}
-                                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security')|sanitize }}</div>
+                                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security')|raw }}</div>
                             {% endif %}
 
                             {% if app.user %}

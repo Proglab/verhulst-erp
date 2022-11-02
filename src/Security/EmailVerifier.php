@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace App\Security;
 
 use App\Entity\User;
-
-use function array_merge;
-
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;

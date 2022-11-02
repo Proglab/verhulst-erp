@@ -70,12 +70,12 @@ tasks:
     cs-dry:
         desc: "Run php-cs-fixer dry run. Run 'task cs-fix' to fix errors"
         cmds:
-            - "{{.PHPQA_RUN}} php-cs-fixer fix ./src --verbose --dry-run --diff"
+            - "{{.PHPQA_RUN}} php-cs-fixer fix --verbose --dry-run --diff"
 
     cs-fix:
         desc: "Run php-cs-fixer"
         cmds:
-            - "{{.PHPQA_RUN}} php-cs-fixer fix ./src --verbose"
+            - "{{.PHPQA_RUN}} php-cs-fixer fix --verbose"
 
     phpstan:
         desc: "Run phpstan"
@@ -159,6 +159,7 @@ tasks:
     qa:
         desc: "Run all configured jakzal/phpqa services, and symfony linters to validate project"
         cmds:
+            - docker pull jakzal/phpqa
             - task: composer-validate
             - task: composer-validate-deep
             - task: cs-dry

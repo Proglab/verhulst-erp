@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use Rector\CodeQuality\Rector\Class_\InlineConstructorDefaultToPropertyRector;
 use Rector\Config\RectorConfig;
-use Rector\Core\Configuration\ValueObjectInliner;
 use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\Php74\Rector\Property\TypedPropertyRector;
 use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
@@ -23,7 +22,7 @@ use Rector\Symfony\Set\SymfonySetList;
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->paths([
-        __DIR__ . '/src'
+        __DIR__ . '/src',
     ]);
 
     $services = $rectorConfig->services();
@@ -41,7 +40,7 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->rule(ChangeSwitchToMatchRector::class);
 
     $rectorConfig->ruleWithConfiguration(AnnotationToAttributeRector::class, [
-        new AnnotationToAttribute('Symfony\Component\Routing\Annotation\Route', null)
+        new AnnotationToAttribute('Symfony\Component\Routing\Annotation\Route', null),
     ]);
 
     // define sets of rules
@@ -55,6 +54,6 @@ return static function (RectorConfig $rectorConfig): void {
         SymfonySetList::ANNOTATIONS_TO_ATTRIBUTES,
         SensiolabsSetList::FRAMEWORK_EXTRA_61,
         SymfonySetList::SYMFONY_52_VALIDATOR_ATTRIBUTES,
-        DoctrineSetList::GEDMO_ANNOTATIONS_TO_ATTRIBUTES
+        DoctrineSetList::GEDMO_ANNOTATIONS_TO_ATTRIBUTES,
     ]);
 };
