@@ -112,16 +112,19 @@ class SecurityController extends BaseController
         $resendConfirmationEmailRequest = $this->resendConfirmationEmailRequestRepository->findToken($token);
 
         $user = $resendConfirmationEmailRequest->getUser();
-        $limiter = $this->resendConfirmationEmailLimiter->create($user->getEmail());
 
-        if (false === $limiter->consume()->isAccepted()) {
-            $this->addCustomFlash(
-                'login_flash',
-                'danger',
-                $this->translator->trans('resend_confirmation_link.already_resent')
-            );
+        if (false === $this->disableRateLimiters) {
+            $limiter = $this->resendConfirmationEmailLimiter->create($user->getEmail());
 
-            return $this->redirectToRoute('app_login');
+            if (false === $limiter->consume()->isAccepted()) {
+                $this->addCustomFlash(
+                    'login_flash',
+                    'danger',
+                    $this->translator->trans('resend_confirmation_link.already_resent')
+                );
+
+                return $this->redirectToRoute('app_login');
+            }
         }
 
         switch (true) {

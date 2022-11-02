@@ -39,7 +39,6 @@ class RegistrationController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             if (false === $this->disableRateLimiters) {
                 $limiter = $this->accountCreationLimiter->create($request->getClientIp());
 
