@@ -14,6 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -24,7 +25,9 @@ class RegistrationController extends BaseController
     public function __construct(
         private readonly EmailVerifier $emailVerifier,
         private readonly Mailer $mailer,
-        private readonly TranslatorInterface $translator
+        private readonly TranslatorInterface $translator,
+        private readonly RateLimiterFactory $accountCreationLimiter,
+        private readonly bool $disableRateLimiters,
     ) {
     }
 
@@ -36,6 +39,21 @@ class RegistrationController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            if (false === $this->disableRateLimiters) {
+                $limiter = $this->accountCreationLimiter->create($request->getClientIp());
+
+                if (false === $limiter->consume()->isAccepted()) {
+                    $this->addCustomFlash(
+                        'login_flash',
+                        'danger',
+                        $this->translator->trans('register.rate_limiter')
+                    );
+
+                    return $this->redirectToRoute('app_register');
+                }
+            }
+
             // encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(

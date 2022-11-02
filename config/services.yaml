@@ -24,6 +24,7 @@ services:
             $mailerSimulation: "%env(MAILER_SIMULATION)%"
             string $defaultLocale: '%env(DEFAULT_LOCALE)%'
             array $enabledLocales: '%enabled_locales%'
+            bool $disableRateLimiters: "%env(DISABLE_RATE_LIMITERS)%"
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

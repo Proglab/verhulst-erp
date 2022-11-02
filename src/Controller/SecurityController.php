@@ -42,6 +42,7 @@ class SecurityController extends BaseController
         private readonly CacheInterface $cache,
         private readonly TotpAuthenticatorInterface $totpAuthenticator,
         private readonly array $enabledLocales,
+        private readonly bool $disableRateLimiters,
     ) {
     }
 

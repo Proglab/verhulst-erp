@@ -38,6 +38,7 @@ register:
     already_account_link: 'Me connecter'
     flash_message_success: 'Un email vient de vous être envoyé afin de confirmer votre compte.'
     verified_account_message_success: Votre compte a bien été vérifié !
+    rate_limiter: Vous venez de créer un compte il y a peu, veuillez attendre 15 minutes.
     form:
         email: 'Email'
         agreeTerms: "J'accepte les Conditions Générales d'Utilisation"

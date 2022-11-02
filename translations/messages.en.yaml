@@ -36,6 +36,7 @@ register:
     already_account_link: 'Log in'
     flash_message_success: 'An email has just been sent to you to confirm your account.'
     verified_account_message_success: Your account has been verified!
+    rate_limiter: You have just created an account, please wait 15 minutes.
     form:
         email: 'Email'
         agreeTerms: "I accept the general terms of use"
