@@ -4,15 +4,26 @@ namespace App\Controller\Admin;
 
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\LocaleField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class UserCrudController extends BaseCrudController
 {
+
+    #[IsGranted(data: User::ROLE_USER, message: 'Vous devez être authentifié pour accéder à cette page !')]
+    #[Route(path: '/admin/modifier-mon-mot-de-passe', name: 'admin_password_update')]
+    public function updatePassword(Request $request): RedirectResponse|Response
+    {
+        return $this->renderForm('admin/update_password.html.twig');
+    }
+
     public static function getEntityFqcn(): string
     {
         return User::class;

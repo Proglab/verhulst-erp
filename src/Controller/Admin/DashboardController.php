@@ -48,7 +48,7 @@ class DashboardController extends AbstractDashboardController
         /** @var User $user */
         $menu = [
             MenuItem::linkToRoute('admin.menu.my_profile', 'fa fa-id-card', 'app_update_profile', []),
-            MenuItem::linkToRoute('password_update.title', 'fa fa-key', 'app_password_update', []),
+            MenuItem::linkToRoute('password_update.title', 'fa fa-key', 'admin_password_update', []),
         ];
 
         if ($user->isTotpAuthenticationEnabled()) {

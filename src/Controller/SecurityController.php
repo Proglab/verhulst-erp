@@ -173,30 +173,7 @@ class SecurityController extends BaseController
     #[Route(path: '/modifier-mon-mot-de-passe', name: 'app_password_update')]
     public function updatePassword(Request $request): RedirectResponse|Response
     {
-        $user = $this->getUser();
-        $passwordUpdate = new PasswordUpdate();
-        $form = $this->createForm(PasswordUpdateType::class, $passwordUpdate);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $newPassword = $passwordUpdate->newPassword;
-            $hash = $this->hasher->hashPassword($user, $newPassword);
-            $user->setPassword($hash);
-
-            $this->manager->flush();
-
-            $this->addCustomFlash(
-                'toast',
-                'success',
-                $this->translator->trans('global.confirmation_message')
-            );
-
-            return $this->redirectToRoute('home');
-        }
-
-        return $this->renderForm('security/update_password.html.twig', [
-            'form' => $form,
-        ]);
+        return $this->renderForm('security/update_password.html.twig');
     }
 
     #[IsGranted(data: User::ROLE_USER)]
