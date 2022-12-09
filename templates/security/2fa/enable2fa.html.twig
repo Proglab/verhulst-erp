@@ -1,8 +1,8 @@
-{% extends 'base.html.twig' %}
+{% extends app.request.attributes.get('easyadmin_context') is defined and app.request.attributes.get('easyadmin_context') is not null ? '@EasyAdmin/page/content.html.twig' : 'base.html.twig' %}
 
 {% block title %}{{ '2fa.enable.title'|trans }}{% endblock %}
 
-{% block body %}
+{% block content %}
     <div id="double_fa_activation">
         <div class="app-card alert mb-4 border-left-decoration" role="alert">
             <div class="inner">

@@ -10,6 +10,7 @@ use App\Form\Model\DoubleFactorAuthenticationSetup;
 use App\Form\Model\PasswordUpdate;
 use App\Form\Type\DoubleFactorAuthenticationSetupType;
 use App\Form\Type\PasswordUpdateType;
+use App\Form\Type\ProfileUpdateType;
 use App\Repository\ResendConfirmationEmailRequestRepository;
 use App\Security\EmailVerifier;
 use App\Service\Mailer;
@@ -206,7 +207,7 @@ class SecurityController extends BaseController
 
         if (!$user->isTotpAuthenticationEnabled()) {
             $totpAuthenticator = $this->totpAuthenticator;
-            $totpCode = $this->cache->get(sprintf('2fa_activation_totp_%s', $user->getEmail()),
+            $totpCode = $this->cache->get(sprintf('2fa_activation_totp_%s', str_replace('@', '', $user->getEmail())),
                 function (ItemInterface $item) use ($totpAuthenticator) {
                     $item->expiresAfter(900);
 
@@ -224,8 +225,8 @@ class SecurityController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setIsTotpEnabled(true);
             $this->manager->flush();
-            $this->cache->delete(sprintf('2fa_activation_totp_%s', $user->getEmail()));
-            $this->cache->delete(sprintf('2fa_activation_qr_code_%s', $user->getEmail()));
+            $this->cache->delete(sprintf('2fa_activation_totp_%s', str_replace('@', '', $user->getEmail())));
+            $this->cache->delete(sprintf('2fa_activation_qr_code_%s', str_replace('@', '', $user->getEmail())));
             $this->addCustomFlash(
                 'toast',
                 'success',
@@ -266,7 +267,7 @@ class SecurityController extends BaseController
     {
         $user = $this->getUser();
 
-        return $this->cache->get(sprintf('2fa_activation_qr_code_%s', $user->getEmail()),
+        return $this->cache->get(sprintf('2fa_activation_qr_code_%s', str_replace('@', '', $user->getEmail())),
             function (ItemInterface $item) use ($user) {
                 $item->expiresAfter(900);
                 $qrCodeContent = $this->totpAuthenticator->getQRContent($user);
@@ -276,5 +277,33 @@ class SecurityController extends BaseController
 
                 return new Response($result->getString(), Response::HTTP_OK, ['Content-Type' => 'image/png']);
             });
+    }
+
+
+    #[IsGranted(data: User::ROLE_USER)]
+    #[Route(path: '/mon-profil', name: 'app_update_profile')]
+    public function updateProfile(Request $request): Response
+    {
+        $user = $this->getUser();
+
+        $form = $this->createForm(ProfileUpdateType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->manager->persist($form->getData());
+            $this->manager->flush();
+
+            $this->addCustomFlash(
+                'toast',
+                'success',
+                $this->translator->trans('global.confirmation_message')
+            );
+
+            return $this->redirectToRoute('home');
+        }
+
+        return $this->renderForm('security/update_profile.html.twig', [
+            'form' => $form,
+        ]);
     }
 }

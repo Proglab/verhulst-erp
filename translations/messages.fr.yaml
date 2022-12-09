@@ -86,6 +86,12 @@ password_update:
         not_identical_passwords_message: Les mots de passes ne sont pas identiques
         submit: Modifier
 
+profile_update:
+    title: 'Modifier mon profil'
+    back: Retour
+    form:
+        submit: Mettre à jour
+
 2fa:
     refresh_title: Actualiser la double authentification
     disable:
@@ -139,3 +145,11 @@ email:
             body2: Ce lien expirera dans
             body3: Ça n'est pas vous ? Ignorez simplement ce mail, et le compte qui y est associé sera prochainement supprimé.
             submit: Confirmer mon inscription
+
+admin:
+    menu:
+        website: Retour sur le site internet
+        dashboard: Dashboard
+        users: Utilisateurs
+        logout: Se déconnecter
+        my_profile: Mon profil

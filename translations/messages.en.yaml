@@ -73,6 +73,12 @@ reset_password:
         flash_success: 'Your password has been reset! You can now log in.'
         flash_error: 'A problem occurred while validating your reset request: %message%'
 
+profile_update:
+    title: 'Update my profile'
+    back: Back
+    form:
+        submit: Update
+
 password_update:
     title: 'Update my password'
     back: Back
@@ -136,3 +142,11 @@ email:
             body2: This link will expire in
             body3: That's not you? Simply ignore this email, and the account associated with it will soon be deleted.
             submit: Confirm my registration
+
+admin:
+    menu:
+        website: Back to website
+        dashboard: Dashboard
+        users: Users
+        logout: Logout
+        my_profile: My profile

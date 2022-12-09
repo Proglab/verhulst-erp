@@ -2,8 +2,6 @@
 
 {% block title %}{{ 'password_update.title'|trans }}{% endblock %}
 
-{% form_theme form.newPassword 'form_theme/secure_password.html.twig' %}
-
 {% block content %}
     <div id="account_change_password" class="mt-4">
         <div class="app-card app-card-basic d-flex flex-column">
@@ -15,28 +13,20 @@
                         </div>
                     </div>
                     <div class="col-auto">
-                        <h4 class="app-card-title">{{ 'password_update.title'|trans }}</h4>
+                        <h4 class="app-card-title">{{ 'profile_update.title'|trans }}</h4>
                     </div>
                 </div>
             </div>
             {{ form_start(form) }}
             <div class="app-card-body px-4">
-                {{ form_row(form.oldPassword) }}
-                <div class="row">
-                    <div class="col-md-6">
-                        {{ form_errors(form.newPassword.first) }}
-                        {{ form_widget(form.newPassword.first) }}
-                        {{ form_help(form.newPassword) }}
-                    </div>
-                    <div class="col-md-6">
-                        {{ form_errors(form.newPassword.second) }}
-                        {{ form_widget(form.newPassword.second) }}
-                    </div>
-                </div>
+                {{ form_row(form.email) }}
+                {{ form_row(form.firstName) }}
+                {{ form_row(form.lastName) }}
+
             </div>
             <div class="app-card-footer p-4 mt-auto">
-                <a href="{{ path('home') }}" class="btn app-btn-secondary">{{ 'password_update.back'|trans }}</a>
-                <button type="submit" class="btn app-btn-primary"><i class="bi bi-save"></i>{{ 'password_update.form.submit'|trans }}</button>
+                <a href="{{ path('home') }}" class="btn app-btn-secondary">{{ 'profile_update.back'|trans }}</a>
+                <button type="submit" class="btn app-btn-primary"><i class="bi bi-save"></i>{{ 'profile_update.form.submit'|trans }}</button>
             </div>
             {{ form_end(form) }}
         </div>
