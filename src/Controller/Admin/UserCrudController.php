@@ -24,6 +24,15 @@ class UserCrudController extends BaseCrudController
         return $this->renderForm('admin/update_password.html.twig');
     }
 
+
+    #[IsGranted(data: User::ROLE_USER)]
+    #[Route(path: '/authentification-2-facteurs', name: 'admin_2fa_enable')]
+    public function enable2fa(Request $request): Response
+    {
+
+        return $this->renderForm('admin/enable2fa.html.twig');
+    }
+
     public static function getEntityFqcn(): string
     {
         return User::class;

@@ -54,7 +54,7 @@ class DashboardController extends AbstractDashboardController
         if ($user->isTotpAuthenticationEnabled()) {
             $menu[] = MenuItem::linkToRoute('2fa.disable.title', 'fa fa-unlock', 'app_2fa_disable', []);
         } else {
-            $menu[] = MenuItem::linkToRoute('2fa.enable.title', 'fa fa-user-lock', 'app_2fa_enable', []);
+            $menu[] = MenuItem::linkToRoute('2fa.enable.title', 'fa fa-user-lock', 'admin_2fa_enable', []);
         }
 
         return parent::configureUserMenu($user)

@@ -180,42 +180,8 @@ class SecurityController extends BaseController
     #[Route(path: '/authentification-2-facteurs', name: 'app_2fa_enable')]
     public function enable2fa(Request $request): Response
     {
-        $user = $this->getUser();
 
-        if (!$user->isTotpAuthenticationEnabled()) {
-            $totpAuthenticator = $this->totpAuthenticator;
-            $totpCode = $this->cache->get(sprintf('2fa_activation_totp_%s', str_replace('@', '', $user->getEmail())),
-                function (ItemInterface $item) use ($totpAuthenticator) {
-                    $item->expiresAfter(900);
-
-                    return $totpAuthenticator->generateSecret();
-                });
-            $user->setTotpSecret($totpCode);
-            $this->manager->flush();
-        }
-
-        $setup = new DoubleFactorAuthenticationSetup();
-        $setup->user = $user;
-        $form = $this->createForm(DoubleFactorAuthenticationSetupType::class, $setup);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user->setIsTotpEnabled(true);
-            $this->manager->flush();
-            $this->cache->delete(sprintf('2fa_activation_totp_%s', str_replace('@', '', $user->getEmail())));
-            $this->cache->delete(sprintf('2fa_activation_qr_code_%s', str_replace('@', '', $user->getEmail())));
-            $this->addCustomFlash(
-                'toast',
-                'success',
-                $this->translator->trans('2fa.enable.success_message')
-            );
-
-            return $this->redirectToRoute('home');
-        }
-
-        return $this->renderForm('security/2fa/enable2fa.html.twig', [
-            'form' => $form,
-        ]);
+        return $this->renderForm('security/2fa/enable2fa.html.twig');
     }
 
     #[IsGranted(data: User::ROLE_USER)]

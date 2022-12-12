@@ -1,0 +1,7 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block title %}{{ '2fa.enable.title'|trans }}{% endblock %}
+
+{% block content %}
+    {{ component('enabled_2fa', {redirectUrl : url('admin')}) }}
+{% endblock %}
