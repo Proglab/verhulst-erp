@@ -43,3 +43,16 @@ Des fonctionnalités ont également été implémentées (voir ci-dessous)
 ### Tests
 
 Mise en place de tous les tests (controllers, entities, forms, repositories)
+
+
+## Doc
+
+### PHPCS
+```
+docker run --init --rm -v {DIR_TO_PROJECT}:/project -w /project jakzal/phpqa php-cs-fixer fix --config="./.php-cs-fixer.dist.php" --verbose --using-cache=no
+```
+
+### PHPStan
+```
+docker run --init --rm -v {DIR_TO_PROJECT}:/project -w /project jakzal/phpqa phpstan analyse src
+```
