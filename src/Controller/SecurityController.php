@@ -38,7 +38,6 @@ class SecurityController extends BaseController
         private readonly RateLimiterFactory $resendConfirmationEmailLimiter,
         private readonly ResendConfirmationEmailRequestRepository $resendConfirmationEmailRequestRepository,
         private readonly Mailer $mailer,
-        private readonly UserPasswordHasherInterface $hasher,
         private readonly TranslatorInterface $translator,
         private readonly CacheInterface $cache,
         private readonly TotpAuthenticatorInterface $totpAuthenticator,

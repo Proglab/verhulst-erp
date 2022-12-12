@@ -10,6 +10,7 @@ use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInte
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
@@ -44,7 +45,6 @@ class Enabled2faComponent
             $totpCode = $this->cache->get(sprintf('2fa_activation_totp_%s', str_replace('@', '', $user->getEmail())),
                 function (ItemInterface $item) use ($totpAuthenticator) {
                     $item->expiresAfter(900);
-
                     return $totpAuthenticator->generateSecret();
                 });
             $user->setTotpSecret($totpCode);
@@ -62,8 +62,9 @@ class Enabled2faComponent
             $this->entityManager->flush();
             $this->cache->delete(sprintf('2fa_activation_totp_%s', str_replace('@', '', $user->getEmail())));
             $this->cache->delete(sprintf('2fa_activation_qr_code_%s', str_replace('@', '', $user->getEmail())));
-
-            $this->requestStack->getSession()->getFlashBag()->add('success', $this->translator->trans('2fa.enable.success_message'));
+            /** @var Session $session */
+            $session = $this->requestStack->getSession();
+            $session->getFlashBag()->add('success', $this->translator->trans('2fa.enable.success_message'));
             return '<script>window.location.href = \''.$this->redirectUrl.'\';</script>';
         }
         return $form->createView();

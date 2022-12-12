@@ -4,6 +4,7 @@ namespace App\Twig\Components;
 use App\Form\Model\PasswordUpdate;
 use App\Form\Type\PasswordUpdateType;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
@@ -44,8 +45,9 @@ class UpdatePasswordComponent
             $user->setPassword($hash);
             $this->entityManager->persist($user);
             $this->entityManager->flush();
-
-            $this->requestStack->getSession()->getFlashBag()->add('success', $this->translator->trans('global.confirmation_message'));
+            /** @var Session $session */
+            $session = $this->requestStack->getSession();
+            $session->getFlashBag()->add('success', $this->translator->trans('global.confirmation_message'));
             return '<script>window.location.href = \''.$this->redirectUrl.'\';</script>';
 
         }
