@@ -6,10 +6,6 @@ namespace App\Controller;
 
 use App\Entity\ResendConfirmationEmailRequest;
 use App\Entity\User;
-use App\Form\Model\DoubleFactorAuthenticationSetup;
-use App\Form\Model\PasswordUpdate;
-use App\Form\Type\DoubleFactorAuthenticationSetupType;
-use App\Form\Type\PasswordUpdateType;
 use App\Form\Type\ProfileUpdateType;
 use App\Repository\ResendConfirmationEmailRequestRepository;
 use App\Security\EmailVerifier;
@@ -22,7 +18,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -179,7 +174,6 @@ class SecurityController extends BaseController
     #[Route(path: '/authentification-2-facteurs', name: 'app_2fa_enable')]
     public function enable2fa(Request $request): Response
     {
-
         return $this->renderForm('security/2fa/enable2fa.html.twig');
     }
 
@@ -220,7 +214,6 @@ class SecurityController extends BaseController
                 return new Response($result->getString(), Response::HTTP_OK, ['Content-Type' => 'image/png']);
             });
     }
-
 
     #[IsGranted(data: User::ROLE_USER)]
     #[Route(path: '/mon-profil', name: 'app_update_profile')]

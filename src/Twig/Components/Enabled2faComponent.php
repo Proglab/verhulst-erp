@@ -1,7 +1,9 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Twig\Components;
+
 use App\Entity\User;
 use App\Form\Model\DoubleFactorAuthenticationSetup;
 use App\Form\Type\DoubleFactorAuthenticationSetupType;
@@ -30,10 +32,8 @@ class Enabled2faComponent
         private readonly FormFactoryInterface $formFactory,
         private readonly RequestStack $requestStack,
         private readonly TranslatorInterface $translator
-    )
-    {
+    ) {
     }
-
 
     public function getForm(): FormView|string
     {
@@ -45,6 +45,7 @@ class Enabled2faComponent
             $totpCode = $this->cache->get(sprintf('2fa_activation_totp_%s', str_replace('@', '', $user->getEmail())),
                 function (ItemInterface $item) use ($totpAuthenticator) {
                     $item->expiresAfter(900);
+
                     return $totpAuthenticator->generateSecret();
                 });
             $user->setTotpSecret($totpCode);
@@ -65,8 +66,10 @@ class Enabled2faComponent
             /** @var Session $session */
             $session = $this->requestStack->getSession();
             $session->getFlashBag()->add('success', $this->translator->trans('2fa.enable.success_message'));
-            return '<script>window.location.href = \''.$this->redirectUrl.'\';</script>';
+
+            return '<script>window.location.href = \'' . $this->redirectUrl . '\';</script>';
         }
+
         return $form->createView();
     }
 }

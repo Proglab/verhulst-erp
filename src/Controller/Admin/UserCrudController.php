@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Entity\User;
@@ -16,7 +18,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserCrudController extends BaseCrudController
 {
-
     #[IsGranted(data: User::ROLE_USER, message: 'Vous devez être authentifié pour accéder à cette page !')]
     #[Route(path: '/admin/modifier-mon-mot-de-passe', name: 'admin_password_update')]
     public function updatePassword(Request $request): RedirectResponse|Response
@@ -24,12 +25,10 @@ class UserCrudController extends BaseCrudController
         return $this->renderForm('admin/update_password.html.twig');
     }
 
-
     #[IsGranted(data: User::ROLE_USER)]
     #[Route(path: '/authentification-2-facteurs', name: 'admin_2fa_enable')]
     public function enable2fa(Request $request): Response
     {
-
         return $this->renderForm('admin/enable2fa.html.twig');
     }
 
@@ -61,5 +60,4 @@ class UserCrudController extends BaseCrudController
 
         return $response;
     }
-
 }

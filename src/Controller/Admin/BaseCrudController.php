@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -33,6 +35,6 @@ abstract class BaseCrudController extends AbstractCrudController
             ->setPermission(Action::SAVE_AND_RETURN, 'ROLE_ADMIN')
             ->setPermission(Action::SAVE_AND_ADD_ANOTHER, 'ROLE_ADMIN')
             ->setPermission(Action::SAVE_AND_CONTINUE, 'ROLE_ADMIN')
-            ;
+        ;
     }
 }
