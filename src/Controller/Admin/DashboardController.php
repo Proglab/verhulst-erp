@@ -49,7 +49,7 @@ class DashboardController extends AbstractDashboardController
     {
         /** @var User $user */
         $menu = [
-            MenuItem::linkToRoute('admin.menu.my_profile', 'fa fa-id-card', 'app_update_profile', []),
+            MenuItem::linkToRoute('admin.menu.my_profile', 'fa fa-id-card', 'admin_update_profile', []),
             MenuItem::linkToRoute('password_update.title', 'fa fa-key', 'admin_password_update', []),
         ];
 

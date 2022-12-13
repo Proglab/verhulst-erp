@@ -6,7 +6,6 @@ namespace App\Controller;
 
 use App\Entity\ResendConfirmationEmailRequest;
 use App\Entity\User;
-use App\Form\Type\ProfileUpdateType;
 use App\Repository\ResendConfirmationEmailRequestRepository;
 use App\Security\EmailVerifier;
 use App\Service\Mailer;
@@ -219,26 +218,6 @@ class SecurityController extends BaseController
     #[Route(path: '/mon-profil', name: 'app_update_profile')]
     public function updateProfile(Request $request): Response
     {
-        $user = $this->getUser();
-
-        $form = $this->createForm(ProfileUpdateType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->manager->persist($form->getData());
-            $this->manager->flush();
-
-            $this->addCustomFlash(
-                'toast',
-                'success',
-                $this->translator->trans('global.confirmation_message')
-            );
-
-            return $this->redirectToRoute('home');
-        }
-
-        return $this->renderForm('security/update_profile.html.twig', [
-            'form' => $form,
-        ]);
+        return $this->renderForm('security/update_profile.html.twig');
     }
 }

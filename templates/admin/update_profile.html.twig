@@ -1,0 +1,7 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block title %}{{ 'password_update.title'|trans }}{% endblock %}
+
+{% block content %}
+    {{ component('update_profile', {redirectUrl : url('admin')}) }}
+{% endblock %}

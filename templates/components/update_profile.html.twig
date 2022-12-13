@@ -1,0 +1,34 @@
+{% set form = this.getForm %}
+
+{% if 'http' in form %}
+    {{ form|raw }}
+{% else %}
+    <div id="account_change_password" class="mt-4">
+        <div class="app-card app-card-basic d-flex flex-column">
+            <div class="app-card-header p-3 border-bottom-0">
+                <div class="row align-items-center gx-3">
+                    <div class="col-auto">
+                        <div class="app-icon-holder">
+                            <i class="bi bi-shield-lock"></i>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <h4 class="app-card-title">{{ 'profile_update.title'|trans }}</h4>
+                    </div>
+                </div>
+            </div>
+            {{ form_start(form) }}
+            <div class="app-card-body px-4">
+                {{ form_row(form.email) }}
+                {{ form_row(form.firstName) }}
+                {{ form_row(form.lastName) }}
+
+            </div>
+            <div class="app-card-footer p-4 mt-auto">
+                <a href="{{ path('home') }}" class="btn app-btn-secondary">{{ 'profile_update.back'|trans }}</a>
+                <button type="submit" class="btn app-btn-primary"><i class="bi bi-save"></i>{{ 'profile_update.form.submit'|trans }}</button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endif %}
