@@ -7,6 +7,7 @@ namespace App\Controller\Admin;
 use App\Entity\Commission;
 use App\Entity\Company;
 use App\Entity\Project;
+use App\Entity\Sales;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -25,7 +26,7 @@ class DashboardController extends AbstractDashboardController
         return $assets->addWebpackEncoreEntry('htmx');
     }
 
-    #[Route('/admin', name: 'admin')]
+    #[Route('/{_locale}/admin', name: 'admin')]
     public function index(): Response
     {
         return $this->render('admin/dashboard.html.twig');
@@ -51,6 +52,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('admin.menu.project', 'fas fa-folder-open', Project::class)->setPermission('ROLE_COMMERCIAL'),
             MenuItem::linkToCrud('admin.menu.client', 'fas fa-address-book', Company::class)->setPermission('ROLE_COMMERCIAL'),
             MenuItem::linkToCrud('admin.menu.commission', 'fas fa-hand-holding-dollar', Commission::class)->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToCrud('admin.menu.sales', 'fas fa-comments-dollar', Sales::class)->setPermission('ROLE_COMMERCIAL'),
 
             MenuItem::section(),
             MenuItem::linkToLogout('admin.menu.logout', 'fa-solid fa-door-open text-danger')->setCssClass('text-danger'),
