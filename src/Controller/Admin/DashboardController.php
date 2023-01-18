@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Entity\Commission;
 use App\Entity\Company;
 use App\Entity\Project;
 use App\Entity\User;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
@@ -17,6 +19,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class DashboardController extends AbstractDashboardController
 {
+    public function configureAssets(): Assets
+    {
+        $assets = parent::configureAssets();
+        return $assets->addWebpackEncoreEntry('htmx');
+    }
+
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
@@ -26,11 +34,11 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Symfony 6 Skeleton')
+            ->setTitle('Verhulst ERP')
             ->renderContentMaximized()
             ->setLocales([
                 'fr' => 'Français',
-                'en' => 'English',
+                'nl' => 'Neederlands',
             ]);
     }
 
@@ -42,6 +50,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('admin.menu.users', 'fas fa-users', User::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('admin.menu.project', 'fas fa-folder-open', Project::class)->setPermission('ROLE_COMMERCIAL'),
             MenuItem::linkToCrud('admin.menu.client', 'fas fa-address-book', Company::class)->setPermission('ROLE_COMMERCIAL'),
+            MenuItem::linkToCrud('admin.menu.commission', 'fas fa-hand-holding-dollar', Commission::class)->setPermission('ROLE_ADMIN'),
 
             MenuItem::section(),
             MenuItem::linkToLogout('admin.menu.logout', 'fa-solid fa-door-open text-danger')->setCssClass('text-danger'),

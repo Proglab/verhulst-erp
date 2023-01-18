@@ -21,7 +21,7 @@ class ProductEventCrudController extends BaseCrudController
     {
         $name = TextField::new('name');
         $date = DateField::new('date');
-        $percentVr = PercentField::new('percent_vr')->setLabel('Com Verhulst')->setPermission('ROLE_ADMIN');
+        $percentVr = PercentField::new('percent_vr')->setLabel('Com Verhulst')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false);
 
         switch ($pageName) {
             case Crud::PAGE_DETAIL:

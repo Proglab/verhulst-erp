@@ -6,8 +6,11 @@ namespace App\Entity;
 
 use App\Repository\CommissionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: CommissionRepository::class)]
+#[UniqueEntity(fields: ['product', 'user'])]
+
 class Commission
 {
     #[ORM\Id]
@@ -36,7 +39,7 @@ class Commission
         return $this->percent_com;
     }
 
-    public function setPercentCom(int $percent_com): self
+    public function setPercentCom(?int $percent_com): self
     {
         $this->percent_com = $percent_com;
 

@@ -378,4 +378,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
 
         return $this;
     }
+
+    public function __toString() {
+        return $this->getFirstName().' '.$this->getLastName();
+    }
 }

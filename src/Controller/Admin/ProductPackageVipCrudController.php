@@ -21,7 +21,7 @@ class ProductPackageVipCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         $name = TextField::new('name');
-        $percentVr = PercentField::new('percent_vr')->setLabel('Com Verhulst')->setPermission('ROLE_ADMIN');
+        $percentVr = PercentField::new('percent_vr')->setLabel('Com Verhulst')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false);
         $ca = MoneyField::new('ca')->setCurrency('EUR')->setStoredAsCents(false);
 
         switch ($pageName) {

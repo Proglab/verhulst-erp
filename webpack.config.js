@@ -23,6 +23,7 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
+    .addEntry('htmx', './assets/htmx.js')
 
     // Mailer
     .addStyleEntry("email", "./assets/email/email.scss")
