@@ -5,17 +5,33 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UserCrudController extends BaseCrudController
 {
+    public function configureCrud(Crud $crud): Crud
+    {
+        $crud->setEntityLabelInPlural('Utilisateurs')
+            ->setEntityLabelInSingular('Utilisateur')
+            ->showEntityActionsInlined(true);
+
+        return parent::configureCrud($crud);
+    }
+
     #[Route(path: '/admin/modifier-mon-mot-de-passe', name: 'admin_password_update')]
     public function updatePassword(): RedirectResponse|Response
     {
@@ -46,20 +62,53 @@ class UserCrudController extends BaseCrudController
         $lastname = TextField::new('lastName');
         $locale = ChoiceField::new('locale')->allowMultipleChoices(false)->renderExpanded(true)->setChoices(['Français' => 'fr', 'English' => 'en']);
         $twoFa = BooleanField::new('isTotpEnabled');
+        $role = ChoiceField::new('roles')->allowMultipleChoices(true)->renderExpanded(true)->setChoices(['Admin' => 'ROLE_ADMIN', 'Commercial' => 'ROLE_COMMERCIAL']);
 
         switch ($pageName) {
             case Crud::PAGE_DETAIL:
             case Crud::PAGE_INDEX:
-                $response = [$email, $firstname, $lastname, $locale, $twoFa];
+                $response = [$email, $firstname, $lastname, $locale, $twoFa, $role];
                 break;
             case Crud::PAGE_NEW:
             case Crud::PAGE_EDIT:
-                $response = [$email, $firstname, $lastname, $locale];
+                $response = [$email, $firstname, $lastname, $locale, $role];
                 break;
             default:
-                $response = [$email, $firstname, $lastname, $locale, $twoFa];
+                $response = [$email, $firstname, $lastname, $locale, $twoFa, $role];
         }
 
         return $response;
+    }
+
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @param ?object $entityInstance
+     * @return void
+     */
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $entityManager->persist($entityInstance);
+        $entityManager->flush();
+    }
+
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @param ?object $entityInstance
+     * @return void
+     */
+    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $entityManager->persist($entityInstance);
+        $entityManager->flush();
+    }
+
+    public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
+    {
+        /** @var QueryBuilder $qb */
+        $qb = $this->container->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
+        $qb->andWhere('entity.roles NOT LIKE :searchTerm')
+            ->setParameter('searchTerm', '%ROLE_BOSS%');
+
+        return $qb;
     }
 }

@@ -34,7 +34,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     use VerifiedTrait;
 
     final public const ROLE_ADMIN = 'ROLE_ADMIN';
+    final public const ROLE_COMMERCIAL = 'ROLE_COMMERCIAL';
     final public const ROLE_USER = 'ROLE_USER';
+    final public const ROLE_BOSS = 'ROLE_BOSS';
 
     #[ORM\Column(type: Types::STRING, length: 180, unique: true)]
     #[Assert\NotBlank]
@@ -76,11 +78,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isTotpEnabled = false;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Sales::class, orphanRemoval: true)]
+    private Collection $sales;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Commission::class, orphanRemoval: true)]
+    private Collection $commissions;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->enabled = false;
         $this->resendConfirmationEmailRequests = new ArrayCollection();
+        $this->sales = new ArrayCollection();
+        $this->commissions = new ArrayCollection();
     }
 
     #[ORM\PrePersist]
@@ -307,5 +317,65 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     public function getFullname(): string
     {
         return $this->lastName . ' ' . $this->firstName;
+    }
+
+    /**
+     * @return Collection<int, Sales>
+     */
+    public function getSales(): Collection
+    {
+        return $this->sales;
+    }
+
+    public function addSale(Sales $sale): self
+    {
+        if (!$this->sales->contains($sale)) {
+            $this->sales->add($sale);
+            $sale->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSale(Sales $sale): self
+    {
+        if ($this->sales->removeElement($sale)) {
+            // set the owning side to null (unless already changed)
+            if ($sale->getUser() === $this) {
+                $sale->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Commission>
+     */
+    public function getCommissions(): Collection
+    {
+        return $this->commissions;
+    }
+
+    public function addCommission(Commission $commission): self
+    {
+        if (!$this->commissions->contains($commission)) {
+            $this->commissions->add($commission);
+            $commission->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommission(Commission $commission): self
+    {
+        if ($this->commissions->removeElement($commission)) {
+            // set the owning side to null (unless already changed)
+            if ($commission->getUser() === $this) {
+                $commission->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

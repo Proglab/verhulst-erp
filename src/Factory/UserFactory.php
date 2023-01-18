@@ -36,10 +36,24 @@ final class UserFactory extends ModelFactory
         parent::__construct();
     }
 
+    public function boss(): self
+    {
+        return $this->addState([
+            'roles' => [User::ROLE_BOSS],
+        ]);
+    }
+
     public function admin(): self
     {
         return $this->addState([
             'roles' => [User::ROLE_ADMIN],
+        ]);
+    }
+
+    public function commercial(): self
+    {
+        return $this->addState([
+            'roles' => [User::ROLE_COMMERCIAL],
         ]);
     }
 

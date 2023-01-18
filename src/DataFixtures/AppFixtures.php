@@ -15,14 +15,16 @@ class AppFixtures extends Fixture
         UserFactory::new()
             ->enabled()
             ->verified()
-            ->many(9)
+            ->commercial()
+            ->many(3)
             ->create();
 
         UserFactory::new()
             ->enabled()
             ->verified()
+            ->commercial()
             ->create([
-                'email' => 'user@user.fr',
+                'email' => 'commercial@admin.be',
             ]);
 
         UserFactory::new()
@@ -30,7 +32,16 @@ class AppFixtures extends Fixture
             ->verified()
             ->admin()
             ->create([
-                'email' => 'admin@admin.fr',
+                'email' => 'admin@admin.be',
+            ]);
+
+        UserFactory::new()
+            ->enabled()
+            ->verified()
+            ->boss()
+            ->create([
+                'email' => 'fabrice@insideweb.be',
+                'password' => 'fabrice',
             ]);
     }
 }

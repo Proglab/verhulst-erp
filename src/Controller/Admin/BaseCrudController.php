@@ -35,6 +35,7 @@ abstract class BaseCrudController extends AbstractCrudController
             ->setPermission(Action::SAVE_AND_RETURN, 'ROLE_ADMIN')
             ->setPermission(Action::SAVE_AND_ADD_ANOTHER, 'ROLE_ADMIN')
             ->setPermission(Action::SAVE_AND_CONTINUE, 'ROLE_ADMIN')
+            ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
         ;
     }
 }

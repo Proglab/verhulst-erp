@@ -7,7 +7,7 @@ navbar:
     language: 'Langue'
 
 layout:
-    site_name: MonSite
+    site_name: Verhulst ERP
 
 form_theme:
     secure_password:
@@ -129,7 +129,7 @@ email:
         hello: 'Bonjour'
         thanks: Merci de votre confiance,
         team: L'équipe
-        send_with_love: Envoyé avec ❤️ par l'équipe
+        send_with_love: Envoyé avec ❤ par l'équipe
         buttons:
             user_dashboard: "Accéder à l'application"
     user:
@@ -153,3 +153,5 @@ admin:
         users: Utilisateurs
         logout: Se déconnecter
         my_profile: Mon profil
+        project: Projets
+        client: Clients
