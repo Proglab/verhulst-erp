@@ -149,7 +149,7 @@ email:
 admin:
     menu:
         website: Retour sur le site internet
-        dashboard: Dashboard
+        dashboard: Dashboard Admin
         users: Utilisateurs
         logout: Se déconnecter
         my_profile: Mon profil
@@ -157,3 +157,4 @@ admin:
         client: Clients
         commission: Commissions
         sales: Ventes
+        dashboard_com: Dashboard Com

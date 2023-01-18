@@ -29,7 +29,16 @@ class DashboardController extends AbstractDashboardController
     #[Route('/{_locale}/admin', name: 'admin')]
     public function index(): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('dashboard');
+        }
         return $this->render('admin/dashboard.html.twig');
+    }
+
+    #[Route('/{_locale}/dashboard', name: 'dashboard')]
+    public function dashboard(): Response
+    {
+        return $this->render('admin/dashboard_com.html.twig');
     }
 
     public function configureDashboard(): Dashboard
@@ -46,7 +55,8 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         return [
-            MenuItem::linkToDashboard('admin.menu.dashboard', 'fa fa-home'),
+            MenuItem::linkToDashboard('admin.menu.dashboard', 'fa fa-chart-line')->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToRoute('admin.menu.dashboard_com', 'fa fa-gauge-high', 'dashboard')->setPermission('ROLE_COMMERCIAL'),
 
             MenuItem::linkToCrud('admin.menu.users', 'fas fa-users', User::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('admin.menu.project', 'fas fa-folder-open', Project::class)->setPermission('ROLE_COMMERCIAL'),
