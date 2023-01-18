@@ -44,11 +44,6 @@ class CompanyContact
         $this->sales = new ArrayCollection();
     }
 
-    public function __toString()
-    {
-        return $this->getFirstName() . ' ' . $this->getLastName() . ' (' . $this->getLang() . ')';
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -151,5 +146,10 @@ class CompanyContact
         $this->phone = $phone;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getFirstname().' '.$this->getLastname().' - '.$this->getCompany()->getName().' ('.$this->lang.')';
     }
 }
