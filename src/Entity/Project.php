@@ -29,11 +29,15 @@ class Project
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: ProductSponsoring::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $product_sponsoring;
 
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: ProductDivers::class, cascade: ['persist'], orphanRemoval: true)]
+    private Collection $product_divers;
+
     public function __construct()
     {
         $this->product_event = new ArrayCollection();
         $this->product_package = new ArrayCollection();
         $this->product_sponsoring = new ArrayCollection();
+        $this->product_divers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -137,6 +141,36 @@ class Project
             // set the owning side to null (unless already changed)
             if ($productSponsoring->getProject() === $this) {
                 $productSponsoring->setProject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProductDivers>
+     */
+    public function getProductDivers(): Collection
+    {
+        return $this->product_divers;
+    }
+
+    public function addProductDiver(ProductDivers $productDiver): self
+    {
+        if (!$this->product_divers->contains($productDiver)) {
+            $this->product_divers->add($productDiver);
+            $productDiver->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductDiver(ProductDivers $productDiver): self
+    {
+        if ($this->product_divers->removeElement($productDiver)) {
+            // set the owning side to null (unless already changed)
+            if ($productDiver->getProject() === $this) {
+                $productDiver->setProject(null);
             }
         }
 

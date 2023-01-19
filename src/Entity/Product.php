@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
-#[ORM\DiscriminatorMap(['package' => ProductPackageVip::class, 'event' => ProductEvent::class, 'sponsor' => ProductSponsoring::class])]
+#[ORM\DiscriminatorMap(['package' => ProductPackageVip::class, 'event' => ProductEvent::class, 'sponsor' => ProductSponsoring::class, 'divers' => ProductDivers::class])]
 class Product
 {
     #[ORM\Id]
