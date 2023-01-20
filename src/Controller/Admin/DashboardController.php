@@ -26,21 +26,6 @@ class DashboardController extends AbstractDashboardController
         return $assets->addWebpackEncoreEntry('htmx');
     }
 
-    #[Route('/{_locale}/admin', name: 'admin')]
-    public function index(): Response
-    {
-        if (!$this->isGranted('ROLE_ADMIN')) {
-            return $this->redirectToRoute('dashboard');
-        }
-        return $this->render('admin/dashboard.html.twig');
-    }
-
-    #[Route('/{_locale}/dashboard', name: 'dashboard')]
-    public function dashboard(): Response
-    {
-        return $this->render('admin/dashboard_com.html.twig');
-    }
-
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
@@ -63,7 +48,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('admin.menu.users', 'fas fa-users', User::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('admin.menu.project', 'fas fa-folder-open', Project::class)->setPermission('ROLE_COMMERCIAL'),
             MenuItem::linkToCrud('admin.menu.client', 'fas fa-address-book', Company::class)->setPermission('ROLE_COMMERCIAL'),
-            MenuItem::linkToCrud('admin.menu.commission', 'fas fa-hand-holding-dollar', Commission::class)->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToRoute('admin.menu.commission', 'fas fa-hand-holding-dollar', 'commission_index')->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('admin.menu.sales', 'fas fa-comments-dollar', Sales::class)->setPermission('ROLE_COMMERCIAL'),
 
             MenuItem::section(),

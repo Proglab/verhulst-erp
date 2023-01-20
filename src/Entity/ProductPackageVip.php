@@ -11,28 +11,12 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ProductPackageVipRepository::class)]
 class ProductPackageVip extends Product
 {
-    #[ORM\ManyToOne(cascade:["persist"], inversedBy: 'product_package')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Project $project = null;
-
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $ca = null;
 
     public function __toString()
     {
         return $this->getName() . ' ' . $this->getCa() . ' EUR';
-    }
-
-    public function getProject(): ?Project
-    {
-        return $this->project;
-    }
-
-    public function setProject(?Project $project): self
-    {
-        $this->project = $project;
-
-        return $this;
     }
 
     public function getCa(): ?string

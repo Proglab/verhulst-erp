@@ -6,8 +6,6 @@ namespace App\DataFixtures;
 
 use App\Entity\Commission;
 use App\Entity\Project;
-use App\Factory\CompanyFactory;
-use App\Factory\ProjectFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

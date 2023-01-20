@@ -1,0 +1,65 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}Commissions{% endblock %}
+
+{% block main %}
+    <div class="table-responsive">
+        <h3 class="text-uppercase text-center font-weight-bolder alert-dark alert">Field Events</h3>
+        <table class="table table-hover">
+            <thead class="table-primary">
+                {{ include('admin/commission/_header.html.twig') }}
+            </thead>
+            <tbody>
+            {% for product in productsEvent %}
+                {{ include('admin/commission/_line.html.twig') }}
+            {% endfor %}
+            </tbody>
+            <tfoot class="table-primary">
+                {{ include('admin/commission/_header.html.twig') }}
+            </tfoot>
+        </table>
+        <h3 class="text-uppercase text-center font-weight-bolder alert-dark alert">Sponsoring</h3>
+        <table class="table table-hover">
+            <thead class="table-primary">
+                {{ include('admin/commission/_header.html.twig') }}
+            </thead>
+            <tbody>
+            {% for product in productsSponsor %}
+                {{ include('admin/commission/_line.html.twig') }}
+            {% endfor %}
+            </tbody>
+            <tfoot class="table-primary">
+                {{ include('admin/commission/_header.html.twig') }}
+            </tfoot>
+        </table>
+        <h3 class="text-uppercase text-center font-weight-bolder alert-dark alert">Package VIP</h3>
+        <table class="table table-hover">
+            <thead class="table-primary">
+                {{ include('admin/commission/_header.html.twig') }}
+            </thead>
+            <tbody>
+            {% for product in productsPackage %}
+                {{ include('admin/commission/_line.html.twig') }}
+            {% endfor %}
+            </tbody>
+            <tfoot class="table-primary">
+                {{ include('admin/commission/_header.html.twig') }}
+            </tfoot>
+        </table>
+        <h3 class="text-uppercase text-center font-weight-bolder alert-dark alert">Divers</h3>
+        <table class="table table-hover">
+            <thead class="table-primary">
+                {{ include('admin/commission/_header.html.twig') }}
+            </thead>
+            <tbody>
+            {% for product in productsDivers %}
+                {{ include('admin/commission/_line.html.twig') }}
+            {% endfor %}
+            </tbody>
+            <tfoot class="table-primary">
+                {{ include('admin/commission/_header.html.twig') }}
+            </tfoot>
+        </table>
+    </div>
+
+{% endblock %}

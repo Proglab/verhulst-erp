@@ -1,0 +1,17 @@
+{% if type is not defined %}
+    {% set class = '' %}
+{% else %}
+    {% if type == 'error' %}
+        {% set class = ' is-invalid' %}
+    {% elseif type == 'success' %}
+        {% set class = ' is-valid' %}
+    {% else %}
+        {% set class = '' %}
+    {% endif %}
+{% endif %}
+
+<input  hx-post="{{ url }}" hx-swap="outerHTML"
+         name="com"
+         type="text" class="form-control{{ class }}" value="{{ value }}">
+
+{# $com->getPercentCom() === 0 ? 'is-invalid' : '' #}
