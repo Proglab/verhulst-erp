@@ -14,7 +14,7 @@ class ProductEvent extends Product
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\ManyToOne(inversedBy: 'product_event')]
+    #[ORM\ManyToOne(cascade:["persist"], inversedBy: 'product_event')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Project $project = null;
 

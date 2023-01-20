@@ -7,6 +7,7 @@ namespace App\Controller\Admin;
 use App\Entity\Company;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CountryField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
@@ -35,7 +36,7 @@ class CompanyCrudController extends BaseCrudController
         $box = TextField::new('box');
         $pc = TextField::new('pc');
         $city = TextField::new('city')->setColumns(12);
-        $country = TextField::new('country');
+        $country = CountryField::new('country');
         $vat = TextField::new('vat_number');
         $panel2 = FormField::addPanel()->addCssClass('col-6');
         $contacts = CollectionField::new('contact')->setLabel('Contacts')->allowAdd(true)->allowDelete(true)->useEntryCrudForm(CompanyContactCrudController::class)->setColumns(12);

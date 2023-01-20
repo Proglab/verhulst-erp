@@ -24,9 +24,6 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    private ?string $ca = null;
-
     #[ORM\Column(nullable: true)]
     private ?int $percent_vr = null;
 
@@ -55,18 +52,6 @@ class Product
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getCa(): ?string
-    {
-        return $this->ca;
-    }
-
-    public function setCa(?string $ca): self
-    {
-        $this->ca = $ca;
 
         return $this;
     }

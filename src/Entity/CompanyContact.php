@@ -29,7 +29,7 @@ class CompanyContact
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $email = null;
 
-    #[ORM\ManyToOne(inversedBy: 'contact')]
+    #[ORM\ManyToOne(cascade:["persist"], inversedBy: 'contact')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Company $company = null;
 

@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ProductSponsoringRepository::class)]
 class ProductSponsoring extends Product
 {
-    #[ORM\ManyToOne(inversedBy: 'product_sponsoring')]
+    #[ORM\ManyToOne(cascade:["persist"], inversedBy: 'product_sponsoring')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Project $project = null;
 

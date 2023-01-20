@@ -8,34 +8,44 @@ use App\Factory\UserFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class AppFixtures extends Fixture
+class UserFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        UserFactory::new()
+        $i = 0;
+        $users = UserFactory::new()
             ->enabled()
             ->verified()
             ->commercial()
             ->many(3)
             ->create();
 
-        UserFactory::new()
+        foreach ($users as $user) {
+            $i++;
+            $this->addReference('user_'.$i, $user->object());
+        }
+
+        $user = UserFactory::new()
             ->enabled()
             ->verified()
             ->commercial()
             ->create([
                 'email' => 'commercial@admin.be',
             ]);
+        $i++;
+        $this->addReference('user_'.$i, $user->object());
 
-        UserFactory::new()
+        $user = UserFactory::new()
             ->enabled()
             ->verified()
             ->admin()
             ->create([
                 'email' => 'admin@admin.be',
             ]);
+        $i++;
+        $this->addReference('user_'.$i, $user->object());
 
-        UserFactory::new()
+        $user = UserFactory::new()
             ->enabled()
             ->verified()
             ->boss()
@@ -43,5 +53,8 @@ class AppFixtures extends Fixture
                 'email' => 'fabrice@insideweb.be',
                 'password' => 'fabrice',
             ]);
+        $i++;
+        $this->addReference('user_'.$i, $user->object());
+
     }
 }
