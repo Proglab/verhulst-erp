@@ -49,7 +49,7 @@ Mise en place de tous les tests (controllers, entities, forms, repositories)
 
 ### PHPCS
 ```
-docker run --init --rm -v {DIR_TO_PROJECT}:/project -w /project jakzal/phpqa php-cs-fixer fix --config="./.php-cs-fixer.dist.php" --verbose --using-cache=no
+docker run --init --rm -v {DIR_TO_PROJECT}:/project -w /project jakzal/phpqa:php8.1-alpine php-cs-fixer fix --config="./.php-cs-fixer.dist.php" --verbose --using-cache=no
 ```
 
 ### PHPStan
