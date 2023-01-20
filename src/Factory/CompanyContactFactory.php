@@ -12,7 +12,7 @@ use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
 
 /**
- * @extends ModelFactory<>
+ * @extends ModelFactory<CompanyContact>
  *
  * @method static CompanyContact|Proxy                     createOne(array $attributes = [])
  * @method static CompanyContact[]|Proxy[]                 createMany(int $number, array|callable $attributes = [])
@@ -58,10 +58,5 @@ final class CompanyContactFactory extends ModelFactory
     protected static function getClass(): string
     {
         return CompanyContact::class;
-    }
-
-    private function clean(string $string): string
-    {
-        return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
     }
 }

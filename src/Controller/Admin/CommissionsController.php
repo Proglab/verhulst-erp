@@ -8,21 +8,23 @@ use App\Entity\Commission;
 use App\Entity\Product;
 use App\Entity\Project;
 use App\Entity\User;
+use App\Repository\CommissionRepository;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CommissionsController extends DashboardController
 {
-    public function __construct(private EntityManagerInterface $entityManager, private AdminUrlGenerator $adminUrlGenerator)
+    public function __construct(private EntityManagerInterface $entityManager)
     {
     }
 
     #[Route('/admin/{_locale}/commission', name: 'commission_index')]
     #[IsGranted('ROLE_ADMIN')]
-    public function com($_locale)
+    public function com(string $_locale): Response
     {
         $users = $this->entityManager->getRepository(User::class)->findAll();
         $projects = $this->entityManager->getRepository(Project::class)->findAll();
@@ -70,7 +72,7 @@ class CommissionsController extends DashboardController
 
     #[Route('/admin/{_locale}/commission/{project_id}/{user_id}', name: 'commission_index_edit', methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function comedit($_locale, $project_id, $user_id, Request $request)
+    public function comedit(string $_locale, int $project_id, int $user_id, Request $request): Response
     {
         $url = $this->generateUrl(
             'commission_index_edit', ['_locale' => $_locale, 'project_id' => $project_id, 'user_id' => $user_id]
@@ -88,8 +90,9 @@ class CommissionsController extends DashboardController
         $user = $this->entityManager->getRepository(User::class)->find($user_id);
         $product = $this->entityManager->getRepository(Product::class)->find($project_id);
 
+        /** @var CommissionRepository $comRepo */
         $comRepo = $this->entityManager->getRepository(Commission::class);
-        /** @var Commission $com */
+        /** @var ?Commission $com */
         $com = $comRepo->findOneBy(['product' => $product, 'user' => $user]);
 
         if (empty($com)) {
@@ -111,7 +114,7 @@ class CommissionsController extends DashboardController
 
     #[Route('/admin/{_locale}/commission/{project_id}', name: 'commission_index_edit_vr', methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function comeditvr($_locale, $project_id, Request $request)
+    public function comeditvr(string $_locale, int $project_id, Request $request): Response
     {
         $url = $this->generateUrl(
             'commission_index_edit_vr', ['_locale' => $_locale, 'project_id' => $project_id]
@@ -125,7 +128,7 @@ class CommissionsController extends DashboardController
                 'value' => $com,
             ]);
         }
-
+        /** @var ProductRepository $productRepo */
         $productRepo = $this->entityManager->getRepository(Product::class);
         /** @var Product $product */
         $product = $productRepo->find($project_id);

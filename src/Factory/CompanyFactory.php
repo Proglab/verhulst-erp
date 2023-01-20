@@ -68,9 +68,4 @@ final class CompanyFactory extends ModelFactory
     {
         return Company::class;
     }
-
-    private function clean(string $string): string
-    {
-        return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
-    }
 }

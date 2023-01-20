@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Commission;
 use App\Entity\Sales;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -75,7 +76,9 @@ class SalesCrudController extends BaseCrudController
      */
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
-        $entityInstance->setUser($this->getUser());
+        /** @var User $user */
+        $user = $this->getUser();
+        $entityInstance->setUser($user);
         $entityInstance->setPercentVr($entityInstance->getProduct()->getPercentVr());
 
         /** @var Commission $com */

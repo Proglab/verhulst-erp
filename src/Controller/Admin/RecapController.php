@@ -11,10 +11,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RecapController extends DashboardController
 {
+    /**
     public function __construct(private EntityManagerInterface $entityManager, private AdminUrlGenerator $adminUrlGenerator)
     {
     }
-
+     */
     #[Route('/admin/{_locale}/recap', name: 'app_admin_recap')]
     public function recap(): Response
     {

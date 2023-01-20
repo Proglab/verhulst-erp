@@ -36,7 +36,7 @@ final class ProductSponsorFactory extends ModelFactory
         parent::__construct();
     }
 
-    public function project(Project $project)
+    public function project(Project $project): ModelFactory
     {
         return $this->addState([
             'project' => $project,

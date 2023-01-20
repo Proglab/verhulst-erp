@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\Entity\Commission;
-use App\Entity\Project;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -31,7 +30,6 @@ class CommissionFixtures extends Fixture implements DependentFixtureInterface
         }
 
         foreach ($projects as $project) {
-            /** @var Project $project */
             foreach ($project->getProductEvent() as $productEvent) {
                 foreach ($users as $user) {
                     $com = new Commission();
@@ -42,7 +40,6 @@ class CommissionFixtures extends Fixture implements DependentFixtureInterface
                 }
             }
 
-            /** @var Project $project */
             foreach ($project->getProductDivers() as $productDivers) {
                 foreach ($users as $user) {
                     $com = new Commission();
@@ -53,7 +50,6 @@ class CommissionFixtures extends Fixture implements DependentFixtureInterface
                 }
             }
 
-            /** @var Project $project */
             foreach ($project->getProductPackage() as $productPackage) {
                 foreach ($users as $user) {
                     $com = new Commission();
@@ -64,7 +60,6 @@ class CommissionFixtures extends Fixture implements DependentFixtureInterface
                 }
             }
 
-            /** @var Project $project */
             foreach ($project->getProductSponsoring() as $productSponsor) {
                 foreach ($users as $user) {
                     $com = new Commission();
