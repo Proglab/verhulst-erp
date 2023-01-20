@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Entity\Commission;
@@ -7,20 +9,15 @@ use App\Entity\Product;
 use App\Entity\Project;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
-use EasyCorp\Bundle\EasyAdminBundle\Provider\AdminContextProvider;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class CommissionsController extends DashboardController
 {
     public function __construct(private EntityManagerInterface $entityManager, private AdminUrlGenerator $adminUrlGenerator)
     {
-
     }
 
     #[Route('/admin/{_locale}/commission', name: 'commission_index')]
@@ -38,7 +35,6 @@ class CommissionsController extends DashboardController
         $productsSponsor = [];
 
         $commissions = [];
-
 
         /** @var Project $project */
         foreach ($projects as $project) {
@@ -61,7 +57,6 @@ class CommissionsController extends DashboardController
             $commissions[$com->getProduct()->getProject()->getId()][$com->getProduct()->getId()][$com->getUser()->getId()] = $com->getPercentCom();
         }
 
-
         return $this->render('admin/commission/index.html.twig', [
             'locale' => $_locale,
             'users' => $users,
@@ -77,9 +72,8 @@ class CommissionsController extends DashboardController
     #[IsGranted('ROLE_ADMIN')]
     public function comedit($_locale, $project_id, $user_id, Request $request)
     {
-
         $url = $this->generateUrl(
-            'commission_index_edit', ['_locale' => $_locale, 'project_id' =>$project_id, 'user_id' => $user_id]
+            'commission_index_edit', ['_locale' => $_locale, 'project_id' => $project_id, 'user_id' => $user_id]
         );
 
         $param = $request->request->get('com');
@@ -87,10 +81,9 @@ class CommissionsController extends DashboardController
             return $this->render('admin/commission/_input_percent.html.twig', [
                 'url' => $url,
                 'type' => 'error',
-                'value' => $param
+                'value' => $param,
             ]);
         }
-
 
         $user = $this->entityManager->getRepository(User::class)->find($user_id);
         $product = $this->entityManager->getRepository(Product::class)->find($project_id);
@@ -109,13 +102,11 @@ class CommissionsController extends DashboardController
 
         $comRepo->save($com, true);
 
-
         return $this->render('admin/commission/_input_percent.html.twig', [
             'url' => $url,
-            'type' => $com->getPercentCom() === 0 ? 'error' : '',
-            'value' => $com->getPercentCom()
+            'type' => 0 === $com->getPercentCom() ? 'error' : '',
+            'value' => $com->getPercentCom(),
         ]);
-
     }
 
     #[Route('/admin/{_locale}/commission/{project_id}', name: 'commission_index_edit_vr', methods: ['POST'])]
@@ -131,7 +122,7 @@ class CommissionsController extends DashboardController
             return $this->render('admin/commission/_input_percent.html.twig', [
                 'url' => $url,
                 'type' => 'error',
-                'value' => $com
+                'value' => $com,
             ]);
         }
 
@@ -143,9 +134,8 @@ class CommissionsController extends DashboardController
 
         return $this->render('admin/commission/_input_percent.html.twig', [
             'url' => $url,
-            'type' => ($product->getPercentVr() === 0 ? 'error' : ''),
-            'value' => $product->getPercentVr()
+            'type' => (0 === $product->getPercentVr() ? 'error' : ''),
+            'value' => $product->getPercentVr(),
         ]);
     }
-
 }

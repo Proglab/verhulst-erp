@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Factory;
 
-use App\Entity\Product;
-use App\Entity\ProductEvent;
 use App\Entity\Project;
 use App\Repository\ProjectRepository;
 use Zenstruck\Foundry\ModelFactory;
@@ -50,25 +48,25 @@ final class ProjectFactory extends ModelFactory
         return $this
             ->afterInstantiate(function (Project $project) {
                 $project->setName($this->clean($project->getName()));
-                for($i = 0; $i < random_int(0, 7); $i++) {
+                for ($i = 0; $i < random_int(0, 7); ++$i) {
                     ProductEventFactory::new()
                     ->project($project)
                     ->create();
                 }
 
-                for($i = 0; $i < random_int(0, 3); $i++) {
+                for ($i = 0; $i < random_int(0, 3); ++$i) {
                     ProductDiversFactory::new()
                         ->project($project)
                         ->create();
                 }
 
-                for($i = 0; $i < random_int(0, 10); $i++) {
+                for ($i = 0; $i < random_int(0, 10); ++$i) {
                     ProductSponsorFactory::new()
                         ->project($project)
                         ->create();
                 }
 
-                for($i = 0; $i < random_int(0, 3); $i++) {
+                for ($i = 0; $i < random_int(0, 3); ++$i) {
                     ProductPackageFactory::new()
                         ->project($project)
                         ->create();

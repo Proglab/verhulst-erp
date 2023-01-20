@@ -14,5 +14,4 @@ class ProductDivers extends Product
     {
         return $this->getName();
     }
-
 }

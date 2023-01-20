@@ -93,6 +93,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         $this->commissions = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->getFirstName() . ' ' . $this->getLastName();
+    }
+
     #[ORM\PrePersist]
     #[ORM\PreUpdate]
     public function setFullNameCharacteristics(): void
@@ -377,9 +382,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         }
 
         return $this;
-    }
-
-    public function __toString() {
-        return $this->getFirstName().' '.$this->getLastName();
     }
 }

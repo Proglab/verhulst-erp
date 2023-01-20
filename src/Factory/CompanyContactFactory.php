@@ -36,6 +36,13 @@ final class CompanyContactFactory extends ModelFactory
         parent::__construct();
     }
 
+    public function company(Company $company): self
+    {
+        return $this->addState([
+            'company' => $company,
+        ]);
+    }
+
     protected function getDefaults(): array
     {
         return [
@@ -44,17 +51,9 @@ final class CompanyContactFactory extends ModelFactory
             'lang' => self::faker()->randomElement(['fr', 'nl', 'en']),
             'email' => self::faker()->email(),
             'phone' => self::faker()->phoneNumber(),
-            'company' => null
+            'company' => null,
         ];
     }
-
-    public function company(Company $company): self
-    {
-        return $this->addState([
-            'company' => $company,
-        ]);
-    }
-
 
     protected static function getClass(): string
     {

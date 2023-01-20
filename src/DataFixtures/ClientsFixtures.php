@@ -7,7 +7,6 @@ namespace App\DataFixtures;
 use App\Factory\CompanyFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use \stdClass;
 
 class ClientsFixtures extends Fixture
 {
@@ -17,11 +16,10 @@ class ClientsFixtures extends Fixture
             ->many(10)
             ->create();
 
-        $i=0;
+        $i = 0;
         foreach ($companies as $company) {
-            $i++;
-            $this->addReference('company_'.$i, $company->object());
+            ++$i;
+            $this->addReference('company_' . $i, $company->object());
         }
-
     }
 }

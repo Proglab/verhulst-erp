@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
-use App\Factory\CompanyFactory;
 use App\Factory\ProjectFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -19,8 +18,8 @@ class ProjectsFixtures extends Fixture
 
         $i = 0;
         foreach ($projects as $project) {
-            $i++;
-            $this->addReference('project_'.$i, $project->object());
+            ++$i;
+            $this->addReference('project_' . $i, $project->object());
         }
     }
 }

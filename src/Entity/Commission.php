@@ -10,7 +10,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: CommissionRepository::class)]
 #[UniqueEntity(fields: ['product', 'user'])]
-
 class Commission
 {
     #[ORM\Id]

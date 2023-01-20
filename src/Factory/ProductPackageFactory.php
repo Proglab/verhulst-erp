@@ -36,20 +36,20 @@ final class ProductPackageFactory extends ModelFactory
         parent::__construct();
     }
 
-    protected function getDefaults(): array
-    {
-        return [
-            'name' => self::faker()->sentence(random_int(1, 3)),
-            'ca' => self::faker()->randomFloat(2, 100, 1000000),
-            'percent_vr' => random_int(15, 40)
-        ];
-    }
-
     public function project(Project $project)
     {
         return $this->addState([
             'project' => $project,
         ]);
+    }
+
+    protected function getDefaults(): array
+    {
+        return [
+            'name' => self::faker()->sentence(random_int(1, 3)),
+            'ca' => self::faker()->randomFloat(2, 100, 1000000),
+            'percent_vr' => random_int(15, 40),
+        ];
     }
 
     protected function initialize(): self

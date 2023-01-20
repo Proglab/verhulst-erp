@@ -7,7 +7,6 @@ namespace App\Factory;
 use App\Entity\Company;
 use App\Entity\CompanyContact;
 use App\Repository\CompanyRepository;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
@@ -55,8 +54,8 @@ final class CompanyFactory extends ModelFactory
         // see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
         return $this
             ->afterInstantiate(function (Company $company) {
-                for($i = 0; $i < random_int(0, 5); $i++) {
-                    /** @var CompanyContact $contact */
+                for ($i = 0; $i < random_int(0, 5); ++$i) {
+                    /* @var CompanyContact $contact */
                     CompanyContactFactory::new()
                         ->company($company)
                         ->create();

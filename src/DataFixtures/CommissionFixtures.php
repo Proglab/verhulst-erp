@@ -18,20 +18,20 @@ class CommissionFixtures extends Fixture implements DependentFixtureInterface
 
         $projects = [];
 
-        for($i = 1; $i <= $count_project; $i++) {
-            $projects[] = $this->getReference('project_'.$i);
+        for ($i = 1; $i <= $count_project; ++$i) {
+            $projects[] = $this->getReference('project_' . $i);
         }
 
         $count_user = 6;
 
         $users = [];
 
-        for($i = 1; $i <= $count_user; $i++) {
-            $users[] = $this->getReference('user_'.$i);
+        for ($i = 1; $i <= $count_user; ++$i) {
+            $users[] = $this->getReference('user_' . $i);
         }
 
         foreach ($projects as $project) {
-            /** @var Project $project*/
+            /** @var Project $project */
             foreach ($project->getProductEvent() as $productEvent) {
                 foreach ($users as $user) {
                     $com = new Commission();
@@ -42,7 +42,7 @@ class CommissionFixtures extends Fixture implements DependentFixtureInterface
                 }
             }
 
-            /** @var Project $project*/
+            /** @var Project $project */
             foreach ($project->getProductDivers() as $productDivers) {
                 foreach ($users as $user) {
                     $com = new Commission();
@@ -53,7 +53,7 @@ class CommissionFixtures extends Fixture implements DependentFixtureInterface
                 }
             }
 
-            /** @var Project $project*/
+            /** @var Project $project */
             foreach ($project->getProductPackage() as $productPackage) {
                 foreach ($users as $user) {
                     $com = new Commission();
@@ -64,7 +64,7 @@ class CommissionFixtures extends Fixture implements DependentFixtureInterface
                 }
             }
 
-            /** @var Project $project*/
+            /** @var Project $project */
             foreach ($project->getProductSponsoring() as $productSponsor) {
                 foreach ($users as $user) {
                     $com = new Commission();
@@ -83,7 +83,7 @@ class CommissionFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             UserFixtures::class,
-            ProjectsFixtures::class
+            ProjectsFixtures::class,
         ];
     }
 }

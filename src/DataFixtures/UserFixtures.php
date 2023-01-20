@@ -21,8 +21,8 @@ class UserFixtures extends Fixture
             ->create();
 
         foreach ($users as $user) {
-            $i++;
-            $this->addReference('user_'.$i, $user->object());
+            ++$i;
+            $this->addReference('user_' . $i, $user->object());
         }
 
         $user = UserFactory::new()
@@ -32,8 +32,8 @@ class UserFixtures extends Fixture
             ->create([
                 'email' => 'commercial@admin.be',
             ]);
-        $i++;
-        $this->addReference('user_'.$i, $user->object());
+        ++$i;
+        $this->addReference('user_' . $i, $user->object());
 
         $user = UserFactory::new()
             ->enabled()
@@ -42,8 +42,8 @@ class UserFixtures extends Fixture
             ->create([
                 'email' => 'admin@admin.be',
             ]);
-        $i++;
-        $this->addReference('user_'.$i, $user->object());
+        ++$i;
+        $this->addReference('user_' . $i, $user->object());
 
         $user = UserFactory::new()
             ->enabled()
@@ -53,8 +53,7 @@ class UserFixtures extends Fixture
                 'email' => 'fabrice@insideweb.be',
                 'password' => 'fabrice',
             ]);
-        $i++;
-        $this->addReference('user_'.$i, $user->object());
-
+        ++$i;
+        $this->addReference('user_' . $i, $user->object());
     }
 }

@@ -29,7 +29,7 @@ class CompanyContact
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $email = null;
 
-    #[ORM\ManyToOne(cascade:["persist"], inversedBy: 'contact')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'contact')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Company $company = null;
 
@@ -42,6 +42,11 @@ class CompanyContact
     public function __construct()
     {
         $this->sales = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getFirstname() . ' ' . $this->getLastname() . ' - ' . $this->getCompany()->getName() . ' (' . $this->lang . ')';
     }
 
     public function getId(): ?int
@@ -146,10 +151,5 @@ class CompanyContact
         $this->phone = $phone;
 
         return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->getFirstname().' '.$this->getLastname().' - '.$this->getCompany()->getName().' ('.$this->lang.')';
     }
 }

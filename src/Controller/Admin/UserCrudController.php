@@ -82,9 +82,7 @@ class UserCrudController extends BaseCrudController
     }
 
     /**
-     * @param EntityManagerInterface $entityManager
      * @param ?object $entityInstance
-     * @return void
      */
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
@@ -93,9 +91,7 @@ class UserCrudController extends BaseCrudController
     }
 
     /**
-     * @param EntityManagerInterface $entityManager
      * @param ?object $entityInstance
-     * @return void
      */
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {

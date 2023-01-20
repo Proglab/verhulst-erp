@@ -14,5 +14,4 @@ class ProductSponsoring extends Product
     {
         return $this->getName();
     }
-
 }

@@ -7,7 +7,6 @@ namespace App\Entity;
 use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
@@ -33,10 +32,9 @@ class Product
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Sales::class, orphanRemoval: true)]
     private Collection $sales;
 
-    #[ORM\ManyToOne(cascade:["persist"], inversedBy: 'product_divers')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'product_divers')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Project $project = null;
-
 
     public function __construct()
     {
@@ -48,7 +46,6 @@ class Product
     {
         return $this->id;
     }
-
 
     public function getProject(): ?Project
     {
