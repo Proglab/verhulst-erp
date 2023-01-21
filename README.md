@@ -56,3 +56,8 @@ docker run --init --rm -v {DIR_TO_PROJECT}:/project -w /project jakzal/phpqa:php
 ```
 docker run --init --rm -v {DIR_TO_PROJECT}:/project -w /project jakzal/phpqa phpstan analyse src
 ```
+
+### Deploy
+```
+vendor\bin\dep.bat deploy -vvv
+```
