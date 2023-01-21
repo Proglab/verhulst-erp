@@ -14,6 +14,11 @@ class ProductEvent extends Product
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date = null;
 
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'product_event')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Project $project = null;
+
+
     public function __toString()
     {
         return $this->getName() . ' - (' . $this->getDate()->format('d/m/Y') . ')';
@@ -27,6 +32,18 @@ class ProductEvent extends Product
     public function setDate(?\DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
+    public function setProject(?Project $project): self
+    {
+        $this->project = $project;
 
         return $this;
     }

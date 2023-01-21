@@ -14,6 +14,11 @@ class ProductPackageVip extends Product
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $ca = null;
 
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'product_package')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Project $project = null;
+
+
     public function __toString()
     {
         return $this->getName() . ' ' . $this->getCa() . ' EUR';
@@ -27,6 +32,18 @@ class ProductPackageVip extends Product
     public function setCa(?string $ca): self
     {
         $this->ca = $ca;
+
+        return $this;
+    }
+
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
+    public function setProject(?Project $project): self
+    {
+        $this->project = $project;
 
         return $this;
     }

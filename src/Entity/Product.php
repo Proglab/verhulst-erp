@@ -32,10 +32,6 @@ class Product
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Sales::class, orphanRemoval: true)]
     private Collection $sales;
 
-    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'product_divers')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Project $project = null;
-
     public function __construct()
     {
         $this->sales = new ArrayCollection();
@@ -45,18 +41,6 @@ class Product
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getProject(): ?Project
-    {
-        return $this->project;
-    }
-
-    public function setProject(?Project $project): self
-    {
-        $this->project = $project;
-
-        return $this;
     }
 
     public function getName(): ?string
