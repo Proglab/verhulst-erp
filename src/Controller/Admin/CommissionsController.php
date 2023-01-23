@@ -6,6 +6,10 @@ namespace App\Controller\Admin;
 
 use App\Entity\Commission;
 use App\Entity\Product;
+use App\Entity\ProductDivers;
+use App\Entity\ProductEvent;
+use App\Entity\ProductPackageVip;
+use App\Entity\ProductSponsoring;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Repository\CommissionRepository;
@@ -56,7 +60,9 @@ class CommissionsController extends DashboardController
 
         /** @var Commission $com */
         foreach ($comsData as $com) {
-            $commissions[$com->getProduct()->getProject()->getId()][$com->getProduct()->getId()][$com->getUser()->getId()] = $com->getPercentCom();
+            /** @var ProductEvent|ProductPackageVip|ProductDivers|ProductSponsoring $product */
+            $product = $com->getProduct();
+            $commissions[$product->getProject()->getId()][$product->getId()][$com->getUser()->getId()] = $com->getPercentCom();
         }
 
         return $this->render('admin/commission/index.html.twig', [
@@ -132,7 +138,7 @@ class CommissionsController extends DashboardController
         $productRepo = $this->entityManager->getRepository(Product::class);
         /** @var Product $product */
         $product = $productRepo->find($project_id);
-        $product->setPercentVr((int)$request->request->get('com', 0));
+        $product->setPercentVr((int) $request->request->get('com', 0));
         $productRepo->save($product, true);
 
         return $this->render('admin/commission/_input_percent.html.twig', [

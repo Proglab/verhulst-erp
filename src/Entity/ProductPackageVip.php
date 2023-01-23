@@ -18,7 +18,6 @@ class ProductPackageVip extends Product
     #[ORM\JoinColumn(nullable: false)]
     private ?Project $project = null;
 
-
     public function __toString()
     {
         return $this->getName() . ' ' . $this->getCa() . ' EUR';
