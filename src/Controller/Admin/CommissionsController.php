@@ -49,7 +49,7 @@ class CommissionsController extends DashboardController
             foreach ($project->getProductDivers() as $productDivers) {
                 $productsDivers[] = $productDivers;
             }
-            foreach ($project->getProductDivers() as $productSponsor) {
+            foreach ($project->getProductSponsoring() as $productSponsor) {
                 $productsSponsor[] = $productSponsor;
             }
         }
