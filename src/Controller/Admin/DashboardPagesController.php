@@ -13,7 +13,7 @@ class DashboardPagesController extends DashboardController
     public function index(): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
-            return $this->redirectToRoute('dashboard');
+            return $this->redirectToRoute('dashboard_com');
         }
 
         return $this->render('admin/dashboard.html.twig');

@@ -39,7 +39,7 @@ class DashboardController extends AbstractDashboardController
     {
         return [
             MenuItem::linkToDashboard('admin.menu.dashboard', 'fa fa-chart-line')->setPermission('ROLE_ADMIN'),
-            MenuItem::linkToRoute('admin.menu.dashboard_com', 'fa fa-gauge-high', 'dashboard')->setPermission('ROLE_COMMERCIAL'),
+            MenuItem::linkToRoute('admin.menu.dashboard_com', 'fa fa-gauge-high', 'dashboard_com')->setPermission('ROLE_COMMERCIAL'),
             MenuItem::linkToRoute('admin.menu.recap', 'fa fa-sliders', 'app_admin_recap')->setPermission('ROLE_COMMERCIAL'),
             MenuItem::linkToRoute('admin.menu.myrecap', 'fa fa-briefcase', 'app_admin_myrecap')->setPermission('ROLE_COMMERCIAL'),
 
