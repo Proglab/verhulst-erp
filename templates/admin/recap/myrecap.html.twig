@@ -4,9 +4,9 @@
 
 {% block main %}
     <div class="table-responsive">
-        <h3>Field Events</h3>
+        <h3 class="text-uppercase text-center font-weight-bolder alert-dark alert">Field Events</h3>
         <table class="table table-hover">
-            <thead>
+            <thead class="table-primary">
             <tr>
                 <th scope="col">Société</th>
                 <th scope="col">Date</th>
@@ -18,20 +18,28 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <th scope="row">arthur & Emilie </th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-            </tr>
+            {% for sale in user.sales %}
+                {% if get_class(sale.product) == 'ProductEvent' %}
+                    <tr>
+                        <th scope="row">
+                            {% for contact in sale.contact %}
+                                {{ contact.firstname }} {{ contact.lastname }} ({{ contact.company.name }})<br>
+                            {% endfor %}
+                        </th>
+                        <td>{{ sale.date|date('d/m/Y') }}</td>
+                        <td>{{ (sale.price/100)|number_format(2, ',', ' ') }}</td>
+                        <td>?</td>
+                        <td>?</td>
+                        <td>{{ sale.percentCom }} %</td>
+                        <td>{{ sale.percentVr }} %</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
             </tbody>
         </table>
-        <h3>Sponsoring</h3>
+        <h3 class="text-uppercase text-center font-weight-bolder alert-dark alert">Sponsoring</h3>
         <table class="table table-hover">
-            <thead>
+            <thead class="table-primary">
             <tr>
                 <th scope="col">Société</th>
                 <th scope="col">Date</th>
@@ -43,20 +51,28 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <th scope="row">arthur & Emilie </th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-            </tr>
+            {% for sale in user.sales %}
+                {% if get_class(sale.product) == 'ProductSponsoring' %}
+                    <tr>
+                        <th scope="row">
+                            {% for contact in sale.contact %}
+                                {{ contact.firstname }} {{ contact.lastname }} ({{ contact.company.name }})<br>
+                            {% endfor %}
+                        </th>
+                        <td>{{ sale.date|date('d/m/Y') }}</td>
+                        <td>{{ (sale.price/100)|number_format(2, ',', ' ') }}</td>
+                        <td>?</td>
+                        <td>?</td>
+                        <td>{{ sale.percentCom }} %</td>
+                        <td>{{ sale.percentVr }} %</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
             </tbody>
         </table>
-        <h3>Package VIP</h3>
+        <h3 class="text-uppercase text-center font-weight-bolder alert-dark alert">Package VIP</h3>
         <table class="table table-hover">
-            <thead>
+            <thead class="table-primary">
             <tr>
                 <th scope="col">Société</th>
                 <th scope="col">Date</th>
@@ -68,20 +84,28 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <th scope="row">arthur & Emilie </th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-            </tr>
+            {% for sale in user.sales %}
+                {% if get_class(sale.product) == 'ProductPackageVip' %}
+                    <tr>
+                        <th scope="row">
+                            {% for contact in sale.contact %}
+                                {{ contact.firstname }} {{ contact.lastname }} ({{ contact.company.name }})<br>
+                            {% endfor %}
+                        </th>
+                        <td>{{ sale.date|date('d/m/Y') }}</td>
+                        <td>{{ (sale.price/100)|number_format(2, ',', ' ') }}</td>
+                        <td>?</td>
+                        <td>?</td>
+                        <td>{{ sale.percentCom }} %</td>
+                        <td>{{ sale.percentVr }} %</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
             </tbody>
         </table>
-        <h3>Divers</h3>
+        <h3 class="text-uppercase text-center font-weight-bolder alert-dark alert">Divers</h3>
         <table class="table table-hover">
-            <thead>
+            <thead class="table-primary">
             <tr>
                 <th scope="col">Société</th>
                 <th scope="col">Date</th>
@@ -93,15 +117,23 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <th scope="row">arthur & Emilie </th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-            </tr>
+            {% for sale in user.sales %}
+                {% if get_class(sale.product) == 'ProductDivers' %}
+                    <tr>
+                        <th scope="row">
+                            {% for contact in sale.contact %}
+                                {{ contact.firstname }} {{ contact.lastname }} ({{ contact.company.name }})<br>
+                            {% endfor %}
+                        </th>
+                        <td>{{ sale.date|date('d/m/Y') }}</td>
+                        <td>{{ (sale.price/100)|number_format(2, ',', ' ') }}</td>
+                        <td>?</td>
+                        <td>?</td>
+                        <td>{{ sale.percentCom }} %</td>
+                        <td>{{ sale.percentVr }} %</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
             </tbody>
         </table>
     </div>

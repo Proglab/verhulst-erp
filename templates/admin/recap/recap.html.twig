@@ -4,12 +4,15 @@
 
 {% block main %}
     <div class="table-responsive">
-        <h3>Albert</h3>
+         {% for user in users %}
+        <h3 class="text-uppercase text-center font-weight-bolder alert-dark alert">{{ user.firstname }} {{ user.lastname }}</h3>
+            <h4 class="text-uppercase text-center font-weight-bolder alert-secondary alert">Event à la carte</h4>
         <table class="table table-hover">
-            <thead>
+            <thead class="table-primary">
             <tr>
-                <th scope="col">#</th>
+                <th scope="col"></th>
                 <th scope="col">CA</th>
+                <th scope="col">Type</th>
                 <th scope="col">Marge</th>
                 <th scope="col">Com Sales</th>
                 <th scope="col">Marge VF</th>
@@ -18,142 +21,113 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <th scope="row">Field Events</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <th scope="row">Sponsoring</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <th scope="row">Package VIP</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <th scope="row">Divers</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-            </tr>
-            </tbody>
-        </table>
-        <h3>Georges</h3>
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">CA</th>
-                <th scope="col">Marge</th>
-                <th scope="col">Com Sales</th>
-                <th scope="col">Marge VF</th>
-                <th scope="col">Target</th>
-                <th scope="col">Result</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <th scope="row">Field Events</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <th scope="row">Sponsoring</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <th scope="row">Package VIP</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <th scope="row">Divers</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-            </tr>
-            </tbody>
-        </table>
-        <h3>Mackaël</h3>
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">CA</th>
-                <th scope="col">Marge</th>
-                <th scope="col">Com Sales</th>
-                <th scope="col">Marge VF</th>
-                <th scope="col">Target</th>
-                <th scope="col">Result</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <th scope="row">Field Events</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <th scope="row">Sponsoring</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <th scope="row">Package VIP</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <th scope="row">Divers</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-            </tr>
+            {% for sale in user.sales %}
+                {% if get_class(sale.product) == 'ProductEvent' %}
+                    <tr>
+                        <th scope="row">{{ sale.product.name }}</th>
+                        <td>{{ (sale.price/100)|number_format(2, ',', ' ') }} €</td>
+                        <td>?</td>
+                        <td>{{ sale.percentCom }} %</td>
+                        <td>{{ sale.percentVr }} %</td>
+                        <td>?</td>
+                        <td>?</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
             </tbody>
         </table>
 
+         <h4 class="text-uppercase text-center font-weight-bolder alert-secondary alert">Package VIP</h4>
+         <table class="table table-hover">
+             <thead class="table-primary">
+                 <tr>
+                     <th scope="col"></th>
+                     <th scope="col">CA</th>
+                     <th scope="col">Type</th>
+                     <th scope="col">Marge</th>
+                     <th scope="col">Com Sales</th>
+                     <th scope="col">Marge VF</th>
+                     <th scope="col">Target</th>
+                     <th scope="col">Result</th>
+                 </tr>
+             </thead>
+             <tbody>
+            {% for sale in user.sales %}
+                {% if get_class(sale.product) == 'ProductPackageVip' %}
+                    <tr>
+                        <th scope="row">{{ sale.product.name }}</th>
+                        <td>{{ (sale.price/100)|number_format(2, ',', ' ') }} €</td>
+                        <td>?</td>
+                        <td>{{ sale.percentCom }} %</td>
+                        <td>{{ sale.percentVr }} %</td>
+                        <td>?</td>
+                        <td>?</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+             </tbody>
+         </table>
+         <h4 class="text-uppercase text-center font-weight-bolder alert-secondary alert">Sponsoring</h4>
+         <table class="table table-hover">
+             <thead class="table-primary">
+             <tr>
+                 <th scope="col"></th>
+                 <th scope="col">CA</th>
+                 <th scope="col">Type</th>
+                 <th scope="col">Marge</th>
+                 <th scope="col">Com Sales</th>
+                 <th scope="col">Marge VF</th>
+                 <th scope="col">Target</th>
+                 <th scope="col">Result</th>
+             </tr>
+             </thead>
+             <tbody>
+                {% for sale in user.sales %}
+                    {% if get_class(sale.product) == 'ProductSponsoring' %}
+                        <tr>
+                            <th scope="row">{{ sale.product.name }}</th>
+                            <td>{{ (sale.price/100)|number_format(2, ',', ' ') }} €</td>
+                            <td>?</td>
+                            <td>{{ sale.percentCom }} %</td>
+                            <td>{{ sale.percentVr }} %</td>
+                            <td>?</td>
+                            <td>?</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+             </tbody>
+         </table>
+         <h4 class="text-uppercase text-center font-weight-bolder alert-secondary alert">Divers</h4>
+         <table class="table table-hover">
+             <thead class="table-primary">
+             <tr>
+                 <th scope="col"></th>
+                 <th scope="col">CA</th>
+                 <th scope="col">Type</th>
+                 <th scope="col">Marge</th>
+                 <th scope="col">Com Sales</th>
+                 <th scope="col">Marge VF</th>
+                 <th scope="col">Target</th>
+                 <th scope="col">Result</th>
+             </tr>
+             </thead>
+             <tbody>
+            {% for sale in user.sales %}
+                {% if get_class(sale.product) == 'ProductDivers' %}
+                    <tr>
+                        <th scope="row">{{ sale.product.name }}</th>
+                        <td>{{ (sale.price/100)|number_format(2, ',', ' ') }} €</td>
+                        <td>?</td>
+                        <td>{{ sale.percentCom }} %</td>
+                        <td>{{ sale.percentVr }} %</td>
+                        <td>?</td>
+                        <td>?</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+
+        {% endfor %}
     </div>
 {% endblock %}
