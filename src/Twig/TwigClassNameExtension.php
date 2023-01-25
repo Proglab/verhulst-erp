@@ -16,7 +16,7 @@ class TwigClassNameExtension extends AbstractExtension
         ];
     }
 
-    public function getName($object)
+    public function getName(object $object): string
     {
         return (new \ReflectionClass($object))->getShortName();
     }
