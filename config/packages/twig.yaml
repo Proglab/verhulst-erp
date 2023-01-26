@@ -2,6 +2,8 @@ twig:
     default_path: '%kernel.project_dir%/templates'
     form_themes:
         - "bootstrap_5_layout.html.twig"
+    globals:
+        lastest_tag: '%env(LATEST_TAG)%'
 
 when@test:
     twig:
