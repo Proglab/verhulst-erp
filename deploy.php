@@ -43,4 +43,4 @@ host('server51.insideweb.be')
 
 after('deploy:failed', 'deploy:unlock');
 after('deploy:vendors', 'deploy:npm');
-after('deploy:vendors', 'database:migrate');
+after('deploy:npm', 'database:migrate');
