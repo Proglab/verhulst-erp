@@ -21,7 +21,8 @@ task('deploy:setup', function () {
 });
 
 task('deploy:npm', function () {
-    run('cd {{release_or_current_path}} && npm install && npm run build');
+    run('cd {{release_or_current_path}} && npm install');
+    run('cd {{release_or_current_path}} && npm run build');
 });
 
 // Config
@@ -41,5 +42,5 @@ host('server51.insideweb.be')
 // Hooks
 
 after('deploy:failed', 'deploy:unlock');
-after('deploy:symlink', 'deploy:npm');
-after('database:migrate', 'deploy:vendors');
+after('deploy:vendors', 'deploy:npm');
+after('deploy:vendors', 'database:migrate');
