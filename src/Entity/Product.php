@@ -24,7 +24,7 @@ class Product
     private ?string $name = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $percent_vr = null;
+    private ?int $percent_vr = 20;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Commission::class, orphanRemoval: true)]
     private Collection $commissions;
