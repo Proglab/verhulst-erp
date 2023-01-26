@@ -1,6 +1,31 @@
 <tr>
     <th scope="row">{{ product.project.name }} </th>
     <th scope="row">{{ product.name }}</th>
+    <th scope="row">
+        <div class="form-widget">
+            {% if product.percentVr != 0 %}
+                <div class="input-group">
+                    <input  hx-post="{{ url('commission_index_edit_vr', {'_locale': locale, 'project_id': product.id}) }}" hx-swap="outerHTML"
+                            name="com"
+                            type="text" class="form-control" value="{{ product.percentVr }}" >
+
+                    <div class="input-group-append">
+                        <div class="input-group-text">%</div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="input-group">
+                    <input  hx-post="{{ url('commission_index_edit_vr', {'_locale': locale, 'project_id': product.id}) }}" hx-swap="outerHTML"
+                            name="com"
+                            type="text" class="form-control is-invalid" value="{{ product.percentVr }}" >
+
+                    <div class="input-group-append">
+                        <div class="input-group-text">%</div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </th>
     {% for user in users %}
         <td class="form-row">
             <div class="form-widget">
@@ -18,30 +43,6 @@
             </div>
         </td>
     {% endfor %}
-    <th scope="row">
-        <div class="form-widget">
-        {% if product.percentVr != 0 %}
-            <div class="input-group">
-                <input  hx-post="{{ url('commission_index_edit_vr', {'_locale': locale, 'project_id': product.id}) }}" hx-swap="outerHTML"
-                        name="com"
-                        type="text" class="form-control" value="{{ product.percentVr }}" >
 
-                <div class="input-group-append">
-                    <div class="input-group-text">%</div>
-                </div>
-            </div>
-        {% else %}
-            <div class="input-group">
-                <input  hx-post="{{ url('commission_index_edit_vr', {'_locale': locale, 'project_id': product.id}) }}" hx-swap="outerHTML"
-                        name="com"
-                        type="text" class="form-control is-invalid" value="{{ product.percentVr }}" >
-
-                <div class="input-group-append">
-                    <div class="input-group-text">%</div>
-                </div>
-            </div>
-        {% endif %}
-        </div>
-    </th>
 
 </tr>

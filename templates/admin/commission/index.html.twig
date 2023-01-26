@@ -3,63 +3,79 @@
 {% block content_title %}Commissions{% endblock %}
 
 {% block main %}
-    <div class="table-responsive">
-        <h3 class="text-uppercase text-center font-weight-bolder alert-dark alert">Field Events</h3>
-        <table class="table table-hover">
-            <thead class="table-primary">
-                {{ include('admin/commission/_header.html.twig') }}
-            </thead>
-            <tbody>
-            {% for product in productsEvent %}
-                {{ include('admin/commission/_line.html.twig') }}
-            {% endfor %}
-            </tbody>
-            <tfoot class="table-primary">
-                {{ include('admin/commission/_header.html.twig') }}
-            </tfoot>
-        </table>
-        <h3 class="text-uppercase text-center font-weight-bolder alert-dark alert">Sponsoring</h3>
-        <table class="table table-hover">
-            <thead class="table-primary">
-                {{ include('admin/commission/_header.html.twig') }}
-            </thead>
-            <tbody>
-            {% for product in productsSponsor %}
-                {{ include('admin/commission/_line.html.twig') }}
-            {% endfor %}
-            </tbody>
-            <tfoot class="table-primary">
-                {{ include('admin/commission/_header.html.twig') }}
-            </tfoot>
-        </table>
-        <h3 class="text-uppercase text-center font-weight-bolder alert-dark alert">Package VIP</h3>
-        <table class="table table-hover">
-            <thead class="table-primary">
-                {{ include('admin/commission/_header.html.twig') }}
-            </thead>
-            <tbody>
-            {% for product in productsPackage %}
-                {{ include('admin/commission/_line.html.twig') }}
-            {% endfor %}
-            </tbody>
-            <tfoot class="table-primary">
-                {{ include('admin/commission/_header.html.twig') }}
-            </tfoot>
-        </table>
-        <h3 class="text-uppercase text-center font-weight-bolder alert-dark alert">Divers</h3>
-        <table class="table table-hover">
-            <thead class="table-primary">
-                {{ include('admin/commission/_header.html.twig') }}
-            </thead>
-            <tbody>
-            {% for product in productsDivers %}
-                {{ include('admin/commission/_line.html.twig') }}
-            {% endfor %}
-            </tbody>
-            <tfoot class="table-primary">
-                {{ include('admin/commission/_header.html.twig') }}
-            </tfoot>
-        </table>
-    </div>
 
+    <nav>
+        <div class="nav nav-pills flex-column flex-sm-row" id="nav-tab" role="tablist">
+            <button class="flex-sm-fill text-sm-center nav-link active" id="nav-event-tab" data-bs-toggle="tab" data-bs-target="#nav-event" type="button" role="tab" aria-controls="nav-event" aria-selected="true">Field Events</button>
+            <button class="flex-sm-fill text-sm-center nav-link" id="nav-sponsoring-tab" data-bs-toggle="tab" data-bs-target="#nav-sponsoring" type="button" role="tab" aria-controls="nav-sponsoring" aria-selected="false">Sponsoring</button>
+            <button class="flex-sm-fill text-sm-center nav-link" id="nav-package-tab" data-bs-toggle="tab" data-bs-target="#nav-package" type="button" role="tab" aria-controls="nav-package" aria-selected="false">Package VIP</button>
+            <button class="flex-sm-fill text-sm-center nav-link" id="nav-divers-tab" data-bs-toggle="tab" data-bs-target="#nav-divers" type="button" role="tab" aria-controls="nav-divers" aria-selected="false">Divers</button>
+        </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active mt-3" id="nav-event" role="tabpanel" aria-labelledby="nav-event-tab">
+            <h3 class="text-uppercase text-center font-weight-bolder alert-dark alert">Field Events</h3>
+            <table class="table table-hover">
+                <thead class="table-primary">
+                {{ include('admin/commission/_header.html.twig') }}
+                </thead>
+                <tbody>
+                {% for product in productsEvent %}
+                    {{ include('admin/commission/_line.html.twig') }}
+                {% endfor %}
+                </tbody>
+                <tfoot class="table-primary">
+                {{ include('admin/commission/_header.html.twig') }}
+                </tfoot>
+            </table>
+        </div>
+        <div class="tab-pane fade mt-3" id="nav-sponsoring" role="tabpanel" aria-labelledby="nav-sponsoring-tab">
+            <h3 class="text-uppercase text-center font-weight-bolder alert-dark alert">Sponsoring</h3>
+            <table class="table table-hover">
+                <thead class="table-primary">
+                {{ include('admin/commission/_header.html.twig') }}
+                </thead>
+                <tbody>
+                {% for product in productsSponsor %}
+                    {{ include('admin/commission/_line.html.twig') }}
+                {% endfor %}
+                </tbody>
+                <tfoot class="table-primary">
+                {{ include('admin/commission/_header.html.twig') }}
+                </tfoot>
+            </table>
+        </div>
+        <div class="tab-pane fade mt-3" id="nav-package" role="tabpanel" aria-labelledby="nav-package-tab">
+            <h3 class="text-uppercase text-center font-weight-bolder alert-dark alert">Package VIP</h3>
+            <table class="table table-hover">
+                <thead class="table-primary">
+                {{ include('admin/commission/_header.html.twig') }}
+                </thead>
+                <tbody>
+                {% for product in productsPackage %}
+                    {{ include('admin/commission/_line.html.twig') }}
+                {% endfor %}
+                </tbody>
+                <tfoot class="table-primary">
+                {{ include('admin/commission/_header.html.twig') }}
+                </tfoot>
+            </table>
+        </div>
+        <div class="tab-pane fade mt-3" id="nav-divers" role="tabpanel" aria-labelledby="nav-divers-tab">
+            <h3 class="text-uppercase text-center font-weight-bolder alert-dark alert">Divers</h3>
+            <table class="table table-hover">
+                <thead class="table-primary">
+                {{ include('admin/commission/_header.html.twig') }}
+                </thead>
+                <tbody>
+                {% for product in productsDivers %}
+                    {{ include('admin/commission/_line.html.twig') }}
+                {% endfor %}
+                </tbody>
+                <tfoot class="table-primary">
+                {{ include('admin/commission/_header.html.twig') }}
+                </tfoot>
+            </table>
+        </div>
+    </div>
 {% endblock %}
