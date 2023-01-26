@@ -68,14 +68,14 @@ class UserCrudController extends BaseCrudController
         switch ($pageName) {
             case Crud::PAGE_DETAIL:
             case Crud::PAGE_INDEX:
-                $response = [$email, $firstname, $lastname, $locale, $twoFa, $role, $enabled];
+                $response = [$firstname, $lastname, $email, $locale, $twoFa, $role, $enabled];
                 break;
             case Crud::PAGE_NEW:
             case Crud::PAGE_EDIT:
-                $response = [$email, $firstname, $lastname, $locale, $role, $enabled];
+                $response = [$firstname, $lastname, $email, $locale, $role, $enabled];
                 break;
             default:
-                $response = [$email, $firstname, $lastname, $locale, $twoFa, $role, $enabled];
+                $response = [$firstname, $lastname, $email, $locale, $twoFa, $role, $enabled];
         }
 
         return $response;
@@ -95,6 +95,8 @@ class UserCrudController extends BaseCrudController
      */
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
+        /** @var User $entityInstance */
+        $entityInstance->setPassword('Password123!');
         $entityManager->persist($entityInstance);
         $entityManager->flush();
     }
