@@ -10,10 +10,15 @@ jobs:
   ci:
     name: PhpStan
     runs-on: ubuntu-latest
-    container: jakzal/phpqa:1.83.5-php8.1
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.1"
+          tools: php-cs-fixer
 
       - name: Run PHP-CS-Fixer
         run: php-cs-fixer fix --config="./.php-cs-fixer.dist.php" --verbose --dry-run --diff --using-cache=no

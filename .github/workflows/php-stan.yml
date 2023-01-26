@@ -13,11 +13,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: "8.1"
+          tools: phpstan, composer:v2
 
       - name: Get Composer Cache Directory
         id: composer-cache
@@ -35,5 +37,5 @@ jobs:
       - name: Install Dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
-      - run: docker pull jakzal/phpqa
-      - run: docker run --init --rm -v $GITHUB_WORKSPACE:/project -w /project jakzal/phpqa phpstan analyse
+      - name: Run PHPStan
+        run: phpstan analyse src
