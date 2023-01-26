@@ -1,17 +1,22 @@
-name: Php Cs Fixer
+name: Php Cs Fixer && security checker
 
-on: [push, workflow_dispatch]
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
-  php-cs-fixer:
-    name: Php Cs Fixer
+  ci:
+    name: PhpStan
     runs-on: ubuntu-latest
+    container: jakzal/phpqa:1.83.5-php8.1
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.1"
-      - run: docker pull jakzal/phpqa
-      - run: docker run --init --rm -v $GITHUB_WORKSPACE:/project -w /project jakzal/phpqa:php8.1-alpine php-cs-fixer fix --config="./.php-cs-fixer.dist.php" --verbose --dry-run --diff --using-cache=no
+
+      - name: Run PHP-CS-Fixer
+        run: php-cs-fixer fix --config="./.php-cs-fixer.dist.php" --verbose --dry-run --diff --using-cache=no
+
+      - name: Checkout code
+        uses: symfonycorp/security-checker-action@v4
