@@ -41,7 +41,7 @@ task('deploy:update_code', function () {
     $bare = parse('{{deploy_path}}/.dep/repo');
     $env = [
         'GIT_TERMINAL_PROMPT' => '0',
-        'GIT_SSH_COMMAND' => get('git_ssh_command')
+        'GIT_SSH_COMMAND' => get('git_ssh_command'),
     ];
 
     start:
@@ -61,23 +61,23 @@ task('deploy:update_code', function () {
     run("$git remote update 2>&1", ['env' => $env]);
 
     // Copy to release_path.
-    if (get('update_code_strategy') === 'archive') {
+    if ('archive' === get('update_code_strategy')) {
         run("$git archive $targetWithDir | tar -x -f - -C {{release_path}} 2>&1");
-    } else if (get('update_code_strategy') === 'clone') {
+    } elseif ('clone' === get('update_code_strategy')) {
         cd('{{release_path}}');
         run("$git clone -l $bare .");
         run("$git checkout --force $target");
     } else {
-        throw new ConfigurationException(parse("Unknown `update_code_strategy` option: {{update_code_strategy}}."));
+        throw new ConfigurationException(parse('Unknown `update_code_strategy` option: {{update_code_strategy}}.'));
     }
 
     // Save git revision in REVISION file.
     $rev = escapeshellarg(run("$git rev-list $target -1"));
     run("echo $rev > {{release_path}}/REVISION");
 
-    //tag into .env
+    // tag into .env
     $tag = run("$git describe --abbrev=0 --tags");
-    run('echo "LATEST_TAG='.$tag.'" > {{release_path}}/.env');
+    run('echo "LATEST_TAG=' . $tag . '" > {{release_path}}/.env');
 });
 
 // Config

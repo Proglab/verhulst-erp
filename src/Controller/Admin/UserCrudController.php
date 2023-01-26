@@ -95,7 +95,7 @@ class UserCrudController extends BaseCrudController
      */
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
-        /** @var User $entityInstance */
+        /* @var User $entityInstance */
         $entityInstance->setPassword('Password123!');
         $entityManager->persist($entityInstance);
         $entityManager->flush();

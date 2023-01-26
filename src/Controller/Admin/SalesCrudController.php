@@ -85,8 +85,8 @@ class SalesCrudController extends BaseCrudController
         $com = $entityManager->getRepository(Commission::class)->findOneBy(['product' => $entityInstance->getProduct(), 'user' => $this->getUser()]);
 
         $percent_com = 0;
-        if ($com !== null) {
-            $percent_com = $com->getPercentCom();;
+        if (null !== $com) {
+            $percent_com = $com->getPercentCom();
         }
 
         $entityInstance->setPercentCom($percent_com);
