@@ -45,8 +45,18 @@
             </tr>
             </thead>
             <tbody>
+
+            {% set total_price = 0 %}
+            {% set total_pa = 0 %}
+            {% set total_marge = 0 %}
+            {% set total_euroCom = 0 %}
+
             {% for sale in user.sales %}
                 {% if get_class(sale.product) == 'ProductEvent' %}
+                    {% set total_price = total_price + sale.price/100 %}
+                    {% set total_pa = total_pa + sale.pa %}
+                    {% set total_marge = total_marge + sale.marge %}
+                    {% set total_euroCom = total_euroCom + sale.euroCom %}
                     <tr>
                         <th scope="row">
                             {% for contact in sale.contact %}
@@ -69,16 +79,22 @@
                                 .setController('App\\Controller\\Admin\\SalesCrudController')
                                 .setEntityId(sale.id)
                             %}
-                            {% set url_delete = ea_url()
-                                .setAction('delete')
-                                .setController('App\\Controller\\Admin\\SalesCrudController')
-                                .setEntityId(sale.id)
-                            %}
                             <a class=" action-edit" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i> <span class="action-label">Edit</span></a>
                         </td>
                     </tr>
                 {% endif %}
             {% endfor %}
+            <tr class="table-primary">
+                <th scope="row" colspan="4">
+                    Totaux
+                </th>
+                <th>{{ total_price|number_format(2, ',', ' ') }} €</th>
+                <th>{{ total_pa|number_format(2, ',', ' ') }} €</th>
+                <th>{{ total_marge|number_format(2, ',', ' ') }} €</th>
+                <th></th>
+                <th>{{ total_euroCom|number_format(2, ',', ' ') }} €</th>
+                <th></th>
+            </tr>
             </tbody>
         </table>
     </div>
@@ -89,47 +105,58 @@
             <thead class="table-primary">
             <tr>
                 <th scope="col">Société</th>
+                <th scope="col">Projet</th>
+                <th scope="col">Produit</th>
                 <th scope="col">Date</th>
                 <th scope="col">CA</th>
-                <th scope="col">PA</th>
-                <th scope="col">Marge Event</th>
-                <th scope="col">Com Sales</th>
-                <th scope="col">Marge Verhulst</th>
+                <th scope="col">% Sales</th>
+                <th scope="col">€ Sales</th>
                 <th scope="col">Action</th>
             </tr>
             </thead>
             <tbody>
+
+            {% set total_price = 0 %}
+            {% set total_euroCom = 0 %}
+
             {% for sale in user.sales %}
                 {% if get_class(sale.product) == 'ProductSponsoring' %}
+                    {% set total_price = total_price + sale.price/100 %}
+                    {% set total_euroCom = total_euroCom + sale.euroCom %}
                     <tr>
                         <th scope="row">
                             {% for contact in sale.contact %}
                                 {{ contact.firstname }} {{ contact.lastname }} ({{ contact.company.name }})<br>
                             {% endfor %}
                         </th>
+                        <th scope="row">
+                            {{ sale.product.project.name }}
+                        </th>
+                        <th scope="row">{{ sale.product.name }}</th>
                         <td>{{ sale.date|date('d/m/Y') }}</td>
-                        <td>{{ (sale.price/100)|number_format(2, ',', ' ') }}</td>
-                        <td>?</td>
-                        <td>?</td>
+                        <td>{{ (sale.price/100)|number_format(2, ',', ' ') }} €</td>
                         <td>{{ sale.percentCom }} %</td>
-                        <td>{{ sale.percentVr }} %</td>
+                        <td>{{ sale.euroCom|number_format(2, ',', ' ') }}  €</td>
                         <td class="action">
                             {% set url_edit = ea_url()
                                 .setAction('edit')
                                 .setController('App\\Controller\\Admin\\SalesCrudController')
                                 .setEntityId(sale.id)
                             %}
-                            {% set url_delete = ea_url()
-                                .setAction('delete')
-                                .setController('App\\Controller\\Admin\\SalesCrudController')
-                                .setEntityId(sale.id)
-                            %}
                             <a class=" action-edit" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i> <span class="action-label">Edit</span></a>
-                            <a class=" action-delete text-danger" href="{{ url_delete }}" title="Delete" data-action-name="delete" formaction="{{ url_delete }}" data-bs-toggle="modal" data-bs-target="#modal-delete"><i class="action-icon fa fa-trash"></i> <span class="action-label">Delete</span></a>
                         </td>
                     </tr>
                 {% endif %}
             {% endfor %}
+            <tr class="table-primary">
+                <th scope="row" colspan="4">
+                    Totaux
+                </th>
+                <th>{{ total_price|number_format(2, ',', ' ') }} €</th>
+                <th></th>
+                <th>{{ total_euroCom|number_format(2, ',', ' ') }} €</th>
+                <th></th>
+            </tr>
             </tbody>
         </table>
     </div>
@@ -140,47 +167,57 @@
             <thead class="table-primary">
             <tr>
                 <th scope="col">Société</th>
+                <th scope="col">Projet</th>
+                <th scope="col">Produit</th>
                 <th scope="col">Date</th>
                 <th scope="col">CA</th>
-                <th scope="col">PA</th>
-                <th scope="col">Marge Event</th>
-                <th scope="col">Com Sales</th>
-                <th scope="col">Marge Verhulst</th>
+                <th scope="col">% Sales</th>
+                <th scope="col">€ Sales</th>
                 <th scope="col">Action</th>
             </tr>
             </thead>
             <tbody>
+            {% set total_price = 0 %}
+            {% set total_euroCom = 0 %}
+
             {% for sale in user.sales %}
                 {% if get_class(sale.product) == 'ProductPackageVip' %}
+                    {% set total_price = total_price + sale.price/100 %}
+                    {% set total_euroCom = total_euroCom + sale.euroCom %}
                     <tr>
                         <th scope="row">
                             {% for contact in sale.contact %}
                                 {{ contact.firstname }} {{ contact.lastname }} ({{ contact.company.name }})<br>
                             {% endfor %}
                         </th>
+                        <th scope="row">
+                            {{ sale.product.project.name }}
+                        </th>
+                        <th scope="row">{{ sale.product.name }}</th>
                         <td>{{ sale.date|date('d/m/Y') }}</td>
-                        <td>{{ (sale.price/100)|number_format(2, ',', ' ') }}</td>
-                        <td>?</td>
-                        <td>?</td>
+                        <td>{{ (sale.price/100)|number_format(2, ',', ' ') }} €</td>
                         <td>{{ sale.percentCom }} %</td>
-                        <td>{{ sale.percentVr }} %</td>
+                        <td>{{ sale.euroCom|number_format(2, ',', ' ') }}  €</td>
                         <td class="action">
                             {% set url_edit = ea_url()
                                 .setAction('edit')
                                 .setController('App\\Controller\\Admin\\SalesCrudController')
                                 .setEntityId(sale.id)
                             %}
-                            {% set url_delete = ea_url()
-                                .setAction('delete')
-                                .setController('App\\Controller\\Admin\\SalesCrudController')
-                                .setEntityId(sale.id)
-                            %}
                             <a class=" action-edit" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i> <span class="action-label">Edit</span></a>
-                            <a class=" action-delete text-danger" href="{{ url_delete }}" title="Delete" data-action-name="delete" formaction="{{ url_delete }}" data-bs-toggle="modal" data-bs-target="#modal-delete"><i class="action-icon fa fa-trash"></i> <span class="action-label">Delete</span></a>
                         </td>
                     </tr>
                 {% endif %}
             {% endfor %}
+            <tr class="table-primary">
+                <th scope="row" colspan="4">
+                    Totaux
+                </th>
+                <th>{{ total_price|number_format(2, ',', ' ') }} €</th>
+                <th></th>
+                <th>{{ total_euroCom|number_format(2, ',', ' ') }} €</th>
+                <th></th>
+            </tr>
             </tbody>
         </table>
     </div>
@@ -191,45 +228,57 @@
             <thead class="table-primary">
             <tr>
                 <th scope="col">Société</th>
+                <th scope="col">Projet</th>
+                <th scope="col">Produit</th>
                 <th scope="col">Date</th>
                 <th scope="col">CA</th>
-                <th scope="col">PA</th>
-                <th scope="col">Marge Event</th>
-                <th scope="col">Com Sales</th>
-                <th scope="col">Marge Verhulst</th>
+                <th scope="col">% Sales</th>
+                <th scope="col">€ Sales</th>
                 <th scope="col">Action</th>
             </tr>
             </thead>
             <tbody>
+            {% set total_price = 0 %}
+            {% set total_euroCom = 0 %}
+
             {% for sale in user.sales %}
                 {% if get_class(sale.product) == 'ProductDivers' %}
+                    {% set total_price = total_price + sale.price/100 %}
+                    {% set total_euroCom = total_euroCom + sale.euroCom %}
                     <tr>
                         <th scope="row">
                             {% for contact in sale.contact %}
                                 {{ contact.firstname }} {{ contact.lastname }} ({{ contact.company.name }})<br>
                             {% endfor %}
                         </th>
+                        <th scope="row">
+                            {{ sale.product.project.name }}
+                        </th>
+                        <th scope="row">{{ sale.product.name }}</th>
                         <td>{{ sale.date|date('d/m/Y') }}</td>
-                        <td>{{ (sale.price/100)|number_format(2, ',', ' ') }}</td>
-                        <td>?</td>
-                        <td>?</td>
+                        <td>{{ (sale.price/100)|number_format(2, ',', ' ') }} €</td>
                         <td>{{ sale.percentCom }} %</td>
-                        <td>{{ sale.percentVr }} %</td>
+                        <td>{{ sale.euroCom|number_format(2, ',', ' ') }}  €</td>
                         <td class="action">
                             {% set url_edit = ea_url()
                                 .setAction('edit')
                                 .setController('App\\Controller\\Admin\\SalesCrudController')
                                 .setEntityId(sale.id)
                             %}
-                            {% set url_delete = ea_url()
-                                .setAction('delete')
-                                .setController('App\\Controller\\Admin\\SalesCrudController')
-                            %}
                             <a class=" action-edit" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i> <span class="action-label">Edit</span></a>
                         </td>
                     </tr>
                 {% endif %}
             {% endfor %}
+            <tr class="table-primary">
+                <th scope="row" colspan="4">
+                    Totaux
+                </th>
+                <th>{{ total_price|number_format(2, ',', ' ') }} €</th>
+                <th></th>
+                <th>{{ total_euroCom|number_format(2, ',', ' ') }} €</th>
+                <th></th>
+            </tr>
             </tbody>
         </table>
     </div>

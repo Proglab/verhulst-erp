@@ -133,7 +133,7 @@ class Product
 
     public function getPa(): ?float
     {
-        return (float)$this->pa;
+        return (float) $this->pa;
     }
 
     public function setPa(?string $pa): self

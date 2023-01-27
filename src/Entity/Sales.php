@@ -104,29 +104,29 @@ class Sales
         return $this->percent_vr;
     }
 
-    public function getEuroVr()
+    public function getEuroVr(): float
     {
         return $this->getMarge() * $this->getPercentVr() / 100;
     }
 
-    public function getEuroCom()
+    public function getEuroCom(): float
     {
         return $this->getMarge() * $this->getPercentCom() / 100;
     }
 
-    public function getMarge()
+    public function getMarge(): float
     {
-        return $this->getPrice()/100 - $this->product->getPa()/100;
+        return $this->getPrice() / 100 - $this->product->getPa() / 100;
     }
 
-    public function getDiffCa()
+    public function getDiffCa(): float
     {
         return $this->getMarge() - $this->getEuroCom() - $this->getEuroVr();
     }
 
-    public function getPa()
+    public function getPa(): float
     {
-        return $this->product->getPa()/100;
+        return $this->product->getPa() / 100;
     }
 
     public function setPercentVr(?int $percent_vr): self
