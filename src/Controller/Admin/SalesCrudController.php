@@ -11,6 +11,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
@@ -31,6 +33,27 @@ class SalesCrudController extends BaseCrudController
             ->showEntityActionsInlined(true);
 
         return parent::configureCrud($crud);
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        $actions = parent::configureActions($actions);
+        $actions
+            ->setPermission(Action::NEW, 'ROLE_COMMERCIAL')
+            ->setPermission(Action::EDIT, 'ROLE_COMMERCIAL')
+            ->setPermission(Action::DELETE, 'ROLE_COMMERCIAL')
+            ->setPermission(Action::DETAIL, 'ROLE_COMMERCIAL')
+            ->setPermission(Action::INDEX, 'ROLE_COMMERCIAL')
+            ->setPermission(Action::SAVE_AND_RETURN, 'ROLE_COMMERCIAL')
+            ->setPermission(Action::SAVE_AND_ADD_ANOTHER, 'ROLE_COMMERCIAL')
+            ->setPermission(Action::SAVE_AND_CONTINUE, 'ROLE_COMMERCIAL')
+            ->add(Crud::PAGE_INDEX, Action::DETAIL)
+            ->update(Crud::PAGE_INDEX, Action::DETAIL, function (Action $action) {
+                return $action->setIcon('fa fa-eye');
+            })
+        ;
+
+        return $actions;
     }
 
     public static function getEntityFqcn(): string

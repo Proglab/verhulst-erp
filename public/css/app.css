@@ -1,0 +1,12 @@
+.nav-pills .nav-link.active {
+    background-color: #9f1239;
+    color: white;
+}
+
+.accordion-item {
+    background-color: white;
+}
+
+.alert.alert-dark {
+    background-color: #9f1239;
+}

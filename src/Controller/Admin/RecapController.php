@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class RecapController extends DashboardController
@@ -19,6 +20,10 @@ class RecapController extends DashboardController
     #[Route('/admin/{_locale}/recap', name: 'app_admin_recap')]
     public function recap(): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            throw new UnauthorizedHttpException('Unauthorized');
+        }
+
         /** @var UserRepository $repo */
         $repo = $this->entityManager->getRepository(User::class);
         $users = $repo->getCommercials();
