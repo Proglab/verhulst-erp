@@ -1,6 +1,18 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
-{% block content_title %}My Recap{% endblock %}
+{% block content_title %}Mes ventes{% endblock %}
+
+
+{% block page_actions %}
+    {% set url = ea_url()
+        .setAction('new') %}
+    <div class="global-actions">
+        <a class=" action-new btn btn-primary" href="{{ url }}" data-action-name="new">
+            <i class="action-icon fa fa-plus-square"></i> <span class="action-label">Créer une vente</span>
+        </a>
+    </div>
+{% endblock %}
+
 
 {% block main %}
 
@@ -21,12 +33,15 @@
             <thead class="table-primary">
             <tr>
                 <th scope="col">Société</th>
+                <th scope="col">Projet</th>
+                <th scope="col">Produit</th>
                 <th scope="col">Date</th>
                 <th scope="col">CA</th>
                 <th scope="col">PA</th>
-                <th scope="col">Marge Event</th>
-                <th scope="col">Com Sales</th>
-                <th scope="col">Marge Verhulst</th>
+                <th scope="col">Marge</th>
+                <th scope="col">% Sales</th>
+                <th scope="col">€ Sales</th>
+                <th scope="col">Action</th>
             </tr>
             </thead>
             <tbody>
@@ -38,12 +53,29 @@
                                 {{ contact.firstname }} {{ contact.lastname }} ({{ contact.company.name }})<br>
                             {% endfor %}
                         </th>
+                        <th scope="row">
+                            {{ sale.product.project.name }}
+                        </th>
+                        <th scope="row">{{ sale.product.name }}</th>
                         <td>{{ sale.date|date('d/m/Y') }}</td>
-                        <td>{{ (sale.price/100)|number_format(2, ',', ' ') }}</td>
-                        <td>?</td>
-                        <td>?</td>
+                        <td>{{ (sale.price/100)|number_format(2, ',', ' ') }} €</td>
+                        <td>{{ (sale.pa)|number_format(2, ',', ' ') }} €</td>
+                        <td> {{ sale.marge|number_format(2, ',', ' ') }} €</td>
                         <td>{{ sale.percentCom }} %</td>
-                        <td>{{ sale.percentVr }} %</td>
+                        <td>{{ sale.euroCom|number_format(2, ',', ' ') }}  €</td>
+                        <td class="action">
+                            {% set url_edit = ea_url()
+                                .setAction('edit')
+                                .setController('App\\Controller\\Admin\\SalesCrudController')
+                                .setEntityId(sale.id)
+                            %}
+                            {% set url_delete = ea_url()
+                                .setAction('delete')
+                                .setController('App\\Controller\\Admin\\SalesCrudController')
+                                .setEntityId(sale.id)
+                            %}
+                            <a class=" action-edit" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i> <span class="action-label">Edit</span></a>
+                        </td>
                     </tr>
                 {% endif %}
             {% endfor %}
@@ -63,6 +95,7 @@
                 <th scope="col">Marge Event</th>
                 <th scope="col">Com Sales</th>
                 <th scope="col">Marge Verhulst</th>
+                <th scope="col">Action</th>
             </tr>
             </thead>
             <tbody>
@@ -80,6 +113,20 @@
                         <td>?</td>
                         <td>{{ sale.percentCom }} %</td>
                         <td>{{ sale.percentVr }} %</td>
+                        <td class="action">
+                            {% set url_edit = ea_url()
+                                .setAction('edit')
+                                .setController('App\\Controller\\Admin\\SalesCrudController')
+                                .setEntityId(sale.id)
+                            %}
+                            {% set url_delete = ea_url()
+                                .setAction('delete')
+                                .setController('App\\Controller\\Admin\\SalesCrudController')
+                                .setEntityId(sale.id)
+                            %}
+                            <a class=" action-edit" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i> <span class="action-label">Edit</span></a>
+                            <a class=" action-delete text-danger" href="{{ url_delete }}" title="Delete" data-action-name="delete" formaction="{{ url_delete }}" data-bs-toggle="modal" data-bs-target="#modal-delete"><i class="action-icon fa fa-trash"></i> <span class="action-label">Delete</span></a>
+                        </td>
                     </tr>
                 {% endif %}
             {% endfor %}
@@ -99,6 +146,7 @@
                 <th scope="col">Marge Event</th>
                 <th scope="col">Com Sales</th>
                 <th scope="col">Marge Verhulst</th>
+                <th scope="col">Action</th>
             </tr>
             </thead>
             <tbody>
@@ -116,6 +164,20 @@
                         <td>?</td>
                         <td>{{ sale.percentCom }} %</td>
                         <td>{{ sale.percentVr }} %</td>
+                        <td class="action">
+                            {% set url_edit = ea_url()
+                                .setAction('edit')
+                                .setController('App\\Controller\\Admin\\SalesCrudController')
+                                .setEntityId(sale.id)
+                            %}
+                            {% set url_delete = ea_url()
+                                .setAction('delete')
+                                .setController('App\\Controller\\Admin\\SalesCrudController')
+                                .setEntityId(sale.id)
+                            %}
+                            <a class=" action-edit" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i> <span class="action-label">Edit</span></a>
+                            <a class=" action-delete text-danger" href="{{ url_delete }}" title="Delete" data-action-name="delete" formaction="{{ url_delete }}" data-bs-toggle="modal" data-bs-target="#modal-delete"><i class="action-icon fa fa-trash"></i> <span class="action-label">Delete</span></a>
+                        </td>
                     </tr>
                 {% endif %}
             {% endfor %}
@@ -135,6 +197,7 @@
                 <th scope="col">Marge Event</th>
                 <th scope="col">Com Sales</th>
                 <th scope="col">Marge Verhulst</th>
+                <th scope="col">Action</th>
             </tr>
             </thead>
             <tbody>
@@ -152,6 +215,18 @@
                         <td>?</td>
                         <td>{{ sale.percentCom }} %</td>
                         <td>{{ sale.percentVr }} %</td>
+                        <td class="action">
+                            {% set url_edit = ea_url()
+                                .setAction('edit')
+                                .setController('App\\Controller\\Admin\\SalesCrudController')
+                                .setEntityId(sale.id)
+                            %}
+                            {% set url_delete = ea_url()
+                                .setAction('delete')
+                                .setController('App\\Controller\\Admin\\SalesCrudController')
+                            %}
+                            <a class=" action-edit" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i> <span class="action-label">Edit</span></a>
+                        </td>
                     </tr>
                 {% endif %}
             {% endfor %}

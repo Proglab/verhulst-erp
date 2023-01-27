@@ -7,6 +7,7 @@ namespace App\Entity;
 use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
@@ -31,6 +32,9 @@ class Product
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Sales::class, orphanRemoval: true)]
     private Collection $sales;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $pa = '0';
 
     public function __construct()
     {
@@ -123,6 +127,18 @@ class Product
                 $sale->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPa(): ?float
+    {
+        return (float)$this->pa;
+    }
+
+    public function setPa(?string $pa): self
+    {
+        $this->pa = $pa;
 
         return $this;
     }

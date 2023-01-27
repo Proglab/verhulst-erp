@@ -32,14 +32,4 @@ class RecapController extends DashboardController
             'users' => $users,
         ]);
     }
-
-    #[Route('/admin/{_locale}/myrecap', name: 'app_admin_myrecap')]
-    public function myRecap(): Response
-    {
-        $user = $this->getUser();
-
-        return $this->render('admin/recap/myrecap.html.twig', [
-            'user' => $user,
-        ]);
-    }
 }

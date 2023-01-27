@@ -18,11 +18,25 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
+use EasyCorp\Bundle\EasyAdminBundle\Event\AfterCrudActionEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityUpdatedEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeCrudActionEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Exception\ForbiddenActionException;
+use EasyCorp\Bundle\EasyAdminBundle\Exception\InsufficientEntityPermissionException;
+use EasyCorp\Bundle\EasyAdminBundle\Factory\EntityFactory;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 
 class SalesCrudController extends BaseCrudController
 {
@@ -51,6 +65,7 @@ class SalesCrudController extends BaseCrudController
             ->update(Crud::PAGE_INDEX, Action::DETAIL, function (Action $action) {
                 return $action->setIcon('fa fa-eye');
             })
+            ->add(Crud::PAGE_EDIT, Action::DELETE)
         ;
 
         return $actions;
@@ -67,22 +82,26 @@ class SalesCrudController extends BaseCrudController
         $product = AssociationField::new('product')->setRequired(true);
         $contacts = AssociationField::new('contact')->setRequired(true);
         $date = DateField::new('date');
+        $percent_com = PercentField::new('percent_com')->setStoredAsFractional(false);
 
         switch ($pageName) {
             case Crud::PAGE_DETAIL:
             case Crud::PAGE_INDEX:
-                $response = [$product, $contacts, $price, $date];
+                $response = [$product, $contacts, $price, $date, $percent_com];
                 break;
             case Crud::PAGE_NEW:
             case Crud::PAGE_EDIT:
-                $response = [$product, $contacts, $price, $date];
+                $response = [$product, $contacts, $price, $date, $percent_com];
                 break;
             default:
-                $response = [$product, $contacts, $price, $date];
+                $response = [$product, $contacts, $price, $date, $percent_com];
         }
 
         return $response;
     }
+
+
+
 
     public function createNewForm(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormInterface
     {
@@ -124,5 +143,14 @@ class SalesCrudController extends BaseCrudController
             ->setParameter('user', $this->getUser());
 
         return $qb;
+    }
+
+    public function index(AdminContext $context)
+    {
+        $user = $this->getUser();
+
+        return $this->render('admin/recap/myrecap.html.twig', [
+            'user' => $user,
+        ]);
     }
 }

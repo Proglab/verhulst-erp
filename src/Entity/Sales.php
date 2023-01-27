@@ -19,7 +19,7 @@ class Sales
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    private ?string $price = null;
+    private ?float $price = null;
 
     #[ORM\ManyToOne(inversedBy: 'sales')]
     #[ORM\JoinColumn(nullable: false)]
@@ -51,14 +51,14 @@ class Sales
         return $this->id;
     }
 
-    public function getPrice(): ?string
+    public function getPrice(): ?float
     {
-        return $this->price;
+        return (float) $this->price;
     }
 
     public function setPrice(?string $price): self
     {
-        $this->price = $price;
+        $this->price = (float) $price;
 
         return $this;
     }
@@ -102,6 +102,31 @@ class Sales
     public function getPercentVr(): ?int
     {
         return $this->percent_vr;
+    }
+
+    public function getEuroVr()
+    {
+        return $this->getMarge() * $this->getPercentVr() / 100;
+    }
+
+    public function getEuroCom()
+    {
+        return $this->getMarge() * $this->getPercentCom() / 100;
+    }
+
+    public function getMarge()
+    {
+        return $this->getPrice()/100 - $this->product->getPa()/100;
+    }
+
+    public function getDiffCa()
+    {
+        return $this->getMarge() - $this->getEuroCom() - $this->getEuroVr();
+    }
+
+    public function getPa()
+    {
+        return $this->product->getPa()/100;
     }
 
     public function setPercentVr(?int $percent_vr): self
