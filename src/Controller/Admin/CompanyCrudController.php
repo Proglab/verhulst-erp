@@ -24,7 +24,6 @@ class CompanyCrudController extends BaseCrudController
         return parent::configureCrud($crud);
     }
 
-
     public function configureActions(Actions $actions): Actions
     {
         $actions = parent::configureActions($actions);
