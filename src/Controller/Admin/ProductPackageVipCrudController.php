@@ -22,7 +22,7 @@ class ProductPackageVipCrudController extends AbstractCrudController
     {
         $name = TextField::new('name');
         $percentVr = PercentField::new('percent_vr')->setLabel('Com Verhulst')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false);
-        $ca = MoneyField::new('ca')->setCurrency('EUR')->setStoredAsCents(false);
+        $ca = MoneyField::new('ca')->setCurrency('EUR')->setStoredAsCents(false)->setLabel('Prix de vente');
 
         switch ($pageName) {
             case Crud::PAGE_DETAIL:

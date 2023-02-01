@@ -57,6 +57,13 @@ final class UserFactory extends ModelFactory
         ]);
     }
 
+    public function adminAndCommercial(): self
+    {
+        return $this->addState([
+            'roles' => [User::ROLE_COMMERCIAL, User::ROLE_ADMIN],
+        ]);
+    }
+
     public function enabled(): self
     {
         return $this->addState([

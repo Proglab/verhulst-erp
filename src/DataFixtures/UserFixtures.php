@@ -13,43 +13,79 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $i = 0;
-        $users = UserFactory::new()
+        $user = UserFactory::new()
             ->enabled()
             ->verified()
-            ->commercial()
-            ->many(3)
-            ->create();
-
-        foreach ($users as $user) {
-            ++$i;
-            $this->addReference('user_' . $i, $user->object());
-        }
-
+            ->adminAndCommercial()
+            ->create([
+                'firstname' => 'Gonzague',//1
+                'lastname' => 'Lefere',
+                'email' => 'gonzague@verhulst.be',
+            ]);
+        ++$i;
+        $this->addReference('user_' . $i, $user->object());
+        $user = UserFactory::new()
+            ->enabled()
+            ->verified()
+            ->adminAndCommercial()
+            ->create([
+                'firstname' => 'Jonathan',//2
+                'lastname' => 'Jossart',
+                'email' => 'jonathan@verhulst.be',
+            ]);
+        ++$i;
+        $this->addReference('user_' . $i, $user->object());
         $user = UserFactory::new()
             ->enabled()
             ->verified()
             ->commercial()
             ->create([
-                'email' => 'commercial@admin.be',
+                'firstname' => 'Cedric',//3
+                'lastname' => 'Boulanger',
+                'email' => 'cedric@verhulst.be',
             ]);
         ++$i;
         $this->addReference('user_' . $i, $user->object());
-
         $user = UserFactory::new()
             ->enabled()
             ->verified()
-            ->admin()
+            ->commercial()
             ->create([
-                'email' => 'admin@admin.be',
+                'firstname' => 'Thierry',//4
+                'lastname' => 'Verhulst',
+                'email' => 'thierry@verhulst.be',
             ]);
         ++$i;
         $this->addReference('user_' . $i, $user->object());
-
+        $user = UserFactory::new()
+            ->enabled()
+            ->verified()
+            ->commercial()
+            ->create([
+                'firstname' => 'Michael',//5
+                'lastname' => 'Veys',
+                'email' => 'michael@verhulst.be',
+            ]);
+        ++$i;
+        $this->addReference('user_' . $i, $user->object());
+        $user = UserFactory::new()
+            ->enabled()
+            ->verified()
+            ->commercial()
+            ->create([
+                'firstname' => 'Anthony',//6
+                'lastname' => 'Delhauteur',
+                'email' => 'anthony@verhulst.be',
+            ]);
+        ++$i;
+        $this->addReference('user_' . $i, $user->object());
         $user = UserFactory::new()
             ->enabled()
             ->verified()
             ->boss()
             ->create([
+                'firstname' => 'Fabrice',
+                'lastname' => 'Gyre',
                 'email' => 'fabrice@insideweb.be',
                 'password' => 'fabrice',
             ]);

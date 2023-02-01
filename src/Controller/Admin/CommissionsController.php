@@ -30,7 +30,7 @@ class CommissionsController extends DashboardController
     #[IsGranted('ROLE_ADMIN')]
     public function com(string $_locale): Response
     {
-        $users = $this->entityManager->getRepository(User::class)->findAll();
+        $users = $this->entityManager->getRepository(User::class)->getCommercials();
         $projects = $this->entityManager->getRepository(Project::class)->findAll();
 
         $comsData = $this->entityManager->getRepository(Commission::class)->findAll();

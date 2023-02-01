@@ -13,7 +13,7 @@ class CommissionFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $count_project = 20;
+        $count_project = 25;
 
         $projects = [];
 

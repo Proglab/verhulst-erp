@@ -45,7 +45,7 @@ final class CompanyFactory extends ModelFactory
             'box' => self::faker()->randomDigit(),
             'pc' => self::faker()->postcode(),
             'city' => self::faker()->city(),
-            'country' => self::faker()->countryCode(),
+            'country' => 'BE',
         ];
     }
 
@@ -54,7 +54,7 @@ final class CompanyFactory extends ModelFactory
         // see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
         return $this
             ->afterInstantiate(function (Company $company) {
-                for ($i = 0; $i < random_int(0, 5); ++$i) {
+                for ($i = 0; $i < random_int(1, 5); ++$i) {
                     /* @var CompanyContact $contact */
                     CompanyContactFactory::new()
                         ->company($company)

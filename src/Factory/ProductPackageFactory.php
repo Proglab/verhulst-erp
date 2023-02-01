@@ -47,7 +47,7 @@ final class ProductPackageFactory extends ModelFactory
     {
         return [
             'name' => self::faker()->sentence(random_int(1, 3)),
-            'ca' => self::faker()->randomFloat(2, 100, 1000000),
+            'ca' => self::faker()->randomFloat(2, 100, 1000),
             'percent_vr' => random_int(15, 40),
         ];
     }

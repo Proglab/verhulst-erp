@@ -42,38 +42,6 @@ final class ProjectFactory extends ModelFactory
         ];
     }
 
-    protected function initialize(): self
-    {
-        // see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
-        return $this
-            ->afterInstantiate(function (Project $project) {
-                $project->setName($this->clean($project->getName()));
-                for ($i = 0; $i < random_int(0, 7); ++$i) {
-                    ProductEventFactory::new()
-                    ->project($project)
-                    ->create();
-                }
-
-                for ($i = 0; $i < random_int(0, 3); ++$i) {
-                    ProductDiversFactory::new()
-                        ->project($project)
-                        ->create();
-                }
-
-                for ($i = 0; $i < random_int(0, 10); ++$i) {
-                    ProductSponsorFactory::new()
-                        ->project($project)
-                        ->create();
-                }
-
-                for ($i = 0; $i < random_int(0, 3); ++$i) {
-                    ProductPackageFactory::new()
-                        ->project($project)
-                        ->create();
-                }
-            });
-    }
-
     protected static function getClass(): string
     {
         return Project::class;
