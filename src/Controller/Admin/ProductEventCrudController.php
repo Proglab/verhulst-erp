@@ -22,8 +22,17 @@ class ProductEventCrudController extends BaseCrudController
     {
         $name = TextField::new('name');
         $date = DateField::new('date');
-        $percentVr = PercentField::new('percent_vr')->setLabel('Com Verhulst')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false);
-        $pa = MoneyField::new('pa')->setLabel('Prix achat')->setPermission('ROLE_ADMIN')->setCurrency('EUR');
+        $percentVr = PercentField::new('percent_vr')
+            ->setLabel('Com Verhulst')
+            ->setPermission('ROLE_ADMIN')
+            ->setNumDecimals(2)
+            ->setStoredAsFractional(true);
+
+        $pa = MoneyField::new('pa')
+            ->setStoredAsCents()
+            ->setNumDecimals(2)
+            ->setLabel('Prix achat')
+            ->setCurrency('EUR');
 
         switch ($pageName) {
             case Crud::PAGE_DETAIL:

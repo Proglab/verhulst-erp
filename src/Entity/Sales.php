@@ -18,8 +18,8 @@ class Sales
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    private ?float $price = null;
+    #[ORM\Column(type: Types::BIGINT, nullable: true)]
+    private ?int $price = null;
 
     #[ORM\ManyToOne(inversedBy: 'sales')]
     #[ORM\JoinColumn(nullable: false)]
@@ -28,11 +28,11 @@ class Sales
     #[ORM\ManyToMany(targetEntity: CompanyContact::class, inversedBy: 'sales')]
     private Collection $contact;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $percent_vr = null;
+    #[ORM\Column(type: Types::DECIMAL, precision: 6, scale: 4, nullable: true)]
+    private ?float $percent_vr = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $percent_com = null;
+    #[ORM\Column(type: Types::DECIMAL, precision: 6, scale: 4, nullable: true)]
+    private ?float $percent_com = null;
 
     #[ORM\ManyToOne(inversedBy: 'sales')]
     #[ORM\JoinColumn(nullable: false)]
@@ -51,14 +51,14 @@ class Sales
         return $this->id;
     }
 
-    public function getPrice(): ?float
+    public function getPrice(): ?int
     {
-        return (float) $this->price;
+        return (int) $this->price;
     }
 
-    public function setPrice(?string $price): self
+    public function setPrice(?int $price): self
     {
-        $this->price = (float) $price;
+        $this->price = $price;
 
         return $this;
     }
@@ -99,24 +99,24 @@ class Sales
         return $this;
     }
 
-    public function getPercentVr(): ?int
+    public function getPercentVr(): ?float
     {
         return $this->percent_vr;
     }
 
     public function getEuroVr(): float
     {
-        return $this->getMarge() * $this->getPercentVr() / 100;
+        return $this->getMarge() * $this->getPercentVr();
     }
 
     public function getEuroCom(): float
     {
-        return $this->getMarge() * $this->getPercentCom() / 100;
+        return $this->getMarge() * $this->getPercentCom();
     }
 
     public function getMarge(): float
     {
-        return $this->getPrice() / 100 - $this->product->getPa() / 100;
+        return $this->getPrice()/100 - $this->product->getPa()/100;
     }
 
     public function getDiffCa(): float
@@ -126,22 +126,22 @@ class Sales
 
     public function getPa(): float
     {
-        return $this->product->getPa() / 100;
+        return $this->product->getPa();
     }
 
-    public function setPercentVr(?int $percent_vr): self
+    public function setPercentVr(?float $percent_vr): self
     {
         $this->percent_vr = $percent_vr;
 
         return $this;
     }
 
-    public function getPercentCom(): ?int
+    public function getPercentCom(): ?float
     {
         return $this->percent_com;
     }
 
-    public function setPercentCom(?int $percent_com): self
+    public function setPercentCom(?float $percent_com): self
     {
         $this->percent_com = $percent_com;
 

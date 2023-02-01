@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\CommissionRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -17,8 +18,8 @@ class Commission
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $percent_com = null;
+    #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
+    private ?float $percent_com = null;
 
     #[ORM\ManyToOne(inversedBy: 'commissions')]
     #[ORM\JoinColumn(nullable: false)]
@@ -33,12 +34,12 @@ class Commission
         return $this->id;
     }
 
-    public function getPercentCom(): ?int
+    public function getPercentCom(): ?float
     {
         return $this->percent_com;
     }
 
-    public function setPercentCom(?int $percent_com): self
+    public function setPercentCom(?float $percent_com): self
     {
         $this->percent_com = $percent_com;
 

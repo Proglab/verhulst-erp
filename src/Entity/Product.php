@@ -24,8 +24,8 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $percent_vr = 20;
+    #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
+    private ?float $percent_vr = 20.0;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Commission::class, orphanRemoval: true)]
     private Collection $commissions;
@@ -34,7 +34,7 @@ class Product
     private Collection $sales;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    private ?string $pa = '0';
+    private ?float $pa = 0;
 
     public function __construct()
     {
@@ -59,12 +59,12 @@ class Product
         return $this;
     }
 
-    public function getPercentVr(): ?int
+    public function getPercentVr(): ?float
     {
         return $this->percent_vr;
     }
 
-    public function setPercentVr(int $percent_vr): self
+    public function setPercentVr(float $percent_vr): self
     {
         $this->percent_vr = $percent_vr;
 

@@ -65,22 +65,30 @@ class SalesCrudController extends BaseCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $price = MoneyField::new('price')->setRequired(true)->setCurrency('EUR');
+        $price = MoneyField::new('price')
+            ->setStoredAsCents()
+            ->setNumDecimals(2)
+            ->setRequired(true)
+            ->setCurrency('EUR');
         $product = AssociationField::new('product')->setRequired(true);
         $contacts = AssociationField::new('contact')->setRequired(true);
         $date = DateField::new('date');
+        $percent_com = PercentField::new('percent_com')
+            ->setNumDecimals(2)
+            ->setStoredAsFractional(true)
+            ->setPermission('ROLE_ADMIN');
+        $percent_vr = PercentField::new('percent_vr')
+            ->setNumDecimals(2)
+            ->setStoredAsFractional(true)
+            ->setPermission('ROLE_ADMIN');
 
         switch ($pageName) {
-            case Crud::PAGE_DETAIL:
-            case Crud::PAGE_INDEX:
-                $response = [$product, $contacts, $price, $date];
-                break;
             case Crud::PAGE_NEW:
             case Crud::PAGE_EDIT:
-                $response = [$product, $contacts, $price, $date];
+                $response = [$product, $contacts, $price, $date, $percent_com, $percent_vr];
                 break;
             default:
-                $response = [$product, $contacts, $price, $date];
+                $response = [$product, $contacts, $price, $date, $percent_com, $percent_vr];
         }
 
         return $response;
