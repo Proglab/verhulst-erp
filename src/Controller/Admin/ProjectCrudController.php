@@ -14,7 +14,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class ProjectCrudController extends BaseCrudController
 {
-
     public function configureAssets(Assets $assets): Assets
     {
         $assets = parent::configureAssets($assets);

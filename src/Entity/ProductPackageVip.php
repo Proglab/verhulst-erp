@@ -11,7 +11,6 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: ProductPackageVipRepository::class)]
 #[Vich\Uploadable]
-
 class ProductPackageVip extends Product
 {
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
@@ -23,9 +22,6 @@ class ProductPackageVip extends Product
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
-
-    #[ORM\Column(type: 'datetime')]
-    private ?\DateTimeInterface $updatedAt = null;
 
     public function __toString()
     {
@@ -67,5 +63,4 @@ class ProductPackageVip extends Product
 
         return $this;
     }
-
 }
