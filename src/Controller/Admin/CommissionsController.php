@@ -14,6 +14,7 @@ use App\Entity\Project;
 use App\Entity\User;
 use App\Repository\CommissionRepository;
 use App\Repository\ProductRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,7 +31,9 @@ class CommissionsController extends DashboardController
     #[IsGranted('ROLE_ADMIN')]
     public function com(string $_locale): Response
     {
-        $users = $this->entityManager->getRepository(User::class)->getCommercials();
+        /** @var UserRepository $usersRepo */
+        $usersRepo = $this->entityManager->getRepository(User::class);
+        $users = $usersRepo->getCommercials();
         $projects = $this->entityManager->getRepository(Project::class)->findAll();
 
         $comsData = $this->entityManager->getRepository(Commission::class)->findAll();
@@ -113,7 +116,7 @@ class CommissionsController extends DashboardController
 
         return $this->render('admin/commission/_input_percent.html.twig', [
             'url' => $url,
-            'type' => 0 === $com->getPercentCom() ? 'error' : '',
+            'type' => 0.0 === $com->getPercentCom() ? 'error' : '',
             'value' => $com->getPercentCom(),
         ]);
     }
@@ -143,7 +146,7 @@ class CommissionsController extends DashboardController
 
         return $this->render('admin/commission/_input_percent.html.twig', [
             'url' => $url,
-            'type' => (0 === $product->getPercentVr() ? 'error' : ''),
+            'type' => (0.0 === $product->getPercentVr() ? 'error' : ''),
             'value' => $product->getPercentVr(),
         ]);
     }

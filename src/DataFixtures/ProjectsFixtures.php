@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
-use App\Entity\Product;
-use App\Entity\Project;
 use App\Factory\ProductDiversFactory;
 use App\Factory\ProductEventFactory;
 use App\Factory\ProductPackageFactory;
@@ -24,26 +22,22 @@ class ProjectsFixtures extends Fixture
                 ->create([
                     'name' => $data['name'],
                 ]);
-            foreach ($data['projects']['event'] as $event)
-            {
+            foreach ($data['projects']['event'] as $event) {
                 ProductEventFactory::new()
                     ->project($project->object())
                     ->create($event);
             }
-            foreach ($data['projects']['sponsoring'] as $sponsoring)
-            {
+            foreach ($data['projects']['sponsoring'] as $sponsoring) {
                 ProductSponsorFactory::new()
                     ->project($project->object())
                     ->create($sponsoring);
             }
-            foreach ($data['projects']['package'] as $package)
-            {
+            foreach ($data['projects']['package'] as $package) {
                 ProductPackageFactory::new()
                     ->project($project->object())
                     ->create($package);
             }
-            foreach ($data['projects']['divers'] as $divers)
-            {
+            foreach ($data['projects']['divers'] as $divers) {
                 ProductDiversFactory::new()
                     ->project($project->object())
                     ->create($divers);
@@ -58,330 +52,330 @@ class ProjectsFixtures extends Fixture
     {
         return [
             [
-                'name' => 'Chapelle Reine Elisabeth',//1
+                'name' => 'Chapelle Reine Elisabeth', // 1
                 'projects' => [
-                    'event' =>  [],
-                    'sponsoring' =>  [],
-                    'package' =>  [
+                    'event' => [],
+                    'sponsoring' => [],
+                    'package' => [
                         ['name' => 'package 1', 'percent_vr' => 20],
                         ['name' => 'package 2', 'percent_vr' => 20],
                     ],
-                    'divers' =>  [],
-                ]
+                    'divers' => [],
+                ],
             ],
             [
-                'name' => 'Concert - La Hulpe',//2
+                'name' => 'Concert - La Hulpe', // 2
                 'projects' => [
-                    'event' =>  [],
-                    'sponsoring' =>  [
+                    'event' => [],
+                    'sponsoring' => [
                         ['name' => 'sponsoring 1', 'percent_vr' => 20],
                         ['name' => 'sponsoring 2', 'percent_vr' => 20],
                         ['name' => 'sponsoring 3', 'percent_vr' => 20],
                     ],
-                    'package' =>  [
+                    'package' => [
                         ['name' => 'package 1', 'percent_vr' => 15],
                         ['name' => 'package 2', 'percent_vr' => 15],
                     ],
-                    'divers' =>  [],
-                ]
+                    'divers' => [],
+                ],
             ],
             [
-                'name' => 'Concours Reine Elisabeth',//3
+                'name' => 'Concours Reine Elisabeth', // 3
                 'projects' => [
-                    'event' =>  [],
-                    'sponsoring' =>  [],
-                    'package' =>  [
+                    'event' => [],
+                    'sponsoring' => [],
+                    'package' => [
                         ['name' => 'package 1', 'percent_vr' => 20],
                         ['name' => 'package 2', 'percent_vr' => 20],
                     ],
-                    'divers' =>  [],
-                ]
+                    'divers' => [],
+                ],
             ],
             [
-                'name' => 'Cyclisme: ASO: Flêche, Paris-Roubaix,...',//4
+                'name' => 'Cyclisme: ASO: Flêche, Paris-Roubaix,...', // 4
                 'projects' => [
-                    'event' =>  [],
-                    'sponsoring' =>  [],
-                    'package' =>  [
+                    'event' => [],
+                    'sponsoring' => [],
+                    'package' => [
                         ['name' => 'package 1', 'percent_vr' => 15],
                         ['name' => 'package 2', 'percent_vr' => 15],
                     ],
-                    'divers' =>  [],
-                ]
+                    'divers' => [],
+                ],
             ],
             [
-                'name' => 'Football : Championnat de Belgique',//5
+                'name' => 'Football : Championnat de Belgique', // 5
                 'projects' => [
-                    'event' =>  [],
-                    'sponsoring' =>  [],
-                    'package' =>  [
+                    'event' => [],
+                    'sponsoring' => [],
+                    'package' => [
                         ['name' => 'package 1', 'percent_vr' => 20],
                         ['name' => 'package 2', 'percent_vr' => 20],
                     ],
-                    'divers' =>  [],
-                ]
+                    'divers' => [],
+                ],
             ],
             [
-                'name' => 'Football : Champions League',//6
+                'name' => 'Football : Champions League', // 6
                 'projects' => [
-                    'event' =>  [],
-                    'sponsoring' =>  [],
-                    'package' =>  [
+                    'event' => [],
+                    'sponsoring' => [],
+                    'package' => [
                         ['name' => 'package 1', 'percent_vr' => 20],
                         ['name' => 'package 2', 'percent_vr' => 20],
                     ],
-                    'divers' =>  [],
-                ]
+                    'divers' => [],
+                ],
             ],
             [
-                'name' => 'Football : coupe de Belgique',//7
+                'name' => 'Football : coupe de Belgique', // 7
                 'projects' => [
-                    'event' =>  [],
-                    'sponsoring' =>  [],
-                    'package' =>  [
+                    'event' => [],
+                    'sponsoring' => [],
+                    'package' => [
                         ['name' => 'package 1', 'percent_vr' => 20],
                         ['name' => 'package 2', 'percent_vr' => 20],
                     ],
-                    'divers' =>  [],
-                ]
+                    'divers' => [],
+                ],
             ],
             [
-                'name' => 'Football : Red Devils',//8
+                'name' => 'Football : Red Devils', // 8
                 'projects' => [
-                    'event' =>  [],
-                    'sponsoring' =>  [],
-                    'package' =>  [
+                    'event' => [],
+                    'sponsoring' => [],
+                    'package' => [
                         ['name' => 'package 1', 'percent_vr' => 20],
                         ['name' => 'package 2', 'percent_vr' => 20],
                     ],
-                    'divers' =>  [],
-                ]
+                    'divers' => [],
+                ],
             ],
             [
-                'name' => 'Formule 1 à Spa et Monaco',//9
+                'name' => 'Formule 1 à Spa et Monaco', // 9
                 'projects' => [
-                    'event' =>  [],
-                    'sponsoring' =>  [],
-                    'package' =>  [
+                    'event' => [],
+                    'sponsoring' => [],
+                    'package' => [
                         ['name' => 'package 1', 'percent_vr' => 20],
                         ['name' => 'package 2', 'percent_vr' => 20],
                     ],
-                    'divers' =>  [],
-                ]
+                    'divers' => [],
+                ],
             ],
             [
-                'name' => 'Hockey : ION Hockey Finals - Via Sportero (tbc) ',//10
+                'name' => 'Hockey : ION Hockey Finals - Via Sportero (tbc) ', // 10
                 'projects' => [
-                    'event' =>  [],
-                    'sponsoring' =>  [],
-                    'package' =>  [
+                    'event' => [],
+                    'sponsoring' => [],
+                    'package' => [
                         ['name' => 'package 1', 'percent_vr' => 15],
                         ['name' => 'package 2', 'percent_vr' => 15],
                     ],
-                    'divers' =>  [],
-                ]
+                    'divers' => [],
+                ],
             ],
             [
-                'name' => 'Les grands Crus',//11
+                'name' => 'Les grands Crus', // 11
                 'projects' => [
-                    'event' =>  [],
-                    'sponsoring' =>  [],
-                    'package' =>  [
+                    'event' => [],
+                    'sponsoring' => [],
+                    'package' => [
                         ['name' => 'package 1', 'percent_vr' => 15],
                         ['name' => 'package 2', 'percent_vr' => 15],
                     ],
-                    'divers' =>  [],
-                ]
+                    'divers' => [],
+                ],
             ],
             [
-                'name' => 'MB Productions (Cirque du Soleil, … )',//12
+                'name' => 'MB Productions (Cirque du Soleil, … )', // 12
                 'projects' => [
-                    'event' =>  [],
-                    'sponsoring' =>  [],
-                    'package' =>  [
+                    'event' => [],
+                    'sponsoring' => [],
+                    'package' => [
                         ['name' => 'package 1', 'percent_vr' => 20],
                         ['name' => 'package 2', 'percent_vr' => 20],
                     ],
-                    'divers' =>  [],
-                ]
+                    'divers' => [],
+                ],
             ],
             [
-                'name' => 'Padel Tour 2024',//13
+                'name' => 'Padel Tour 2024', // 13
                 'projects' => [
-                    'event' =>  [],
-                    'sponsoring' =>  [
+                    'event' => [],
+                    'sponsoring' => [
                         ['name' => 'sponsoring 1', 'percent_vr' => 10],
                         ['name' => 'sponsoring 2', 'percent_vr' => 10],
                     ],
-                    'package' =>  [
+                    'package' => [
                         ['name' => 'package 1', 'percent_vr' => 10],
                         ['name' => 'package 2', 'percent_vr' => 10],
                     ],
-                    'divers' =>  [],
-                ]
+                    'divers' => [],
+                ],
             ],
             [
-                'name' => 'Palais 12',//14
+                'name' => 'Palais 12', // 14
                 'projects' => [
-                    'event' =>  [],
-                    'sponsoring' =>  [],
-                    'package' =>  [
+                    'event' => [],
+                    'sponsoring' => [],
+                    'package' => [
                         ['name' => 'package 1', 'percent_vr' => 20],
                         ['name' => 'package 2', 'percent_vr' => 20],
                     ],
-                    'divers' =>  [],
-                ]
+                    'divers' => [],
+                ],
             ],
             [
-                'name' => 'Roland Garros / Wimbledon',//15
+                'name' => 'Roland Garros / Wimbledon', // 15
                 'projects' => [
-                    'event' =>  [],
-                    'sponsoring' =>  [],
-                    'package' =>  [
+                    'event' => [],
+                    'sponsoring' => [],
+                    'package' => [
                         ['name' => 'package 1', 'percent_vr' => 6],
                         ['name' => 'package 2', 'percent_vr' => 6],
                     ],
-                    'divers' =>  [],
-                ]
+                    'divers' => [],
+                ],
             ],
             [
-                'name' => 'Tomorrowland',//16
+                'name' => 'Tomorrowland', // 16
                 'projects' => [
-                    'event' =>  [],
-                    'sponsoring' =>  [],
-                    'package' =>  [
+                    'event' => [],
+                    'sponsoring' => [],
+                    'package' => [
                         ['name' => 'package 1', 'percent_vr' => 15],
                         ['name' => 'package 2', 'percent_vr' => 15],
                     ],
-                    'divers' =>  [],
-                ]
+                    'divers' => [],
+                ],
             ],
             [
-                'name' => 'Rugby : World Cup',//17
+                'name' => 'Rugby : World Cup', // 17
                 'projects' => [
-                    'event' =>  [],
-                    'sponsoring' =>  [],
-                    'package' =>  [
+                    'event' => [],
+                    'sponsoring' => [],
+                    'package' => [
                         ['name' => 'package 1', 'percent_vr' => 15],
                         ['name' => 'package 2', 'percent_vr' => 15],
                     ],
-                    'divers' =>  [],
-                ]
+                    'divers' => [],
+                ],
             ],
             [
-                'name' => 'Namur HC  / Cash',//18
+                'name' => 'Namur HC  / Cash', // 18
                 'projects' => [
-                    'event' =>  [],
-                    'sponsoring' =>  [
+                    'event' => [],
+                    'sponsoring' => [
                         ['name' => 'sponsoring 1', 'percent_vr' => 20],
                         ['name' => 'sponsoring 2', 'percent_vr' => 20],
                     ],
-                    'package' =>  [],
-                    'divers' =>  [],
-                ]
+                    'package' => [],
+                    'divers' => [],
+                ],
             ],
             [
-                'name' => 'Namur HC  / Echange',//19
+                'name' => 'Namur HC  / Echange', // 19
                 'projects' => [
-                    'event' =>  [],
-                    'sponsoring' =>  [
+                    'event' => [],
+                    'sponsoring' => [
                         ['name' => 'sponsoring 1', 'percent_vr' => 20],
                         ['name' => 'sponsoring 2', 'percent_vr' => 20],
                     ],
-                    'package' =>  [],
-                    'divers' =>  [],
-                ]
+                    'package' => [],
+                    'divers' => [],
+                ],
             ],
             [
-                'name' => 'Royal Léopold Club',//20
+                'name' => 'Royal Léopold Club', // 20
                 'projects' => [
-                    'event' =>  [],
-                    'sponsoring' =>  [
+                    'event' => [],
+                    'sponsoring' => [
                         ['name' => 'sponsoring 1', 'percent_vr' => 20],
                         ['name' => 'sponsoring 2', 'percent_vr' => 20],
                     ],
-                    'package' =>  [],
-                    'divers' =>  [],
-                ]
+                    'package' => [],
+                    'divers' => [],
+                ],
             ],
             [
-                'name' => 'E-Sports',//21
+                'name' => 'E-Sports', // 21
                 'projects' => [
-                    'event' =>  [],
-                    'sponsoring' =>  [
+                    'event' => [],
+                    'sponsoring' => [
                         ['name' => 'sponsoring 1', 'percent_vr' => 10],
                         ['name' => 'sponsoring 2', 'percent_vr' => 10],
                     ],
-                    'package' =>  [],
-                    'divers' =>  [],
-                ]
+                    'package' => [],
+                    'divers' => [],
+                ],
             ],
             [
-                'name' => 'Led / Foot',//22
+                'name' => 'Led / Foot', // 22
                 'projects' => [
-                    'event' =>  [],
-                    'sponsoring' =>  [
+                    'event' => [],
+                    'sponsoring' => [
                         ['name' => 'sponsoring 1', 'percent_vr' => 20],
                         ['name' => 'sponsoring 2', 'percent_vr' => 20],
                     ],
-                    'package' =>  [],
-                    'divers' =>  [],
-                ]
+                    'package' => [],
+                    'divers' => [],
+                ],
             ],
             [
-                'name' => 'La Hulpe concert',//23
+                'name' => 'La Hulpe concert', // 23
                 'projects' => [
-                    'event' =>  [],
-                    'sponsoring' =>  [
+                    'event' => [],
+                    'sponsoring' => [
                         ['name' => 'sponsoring 1', 'percent_vr' => 20],
                         ['name' => 'sponsoring 2', 'percent_vr' => 20],
                     ],
-                    'package' =>  [
+                    'package' => [
                         ['name' => 'package 1', 'percent_vr' => 15],
                         ['name' => 'package 2', 'percent_vr' => 15],
                     ],
-                    'divers' =>  [],
-                ]
+                    'divers' => [],
+                ],
             ],
             [
-                'name' => 'Dinner on the Wheel',//24
+                'name' => 'Dinner on the Wheel', // 24
                 'projects' => [
-                    'event' =>  [
+                    'event' => [
                     ],
-                    'sponsoring' =>  [
+                    'sponsoring' => [
                         ['name' => 'sponsoring 1', 'percent_vr' => 20],
                         ['name' => 'sponsoring 2', 'percent_vr' => 20],
                     ],
-                    'package' =>  [
+                    'package' => [
                         ['name' => 'package 1', 'percent_vr' => 20],
                         ['name' => 'package 2', 'percent_vr' => 20],
                     ],
-                    'divers' =>  [],
-                ]
+                    'divers' => [],
+                ],
             ],
             [
-                'name' => 'AAF',//25
+                'name' => 'AAF', // 25
                 'projects' => [
-                    'event' =>  [],
-                    'sponsoring' =>  [
+                    'event' => [],
+                    'sponsoring' => [
                         ['name' => 'sponsoring 1', 'percent_vr' => 20],
                         ['name' => 'sponsoring 2', 'percent_vr' => 20],
                     ],
-                    'package' =>  [],
-                    'divers' =>  [],
-                ]
+                    'package' => [],
+                    'divers' => [],
+                ],
             ],
             [
-                'name' => 'Affordable art fair',//26
+                'name' => 'Affordable art fair', // 26
                 'projects' => [
-                    'event' =>  [],
-                    'sponsoring' =>  [
+                    'event' => [],
+                    'sponsoring' => [
                         ['name' => 'sponsoring 1', 'percent_vr' => 20],
                         ['name' => 'sponsoring 2', 'percent_vr' => 20],
                     ],
-                    'package' =>  [],
-                    'divers' =>  [],
-                ]
+                    'package' => [],
+                    'divers' => [],
+                ],
             ],
         ];
     }

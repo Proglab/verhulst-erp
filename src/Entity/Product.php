@@ -136,7 +136,7 @@ class Product
         return (float) $this->pa;
     }
 
-    public function setPa(?string $pa): self
+    public function setPa(?float $pa): self
     {
         $this->pa = $pa;
 

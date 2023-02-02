@@ -116,7 +116,7 @@ class Sales
 
     public function getMarge(): float
     {
-        return $this->getPrice()/100 - $this->product->getPa()/100;
+        return $this->getPrice() / 100 - $this->product->getPa() / 100;
     }
 
     public function getDiffCa(): float

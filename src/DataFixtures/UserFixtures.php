@@ -18,7 +18,7 @@ class UserFixtures extends Fixture
             ->verified()
             ->adminAndCommercial()
             ->create([
-                'firstname' => 'Gonzague',//1
+                'firstname' => 'Gonzague', // 1
                 'lastname' => 'Lefere',
                 'email' => 'gonzague@verhulst.be',
             ]);
@@ -29,7 +29,7 @@ class UserFixtures extends Fixture
             ->verified()
             ->adminAndCommercial()
             ->create([
-                'firstname' => 'Jonathan',//2
+                'firstname' => 'Jonathan', // 2
                 'lastname' => 'Jossart',
                 'email' => 'jonathan@verhulst.be',
             ]);
@@ -40,7 +40,7 @@ class UserFixtures extends Fixture
             ->verified()
             ->commercial()
             ->create([
-                'firstname' => 'Cedric',//3
+                'firstname' => 'Cedric', // 3
                 'lastname' => 'Boulanger',
                 'email' => 'cedric@verhulst.be',
             ]);
@@ -51,7 +51,7 @@ class UserFixtures extends Fixture
             ->verified()
             ->commercial()
             ->create([
-                'firstname' => 'Thierry',//4
+                'firstname' => 'Thierry', // 4
                 'lastname' => 'Verhulst',
                 'email' => 'thierry@verhulst.be',
             ]);
@@ -62,7 +62,7 @@ class UserFixtures extends Fixture
             ->verified()
             ->commercial()
             ->create([
-                'firstname' => 'Michael',//5
+                'firstname' => 'Michael', // 5
                 'lastname' => 'Veys',
                 'email' => 'michael@verhulst.be',
             ]);
@@ -73,7 +73,7 @@ class UserFixtures extends Fixture
             ->verified()
             ->commercial()
             ->create([
-                'firstname' => 'Anthony',//6
+                'firstname' => 'Anthony', // 6
                 'lastname' => 'Delhauteur',
                 'email' => 'anthony@verhulst.be',
             ]);
