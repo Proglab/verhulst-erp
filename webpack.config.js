@@ -25,6 +25,9 @@ Encore
     .addEntry('app', './assets/app.js')
     .addEntry('htmx', './assets/htmx.js')
 
+    .addEntry('wysiwyg_css', './assets/trix.css')
+    .addEntry('wysiwyg_js', './assets/trix.js')
+
     // Mailer
     .addStyleEntry("email", "./assets/email/email.scss")
 

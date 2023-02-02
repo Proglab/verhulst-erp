@@ -110,7 +110,7 @@ class CommissionsController extends DashboardController
             $com->setProduct($product);
         }
 
-        $com->setPercentCom((int) $request->request->get('com', 0));
+        $com->setPercentCom((float) $request->request->get('com', 0));
 
         $comRepo->save($com, true);
 
@@ -141,7 +141,7 @@ class CommissionsController extends DashboardController
         $productRepo = $this->entityManager->getRepository(Product::class);
         /** @var Product $product */
         $product = $productRepo->find($project_id);
-        $product->setPercentVr((int) $request->request->get('com', 0));
+        $product->setPercentVr((float) $request->request->get('com', 0));
         $productRepo->save($product, true);
 
         return $this->render('admin/commission/_input_percent.html.twig', [

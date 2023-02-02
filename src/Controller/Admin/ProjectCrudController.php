@@ -7,12 +7,23 @@ namespace App\Controller\Admin;
 use App\Entity\Project;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class ProjectCrudController extends BaseCrudController
 {
+
+    public function configureAssets(Assets $assets): Assets
+    {
+        $assets = parent::configureAssets($assets);
+        $assets->addWebpackEncoreEntry('wysiwyg_css');
+        $assets->addWebpackEncoreEntry('wysiwyg_js');
+
+        return $assets;
+    }
+
     public function configureCrud(Crud $crud): Crud
     {
         $crud->setEntityLabelInPlural('Projets')

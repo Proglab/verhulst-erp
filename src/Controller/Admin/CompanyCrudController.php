@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CountryField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class CompanyCrudController extends BaseCrudController
@@ -63,8 +64,9 @@ class CompanyCrudController extends BaseCrudController
         $vat = TextField::new('vat_number');
         $panel2 = FormField::addPanel()->addCssClass('col-6');
         $contacts = CollectionField::new('contact')->setLabel('Contacts')->allowAdd(true)->allowDelete(true)->useEntryCrudForm(CompanyContactCrudController::class)->setColumns(12);
+        $note = TextEditorField::new('note')->setLabel('Note');
 
-        $response = [$panel1, $name, $street, $number, $box, $pc, $city, $country, $vat, $panel2, $contacts];
+        $response = [$panel1, $name, $street, $number, $box, $pc, $city, $country, $vat, $panel2, $contacts, $note];
 
         return $response;
     }
