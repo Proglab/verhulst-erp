@@ -42,4 +42,4 @@ services:
 
     App\Twig\TwigStringExtension:
         arguments:
-            $sanitizer: '@html_sanitizer.default'
+            $sanitizer: '@html_sanitizer'

@@ -129,9 +129,6 @@
     "laminas/laminas-code": {
         "version": "4.5.1"
     },
-    "league/uri-parser": {
-        "version": "1.4.1"
-    },
     "lorenzo/pinky": {
         "version": "1.0.5"
     },
@@ -272,18 +269,6 @@
     },
     "sebastian/version": {
         "version": "3.0.2"
-    },
-    "sensio/framework-extra-bundle": {
-        "version": "6.2",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "5.2",
-            "ref": "fb7e19da7f013d0d422fa9bce16f5c510e27609b"
-        },
-        "files": [
-            "config/packages/sensio_framework_extra.yaml"
-        ]
     },
     "stof/doctrine-extensions-bundle": {
         "version": "1.7",
@@ -719,21 +704,6 @@
     },
     "symfonycasts/verify-email-bundle": {
         "version": "v1.7.0"
-    },
-    "tgalopin/html-sanitizer": {
-        "version": "1.5.0"
-    },
-    "tgalopin/html-sanitizer-bundle": {
-        "version": "1.4",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "95b935177db9abb65356fe19e57fe5abd908b5b8"
-        },
-        "files": [
-            "config/packages/html_sanitizer.yaml"
-        ]
     },
     "theseer/tokenizer": {
         "version": "1.2.1"

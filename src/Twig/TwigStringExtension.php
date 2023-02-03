@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
-use HtmlSanitizer\Sanitizer;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 class TwigStringExtension extends AbstractExtension
 {
     public function __construct(
-        private readonly Sanitizer $sanitizer,
+        private readonly HtmlSanitizerInterface $sanitizer,
     ) {
     }
 
