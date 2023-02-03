@@ -12,7 +12,7 @@ use App\Service\Mailer;
 use Doctrine\ORM\EntityManagerInterface;
 use Endroid\QrCode\Builder\Builder;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -162,21 +162,21 @@ class SecurityController extends BaseController
         return $this->redirectToRoute('app_login');
     }
 
-    #[IsGranted(data: User::ROLE_USER, message: 'Vous devez être authentifié pour accéder à cette page !')]
+    #[IsGranted(User::ROLE_USER, message: 'Vous devez être authentifié pour accéder à cette page !')]
     #[Route(path: '/modifier-mon-mot-de-passe', name: 'app_password_update')]
     public function updatePassword(Request $request): RedirectResponse|Response
     {
         return $this->renderForm('security/update_password.html.twig');
     }
 
-    #[IsGranted(data: User::ROLE_USER)]
+    #[IsGranted(User::ROLE_USER)]
     #[Route(path: '/authentification-2-facteurs', name: 'app_2fa_enable')]
     public function enable2fa(Request $request): Response
     {
         return $this->renderForm('security/2fa/enable2fa.html.twig');
     }
 
-    #[IsGranted(data: User::ROLE_USER)]
+    #[IsGranted(User::ROLE_USER)]
     #[Route(path: '/authentification-2-facteurs/desactivation', name: 'app_2fa_disable')]
     public function disable2fa(): Response
     {
@@ -196,7 +196,7 @@ class SecurityController extends BaseController
         return $this->redirectToRoute('home');
     }
 
-    #[IsGranted(data: User::ROLE_USER)]
+    #[IsGranted(User::ROLE_USER)]
     #[Route(path: '/authentification-2-facteurs/qr-code', name: 'app_qr_code')]
     public function displayGoogleAuthenticatorQrCode(): Response
     {
@@ -214,7 +214,7 @@ class SecurityController extends BaseController
             });
     }
 
-    #[IsGranted(data: User::ROLE_USER)]
+    #[IsGranted(User::ROLE_USER)]
     #[Route(path: '/mon-profil', name: 'app_update_profile')]
     public function updateProfile(Request $request): Response
     {
