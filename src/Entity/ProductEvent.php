@@ -20,7 +20,7 @@ class ProductEvent extends Product
 
     public function __toString()
     {
-        return $this->getName() . ' - (' . $this->getDate()->format('d/m/Y') . ')';
+        return $this->getProject()->getName() . ' - ' . $this->getName() . ' - (' . $this->getDate()->format('d/m/Y') . ')';
     }
 
     public function getDate(): ?\DateTimeInterface

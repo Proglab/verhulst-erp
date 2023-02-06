@@ -27,7 +27,6 @@ class CommissionsController extends DashboardController
     {
     }
 
-
     #[Route('/admin', name: 'admin')]
     public function admin(): Response
     {

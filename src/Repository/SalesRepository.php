@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\Product;
 use App\Entity\Sales;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -41,28 +42,15 @@ class SalesRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Sales[] Returns an array of Sales objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function getQuantitySaleByProduct(Product $product): int
+    {
+        $sql = 'SELECT SUM(`quantity`) as totalQuantity FROM `sales` WHERE `product_id` = ' . $product->getId() . ' GROUP BY `product_id`';
+        $query = $this->getEntityManager()->getConnection()->executeQuery($sql);
+        $result = $query->fetchOne();
+        if (null === $result || false === $result) {
+            return 0;
+        }
 
-//    public function findOneBySomeField($value): ?Sales
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        return (int) $result;
+    }
 }

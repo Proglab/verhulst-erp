@@ -21,9 +21,12 @@ class ProductSponsoring extends Product
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?float $ca = null;
 
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    private ?int $quantity_max = null;
+
     public function __toString()
     {
-        return $this->getName();
+        return $this->getProject()->getName() . ' - ' . $this->getName();
     }
 
     public function getCa(): ?float
@@ -58,6 +61,18 @@ class ProductSponsoring extends Product
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getQuantityMax(): ?int
+    {
+        return $this->quantity_max;
+    }
+
+    public function setQuantityMax(?int $quantity_max): self
+    {
+        $this->quantity_max = $quantity_max;
 
         return $this;
     }

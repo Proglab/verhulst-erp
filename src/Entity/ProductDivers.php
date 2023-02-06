@@ -16,7 +16,7 @@ class ProductDivers extends Product
 
     public function __toString()
     {
-        return $this->getName();
+        return $this->getProject()->getName() . ' - ' . $this->getName();
     }
 
     public function getProject(): ?Project

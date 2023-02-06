@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardPagesController extends DashboardController
 {
-    #[Route('/admin/{_locale}', name: 'admin')]
+    #[Route('/admin/{_locale}', name: 'dashboard_admin')]
     public function index(): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {

@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\SalesRepository;
+use App\Validator as MyAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SalesRepository::class)]
+#[MyAssert\MaxProductSales]
 class Sales
 {
     #[ORM\Id]
@@ -41,6 +43,9 @@ class Sales
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
+    #[ORM\Column(nullable: false)]
+    private int $quantity = 1;
+
     public function __construct()
     {
         $this->contact = new ArrayCollection();
@@ -54,6 +59,15 @@ class Sales
     public function getPrice(): ?int
     {
         return (int) $this->price;
+    }
+
+    public function getTotalPrice(): ?int
+    {
+        if (0 === $this->getQuantity()) {
+            return (int) $this->price;
+        }
+
+        return (int) $this->price * $this->getQuantity();
     }
 
     public function setPrice(?int $price): self
@@ -116,7 +130,7 @@ class Sales
 
     public function getMarge(): float
     {
-        return $this->getPrice() / 100 - $this->product->getPa() / 100;
+        return $this->getTotalPrice() / 100 - $this->product->getPa() / 100;
     }
 
     public function getDiffCa(): float
@@ -168,6 +182,18 @@ class Sales
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getQuantity(): int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): self
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }
