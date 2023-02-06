@@ -27,6 +27,13 @@ class CommissionsController extends DashboardController
     {
     }
 
+
+    #[Route('/admin', name: 'admin')]
+    public function admin(): Response
+    {
+        return $this->redirectToRoute('dashboard_admin');
+    }
+
     #[Route('/admin/{_locale}/commission', name: 'commission_index')]
     #[IsGranted('ROLE_ADMIN')]
     public function com(string $_locale): Response
