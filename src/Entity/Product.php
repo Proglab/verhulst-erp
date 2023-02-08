@@ -39,6 +39,9 @@ class Product
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $doc = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description = null;
+
     public function __construct()
     {
         $this->sales = new ArrayCollection();
@@ -154,6 +157,18 @@ class Product
     public function setDoc(?string $doc): self
     {
         $this->doc = $doc;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }

@@ -20,9 +20,6 @@ class ProductPackageVip extends Product
     #[ORM\JoinColumn(nullable: false)]
     private ?Project $project = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $description = null;
-
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     private ?int $quantity_max = null;
 
@@ -51,18 +48,6 @@ class ProductPackageVip extends Product
     public function setProject(?Project $project): self
     {
         $this->project = $project;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): self
-    {
-        $this->description = $description;
 
         return $this;
     }

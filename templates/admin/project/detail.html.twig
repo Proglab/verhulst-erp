@@ -1,0 +1,120 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}
+Projet : {{ project.name }}
+{% endblock %}
+
+{% block main %}
+    {% if project.productEvent.count > 0 %}
+        <h2 class="text-uppercase text-center font-weight-bolder verhulst mb-4">Events</h2>
+        <!-- Three columns of text below the carousel -->
+        <div class="row mb-4">
+            {% for product in project.productEvent %}
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between">
+                            <h3>{{ product.name }}</h3>
+                            <div>
+                                <a href="#">
+                                    <i class="fa-solid fa-pen-to-square fa-2x"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p><b>Date : </b> {{ product.date|date('d/m/Y') }}</p>
+                            <p>{{ product.description|raw }}</p>
+                            <p><b>Prix d'achat : </b> {{ product.pa|number_format(2, ',', ' ') }} €</p>
+                            {% if product.doc is not null %}
+                                <p><a href="/files/products/{{ product.doc }}" target="_blank">Download {{ product.doc }}</a></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div><!-- /.col-lg-4 -->
+            {% endfor %}
+        </div>
+        <hr class="featurette-divider">
+    {% endif %}
+
+    {% if project.productPackage.count > 0 %}
+        <h2 class="text-uppercase text-center font-weight-bolder verhulst mb-4">Package</h2>
+        <div class="row mb-4">
+            {% for product in project.productPackage %}
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between">
+                            <h3>{{ product.name }}</h3>
+                            <div>
+                                <a href="#">
+                                    <i class="fa-solid fa-pen-to-square fa-2x"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p>{{ product.description|raw }}</p>
+                            <p><b>Prix d'achat : </b> {{ product.pa|number_format(2, ',', ' ') }} €</p>
+                            {% if product.doc is not null %}
+                                <p><a href="/files/products/{{ product.doc }}" target="_blank">Download {{ product.doc }}</a></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div><!-- /.col-lg-4 -->
+            {% endfor %}
+        </div><!-- /.row -->
+        <hr class="featurette-divider">
+    {% endif %}
+
+    {% if project.productSponsoring.count > 0 %}
+    <h2 class="text-uppercase text-center font-weight-bolder verhulst mb-4">Sponsoring</h2>
+    <div class="row">
+        {% for product in project.productSponsoring %}
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <h3>{{ product.name }}</h3>
+                        <div>
+                            <a href="#">
+                                <i class="fa-solid fa-pen-to-square fa-2x"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p>{{ product.description|raw }}</p>
+                        <p><b>Prix d'achat : </b> {{ product.pa|number_format(2, ',', ' ') }} €</p>
+                        {% if product.doc is not null %}
+                            <p><a href="/files/products/{{ product.doc }}" target="_blank">Download {{ product.doc }}</a></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div><!-- /.col-lg-4 -->
+        {% endfor %}
+    </div><!-- /.row -->
+    <hr class="featurette-divider">
+    {% endif %}
+
+    {% if project.productDivers.count > 0 %}
+    <h2 class="text-uppercase text-center font-weight-bolder verhulst mb-4">Divers</h2>
+    <div class="row">
+        {% for product in project.productDivers %}
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <h3>{{ product.name }}</h3>
+                        <div>
+                            <a href="#">
+                                <i class="fa-solid fa-pen-to-square fa-2x"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p>{{ product.description|raw }}</p>
+                        <p><b>Prix d'achat : </b> {{ product.pa|number_format(2, ',', ' ') }} €</p>
+                        {% if product.doc is not null %}
+                            <p><a href="/files/products/{{ product.doc }}" target="_blank">Download {{ product.doc }}</a></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div><!-- /.col-lg-4 -->
+        {% endfor %}
+    </div><!-- /.row -->
+    {% endif %}
+{% endblock %}
