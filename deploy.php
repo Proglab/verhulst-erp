@@ -19,7 +19,7 @@ task('deploy:setup', function () {
     run('cd {{deploy_path}}');
     run('mkdir -p .dep');
     run('mkdir -p releases');
-    run('mkdir -p shared');
+    run('mkdir -p shared/public/files/products');
 });
 
 task('deploy:npm', function () {
@@ -85,8 +85,8 @@ task('deploy:update_code', function () {
 set('repository', 'git@github.com:Proglab/verhulst-erp.git');
 
 add('shared_files', []);
-add('shared_dirs', ['var/files']);
-add('writable_dirs', ['var/files']);
+add('shared_dirs', ['var/files', 'public/files/products']);
+add('writable_dirs', ['var/files', 'public/files/products']);
 
 // Hosts
 

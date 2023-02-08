@@ -7,6 +7,7 @@ namespace App\Controller\Admin;
 use App\Entity\ProductPackageVip;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
@@ -27,15 +28,16 @@ class ProductPackageVipCrudController extends AbstractCrudController
         $ca = MoneyField::new('ca')->setCurrency('EUR')->setStoredAsCents(false)->setLabel('Prix de vente');
         $description = TextEditorField::new('description');
         $quantityMax = IntegerField::new('quantity_max');
+        $image = ImageField::new('doc')->setBasePath('files/products')->setUploadDir('../../shared/public/files/products');
 
         switch ($pageName) {
             case Crud::PAGE_DETAIL:
             case Crud::PAGE_INDEX:
-            case Crud::PAGE_EDIT:
                 $response = [$name, $percentVr, $ca, $description, $quantityMax];
                 break;
+            case Crud::PAGE_EDIT:
             case Crud::PAGE_NEW:
-                $response = [$name, $percentVr, $ca, $description, $quantityMax];
+                $response = [$name, $percentVr, $ca, $description, $quantityMax, $image];
                 break;
             default:
                 $response = [$name, $percentVr, $ca, $description, $quantityMax];

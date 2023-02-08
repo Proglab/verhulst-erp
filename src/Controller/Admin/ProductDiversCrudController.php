@@ -7,6 +7,7 @@ namespace App\Controller\Admin;
 use App\Entity\ProductDivers;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
@@ -21,6 +22,7 @@ class ProductDiversCrudController extends AbstractCrudController
     {
         $name = TextField::new('name');
         $percentVr = PercentField::new('percent_vr')->setLabel('Com Verhulst')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false);
+        $image = ImageField::new('doc')->setBasePath('files/products')->setUploadDir('../../shared/public/files/products');
 
         switch ($pageName) {
             case Crud::PAGE_DETAIL:
@@ -29,7 +31,7 @@ class ProductDiversCrudController extends AbstractCrudController
                 break;
             case Crud::PAGE_NEW:
             case Crud::PAGE_EDIT:
-                $response = [$name, $percentVr];
+                $response = [$name, $percentVr, $image];
                 break;
             default:
                 $response = [$name, $percentVr];

@@ -7,6 +7,7 @@ namespace App\Controller\Admin;
 use App\Entity\ProductEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -34,6 +35,8 @@ class ProductEventCrudController extends BaseCrudController
             ->setLabel('Prix achat')
             ->setCurrency('EUR');
 
+        $image = ImageField::new('doc')->setBasePath('files/products')->setUploadDir('../../shared/public/files/products');
+
         switch ($pageName) {
             case Crud::PAGE_DETAIL:
             case Crud::PAGE_INDEX:
@@ -41,7 +44,7 @@ class ProductEventCrudController extends BaseCrudController
                 break;
             case Crud::PAGE_NEW:
             case Crud::PAGE_EDIT:
-                $response = [$name, $date, $percentVr, $pa];
+                $response = [$name, $date, $percentVr, $pa, $image];
                 break;
             default:
                 $response = [$name, $date, $percentVr, $pa];

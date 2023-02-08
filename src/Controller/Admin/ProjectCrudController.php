@@ -94,9 +94,8 @@ class ProjectCrudController extends BaseCrudController
     }
 
     /**
-     * @param EntityManagerInterface $entityManager
      * @param ?object $entityInstance
-     * @return void
+     *
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
      */
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void

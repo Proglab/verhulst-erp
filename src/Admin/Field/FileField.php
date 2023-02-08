@@ -6,7 +6,7 @@ namespace App\Admin\Field;
 
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FieldTrait;
-use Vich\UploaderBundle\Form\Type\VichFileType;
+use EasyCorp\Bundle\EasyAdminBundle\Form\Type\FileUploadType;
 
 final class FileField implements FieldInterface
 {
@@ -17,7 +17,7 @@ final class FileField implements FieldInterface
         return (new self())
             ->setProperty($propertyName)
             ->setLabel($label)
-            ->setFormType(VichFileType::class)
+            ->setFormType(FileUploadType::class)
             ->setFormTypeOptions(
                 $fieldsConfig
             );
