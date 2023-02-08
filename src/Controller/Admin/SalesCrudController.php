@@ -141,7 +141,6 @@ class SalesCrudController extends BaseCrudController
     }
 
     /**
-     * @param AdminContext $context
      * @return KeyValueStore|Response
      */
     public function index(AdminContext $context)

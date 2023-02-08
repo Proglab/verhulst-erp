@@ -20,7 +20,9 @@ use Symfony\Component\Mailer\MailerInterface;
 
 class ProjectCrudController extends BaseCrudController
 {
-    public function __construct(private MailerInterface $mailer){}
+    public function __construct(private MailerInterface $mailer)
+    {
+    }
 
     public function configureAssets(Assets $assets): Assets
     {
@@ -58,7 +60,7 @@ class ProjectCrudController extends BaseCrudController
             case Crud::PAGE_DETAIL:
             case Crud::PAGE_INDEX:
             case Crud::PAGE_EDIT:
-            $response = [$name, $projectEvent, $projectSponsor, $projectPackage, $projectDivers];
+                $response = [$name, $projectEvent, $projectSponsor, $projectPackage, $projectDivers];
                 break;
             case Crud::PAGE_NEW:
                 $response = [$name, $mail, $projectEvent, $projectSponsor, $projectPackage, $projectDivers];
@@ -66,8 +68,6 @@ class ProjectCrudController extends BaseCrudController
             default:
                 $response = [$name, $projectEvent, $projectSponsor, $projectPackage, $projectDivers];
         }
-
-
 
         return $response;
     }
@@ -93,10 +93,15 @@ class ProjectCrudController extends BaseCrudController
         return $actions;
     }
 
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @param ?object $entityInstance
+     * @return void
+     * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
+     */
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
-        if ($entityInstance->isMail() === true) {
-
+        if (true === $entityInstance->isMail()) {
             /** @var UserRepository $userRepo */
             $userRepo = $entityManager->getRepository(User::class);
             /** @var User[] $users */
@@ -106,7 +111,7 @@ class ProjectCrudController extends BaseCrudController
                 $email = (new TemplatedEmail())
                     ->from('info@verhulst.be')
                     ->to($user->getEmail())
-                    //->priority(Email::PRIORITY_HIGH)
+                    // ->priority(Email::PRIORITY_HIGH)
                     ->subject('Un nouveau projet a été créé')
                     ->htmlTemplate('email/admin/new_project/new_project.html.twig')
                     ->context([
