@@ -1,0 +1,21 @@
+{% extends "email/emailBase.html.twig" %}
+
+{% block content %}
+    <row>
+        <columns>
+            <h2>Un nouveau projet a été ajouté</h2>
+            <p>
+                Le projet <b>{{project.name}}</b> a été ajouté. Vous pouvez désormais commencer à le vendre.
+            </p>
+        </columns>
+    </row>
+    <row>
+        <columns>
+            <center>
+                <button href="{{ url('admin') }}">
+                    Ajouter une vente
+                </button>
+            </center>
+        </columns>
+    </row>
+{% endblock %}

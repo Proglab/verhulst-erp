@@ -27,7 +27,6 @@ class ProductSponsoringCrudController extends AbstractCrudController
         $percentVr = PercentField::new('percent_vr')->setLabel('Com Verhulst')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false);
         $ca = MoneyField::new('ca')->setCurrency('EUR')->setStoredAsCents(false)->setLabel('Prix de vente');
         $description = TextEditorField::new('description');
-        $mail = BooleanField::new('mail')->setLabel('Prévenir les commerciaux ?');
         $quantityMax = IntegerField::new('quantity_max');
 
         switch ($pageName) {
@@ -37,7 +36,7 @@ class ProductSponsoringCrudController extends AbstractCrudController
                 $response = [$name, $percentVr, $ca, $description, $quantityMax];
                 break;
             case Crud::PAGE_NEW:
-                $response = [$name, $percentVr, $ca, $description, $quantityMax, $mail];
+                $response = [$name, $percentVr, $ca, $description, $quantityMax];
                 break;
             default:
                 $response = [$name, $percentVr, $ca, $description, $quantityMax];
