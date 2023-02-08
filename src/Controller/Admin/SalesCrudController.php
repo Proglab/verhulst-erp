@@ -25,6 +25,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 class SalesCrudController extends BaseCrudController
 {
@@ -139,6 +140,10 @@ class SalesCrudController extends BaseCrudController
         return $qb;
     }
 
+    /**
+     * @param AdminContext $context
+     * @return KeyValueStore|Response
+     */
     public function index(AdminContext $context)
     {
         $user = $this->getUser();
