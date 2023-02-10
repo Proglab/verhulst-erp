@@ -1,0 +1,62 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Projet</th>
+        <th scope="col">Produit</th>
+        <th scope="col">Description</th>
+        <th scope="col">Sélectionner</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for project in projects %}
+        {% for product in project.productEvent %}
+            {% set url = ea_url()
+                .setAction('createSale')
+                .set('contactId', contact_id)
+                .set('productId', product.id)%}
+            <tr>
+                <th scope="row">{{ project.name }}</th>
+                <td>{{ product.name }}</td>
+                <td>{{ product.description }}</td>
+                <td><a href="{{ url }}"><i class="fa-solid fa-circle-check"></i></a></td>
+            </tr>
+        {% endfor %}
+        {% for product in project.productPackage %}
+            {% set url = ea_url()
+                .setAction('createSale')
+                .set('contactId', contact_id)
+                .set('productId', product.id)%}
+            <tr>
+                <th scope="row">{{ project.name }}</th>
+                <td>{{ product.name }}</td>
+                <td>{{ product.description }}</td>
+                <td><a href="{{ url }}"><i class="fa-solid fa-circle-check"></i></a></td>
+            </tr>
+        {% endfor %}
+        {% for product in project.productSponsoring %}
+            {% set url = ea_url()
+                .setAction('createSale')
+                .set('contactId', contact_id)
+                .set('productId', product.id)%}
+            <tr>
+                <th scope="row">{{ project.name }}</th>
+                <td>{{ product.name }}</td>
+                <td>{{ product.description }}</td>
+                <td><a href="{{ url }}"><i class="fa-solid fa-circle-check"></i></a></td>
+            </tr>
+        {% endfor %}
+        {% for product in project.productDivers %}
+            {% set url = ea_url()
+                .setAction('createSale')
+                .set('contactId', contact_id)
+                .set('productId', product.id) %}
+            <tr>
+                <th scope="row">{{ project.name }}</th>
+                <td>{{ product.name }}</td>
+                <td>{{ product.description }}</td>
+                <td><a href="{{ url }}"><i class="fa-solid fa-circle-check"></i></a></td>
+            </tr>
+        {% endfor %}
+    {% endfor %}
+    </tbody>
+</table>

@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\Commission;
+use App\Entity\Company;
+use App\Entity\CompanyContact;
+use App\Entity\Product;
+use App\Entity\Project;
 use App\Entity\Sales;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,17 +22,31 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
+use EasyCorp\Bundle\EasyAdminBundle\Event\AfterCrudActionEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityPersistedEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeCrudActionEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Exception\ForbiddenActionException;
+use EasyCorp\Bundle\EasyAdminBundle\Exception\InsufficientEntityPermissionException;
+use EasyCorp\Bundle\EasyAdminBundle\Factory\EntityFactory;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class SalesCrudController extends BaseCrudController
 {
+    public function __construct(private EntityManagerInterface $entityManager, private AdminUrlGenerator $adminUrlGenerator)
+    {
+
+    }
+
     public function configureCrud(Crud $crud): Crud
     {
         $crud->setEntityLabelInPlural('Ventes')
@@ -40,6 +58,15 @@ class SalesCrudController extends BaseCrudController
 
     public function configureActions(Actions $actions): Actions
     {
+        $searchClient = Action::new('searchClient', false)
+            ->linkToCrudAction('searchClient');
+
+        $searchProduct = Action::new('searchProduct', false)
+            ->linkToCrudAction('searchProduct');
+
+        $listProduct = Action::new('listProduct', false)
+            ->linkToCrudAction('listProduct');
+
         $actions = parent::configureActions($actions);
         $actions
             ->setPermission(Action::NEW, 'ROLE_COMMERCIAL')
@@ -50,6 +77,8 @@ class SalesCrudController extends BaseCrudController
             ->setPermission(Action::SAVE_AND_RETURN, 'ROLE_COMMERCIAL')
             ->setPermission(Action::SAVE_AND_ADD_ANOTHER, 'ROLE_COMMERCIAL')
             ->setPermission(Action::SAVE_AND_CONTINUE, 'ROLE_COMMERCIAL')
+            ->setPermission('searchClient', 'ROLE_COMMERCIAL')
+            ->setPermission('searchProduct', 'ROLE_COMMERCIAL')
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->update(Crud::PAGE_INDEX, Action::DETAIL, function (Action $action) {
                 return $action->setIcon('fa fa-eye');
@@ -149,6 +178,112 @@ class SalesCrudController extends BaseCrudController
 
         return $this->render('admin/recap/myrecap.html.twig', [
             'user' => $user,
+        ]);
+    }
+
+
+    public function new(AdminContext $context)
+    {
+        return $this->render('admin/sales/new.html.twig');
+    }
+
+    public function searchClient(AdminContext $context)
+    {
+        $request = $context->getRequest();
+        $company = $this->entityManager->getRepository(Company::class)->search($request->get('search'));
+        return $this->render('admin/sales/search_client.html.twig', [
+                'companies' => $company
+            ]
+        );
+    }
+
+    public function listProduct(AdminContext $context)
+    {
+        $request = $context->getRequest();
+        $contact = $this->entityManager->getRepository(CompanyContact::class)->find($request->get('contactId'));
+        return $this->render('admin/sales/list_product.html.twig', [
+                'contact' => $contact
+            ]
+        );
+    }
+
+    public function searchProduct(AdminContext $context)
+    {
+        $request = $context->getRequest();
+        $projects = $this->entityManager->getRepository(Project::class)->search($request->get('search'));
+        return $this->render('admin/sales/search_product.html.twig', [
+                'projects' => $projects,
+                'contact_id' => $request->get('contactId')
+            ]
+        );
+    }
+
+    public function createSale(AdminContext $context)
+    {
+        $event = new BeforeCrudActionEvent($context);
+        $this->container->get('event_dispatcher')->dispatch($event);
+        if ($event->isPropagationStopped()) {
+            return $event->getResponse();
+        }
+
+        if (!$this->isGranted(Permission::EA_EXECUTE_ACTION, ['action' => Action::NEW, 'entity' => null])) {
+            throw new ForbiddenActionException($context);
+        }
+
+        if (!$context->getEntity()->isAccessible()) {
+            throw new InsufficientEntityPermissionException($context);
+        }
+
+        $context->getEntity()->setInstance($this->createEntity($context->getEntity()->getFqcn()));
+        $this->container->get(EntityFactory::class)->processFields($context->getEntity(), FieldCollection::new($this->configureFields(Crud::PAGE_NEW)));
+        $context->getCrud()->setFieldAssets($this->getFieldAssets($context->getEntity()->getFields()));
+
+        $entity = $context->getEntity()->getInstance();
+        $contact = $this->entityManager->getRepository(CompanyContact::class)->find($context->getRequest()->get('contactId'));
+        $product = $this->entityManager->getRepository(Product::class)->find($context->getRequest()->get('productId'));
+        $entity->setProduct($product);
+        $entity->addContact($contact);
+        $entity->setUser($this->getUser());
+
+        $newForm = $this->createNewForm($context->getEntity(), $context->getCrud()->getNewFormOptions(), $context);
+        $newForm->handleRequest($context->getRequest());
+
+        $entityInstance = $newForm->getData();
+
+        $context->getEntity()->setInstance($entityInstance);
+
+        if ($newForm->isSubmitted() && $newForm->isValid()) {
+            $this->processUploadedFiles($newForm);
+
+            $event = new BeforeEntityPersistedEvent($entityInstance);
+            $this->container->get('event_dispatcher')->dispatch($event);
+            $entityInstance = $event->getEntityInstance();
+
+            $this->persistEntity($this->container->get('doctrine')->getManagerForClass($context->getEntity()->getFqcn()), $entityInstance);
+
+            $this->container->get('event_dispatcher')->dispatch(new AfterEntityPersistedEvent($entityInstance));
+            $context->getEntity()->setInstance($entityInstance);
+
+            return $this->redirect($this->adminUrlGenerator
+                ->setAction(Action::INDEX)
+                ->generateUrl());
+        }
+
+        $responseParameters = $this->configureResponseParameters(KeyValueStore::new([
+            'pageName' => Crud::PAGE_NEW,
+            'templateName' => 'crud/new',
+            'entity' => $context->getEntity(),
+            'new_form' => $newForm,
+        ]));
+
+        $event = new AfterCrudActionEvent($context, $responseParameters);
+        $this->container->get('event_dispatcher')->dispatch($event);
+        if ($event->isPropagationStopped()) {
+            return $event->getResponse();
+        }
+
+        return $this->render('admin/sales/final.html.twig', [
+            'form' => $newForm->createView()
         ]);
     }
 }

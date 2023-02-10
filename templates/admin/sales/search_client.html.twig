@@ -1,0 +1,27 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Nom de la société</th>
+        <th scope="col">Prénom</th>
+        <th scope="col">Nom</th>
+        <th scope="col">Mail</th>
+        <th scope="col">Sélectionner</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for company in companies %}
+        {% for contact in company.contact %}
+            {% set url = ea_url()
+                .setAction('listProduct')
+                .set('contactId', contact.id)%}
+            <tr>
+                <th scope="row">{{ company.name }}</th>
+                <td>{{ contact.firstname }}</td>
+                <td>{{ contact.lastname }}</td>
+                <td>{{ contact.email }}</td>
+                <td><a href="{{ url }}"><i class="fa-solid fa-circle-check"></i></a></td>
+            </tr>
+        {% endfor %}
+    {% endfor %}
+    </tbody>
+</table>

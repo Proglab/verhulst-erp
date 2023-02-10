@@ -1,0 +1,26 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}Création d'une vente{% endblock %}
+
+{% block main %}
+ {{ form_start(form) }}
+
+ {{ form_row(form.quantity) }}
+ {{ form_row(form.price) }}
+ {{ form_row(form.date) }}
+
+ {% if is_granted('ROLE_ADMIN') %}
+  {{ form_row(form.percent_vr) }}
+  {{ form_row(form.percent_com) }}
+ {% endif %}
+
+ {{ form_widget(form.product, {'attr': {'class': 'd-none'}}) }}
+ {{ form_widget(form.contact, {'attr': {'class': 'd-none'}}) }}
+
+ <div class="mt-3">
+   <input type="submit" value="Add" class="btn btn-primary">
+ </div>
+
+ {{ form_end(form) }}
+
+{% endblock %}

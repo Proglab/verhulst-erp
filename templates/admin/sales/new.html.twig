@@ -1,0 +1,24 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}Création d'une vente{% endblock %}
+
+{% block page_actions %}
+    {% set url = ea_url()
+        .setController('App\\Controller\\Admin\\CompanyCrudController')
+        .setAction('new') %}
+    <div class="global-actions">
+        <a class=" action-new btn btn-primary" href="{{ url }}" data-action-name="new">
+            <i class="action-icon fa fa-plus-square"></i> <span class="action-label">Créer un client</span>
+        </a>
+    </div>
+{% endblock %}
+
+{% block main %}
+    <h2>Sélectionnez le client</h2>
+    {% set url = ea_url()
+        .setAction('searchClient') %}
+
+    <input type="text" name="search" hx-get="{{ url }}" hx-trigger="keyup changed delay:500ms, load" hx-target="#search-results" placeholder="Search..." class="form-control">
+    <div id="search-results"></div>
+
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}Création d'une vente{% endblock %}
+
+{% block main %}
+<h3>Client sélectionné</h3>
+<b>{{ contact.company.name }}</b> {{ contact.firstname }} {{ contact.lastname }}
+    <hr>
+
+<h3>Sélectionnez le Produit</h3>
+{% set url = ea_url()
+    .setAction('searchProduct') %}
+
+<input type="text" name="search" hx-get="{{ url }}" hx-trigger="keyup changed delay:500ms, load" hx-target="#search-results" placeholder="Search..." class="form-control">
+<div id="search-results"></div>
+
+{% endblock %}

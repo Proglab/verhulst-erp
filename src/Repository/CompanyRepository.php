@@ -40,4 +40,17 @@ class CompanyRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function search(string $search)
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c, contact')
+            ->join('c.contact', 'contact')
+            ->where('c.name LIKE :search')
+            ->orWhere('contact.firstname LIKE :search')
+            ->orWhere('contact.lastname LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
+            ->getQuery()
+            ->getResult();
+    }
 }
