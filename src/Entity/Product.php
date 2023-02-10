@@ -161,6 +161,11 @@ class Product
         return $this;
     }
 
+    public function getUrl()
+    {
+        return __DIR__.'/../../../../shared/public/files/products/'.$this->getDoc();
+    }
+
     public function getDescription(): ?string
     {
         return $this->description;

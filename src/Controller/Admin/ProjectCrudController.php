@@ -128,8 +128,9 @@ class ProjectCrudController extends BaseCrudController
     public function detail(AdminContext $context)
     {
         $project = $context->getEntity();
+
         return $this->render('admin/project/detail.html.twig', [
-            'project' => $project->getInstance()
+            'project' => $project->getInstance(),
         ]);
     }
 }
