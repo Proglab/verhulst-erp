@@ -3,6 +3,15 @@
 {% block content_title %}Création d'une vente{% endblock %}
 
 {% block main %}
+ <h3>Client sélectionné</h3>
+ <b>{{ contact.company.name }}</b> {{ contact.firstname }} {{ contact.lastname }}
+ <hr>
+
+ <h3>Produit sélectionné</h3>
+ <b>{{ product.project.name }}</b> {{ product.name }}
+ <hr>
+
+
  {{ form_start(form) }}
 
  {{ form_row(form.quantity) }}

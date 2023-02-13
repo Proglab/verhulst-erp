@@ -41,7 +41,6 @@ class ProjectRepository extends ServiceEntityRepository
         }
     }
 
-
     public function search(string $search)
     {
         return $this->createQueryBuilder('p')
@@ -56,9 +55,8 @@ class ProjectRepository extends ServiceEntityRepository
             ->orWhere('package.name LIKE :search')
             ->orWhere('sponsoring.name LIKE :search')
             ->orWhere('divers.name LIKE :search')
-            ->setParameter('search', '%'.$search.'%')
+            ->setParameter('search', '%' . $search . '%')
             ->getQuery()
             ->getResult();
     }
-
 }

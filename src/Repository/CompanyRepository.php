@@ -49,7 +49,7 @@ class CompanyRepository extends ServiceEntityRepository
             ->where('c.name LIKE :search')
             ->orWhere('contact.firstname LIKE :search')
             ->orWhere('contact.lastname LIKE :search')
-            ->setParameter('search', '%'.$search.'%')
+            ->setParameter('search', '%' . $search . '%')
             ->getQuery()
             ->getResult();
     }

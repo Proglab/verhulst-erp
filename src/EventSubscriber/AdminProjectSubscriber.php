@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace App\EventSubscriber;
 
 use App\Entity\Product;
@@ -6,16 +9,13 @@ use App\Entity\Project;
 use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityDeletedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityDeletedEvent;
-use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class AdminProjectSubscriber implements EventSubscriberInterface
 {
     public function __construct(private ProjectRepository $projectRepository, private EntityManagerInterface $entityManager)
     {
-
     }
 
     public static function getSubscribedEvents()
@@ -42,22 +42,22 @@ class AdminProjectSubscriber implements EventSubscriberInterface
 
     /**
      * @param Product $product
+     *
      * @return void
      */
     private function deleteDoc($product)
     {
-        if ($product->getDoc() !== null) {
+        if (null !== $product->getDoc()) {
             unlink($product->getUrl());
         }
     }
 
     /**
-     * @param Collection $products
      * @return void
      */
     private function deleteDocs(Collection $products)
     {
-        foreach($products as $product) {
+        foreach ($products as $product) {
             $this->deleteDoc($product);
         }
     }

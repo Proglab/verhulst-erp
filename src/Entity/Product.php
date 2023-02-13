@@ -163,7 +163,7 @@ class Product
 
     public function getUrl()
     {
-        return __DIR__.'/../../../../shared/public/files/products/'.$this->getDoc();
+        return __DIR__ . '/../../../../shared/public/files/products/' . $this->getDoc();
     }
 
     public function getDescription(): ?string

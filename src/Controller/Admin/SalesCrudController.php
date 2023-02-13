@@ -44,7 +44,6 @@ class SalesCrudController extends BaseCrudController
 {
     public function __construct(private EntityManagerInterface $entityManager, private AdminUrlGenerator $adminUrlGenerator)
     {
-
     }
 
     public function configureCrud(Crud $crud): Crud
@@ -181,7 +180,6 @@ class SalesCrudController extends BaseCrudController
         ]);
     }
 
-
     public function new(AdminContext $context)
     {
         return $this->render('admin/sales/new.html.twig');
@@ -191,8 +189,9 @@ class SalesCrudController extends BaseCrudController
     {
         $request = $context->getRequest();
         $company = $this->entityManager->getRepository(Company::class)->search($request->get('search'));
+
         return $this->render('admin/sales/search_client.html.twig', [
-                'companies' => $company
+                'companies' => $company,
             ]
         );
     }
@@ -201,8 +200,9 @@ class SalesCrudController extends BaseCrudController
     {
         $request = $context->getRequest();
         $contact = $this->entityManager->getRepository(CompanyContact::class)->find($request->get('contactId'));
+
         return $this->render('admin/sales/list_product.html.twig', [
-                'contact' => $contact
+                'contact' => $contact,
             ]
         );
     }
@@ -211,9 +211,10 @@ class SalesCrudController extends BaseCrudController
     {
         $request = $context->getRequest();
         $projects = $this->entityManager->getRepository(Project::class)->search($request->get('search'));
+
         return $this->render('admin/sales/search_product.html.twig', [
                 'projects' => $projects,
-                'contact_id' => $request->get('contactId')
+                'contact_id' => $request->get('contactId'),
             ]
         );
     }
@@ -283,7 +284,9 @@ class SalesCrudController extends BaseCrudController
         }
 
         return $this->render('admin/sales/final.html.twig', [
-            'form' => $newForm->createView()
+            'form' => $newForm->createView(),
+            'contact' => $contact,
+            'product' => $product,
         ]);
     }
 }
