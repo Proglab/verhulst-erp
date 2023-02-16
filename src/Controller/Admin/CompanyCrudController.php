@@ -20,7 +20,6 @@ class CompanyCrudController extends BaseCrudController
 {
     public function __construct(private AdminUrlGenerator $adminUrlGenerator)
     {
-
     }
 
     public function configureCrud(Crud $crud): Crud
@@ -84,6 +83,7 @@ class CompanyCrudController extends BaseCrudController
             ->setController(CompanyContactCrudController::class)
             ->setAction(Action::NEW)
             ->generateUrl();
+
         return $this->redirect($url);
     }
 }

@@ -41,7 +41,7 @@ class ProjectRepository extends ServiceEntityRepository
         }
     }
 
-    public function search(string $search)
+    public function search(string $search): array
     {
         return $this->createQueryBuilder('p')
             ->select('p')

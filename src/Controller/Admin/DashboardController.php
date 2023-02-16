@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use App\Entity\Company;
 use App\Entity\CompanyContact;
 use App\Entity\Project;
 use App\Entity\Sales;

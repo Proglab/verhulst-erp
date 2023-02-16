@@ -5,28 +5,23 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\CompanyContact;
-use App\Entity\User;
 use App\Repository\UserRepository;
-use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CountryField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 
 class CompanyContactCrudController extends BaseCrudController
 {
-    public function __construct(private AdminUrlGenerator $adminUrlGenerator, private UserRepository $userRepository)
+    public function __construct(private AdminUrlGenerator $adminUrlGenerator)
     {
-
     }
 
     public static function getEntityFqcn(): string
@@ -70,7 +65,6 @@ class CompanyContactCrudController extends BaseCrudController
             return $entityRepository->getCommercialsQb();
         });
         $userName = TextField::new('added_by.fullname')->setLabel('Nom')->setRequired(true)->setColumns(12);
-
 
         switch ($pageName) {
             case Crud::PAGE_NEW:
@@ -117,6 +111,7 @@ class CompanyContactCrudController extends BaseCrudController
             ->setController(CompanyCrudController::class)
             ->setAction(Action::NEW)
             ->generateUrl();
+
         return $this->redirect($url);
     }
 }

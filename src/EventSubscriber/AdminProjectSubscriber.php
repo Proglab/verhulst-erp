@@ -6,9 +6,7 @@ namespace App\EventSubscriber;
 
 use App\Entity\Product;
 use App\Entity\Project;
-use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityDeletedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

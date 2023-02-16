@@ -41,7 +41,7 @@ class CompanyRepository extends ServiceEntityRepository
         }
     }
 
-    public function search(string $search)
+    public function search(string $search): array
     {
         return $this->createQueryBuilder('c')
             ->select('c, contact')
