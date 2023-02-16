@@ -72,7 +72,7 @@ class CompanyCrudController extends BaseCrudController
         $contacts = CollectionField::new('contact')->setLabel('Contacts')->allowAdd(true)->allowDelete(true)->useEntryCrudForm(CompanyContactCrudController::class)->setColumns(12);
         $note = TextEditorField::new('note')->setLabel('Note');
 
-        $response = [$panel1, $name, $street, $number, $box, $pc, $city, $country, $vat, $panel2, $contacts, $note];
+        $response = [$panel1, $name, $street, $number, $box, $pc, $city, $country, $vat, $note, $panel2, $contacts];
 
         return $response;
     }

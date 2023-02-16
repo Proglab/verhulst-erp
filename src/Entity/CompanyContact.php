@@ -7,6 +7,7 @@ namespace App\Entity;
 use App\Repository\CompanyContactRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CompanyContactRepository::class)]
@@ -41,6 +42,9 @@ class CompanyContact
 
     #[ORM\ManyToOne(inversedBy: 'companyContacts')]
     private ?User $added_by = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $note = null;
 
     public function __construct()
     {
@@ -164,6 +168,18 @@ class CompanyContact
     public function setAddedBy(?User $added_by): self
     {
         $this->added_by = $added_by;
+
+        return $this;
+    }
+
+    public function getNote(): ?string
+    {
+        return $this->note;
+    }
+
+    public function setNote(?string $note): self
+    {
+        $this->note = $note;
 
         return $this;
     }
