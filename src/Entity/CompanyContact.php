@@ -39,6 +39,9 @@ class CompanyContact
     #[ORM\Column(length: 30, nullable: true)]
     private ?string $phone = null;
 
+    #[ORM\ManyToOne(inversedBy: 'companyContacts')]
+    private ?User $added_by = null;
+
     public function __construct()
     {
         $this->sales = new ArrayCollection();
@@ -149,6 +152,18 @@ class CompanyContact
     public function setPhone(?string $phone): self
     {
         $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getAddedBy(): ?User
+    {
+        return $this->added_by;
+    }
+
+    public function setAddedBy(?User $added_by): self
+    {
+        $this->added_by = $added_by;
 
         return $this;
     }

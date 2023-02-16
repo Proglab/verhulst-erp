@@ -6,6 +6,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -40,13 +41,21 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     public function getCommercials(): array
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.roles LIKE :role')
-            ->setParameter('role', '%ROLE_COMMERCIAL%')
+        return $this->getCommercialsQb()
             ->getQuery()
             ->getResult()
         ;
     }
+
+    public function getCommercialsQb(): QueryBuilder
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.roles LIKE :role')
+            ->setParameter('role', '%ROLE_COMMERCIAL%')
+            ;
+    }
+
+
 
     // /**
     //  * @return User[] Returns an array of User objects

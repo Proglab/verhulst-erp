@@ -84,6 +84,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Commission::class, orphanRemoval: true)]
     private Collection $commissions;
 
+    #[ORM\OneToMany(mappedBy: 'added_by', targetEntity: CompanyContact::class)]
+    private Collection $companyContacts;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -91,6 +94,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         $this->resendConfirmationEmailRequests = new ArrayCollection();
         $this->sales = new ArrayCollection();
         $this->commissions = new ArrayCollection();
+        $this->companyContacts = new ArrayCollection();
     }
 
     public function __toString()
@@ -378,6 +382,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
             // set the owning side to null (unless already changed)
             if ($commission->getUser() === $this) {
                 $commission->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CompanyContact>
+     */
+    public function getCompanyContacts(): Collection
+    {
+        return $this->companyContacts;
+    }
+
+    public function addCompanyContact(CompanyContact $companyContact): self
+    {
+        if (!$this->companyContacts->contains($companyContact)) {
+            $this->companyContacts->add($companyContact);
+            $companyContact->setAddedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompanyContact(CompanyContact $companyContact): self
+    {
+        if ($this->companyContacts->removeElement($companyContact)) {
+            // set the owning side to null (unless already changed)
+            if ($companyContact->getAddedBy() === $this) {
+                $companyContact->setAddedBy(null);
             }
         }
 

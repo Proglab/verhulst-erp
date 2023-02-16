@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\CompanyContact;
+use App\Entity\User;
+use App\Repository\UserRepository;
+use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -16,11 +19,12 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\CountryField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 
 class CompanyContactCrudController extends BaseCrudController
 {
-    public function __construct(private AdminUrlGenerator $adminUrlGenerator)
+    public function __construct(private AdminUrlGenerator $adminUrlGenerator, private UserRepository $userRepository)
     {
 
     }
@@ -41,19 +45,11 @@ class CompanyContactCrudController extends BaseCrudController
 
     public function configureFields(string $pageName): iterable
     {
-
-
         $company = AssociationField::new('company')->setRequired(true);
-
-
 
         $panel1 = FormField::addPanel()->addCssClass('col-6');
 
-
-
-        $panel2 = FormField::addPanel()->addCssClass('col-6');
         $companyName = TextField::new('company.name')->setLabel('Société')->setRequired(true)->setColumns(12);
-
         $companyStreet = TextField::new('company.street')->setLabel('Rue')->setColumns(12);
         $companyNumber = TextField::new('company.number')->setLabel('Numéro');
         $companyBox = TextField::new('company.box')->setLabel('Boîte');
@@ -62,23 +58,30 @@ class CompanyContactCrudController extends BaseCrudController
         $companyCountry = CountryField::new('company.country')->setLabel('Pays');
         $companyVat = TextField::new('company.vat_number')->setLabel('Numéro de TVA');
 
+        $panel2 = FormField::addPanel()->addCssClass('col-6');
+
         $firstname = TextField::new('firstname')->setLabel('Prénom')->setRequired(true)->setColumns(12);
         $lastname = TextField::new('lastname')->setLabel('Nom')->setRequired(true)->setColumns(12);
         $lang = ChoiceField::new('lang')->setLabel('Langue')->allowMultipleChoices(false)->renderExpanded(false)->setChoices(['Français' => 'fr', 'Nederlands' => 'nl', 'English' => 'en'])->setRequired(true)->setColumns(12);
         $email = EmailField::new('email')->setLabel('E-mail')->setColumns(12);
         $phone = TextField::new('phone')->setLabel('Téléphone')->setColumns(12);
 
+        $user = AssociationField::new('added_by')->setRequired(true)->setFormTypeOption('query_builder', function (UserRepository $entityRepository) {
+            return $entityRepository->getCommercialsQb();
+        });
+        $userName = TextField::new('added_by.fullname')->setLabel('Nom')->setRequired(true)->setColumns(12);
+
 
         switch ($pageName) {
             case Crud::PAGE_NEW:
-                $response = [$firstname, $lastname, $lang, $email, $phone];
+                $response = [$firstname, $lastname, $lang, $email, $phone, $user];
                 break;
             case Crud::PAGE_DETAIL:
             case Crud::PAGE_INDEX:
-                $response = [$company, $firstname, $lastname, $lang, $email, $phone];
+                $response = [$company, $firstname, $lastname, $lang, $email, $phone, $user];
                 break;
             case Crud::PAGE_EDIT:
-                $response = [$panel1, $companyName, $companyStreet, $companyNumber, $companyBox, $companyPc, $companyCity, $companyCountry, $companyVat, $panel2, $firstname, $lastname, $email, $phone];
+                $response = [$panel1, $companyName, $companyStreet, $companyNumber, $companyBox, $companyPc, $companyCity, $companyCountry, $companyVat, $panel2, $firstname, $lastname, $email, $phone, $user];
                 break;
             default:
                 $response = [$company, $firstname, $lastname, $lang, $email, $phone];
