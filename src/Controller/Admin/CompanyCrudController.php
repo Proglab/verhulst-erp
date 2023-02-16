@@ -8,14 +8,21 @@ use App\Entity\Company;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CountryField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 
 class CompanyCrudController extends BaseCrudController
 {
+    public function __construct(private AdminUrlGenerator $adminUrlGenerator)
+    {
+
+    }
+
     public function configureCrud(Crud $crud): Crud
     {
         $crud->setEntityLabelInPlural('Clients')
@@ -69,5 +76,14 @@ class CompanyCrudController extends BaseCrudController
         $response = [$panel1, $name, $street, $number, $box, $pc, $city, $country, $vat, $panel2, $contacts, $note];
 
         return $response;
+    }
+
+    public function index(AdminContext $context)
+    {
+        $url = $this->adminUrlGenerator
+            ->setController(CompanyContactCrudController::class)
+            ->setAction(Action::NEW)
+            ->generateUrl();
+        return $this->redirect($url);
     }
 }

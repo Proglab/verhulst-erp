@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\Company;
+use App\Entity\CompanyContact;
 use App\Entity\Project;
 use App\Entity\Sales;
 use App\Entity\User;
@@ -41,7 +42,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::section('Commercial')->setPermission('ROLE_COMMERCIAL'),
             MenuItem::linkToRoute('admin.menu.dashboard_com', 'fa fa-gauge-high', 'dashboard_com')->setPermission('ROLE_COMMERCIAL'),
 
-            MenuItem::linkToCrud('admin.menu.client', 'fas fa-address-book', Company::class)->setPermission('ROLE_COMMERCIAL'),
+            MenuItem::linkToCrud('admin.menu.client', 'fas fa-address-book', CompanyContact::class)->setPermission('ROLE_COMMERCIAL'),
             MenuItem::linkToCrud('admin.menu.sales', 'fas fa-comments-dollar', Sales::class)->setPermission('ROLE_COMMERCIAL'),
 
             MenuItem::section('Admin')->setPermission('ROLE_ADMIN'),
@@ -50,7 +51,7 @@ class DashboardController extends AbstractDashboardController
 
             MenuItem::linkToCrud('admin.menu.users', 'fas fa-users', User::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('admin.menu.project', 'fas fa-folder-open', Project::class)->setPermission('ROLE_ADMIN'),
-            MenuItem::linkToCrud('admin.menu.client', 'fas fa-address-book', Company::class)->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToCrud('admin.menu.client', 'fas fa-address-book', CompanyContact::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToRoute('admin.menu.commission', 'fas fa-hand-holding-dollar', 'commission_index')->setPermission('ROLE_ADMIN'),
 
             MenuItem::section(),
