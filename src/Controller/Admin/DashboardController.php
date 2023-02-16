@@ -27,7 +27,7 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Verhulst ERP')
+            ->setTitle('<img src="/app-logo.png" />')
             ->renderContentMaximized()
             ->setLocales([
                 'fr' => 'Français',
