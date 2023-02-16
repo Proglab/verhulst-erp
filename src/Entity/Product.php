@@ -161,7 +161,7 @@ class Product
         return $this;
     }
 
-    public function getUrl()
+    public function getUrl(): string
     {
         return __DIR__ . '/../../../../shared/public/files/products/' . $this->getDoc();
     }

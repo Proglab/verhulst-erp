@@ -14,7 +14,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class AdminProjectSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private ProjectRepository $projectRepository, private EntityManagerInterface $entityManager)
+    public function __construct()
     {
     }
 
@@ -25,7 +25,7 @@ class AdminProjectSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function beforeEntityDeletedEvent(BeforeEntityDeletedEvent $event)
+    public function beforeEntityDeletedEvent(BeforeEntityDeletedEvent $event): void
     {
         /** @var Project $entity */
         $entity = $event->getEntityInstance();

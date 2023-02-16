@@ -11,6 +11,8 @@ use App\Entity\Product;
 use App\Entity\Project;
 use App\Entity\Sales;
 use App\Entity\User;
+use App\Repository\CompanyRepository;
+use App\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -185,10 +187,12 @@ class SalesCrudController extends BaseCrudController
         return $this->render('admin/sales/new.html.twig');
     }
 
-    public function searchClient(AdminContext $context)
+    public function searchClient(AdminContext $context): Response
     {
         $request = $context->getRequest();
-        $company = $this->entityManager->getRepository(Company::class)->search($request->get('search'));
+        /** @var CompanyRepository $repo */
+        $repo = $this->entityManager->getRepository(Company::class);
+        $company = $repo->search($request->get('search'));
 
         return $this->render('admin/sales/search_client.html.twig', [
                 'companies' => $company,
@@ -196,7 +200,7 @@ class SalesCrudController extends BaseCrudController
         );
     }
 
-    public function listProduct(AdminContext $context)
+    public function listProduct(AdminContext $context): Response
     {
         $request = $context->getRequest();
         $contact = $this->entityManager->getRepository(CompanyContact::class)->find($request->get('contactId'));
@@ -207,10 +211,12 @@ class SalesCrudController extends BaseCrudController
         );
     }
 
-    public function searchProduct(AdminContext $context)
+    public function searchProduct(AdminContext $context): Response
     {
         $request = $context->getRequest();
-        $projects = $this->entityManager->getRepository(Project::class)->search($request->get('search'));
+        /** @var ProjectRepository $repo */
+        $repo = $this->entityManager->getRepository(Project::class);
+        $projects = $repo->search($request->get('search'));
 
         return $this->render('admin/sales/search_product.html.twig', [
                 'projects' => $projects,
@@ -219,7 +225,7 @@ class SalesCrudController extends BaseCrudController
         );
     }
 
-    public function createSale(AdminContext $context)
+    public function createSale(AdminContext $context): Response
     {
         $event = new BeforeCrudActionEvent($context);
         $this->container->get('event_dispatcher')->dispatch($event);
