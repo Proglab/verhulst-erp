@@ -11,6 +11,11 @@
   Vous avez sélectionné le produit :  <b>{{ product.project.name }} : {{ product.name }}</b>
  </div>
 
+ {% if stock_avalaible is defined %}
+  <div class="alert alert-info mb-4">
+   Il reste <b>{{ stock_avalaible }}</b> {{ product.name }} en stock.
+  </div>
+{% endif %}
 
  {{ form_start(form) }}
  <div class="row">

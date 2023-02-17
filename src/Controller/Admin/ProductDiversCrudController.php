@@ -5,36 +5,80 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\ProductDivers;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-class ProductDiversCrudController extends AbstractCrudController
+class ProductDiversCrudController extends BaseCrudController
 {
     public static function getEntityFqcn(): string
     {
         return ProductDivers::class;
     }
 
+    public function configureCrud(Crud $crud): Crud
+    {
+        $crud->setEntityLabelInPlural('Divers')
+            ->setEntityLabelInSingular('Divers')
+            ->showEntityActionsInlined(true);
+
+        return parent::configureCrud($crud);
+    }
+
+
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            ->setPermission(Action::NEW, 'ROLE_COMMERCIAL')
+            ->setPermission(Action::EDIT, 'ROLE_COMMERCIAL')
+            ->setPermission(Action::DETAIL, 'ROLE_COMMERCIAL')
+            ->setPermission(Action::INDEX, 'ROLE_COMMERCIAL')
+            ->setPermission(Action::DELETE, 'ROLE_ADMIN')
+            ->setPermission(Action::SAVE_AND_RETURN, 'ROLE_COMMERCIAL')
+            ->setPermission(Action::SAVE_AND_ADD_ANOTHER, 'ROLE_COMMERCIAL')
+            ->setPermission(Action::SAVE_AND_CONTINUE, 'ROLE_COMMERCIAL')
+            ;
+    }
+
     public function configureFields(string $pageName): iterable
     {
+        $projectName = TextField::new('project.name')->setLabel('Nom du projet');
+        $project = AssociationField::new('project');
         $name = TextField::new('name');
         $percentVr = PercentField::new('percent_vr')->setLabel('Com Verhulst')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false);
         $image = ImageField::new('doc')->setBasePath('files/products')->setUploadDir('../../shared/public/files/products');
 
-        switch ($pageName) {
-            case Crud::PAGE_DETAIL:
-            case Crud::PAGE_INDEX:
-                $response = [$name, $percentVr];
-                break;
-            case Crud::PAGE_NEW:
-            case Crud::PAGE_EDIT:
-                $response = [$name, $percentVr, $image];
-                break;
-            default:
-                $response = [$name, $percentVr];
+        if ($this->isGranted('ROLE_ADMIN')) {
+            switch ($pageName) {
+                case Crud::PAGE_DETAIL:
+                case Crud::PAGE_INDEX:
+                    $response = [$projectName, $name, $percentVr];
+                    break;
+                case Crud::PAGE_NEW:
+                case Crud::PAGE_EDIT:
+                    $response = [$name, $percentVr, $image];
+                    break;
+                default:
+                    $response = [$name, $percentVr];
+            }
+        } else {
+            switch ($pageName) {
+                case Crud::PAGE_DETAIL:
+                case Crud::PAGE_INDEX:
+                    $response = [$projectName, $name, $percentVr];
+                    break;
+                case Crud::PAGE_NEW:
+                case Crud::PAGE_EDIT:
+                    $response = [$project, $name, $percentVr, $image];
+                    break;
+                default:
+                    $response = [$name, $percentVr];
+            }
         }
 
         return $response;

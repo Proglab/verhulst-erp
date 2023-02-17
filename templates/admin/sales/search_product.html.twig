@@ -4,6 +4,7 @@
         <th scope="col">Projet</th>
         <th scope="col">Produit</th>
         <th scope="col">Description</th>
+        <th scope="col">Quantité disponible</th>
         <th scope="col">Sélectionner</th>
     </tr>
     </thead>
@@ -18,6 +19,7 @@
                 <th scope="row">{{ project.name }}</th>
                 <td>{{ product.name }}</td>
                 <td>{{ product.description }}</td>
+                <td> - </td>
                 <td><a href="{{ url }}"><i class="fa-solid fa-circle-check"></i></a></td>
             </tr>
         {% endfor %}
@@ -30,6 +32,7 @@
                 <th scope="row">{{ project.name }}</th>
                 <td>{{ product.name }}</td>
                 <td>{{ product.description }}</td>
+                <td>{{ product.quantity_avalaible }}</td>
                 <td><a href="{{ url }}"><i class="fa-solid fa-circle-check"></i></a></td>
             </tr>
         {% endfor %}
@@ -42,6 +45,7 @@
                 <th scope="row">{{ project.name }}</th>
                 <td>{{ product.name }}</td>
                 <td>{{ product.description }}</td>
+                <td>{{ product.quantity_avalaible }}</td>
                 <td><a href="{{ url }}"><i class="fa-solid fa-circle-check"></i></a></td>
             </tr>
         {% endfor %}
@@ -54,6 +58,7 @@
                 <th scope="row">{{ project.name }}</th>
                 <td>{{ product.name }}</td>
                 <td>{{ product.description }}</td>
+                <td> - </td>
                 <td><a href="{{ url }}"><i class="fa-solid fa-circle-check"></i></a></td>
             </tr>
         {% endfor %}

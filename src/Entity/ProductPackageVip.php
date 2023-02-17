@@ -63,4 +63,21 @@ class ProductPackageVip extends Product
 
         return $this;
     }
+
+    public function getQuantitySales(): int
+    {
+        $quantity = 0;
+        foreach ($this->getSales() as $sale) {
+            $quantity += $sale->getQuantity();
+        }
+        return $quantity;
+    }
+
+    public function getQuantityAvailable(): ?int
+    {
+        if ($this->getQuantityMax() !== null && $this->getQuantityMax() > 0) {
+            return $this->getQuantityMax() - $this->getQuantitySales();
+        }
+        return null;
+    }
 }

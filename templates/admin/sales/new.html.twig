@@ -5,7 +5,10 @@
 {% block page_actions %}
     {% set url = ea_url()
         .setController('App\\Controller\\Admin\\CompanyCrudController')
-        .setAction('new') %}
+        .setAction('new')
+        .set('referrer', context.request.requestUri)
+
+    %}
     <div class="global-actions">
         <a class=" action-new btn btn-primary" href="{{ url }}" data-action-name="new">
             <i class="action-icon fa fa-plus-square"></i> <span class="action-label">Créer un client</span>

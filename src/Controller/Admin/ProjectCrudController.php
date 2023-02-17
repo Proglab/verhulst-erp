@@ -51,11 +51,20 @@ class ProjectCrudController extends BaseCrudController
     public function configureFields(string $pageName): iterable
     {
         $name = TextField::new('name');
-        $projectEvent = CollectionField::new('product_event')->setLabel('Event à la carte')->allowAdd(true)->allowDelete(true)->setEntryIsComplex()->useEntryCrudForm(ProductEventCrudController::class);
-        $projectPackage = CollectionField::new('product_package')->setLabel('Package VIP')->allowAdd(true)->allowDelete(true)->setEntryIsComplex()->useEntryCrudForm(ProductPackageVipCrudController::class);
-        $projectSponsor = CollectionField::new('product_sponsoring')->setLabel('Sponsoring')->allowAdd(true)->allowDelete(true)->setEntryIsComplex()->useEntryCrudForm(ProductSponsoringCrudController::class);
-        $projectDivers = CollectionField::new('product_divers')->setLabel('Divers')->allowAdd(true)->allowDelete(true)->setEntryIsComplex()->useEntryCrudForm(ProductDiversCrudController::class);
-        $mail = BooleanField::new('mail')->setLabel('Prévenir les commerciaux ?');
+
+        if ($this->isGranted('ROLE_ADMIN')) {
+            $projectEvent = CollectionField::new('product_event')->setLabel('Event à la carte')->allowAdd(true)->allowDelete(true)->setEntryIsComplex()->useEntryCrudForm(ProductEventCrudController::class);
+            $projectPackage = CollectionField::new('product_package')->setLabel('Package VIP')->allowAdd(true)->allowDelete(true)->setEntryIsComplex()->useEntryCrudForm(ProductPackageVipCrudController::class);
+            $projectSponsor = CollectionField::new('product_sponsoring')->setLabel('Sponsoring')->allowAdd(true)->allowDelete(true)->setEntryIsComplex()->useEntryCrudForm(ProductSponsoringCrudController::class);
+            $projectDivers = CollectionField::new('product_divers')->setLabel('Divers')->allowAdd(true)->allowDelete(true)->setEntryIsComplex()->useEntryCrudForm(ProductDiversCrudController::class);
+        } else {
+            $projectEvent = CollectionField::new('product_event')->setLabel('Event à la carte')->allowAdd(true)->allowDelete(false)->setEntryIsComplex()->useEntryCrudForm(ProductEventCrudController::class);
+            $projectPackage = CollectionField::new('product_package')->setLabel('Package VIP')->allowAdd(false)->allowDelete(false)->setEntryIsComplex()->useEntryCrudForm(ProductPackageVipCrudController::class);
+            $projectSponsor = CollectionField::new('product_sponsoring')->setLabel('Sponsoring')->allowAdd(false)->allowDelete(false)->setEntryIsComplex()->useEntryCrudForm(ProductSponsoringCrudController::class);
+            $projectDivers = CollectionField::new('product_divers')->setLabel('Divers')->allowAdd(true)->allowDelete(false)->setEntryIsComplex()->useEntryCrudForm(ProductDiversCrudController::class);
+        }
+
+        $mail = BooleanField::new('mail')->setLabel('Prévenir les commerciaux ?')->setPermission('ROLE_ADMIN');
 
         switch ($pageName) {
             case Crud::PAGE_DETAIL:
