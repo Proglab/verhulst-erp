@@ -101,10 +101,10 @@ class SalesCrudController extends BaseCrudController
             ->setStoredAsCents()
             ->setNumDecimals(2)
             ->setRequired(true)
-            ->setCurrency('EUR');
+            ->setCurrency('EUR')->setLabel('Prix');
         $product = AssociationField::new('product')->setRequired(true);
         $contacts = AssociationField::new('contact')->setRequired(true);
-        $date = DateField::new('date');
+        $date = DateField::new('date')->setLabel('Date de vente');
         /**$percent_com = PercentField::new('percent_com')
             ->setNumDecimals(2)
             ->setStoredAsFractional(true)
@@ -114,7 +114,7 @@ class SalesCrudController extends BaseCrudController
             ->setStoredAsFractional(true)
             ->setPermission('ROLE_ADMIN');**/
 
-        $quantity = IntegerField::new('quantity');
+        $quantity = IntegerField::new('quantity')->setLabel('Quantité');
 
         switch ($pageName) {
             case Crud::PAGE_NEW:
