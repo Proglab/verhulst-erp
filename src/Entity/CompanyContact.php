@@ -85,9 +85,9 @@ class CompanyContact
         return $this;
     }
 
-    public function getFullName()
+    public function getFullName(): string
     {
-        return $this->getFirstname().' '.$this->getLastname();
+        return $this->getFirstname() . ' ' . $this->getLastname();
     }
 
     public function getLang(): ?string
