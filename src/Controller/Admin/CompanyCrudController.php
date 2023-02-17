@@ -5,16 +5,20 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\Company;
+use App\Entity\CompanyContact;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CountryField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Symfony\Component\Form\FormInterface;
 
 class CompanyCrudController extends BaseCrudController
 {
@@ -60,14 +64,14 @@ class CompanyCrudController extends BaseCrudController
     public function configureFields(string $pageName): iterable
     {
         $panel1 = FormField::addPanel()->addCssClass('col-6');
-        $name = TextField::new('name')->setRequired(true)->setColumns(12);
-        $street = TextField::new('street')->setColumns(12);
-        $number = TextField::new('number');
-        $box = TextField::new('box');
-        $pc = TextField::new('pc');
-        $city = TextField::new('city')->setColumns(12);
-        $country = CountryField::new('country');
-        $vat = TextField::new('vat_number');
+        $name = TextField::new('name')->setRequired(true)->setColumns(12)->setLabel('Nom de la société');
+        $street = TextField::new('street')->setColumns(12)->setLabel('Rue');
+        $number = TextField::new('number')->setLabel('Numéro');
+        $box = TextField::new('box')->setLabel('Boîte');
+        $pc = TextField::new('pc')->setLabel('Code postal');
+        $city = TextField::new('city')->setColumns(12)->setLabel('Ville');
+        $country = CountryField::new('country')->setLabel('Pays');
+        $vat = TextField::new('vat_number')->setLabel('Numéro de TVA');
         $panel2 = FormField::addPanel()->addCssClass('col-6');
         $contacts = CollectionField::new('contact')->setLabel('Contacts')->allowAdd(true)->allowDelete(true)->useEntryCrudForm(CompanyContactCrudController::class)->setColumns(12);
         $note = TextEditorField::new('note')->setLabel('Note');

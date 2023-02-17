@@ -53,7 +53,7 @@ class CompanyContact
 
     public function __toString()
     {
-        return $this->getFirstname() . ' ' . $this->getLastname() . ' - ' . $this->getCompany()->getName() . ' (' . $this->lang . ')';
+        return $this->getFirstname() . ' ' . $this->getLastname() . ' (' . $this->lang . ')';
     }
 
     public function getId(): ?int
@@ -83,6 +83,11 @@ class CompanyContact
         $this->lastname = $lastname;
 
         return $this;
+    }
+
+    public function getFullName()
+    {
+        return $this->getFirstname().' '.$this->getLastname();
     }
 
     public function getLang(): ?string
