@@ -18,7 +18,7 @@
     {% set url = ea_url()
         .setAction('searchClient') %}
 
-    <input type="text" name="search" hx-get="{{ url }}" hx-trigger="keyup changed delay:500ms, load" hx-target="#search-results" placeholder="Search..." class="form-control">
+    <input type="text" name="search" hx-get="{{ url }}" hx-trigger="keyup changed delay:500ms" hx-target="#search-results" placeholder="Search..." class="form-control">
     <div id="search-results"></div>
 
 {% endblock %}

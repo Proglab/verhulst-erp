@@ -3,15 +3,15 @@
 {% block content_title %}Création d'une vente{% endblock %}
 
 {% block main %}
-<h3>Client sélectionné</h3>
-<b>{{ contact.company.name }}</b> {{ contact.firstname }} {{ contact.lastname }}
-    <hr>
+    <div class="alert alert-success mb-4">
+    Vous avez sélectionné le client : <b>{{ contact.company.name }} {{ contact.firstname }} {{ contact.lastname }}</b>
+    </div>
 
 <h3>Sélectionnez le Produit</h3>
 {% set url = ea_url()
     .setAction('searchProduct') %}
 
-<input type="text" name="search" hx-get="{{ url }}" hx-trigger="keyup changed delay:500ms, load" hx-target="#search-results" placeholder="Search..." class="form-control">
+<input type="text" name="search" hx-get="{{ url }}" hx-trigger="keyup changed delay:500ms" hx-target="#search-results" placeholder="Search..." class="form-control">
 <div id="search-results"></div>
 
 {% endblock %}

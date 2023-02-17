@@ -3,33 +3,28 @@
 {% block content_title %}Création d'une vente{% endblock %}
 
 {% block main %}
- <h3>Client sélectionné</h3>
- <b>{{ contact.company.name }}</b> {{ contact.firstname }} {{ contact.lastname }}
- <hr>
+ <div class="alert alert-success mb-4">
+  Vous avez sélectionné le client : <b>{{ contact.company.name }} : {{ contact.firstname }} {{ contact.lastname }}</b>
+ </div>
 
- <h3>Produit sélectionné</h3>
- <b>{{ product.project.name }}</b> {{ product.name }}
- <hr>
+ <div class="alert alert-success mb-4">
+  Vous avez sélectionné le produit :  <b>{{ product.project.name }} : {{ product.name }}</b>
+ </div>
 
 
  {{ form_start(form) }}
+ <div class="row">
 
- {{ form_row(form.quantity) }}
- {{ form_row(form.price) }}
- {{ form_row(form.date) }}
+  {{ form_row(form.quantity) }}
+  {{ form_row(form.price) }}
+  {{ form_row(form.date) }}
+  {{ form_widget(form.product, {'attr': {'class': 'd-none'}}) }}
+  {{ form_widget(form.contact, {'attr': {'class': 'd-none'}}) }}
 
- {% if is_granted('ROLE_ADMIN') %}
-  {{ form_row(form.percent_vr) }}
-  {{ form_row(form.percent_com) }}
- {% endif %}
-
- {{ form_widget(form.product, {'attr': {'class': 'd-none'}}) }}
- {{ form_widget(form.contact, {'attr': {'class': 'd-none'}}) }}
-
- <div class="mt-3">
-   <input type="submit" value="Add" class="btn btn-primary">
+  <div class="mt-3">
+    <input type="submit" value="Créer la vente" class="btn btn-primary">
+  </div>
  </div>
-
  {{ form_end(form) }}
 
 {% endblock %}
