@@ -50,7 +50,7 @@ class ProjectCrudController extends BaseCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $name = TextField::new('name');
+        $name = TextField::new('name')->setLabel('Nom du projet');
 
         if ($this->isGranted('ROLE_ADMIN')) {
             $projectEvent = CollectionField::new('product_event')->setLabel('Event à la carte')->allowAdd(true)->allowDelete(true)->setEntryIsComplex()->useEntryCrudForm(ProductEventCrudController::class);
@@ -118,7 +118,7 @@ class ProjectCrudController extends BaseCrudController
 
             foreach ($users as $user) {
                 $email = (new TemplatedEmail())
-                    ->from('info@verhulst.be')
+                    ->from('info@verhulst.pro')
                     ->to($user->getEmail())
                     // ->priority(Email::PRIORITY_HIGH)
                     ->subject('Un nouveau projet a été créé')
