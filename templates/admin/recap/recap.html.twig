@@ -55,8 +55,8 @@
 
                                     {% for sale in user.sales %}
                                         {% if get_class(sale.product) == 'ProductEvent' %}
-                                            {% set total_price = total_price + sale.price/100 %}
-                                            {% set total_pa = total_pa + sale.pa/100 %}
+                                            {% set total_price = total_price + sale.price %}
+                                            {% set total_pa = total_pa + sale.pa %}
                                             {% set total_marge = total_marge + sale.marge %}
                                             {% set total_euroCom = total_euroCom + sale.euroCom %}
                                             {% set total_eurovr = total_eurovr + sale.euroVr %}
@@ -72,12 +72,12 @@
                                                 </th>
                                                 <th scope="row">{{ sale.product.name }}</th>
                                                 <td>{{ sale.date|date('d/m/Y') }}</td>
-                                                <td class="text-right">{{ (sale.price/100)|number_format(2, ',', ' ') }} €</td>
-                                                <td class="text-right">{{ (sale.pa/100)|number_format(2, ',', ' ') }} €</td>
+                                                <td class="text-right">{{ (sale.price)|number_format(2, ',', ' ') }} €</td>
+                                                <td class="text-right">{{ (sale.pa)|number_format(2, ',', ' ') }} €</td>
                                                 <td class="text-right">{{ sale.marge|number_format(2, ',', ' ') }} €</td>
-                                                <td class="text-center">{{ sale.percentCom*100 }} %</td>
+                                                <td class="text-center">{{ sale.percentCom }} %</td>
                                                 <td class="text-right">{{ sale.euroCom|number_format(2, ',', ' ') }}  €</td>
-                                                <td class="text-center">{{ sale.percentVr*100 }} %</td>
+                                                <td class="text-center">{{ sale.percentVr }} %</td>
                                                 <td class="text-right">{{ sale.euroVr|number_format(2, ',', ' ') }}  €</td>
                                                 <td class="text-right">{{ (sale.diffCa)|number_format(2, ',', ' ') }}  €</td>
                                                 <td class="action">
@@ -119,6 +119,8 @@
                                         <th scope="col">Produit</th>
                                         <th scope="col">Date</th>
                                         <th scope="col" class="text-right">CA</th>
+                                        <th scope="col" class="text-right">Quantity</th>
+                                        <th scope="col" class="text-right">CA Total</th>
                                         <th scope="col" class="text-center">% Sales</th>
                                         <th scope="col" class="text-right">€ Sales</th>
                                         <th scope="col" class="text-center">% Verhulst</th>
@@ -135,7 +137,7 @@
 
                                     {% for sale in user.sales %}
                                         {% if get_class(sale.product) == 'ProductSponsoring' %}
-                                            {% set total_price = total_price + sale.price/100 %}
+                                            {% set total_price = total_price + sale.totalPrice %}
                                             {% set total_euroCom = total_euroCom + sale.euroCom %}
                                             {% set total_eurovr = total_eurovr + sale.euroVr %}
                                             {% set total_margevr = total_margevr + sale.diffCa  %}
@@ -150,10 +152,12 @@
                                                 </th>
                                                 <th scope="row">{{ sale.product.name }}</th>
                                                 <td>{{ sale.date|date('d/m/Y') }}</td>
-                                                <td class="text-right">{{ (sale.price/100)|number_format(2, ',', ' ') }} €</td>
-                                                <td class="text-center">{{ sale.percentCom*100 }} %</td>
+                                                <td class="text-right">{{ (sale.price)|number_format(2, ',', ' ') }} €</td>
+                                                <td class="text-right">{{ sale.quantity }}</td>
+                                                <td class="text-right">{{ sale.totalPrice|number_format(2, ',', ' ') }} €</td>
+                                                <td class="text-center">{{ sale.percentCom }} %</td>
                                                 <td class="text-right">{{ sale.euroCom|number_format(2, ',', ' ') }}  €</td>
-                                                <td class="text-center">{{ sale.percentVr*100 }} %</td>
+                                                <td class="text-center">{{ sale.percentVr }} %</td>
                                                 <td class="text-right">{{ sale.euroVr|number_format(2, ',', ' ') }}  €</td>
                                                 <td class="text-right">{{ sale.diffCa|number_format(2, ',', ' ') }}  €</td>
                                                 <td class="action">
@@ -171,6 +175,8 @@
                                         <th scope="row" colspan="4">
                                             Totaux
                                         </th>
+                                        <th></th>
+                                        <th></th>
                                         <th class="text-right">{{ total_price|number_format(2, ',', ' ') }} €</th>
                                         <th></th>
                                         <th class="text-right">{{ total_euroCom|number_format(2, ',', ' ') }} €</th>
@@ -193,6 +199,8 @@
                                         <th scope="col">Produit</th>
                                         <th scope="col">Date</th>
                                         <th scope="col" class="text-right">CA</th>
+                                        <th scope="col" class="text-right">Quantity</th>
+                                        <th scope="col" class="text-right">CA Total</th>
                                         <th scope="col" class="text-center">% Sales</th>
                                         <th scope="col" class="text-right">€ Sales</th>
                                         <th scope="col" class="text-center">% Verhulst</th>
@@ -209,7 +217,7 @@
 
                                     {% for sale in user.sales %}
                                         {% if get_class(sale.product) == 'ProductPackageVip' %}
-                                            {% set total_price = total_price + sale.price/100 %}
+                                            {% set total_price = total_price + sale.totalPrice %}
                                             {% set total_euroCom = total_euroCom + sale.euroCom %}
                                             {% set total_eurovr = total_eurovr + sale.euroVr %}
                                             {% set total_margevr = total_margevr + sale.diffCa  %}
@@ -224,10 +232,12 @@
                                                 </th>
                                                 <th scope="row">{{ sale.product.name }}</th>
                                                 <td>{{ sale.date|date('d/m/Y') }}</td>
-                                                <td class="text-right">{{ (sale.price/100)|number_format(2, ',', ' ') }} €</td>
-                                                <td class="text-center">{{ sale.percentCom*100 }} %</td>
+                                                <td class="text-right">{{ (sale.price)|number_format(2, ',', ' ') }} €</td>
+                                                <td class="text-right">{{ (sale.quantity) }}</td>
+                                                <td class="text-right">{{ (sale.totalPrice)|number_format(2, ',', ' ') }} €</td>
+                                                <td class="text-center">{{ sale.percentCom }} %</td>
                                                 <td class="text-right">{{ sale.euroCom|number_format(2, ',', ' ') }}  €</td>
-                                                <td class="text-center">{{ sale.percentVr*100 }} %</td>
+                                                <td class="text-center">{{ sale.percentVr }} %</td>
                                                 <td class="text-right">{{ sale.euroVr|number_format(2, ',', ' ') }}  €</td>
                                                 <td class="text-right">{{ sale.diffCa|number_format(2, ',', ' ') }}  €</td>
                                                 <td class="action">
@@ -245,6 +255,8 @@
                                         <th scope="row" colspan="4">
                                             Totaux
                                         </th>
+                                        <th></th>
+                                        <th></th>
                                         <th class="text-right">{{ total_price|number_format(2, ',', ' ') }} €</th>
                                         <th></th>
                                         <th class="text-right">{{ total_euroCom|number_format(2, ',', ' ') }} €</th>
@@ -283,7 +295,7 @@
 
                                     {% for sale in user.sales %}
                                         {% if get_class(sale.product) == 'ProductDivers' %}
-                                            {% set total_price = total_price + sale.price/100 %}
+                                            {% set total_price = total_price + sale.price %}
                                             {% set total_euroCom = total_euroCom + sale.euroCom %}
                                             {% set total_eurovr = total_eurovr + sale.euroVr %}
                                             {% set total_margevr = total_margevr + sale.diffCa  %}
@@ -298,10 +310,10 @@
                                                 </th>
                                                 <th scope="row">{{ sale.product.name }}</th>
                                                 <td>{{ sale.date|date('d/m/Y') }}</td>
-                                                <td class="text-right">{{ (sale.price/100)|number_format(2, ',', ' ') }} €</td>
-                                                <td class="text-center">{{ sale.percentCom*100 }} %</td>
+                                                <td class="text-right">{{ (sale.price)|number_format(2, ',', ' ') }} €</td>
+                                                <td class="text-center">{{ sale.percentCom }} %</td>
                                                 <td class="text-right">{{ sale.euroCom|number_format(2, ',', ' ') }}  €</td>
-                                                <td class="text-center">{{ sale.percentVr*100 }} %</td>
+                                                <td class="text-center">{{ sale.percentVr }} %</td>
                                                 <td class="text-right">{{ sale.euroVr|number_format(2, ',', ' ') }}  €</td>
                                                 <td class="text-right">{{ sale.diffCa|number_format(2, ',', ' ') }}  €</td>
                                                 <td class="action">
