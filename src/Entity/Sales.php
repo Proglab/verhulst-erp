@@ -20,8 +20,8 @@ class Sales
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::BIGINT, nullable: true)]
-    private ?int $price = null;
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?float $price = null;
 
     #[ORM\ManyToOne(inversedBy: 'sales')]
     #[ORM\JoinColumn(nullable: false)]
@@ -56,12 +56,12 @@ class Sales
         return $this->id;
     }
 
-    public function getPrice(): ?int
+    public function getPrice(): ?float
     {
         return (int) $this->price;
     }
 
-    public function getTotalPrice(): ?int
+    public function getTotalPrice(): ?float
     {
         if (0 === $this->getQuantity()) {
             return (int) $this->price;
@@ -70,7 +70,7 @@ class Sales
         return (int) $this->price * $this->getQuantity();
     }
 
-    public function setPrice(?int $price): self
+    public function setPrice(?float $price): self
     {
         $this->price = $price;
 
@@ -120,17 +120,17 @@ class Sales
 
     public function getEuroVr(): float
     {
-        return $this->getMarge() * $this->getPercentVr();
+        return $this->getMarge() * $this->getPercentVr() / 100;
     }
 
     public function getEuroCom(): float
     {
-        return $this->getMarge() * $this->getPercentCom();
+        return $this->getMarge() * $this->getPercentCom() / 100;
     }
 
     public function getMarge(): float
     {
-        return $this->getTotalPrice() / 100 - $this->product->getPa() / 100;
+        return $this->getTotalPrice() - $this->product->getPa() * $this->quantity;
     }
 
     public function getDiffCa(): float

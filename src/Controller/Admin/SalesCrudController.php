@@ -100,7 +100,7 @@ class SalesCrudController extends BaseCrudController
     public function configureFields(string $pageName): iterable
     {
         $price = MoneyField::new('price')
-            ->setStoredAsCents()
+            ->setStoredAsCents(false)
             ->setNumDecimals(2)
             ->setRequired(true)
             ->setCurrency('EUR')->setLabel('Prix');
@@ -257,7 +257,7 @@ class SalesCrudController extends BaseCrudController
         $entity->addContact($contact);
         $entity->setUser($this->getUser());
         if ($product instanceof ProductPackageVip || $product instanceof ProductSponsoring) {
-            $entity->setPrice((int) $product->getCa() * 100);
+            $entity->setPrice($product->getCa());
         }
 
         $newForm = $this->createNewForm($context->getEntity(), $context->getCrud()->getNewFormOptions(), $context);

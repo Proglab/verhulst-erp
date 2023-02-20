@@ -58,6 +58,7 @@ class ProductEventCrudController extends BaseCrudController
             ->setStoredAsFractional(false);
 
         $pa = MoneyField::new('pa')
+            ->setStoredAsCents(false)
             ->setNumDecimals(2)
             ->setLabel('Prix achat')
             ->setCurrency('EUR');

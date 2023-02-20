@@ -50,7 +50,7 @@ class ProductPackageVipCrudController extends BaseCrudController
         $projectName = TextField::new('project.name')->setLabel('Nom du projet');
         $name = TextField::new('name');
         $percentVr = PercentField::new('percent_vr')->setLabel('Com Verhulst')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false)->setNumDecimals(2);
-        $ca = MoneyField::new('ca')->setCurrency('EUR')->setStoredAsCents(false)->setLabel('Prix de vente');
+        $ca = MoneyField::new('ca')->setCurrency('EUR')->setStoredAsCents(false)->setNumDecimals(2)->setLabel('Prix de vente');
         $description = TextEditorField::new('description');
         $quantityMax = IntegerField::new('quantity_max');
         $quantitySales = IntegerField::new('quantity_sales');
