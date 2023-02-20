@@ -48,7 +48,7 @@ class ProductDiversCrudController extends BaseCrudController
         $projectName = TextField::new('project.name')->setLabel('Nom du projet');
         $project = AssociationField::new('project');
         $name = TextField::new('name');
-        $percentVr = PercentField::new('percent_vr')->setLabel('Com Verhulst')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false);
+        $percentVr = PercentField::new('percent_vr')->setLabel('Com Verhulst')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false)->setNumDecimals(2);
         $image = ImageField::new('doc')->setBasePath('files/products')->setUploadDir('../../shared/public/files/products');
 
         if ($this->isGranted('ROLE_ADMIN')) {

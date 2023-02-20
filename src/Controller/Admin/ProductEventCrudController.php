@@ -55,7 +55,7 @@ class ProductEventCrudController extends BaseCrudController
             ->setLabel('Com Verhulst')
             ->setPermission('ROLE_ADMIN')
             ->setNumDecimals(2)
-            ->setStoredAsFractional(true);
+            ->setStoredAsFractional(false);
 
         $pa = MoneyField::new('pa')
             ->setNumDecimals(2)
