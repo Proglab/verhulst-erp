@@ -70,14 +70,16 @@ class ProductPackageVip extends Product
         foreach ($this->getSales() as $sale) {
             $quantity += $sale->getQuantity();
         }
+
         return $quantity;
     }
 
     public function getQuantityAvailable(): ?int
     {
-        if ($this->getQuantityMax() !== null && $this->getQuantityMax() > 0) {
+        if (null !== $this->getQuantityMax() && $this->getQuantityMax() > 0) {
             return $this->getQuantityMax() - $this->getQuantitySales();
         }
+
         return null;
     }
 }

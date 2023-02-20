@@ -8,7 +8,6 @@ use App\Entity\ProductPackageVip;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
@@ -43,12 +42,11 @@ class ProductPackageVipCrudController extends BaseCrudController
             ->setPermission(Action::SAVE_AND_RETURN, 'ROLE_ADMIN')
             ->setPermission(Action::SAVE_AND_ADD_ANOTHER, 'ROLE_ADMIN')
             ->setPermission(Action::SAVE_AND_CONTINUE, 'ROLE_ADMIN')
-            ;
+        ;
     }
 
     public function configureFields(string $pageName): iterable
     {
-
         $projectName = TextField::new('project.name')->setLabel('Nom du projet');
         $name = TextField::new('name');
         $percentVr = PercentField::new('percent_vr')->setLabel('Com Verhulst')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false);

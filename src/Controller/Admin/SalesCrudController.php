@@ -15,7 +15,6 @@ use App\Entity\Sales;
 use App\Entity\User;
 use App\Repository\CompanyRepository;
 use App\Repository\ProjectRepository;
-use App\Repository\SalesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -188,7 +187,7 @@ class SalesCrudController extends BaseCrudController
     public function new(AdminContext $context)
     {
         return $this->render('admin/sales/new.html.twig', [
-            'context' => $context
+            'context' => $context,
         ]);
     }
 
@@ -212,7 +211,7 @@ class SalesCrudController extends BaseCrudController
 
         return $this->render('admin/sales/list_product.html.twig', [
                 'contact' => $contact,
-                'context' => $context
+                'context' => $context,
             ]
         );
     }
@@ -258,7 +257,7 @@ class SalesCrudController extends BaseCrudController
         $entity->addContact($contact);
         $entity->setUser($this->getUser());
         if ($product instanceof ProductPackageVip || $product instanceof ProductSponsoring) {
-            $entity->setPrice((int) $product->getCa()*100);
+            $entity->setPrice((int) $product->getCa() * 100);
         }
 
         $newForm = $this->createNewForm($context->getEntity(), $context->getCrud()->getNewFormOptions(), $context);
@@ -288,7 +287,7 @@ class SalesCrudController extends BaseCrudController
             'pageName' => Crud::PAGE_NEW,
             'templateName' => 'crud/new',
             'entity' => $context->getEntity(),
-            'new_form' => $newForm
+            'new_form' => $newForm,
         ]));
 
         $event = new AfterCrudActionEvent($context, $responseParameters);
@@ -296,15 +295,18 @@ class SalesCrudController extends BaseCrudController
         if ($event->isPropagationStopped()) {
             return $event->getResponse();
         }
-
-        $quantity_available = $product->getQuantityAvailable();
+        if ($product instanceof ProductPackageVip || $product instanceof ProductSponsoring) {
+            $quantity_available = $product->getQuantityAvailable();
+        } else {
+            $quantity_available = null;
+        }
 
         $return = [
             'form' => $newForm->createView(),
             'contact' => $contact,
-            'product' => $product
+            'product' => $product,
         ];
-        if ($quantity_available !== null) {
+        if (null !== $quantity_available) {
             $return['stock_avalaible'] = $quantity_available;
         }
 

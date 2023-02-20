@@ -8,7 +8,6 @@ use App\Entity\ProductDivers;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
@@ -30,7 +29,6 @@ class ProductDiversCrudController extends BaseCrudController
         return parent::configureCrud($crud);
     }
 
-
     public function configureActions(Actions $actions): Actions
     {
         return $actions
@@ -42,7 +40,7 @@ class ProductDiversCrudController extends BaseCrudController
             ->setPermission(Action::SAVE_AND_RETURN, 'ROLE_COMMERCIAL')
             ->setPermission(Action::SAVE_AND_ADD_ANOTHER, 'ROLE_COMMERCIAL')
             ->setPermission(Action::SAVE_AND_CONTINUE, 'ROLE_COMMERCIAL')
-            ;
+        ;
     }
 
     public function configureFields(string $pageName): iterable

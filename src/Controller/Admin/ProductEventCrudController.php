@@ -33,7 +33,7 @@ class ProductEventCrudController extends BaseCrudController
             ->setPermission(Action::SAVE_AND_RETURN, 'ROLE_COMMERCIAL')
             ->setPermission(Action::SAVE_AND_ADD_ANOTHER, 'ROLE_COMMERCIAL')
             ->setPermission(Action::SAVE_AND_CONTINUE, 'ROLE_COMMERCIAL')
-            ;
+        ;
     }
 
     public function configureCrud(Crud $crud): Crud
@@ -47,7 +47,6 @@ class ProductEventCrudController extends BaseCrudController
 
     public function configureFields(string $pageName): iterable
     {
-
         $project = AssociationField::new('project');
         $projectName = TextField::new('project.name')->setLabel('Nom du projet');
         $name = TextField::new('name')->setLabel('Nom du produit');
