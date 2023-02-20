@@ -42,6 +42,9 @@ class Product
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    private ?float $percent_freelance = 10.0;
+    private ?float $percent_salarie = 5.0;
+
     public function __construct()
     {
         $this->sales = new ArrayCollection();
@@ -73,6 +76,30 @@ class Product
     public function setPercentVr(float $percent_vr): self
     {
         $this->percent_vr = $percent_vr;
+
+        return $this;
+    }
+
+    public function getPercentFreelance(): ?float
+    {
+        return $this->percent_freelance;
+    }
+
+    public function setPercentFreelance(float $percent_freelance): self
+    {
+        $this->percent_freelance = $percent_freelance;
+
+        return $this;
+    }
+    
+    public function getPercentSalarie(): ?float
+    {
+        return $this->percent_salarie;
+    }
+
+    public function setPercentSalarie(float $percent_salarie): self
+    {
+        $this->percent_salarie = $percent_salarie;
 
         return $this;
     }

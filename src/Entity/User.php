@@ -87,6 +87,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     #[ORM\OneToMany(mappedBy: 'added_by', targetEntity: CompanyContact::class)]
     private Collection $companyContacts;
 
+    #[ORM\Column]
+    private ?bool $freelance = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -414,6 +417,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
                 $companyContact->setAddedBy(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isFreelance(): ?bool
+    {
+        return $this->freelance;
+    }
+
+    public function setFreelance(bool $freelance): self
+    {
+        $this->freelance = $freelance;
 
         return $this;
     }

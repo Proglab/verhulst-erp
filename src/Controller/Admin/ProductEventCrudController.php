@@ -63,6 +63,10 @@ class ProductEventCrudController extends BaseCrudController
             ->setLabel('Prix achat')
             ->setCurrency('EUR');
 
+
+        $percentDefaultFreelance = PercentField::new('percent_freelance')->setLabel('Com Freelance')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false)->setNumDecimals(2);
+        $percentDefaultSalarie = PercentField::new('percent_salarie')->setLabel('Com Salarié')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false)->setNumDecimals(2);
+
         $image = ImageField::new('doc')->setBasePath('files/products')->setUploadDir('../../shared/public/files/products');
 
         if ($this->isGranted('ROLE_ADMIN')) {
@@ -72,6 +76,8 @@ class ProductEventCrudController extends BaseCrudController
                     $response = [$projectName, $name, $date, $percentVr, $pa];
                     break;
                 case Crud::PAGE_NEW:
+                    $response = [$name, $date, $percentVr, $percentDefaultFreelance, $percentDefaultSalarie, $pa, $image];
+                    break;
                 case Crud::PAGE_EDIT:
                     $response = [$name, $date, $percentVr, $pa, $image];
                     break;

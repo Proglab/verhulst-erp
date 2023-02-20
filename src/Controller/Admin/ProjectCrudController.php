@@ -104,7 +104,7 @@ class ProjectCrudController extends BaseCrudController
     }
 
     /**
-     * @param ?object $entityInstance
+     * @param ?Project $entityInstance
      *
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
      */

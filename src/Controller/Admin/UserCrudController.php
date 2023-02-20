@@ -64,18 +64,19 @@ class UserCrudController extends BaseCrudController
         $twoFa = BooleanField::new('isTotpEnabled');
         $role = ChoiceField::new('roles')->allowMultipleChoices(true)->renderExpanded(true)->setChoices(['Admin' => 'ROLE_ADMIN', 'Commercial' => 'ROLE_COMMERCIAL']);
         $enabled = BooleanField::new('enabled');
+        $freelance = BooleanField::new('freelance');
 
         switch ($pageName) {
             case Crud::PAGE_DETAIL:
             case Crud::PAGE_INDEX:
-                $response = [$firstname, $lastname, $email, $locale, $twoFa, $role, $enabled];
+                $response = [$firstname, $lastname, $email, $locale, $twoFa, $role, $freelance, $enabled];
                 break;
             case Crud::PAGE_NEW:
             case Crud::PAGE_EDIT:
-                $response = [$firstname, $lastname, $email, $locale, $role, $enabled];
+                $response = [$firstname, $lastname, $email, $locale, $role, $freelance, $enabled];
                 break;
             default:
-                $response = [$firstname, $lastname, $email, $locale, $twoFa, $role, $enabled];
+                $response = [$firstname, $lastname, $email, $locale, $twoFa, $role, $freelance, $enabled];
         }
 
         return $response;

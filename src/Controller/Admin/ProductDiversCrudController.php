@@ -49,6 +49,8 @@ class ProductDiversCrudController extends BaseCrudController
         $project = AssociationField::new('project');
         $name = TextField::new('name');
         $percentVr = PercentField::new('percent_vr')->setLabel('Com Verhulst')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false)->setNumDecimals(2);
+        $percentDefaultFreelance = PercentField::new('percent_freelance')->setLabel('Com Freelance')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false)->setNumDecimals(2);
+        $percentDefaultSalarie = PercentField::new('percent_salarie')->setLabel('Com Salarié')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false)->setNumDecimals(2);
         $image = ImageField::new('doc')->setBasePath('files/products')->setUploadDir('../../shared/public/files/products');
 
         if ($this->isGranted('ROLE_ADMIN')) {
@@ -58,6 +60,8 @@ class ProductDiversCrudController extends BaseCrudController
                     $response = [$projectName, $name, $percentVr];
                     break;
                 case Crud::PAGE_NEW:
+                    $response = [$name, $percentVr, $percentDefaultFreelance, $percentDefaultSalarie, $image];
+                    break;
                 case Crud::PAGE_EDIT:
                     $response = [$name, $percentVr, $image];
                     break;

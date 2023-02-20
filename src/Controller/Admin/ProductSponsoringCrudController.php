@@ -50,6 +50,8 @@ class ProductSponsoringCrudController extends BaseCrudController
         $projectName = TextField::new('project.name')->setLabel('Nom du projet');
         $name = TextField::new('name');
         $percentVr = PercentField::new('percent_vr')->setLabel('Com Verhulst')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false)->setNumDecimals(2);
+        $percentDefaultFreelance = PercentField::new('percent_freelance')->setLabel('Com Freelance')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false)->setNumDecimals(2);
+        $percentDefaultSalarie = PercentField::new('percent_salarie')->setLabel('Com Salarié')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false)->setNumDecimals(2);
         $ca = MoneyField::new('ca')->setCurrency('EUR')->setStoredAsCents(false)->setNumDecimals(2)->setLabel('Prix de vente');
         $description = TextEditorField::new('description');
         $quantityMax = IntegerField::new('quantity_max');
@@ -63,6 +65,8 @@ class ProductSponsoringCrudController extends BaseCrudController
                 $response = [$projectName, $name, $percentVr, $ca, $description, $quantityMax, $quantitySales, $quantityAvailable];
                 break;
             case Crud::PAGE_NEW:
+                $response = [$name, $percentVr, $percentDefaultFreelance, $percentDefaultSalarie, $ca, $description, $quantityMax, $image];
+                break;
             case Crud::PAGE_EDIT:
                 $response = [$name, $percentVr, $ca, $description, $quantityMax, $image];
                 break;
