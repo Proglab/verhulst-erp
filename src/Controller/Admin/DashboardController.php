@@ -45,7 +45,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::section('Commercial')->setPermission('ROLE_COMMERCIAL'),
             MenuItem::linkToRoute('admin.menu.dashboard_com', 'fa fa-gauge-high', 'dashboard_com')->setPermission('ROLE_COMMERCIAL'),
 
-            MenuItem::linkToCrud('Projets', 'fa fa-calendar', Project::class),
+            MenuItem::linkToCrud('Projets', 'fas fa-folder-open', Project::class),
                 MenuItem::linkToCrud('Events', 'fa fa-calendar', ProductEvent::class)->setCssClass('mx-4'),
                 MenuItem::linkToCrud('Package Vip', 'fa fa-chess-king', ProductPackageVip::class)->setCssClass('mx-4'),
                 MenuItem::linkToCrud('Sponsoring', 'fa fa-mug-hot', ProductSponsoring::class)->setCssClass('mx-4'),

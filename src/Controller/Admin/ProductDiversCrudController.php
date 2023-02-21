@@ -31,6 +31,7 @@ class ProductDiversCrudController extends BaseCrudController
 
     public function configureActions(Actions $actions): Actions
     {
+        $actions = parent::configureActions($actions);
         return $actions
             ->setPermission(Action::NEW, 'ROLE_COMMERCIAL')
             ->setPermission(Action::EDIT, 'ROLE_COMMERCIAL')
