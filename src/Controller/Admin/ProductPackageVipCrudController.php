@@ -34,6 +34,7 @@ class ProductPackageVipCrudController extends BaseCrudController
     public function configureActions(Actions $actions): Actions
     {
         $actions = parent::configureActions($actions);
+
         return $actions
             ->setPermission(Action::NEW, 'ROLE_ADMIN')
             ->setPermission(Action::EDIT, 'ROLE_ADMIN')
@@ -57,7 +58,7 @@ class ProductPackageVipCrudController extends BaseCrudController
         $description = TextEditorField::new('description');
         $quantityMax = IntegerField::new('quantity_max')->setLabel('Quantité max');
         $quantitySales = IntegerField::new('quantity_sales')->setLabel('Quantité vendue');
-        $quantityAvailable = IntegerField::new('quantity_available')->setLabel('Quantité disponible');;
+        $quantityAvailable = IntegerField::new('quantity_available')->setLabel('Quantité disponible');
         $image = ImageField::new('doc')->setBasePath('files/products')->setUploadDir('../../shared/public/files/products');
         $imageDwonload = TextField::new('download_url')->renderAsHtml()->setLabel('Document');
 
