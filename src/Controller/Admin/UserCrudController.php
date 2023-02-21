@@ -58,13 +58,13 @@ class UserCrudController extends BaseCrudController
     public function configureFields(string $pageName): iterable
     {
         $email = EmailField::new('email');
-        $firstname = TextField::new('firstName');
-        $lastname = TextField::new('lastName');
-        $locale = ChoiceField::new('locale')->allowMultipleChoices(false)->renderExpanded(true)->setChoices(['Français' => 'fr', 'English' => 'en']);
-        $twoFa = BooleanField::new('isTotpEnabled');
-        $role = ChoiceField::new('roles')->allowMultipleChoices(true)->renderExpanded(true)->setChoices(['Admin' => 'ROLE_ADMIN', 'Commercial' => 'ROLE_COMMERCIAL']);
-        $enabled = BooleanField::new('enabled');
-        $freelance = BooleanField::new('freelance');
+        $firstname = TextField::new('firstName')->setLabel('Prénom');
+        $lastname = TextField::new('lastName')->setLabel('Nom');
+        $locale = ChoiceField::new('locale')->allowMultipleChoices(false)->renderExpanded(true)->setChoices(['Français' => 'fr', 'English' => 'en'])->setLabel('Langue');
+        $twoFa = BooleanField::new('isTotpEnabled')->setLabel('Double authentification');
+        $role = ChoiceField::new('roles')->allowMultipleChoices(true)->renderExpanded(true)->setChoices(['Admin' => 'ROLE_ADMIN', 'Commercial' => 'ROLE_COMMERCIAL'])->setLabel('Rôle');
+        $enabled = BooleanField::new('enabled')->setLabel('Validé');
+        $freelance = BooleanField::new('freelance')->setLabel('Freelance ?');
 
         switch ($pageName) {
             case Crud::PAGE_DETAIL:

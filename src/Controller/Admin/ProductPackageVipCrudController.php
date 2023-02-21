@@ -49,15 +49,15 @@ class ProductPackageVipCrudController extends BaseCrudController
     public function configureFields(string $pageName): iterable
     {
         $projectName = TextField::new('project.name')->setLabel('Nom du projet');
-        $name = TextField::new('name');
+        $name = TextField::new('name')->setLabel('Nom du produit');
         $percentVr = PercentField::new('percent_vr')->setLabel('Com Verhulst')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false)->setNumDecimals(2);
         $percentDefaultFreelance = PercentField::new('percent_freelance')->setLabel('Com Freelance')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false)->setNumDecimals(2);
         $percentDefaultSalarie = PercentField::new('percent_salarie')->setLabel('Com Salarié')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false)->setNumDecimals(2);
         $ca = MoneyField::new('ca')->setCurrency('EUR')->setStoredAsCents(false)->setNumDecimals(2)->setLabel('Prix de vente');
         $description = TextEditorField::new('description');
-        $quantityMax = IntegerField::new('quantity_max');
-        $quantitySales = IntegerField::new('quantity_sales');
-        $quantityAvailable = IntegerField::new('quantity_available');
+        $quantityMax = IntegerField::new('quantity_max')->setLabel('Quantité max');
+        $quantitySales = IntegerField::new('quantity_sales')->setLabel('Quantité vendue');
+        $quantityAvailable = IntegerField::new('quantity_available')->setLabel('Quantité disponible');;
         $image = ImageField::new('doc')->setBasePath('files/products')->setUploadDir('../../shared/public/files/products');
         $imageDwonload = TextField::new('download_url')->renderAsHtml()->setLabel('Document');
 
