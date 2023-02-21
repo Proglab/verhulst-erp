@@ -193,6 +193,15 @@ class Product
         return __DIR__ . '/../../../../shared/public/files/products/' . $this->getDoc();
     }
 
+    public function getDownloadUrl(): string
+    {
+        if (null !== $this->getDoc()) {
+            return '<a href="/files/products/' . $this->getDoc() . '"><i class="fa-regular fa-file"></i> Télécharger</a>';
+        }
+
+        return '';
+    }
+
     public function getDescription(): ?string
     {
         return $this->description;

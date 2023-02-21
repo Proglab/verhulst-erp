@@ -15,9 +15,6 @@ class ProductSponsoring extends Product
     #[ORM\JoinColumn(nullable: false)]
     private ?Project $project = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $description = null;
-
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?float $ca = null;
 
@@ -49,18 +46,6 @@ class ProductSponsoring extends Product
     public function setProject(?Project $project): self
     {
         $this->project = $project;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): self
-    {
-        $this->description = $description;
 
         return $this;
     }

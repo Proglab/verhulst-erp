@@ -52,12 +52,13 @@ class ProductDiversCrudController extends BaseCrudController
         $percentDefaultFreelance = PercentField::new('percent_freelance')->setLabel('Com Freelance')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false)->setNumDecimals(2);
         $percentDefaultSalarie = PercentField::new('percent_salarie')->setLabel('Com Salarié')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false)->setNumDecimals(2);
         $image = ImageField::new('doc')->setBasePath('files/products')->setUploadDir('../../shared/public/files/products');
+        $imageDwonload = TextField::new('download_url')->renderAsHtml()->setLabel('Document');
 
         if ($this->isGranted('ROLE_ADMIN')) {
             switch ($pageName) {
                 case Crud::PAGE_DETAIL:
                 case Crud::PAGE_INDEX:
-                    $response = [$projectName, $name, $percentVr];
+                    $response = [$projectName, $name, $percentVr, $imageDwonload];
                     break;
                 case Crud::PAGE_NEW:
                     $response = [$name, $percentVr, $percentDefaultFreelance, $percentDefaultSalarie, $image];

@@ -86,9 +86,9 @@ class ProjectCrudController extends BaseCrudController
     {
         $actions = parent::configureActions($actions);
         $actions
-            ->setPermission(Action::NEW, 'ROLE_COMMERCIAL')
-            ->setPermission(Action::EDIT, 'ROLE_COMMERCIAL')
-            ->setPermission(Action::DELETE, 'ROLE_COMMERCIAL')
+            ->setPermission(Action::NEW, 'ROLE_ADMIN')
+            ->setPermission(Action::EDIT, 'ROLE_ADMIN')
+            ->setPermission(Action::DELETE, 'ROLE_ADMIN')
             ->setPermission(Action::DETAIL, 'ROLE_COMMERCIAL')
             ->setPermission(Action::INDEX, 'ROLE_COMMERCIAL')
             ->setPermission(Action::SAVE_AND_RETURN, 'ROLE_COMMERCIAL')

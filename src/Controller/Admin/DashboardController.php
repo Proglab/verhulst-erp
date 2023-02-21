@@ -44,12 +44,12 @@ class DashboardController extends AbstractDashboardController
         return [
             MenuItem::section('Commercial')->setPermission('ROLE_COMMERCIAL'),
             MenuItem::linkToRoute('admin.menu.dashboard_com', 'fa fa-gauge-high', 'dashboard_com')->setPermission('ROLE_COMMERCIAL'),
-            MenuItem::subMenu('Projets', 'fas fa-folder-open')->setSubItems([
-                MenuItem::linkToCrud('Events', 'fa fa-calendar', ProductEvent::class),
-                MenuItem::linkToCrud('Package Vip', 'fa fa-chess-king', ProductPackageVip::class),
-                MenuItem::linkToCrud('Sponsoring', 'fa fa-mug-hot', ProductSponsoring::class),
-                MenuItem::linkToCrud('Divers', 'fa fa-globe', ProductDivers::class),
-            ]),
+
+            MenuItem::linkToCrud('Projets', 'fa fa-calendar', Project::class),
+                MenuItem::linkToCrud('Events', 'fa fa-calendar', ProductEvent::class)->setCssClass('mx-4'),
+                MenuItem::linkToCrud('Package Vip', 'fa fa-chess-king', ProductPackageVip::class)->setCssClass('mx-4'),
+                MenuItem::linkToCrud('Sponsoring', 'fa fa-mug-hot', ProductSponsoring::class)->setCssClass('mx-4'),
+                MenuItem::linkToCrud('Divers', 'fa fa-globe', ProductDivers::class)->setCssClass('mx-4'),
 
             MenuItem::linkToCrud('admin.menu.client', 'fas fa-address-book', CompanyContact::class)->setPermission('ROLE_COMMERCIAL'),
             MenuItem::linkToCrud('admin.menu.sales', 'fas fa-comments-dollar', Sales::class)->setPermission('ROLE_COMMERCIAL'),

@@ -46,6 +46,16 @@
             {{ htmlContent|raw }}
         {% endfor %}
     {% endblock %}
+    <script>
+        var submenu = document.getElementsByClassName("has-submenu");
+        console.log(submenu);
+
+
+        Array.prototype.forEach.call(submenu, function(el) {
+            // Do stuff here
+            console.log(el.tagName);
+        });
+    </script>
 </head>
 
 {% block body %}

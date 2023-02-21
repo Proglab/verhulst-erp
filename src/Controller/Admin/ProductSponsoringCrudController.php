@@ -58,11 +58,12 @@ class ProductSponsoringCrudController extends BaseCrudController
         $quantitySales = IntegerField::new('quantity_sales');
         $quantityAvailable = IntegerField::new('quantity_available');
         $image = ImageField::new('doc')->setBasePath('files/products')->setUploadDir('../../shared/public/files/products');
+        $imageDwonload = TextField::new('download_url')->renderAsHtml()->setLabel('Document');
 
         switch ($pageName) {
             case Crud::PAGE_DETAIL:
             case Crud::PAGE_INDEX:
-                $response = [$projectName, $name, $percentVr, $ca, $description, $quantityMax, $quantitySales, $quantityAvailable];
+                $response = [$projectName, $name, $percentVr, $ca, $description, $quantityMax, $quantitySales, $quantityAvailable, $imageDwonload];
                 break;
             case Crud::PAGE_NEW:
                 $response = [$name, $percentVr, $percentDefaultFreelance, $percentDefaultSalarie, $ca, $description, $quantityMax, $image];
