@@ -63,7 +63,6 @@ class ProductEventCrudController extends BaseCrudController
             ->setLabel('Prix achat')
             ->setCurrency('EUR');
 
-
         $percentDefaultFreelance = PercentField::new('percent_freelance')->setLabel('Com Freelance')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false)->setNumDecimals(2);
         $percentDefaultSalarie = PercentField::new('percent_salarie')->setLabel('Com Salarié')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false)->setNumDecimals(2);
 

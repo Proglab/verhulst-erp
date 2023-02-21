@@ -91,7 +91,7 @@ class Product
 
         return $this;
     }
-    
+
     public function getPercentSalarie(): ?float
     {
         return $this->percent_salarie;
