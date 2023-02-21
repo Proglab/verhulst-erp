@@ -16,10 +16,9 @@ task('deploy:vendors', function () {
 });
 
 task('deploy:setup', function () {
-    run('cd {{deploy_path}}');
-    run('mkdir -p .dep');
-    run('mkdir -p releases');
-    run('mkdir -p shared/public/files/products');
+    run('cd {{deploy_path}} && mkdir -p .dep');
+    run('cd {{deploy_path}} && mkdir -p releases');
+    run('cd {{deploy_path}} && mkdir -p shared/public/files/products');
 });
 
 task('deploy:npm', function () {
