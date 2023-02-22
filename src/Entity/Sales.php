@@ -51,7 +51,6 @@ class Sales
 
     private ?float $discount_eur;
     private ?float $discount_percent;
-    private ?float $pa;
 
     public function __construct()
     {
@@ -225,6 +224,7 @@ class Sales
     public function setDiscountEur(?float $discount): self
     {
         $this->discount_eur = $discount;
+
         return $this;
     }
 
@@ -236,6 +236,7 @@ class Sales
     public function setDiscountPercent(?float $discount): self
     {
         $this->discount_percent = $discount;
+
         return $this;
     }
 }
