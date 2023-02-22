@@ -23,6 +23,24 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserCrudController extends BaseCrudController
 {
+    #[Route(path: '/admin/{_locale}/modifier-mon-mot-de-passe', name: 'admin_password_update')]
+    public function updatePassword(): RedirectResponse|Response
+    {
+        return $this->render('admin/update_password.html.twig');
+    }
+
+    #[Route(path: '/admin/{_locale}/authentification-2-facteurs', name: 'admin_2fa_enable')]
+    public function enable2fa(): Response
+    {
+        return $this->render('admin/enable2fa.html.twig');
+    }
+
+    #[Route(path: '/admin/{_locale}/update_profile', name: 'admin_update_profile')]
+    public function updateProfile(): Response
+    {
+        return $this->render('admin/update_profile.html.twig');
+    }
+
     public function configureCrud(Crud $crud): Crud
     {
         $crud->setEntityLabelInPlural('Utilisateurs')
@@ -30,24 +48,6 @@ class UserCrudController extends BaseCrudController
             ->showEntityActionsInlined(true);
 
         return parent::configureCrud($crud);
-    }
-
-    #[Route(path: '/admin/modifier-mon-mot-de-passe', name: 'admin_password_update')]
-    public function updatePassword(): RedirectResponse|Response
-    {
-        return $this->renderForm('admin/update_password.html.twig');
-    }
-
-    #[Route(path: '/admin/authentification-2-facteurs', name: 'admin_2fa_enable')]
-    public function enable2fa(): Response
-    {
-        return $this->renderForm('admin/enable2fa.html.twig');
-    }
-
-    #[Route(path: '/admin/update_profile', name: 'admin_update_profile')]
-    public function updateProfile(): Response
-    {
-        return $this->renderForm('admin/update_profile.html.twig');
     }
 
     public static function getEntityFqcn(): string
