@@ -35,6 +35,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Exception\InsufficientEntityPermissionExcept
 use EasyCorp\Bundle\EasyAdminBundle\Factory\EntityFactory;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\HiddenField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
@@ -117,14 +118,35 @@ class SalesCrudController extends BaseCrudController
             ->setPermission('ROLE_ADMIN');**/
 
         $quantity = IntegerField::new('quantity')->setLabel('Quantité');
+        $discount_eur = MoneyField::new('discount_eur')
+            ->setStoredAsCents(false)
+            ->setNumDecimals(2)
+            ->setRequired(false)
+            ->setCurrency('EUR')
+            ->setLabel('Réduction (EUR)');
+        $discount_percent = PercentField::new('discount_percent')
+            ->setRequired(false)
+            ->setStoredAsFractional(false)
+            ->setLabel('Réduction (%)')
+            ->setNumDecimals(2);
+        $discount = HiddenField::new('discount');
+        $discount_edit = MoneyField::new('discount')
+            ->setStoredAsCents(false)
+            ->setNumDecimals(2)
+            ->setRequired(false)
+            ->setCurrency('EUR')
+            ->setLabel('Réduction (EUR)');
 
         switch ($pageName) {
             case Crud::PAGE_NEW:
+                $response = [$product, $contacts, $quantity, $price, $discount_eur, $discount_percent, $date, $discount];
+                break;
+
             case Crud::PAGE_EDIT:
-                $response = [$product, $contacts, $quantity, $price, $date];
+                $response = [$product, $contacts, $quantity, $price, $discount_edit, $date];
                 break;
             default:
-                $response = [$product, $contacts, $quantity, $price, $date];
+                $response = [$product, $contacts, $quantity, $price, $discount_eur, $discount_percent, $date, $discount];
         }
 
         return $response;
@@ -252,6 +274,7 @@ class SalesCrudController extends BaseCrudController
 
         $entity = $context->getEntity()->getInstance();
         $contact = $this->entityManager->getRepository(CompanyContact::class)->find($context->getRequest()->get('contactId'));
+        /** @var Product $product */
         $product = $this->entityManager->getRepository(Product::class)->find($context->getRequest()->get('productId'));
         $entity->setProduct($product);
         $entity->addContact($contact);

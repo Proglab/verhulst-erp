@@ -46,6 +46,13 @@ class Sales
     #[ORM\Column(nullable: false)]
     private int $quantity = 1;
 
+    #[ORM\Column(type: Types::DECIMAL, precision: 8, scale: 2, nullable: true)]
+    private ?float $discount = null;
+
+    private ?float $discount_eur;
+    private ?float $discount_percent;
+    private ?float $pa;
+
     public function __construct()
     {
         $this->contact = new ArrayCollection();
@@ -130,7 +137,7 @@ class Sales
 
     public function getMarge(): float
     {
-        return $this->getTotalPrice() - $this->product->getPa() * $this->quantity;
+        return $this->getTotalPrice() - $this->product->getPa() * $this->quantity - $this->getDiscount();
     }
 
     public function getDiffCa(): float
@@ -195,6 +202,40 @@ class Sales
     {
         $this->quantity = $quantity;
 
+        return $this;
+    }
+
+    public function getDiscount(): ?float
+    {
+        return $this->discount;
+    }
+
+    public function setDiscount(?float $discount): self
+    {
+        $this->discount = $discount;
+
+        return $this;
+    }
+
+    public function getDiscountEur(): ?float
+    {
+        return $this->discount_eur;
+    }
+
+    public function setDiscountEur(?float $discount): self
+    {
+        $this->discount_eur = $discount;
+        return $this;
+    }
+
+    public function getDiscountPercent(): ?float
+    {
+        return $this->discount_percent;
+    }
+
+    public function setDiscountPercent(?float $discount): self
+    {
+        $this->discount_percent = $discount;
         return $this;
     }
 }

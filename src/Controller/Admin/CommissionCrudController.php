@@ -27,7 +27,7 @@ class CommissionCrudController extends BaseCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $percentCom = PercentField::new('percent_com')->setRequired(true)->setStoredAsFractional(false);
+        $percentCom = PercentField::new('percent_com')->setRequired(true)->setStoredAsFractional(false)->setNumDecimals(2);
         $product = AssociationField::new('product')->setRequired(true);
         $user = AssociationField::new('user')->setRequired(true);
 

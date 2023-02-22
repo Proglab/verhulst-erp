@@ -38,6 +38,7 @@
                 <th scope="col">Date</th>
                 <th scope="col" class="text-right">CA</th>
                 <th scope="col" class="text-right">PA</th>
+                <th scope="col" class="text-right">Réduction</th>
                 <th scope="col" class="text-right">Marge</th>
                 <th scope="col" class="text-center">% Sales</th>
                 <th scope="col" class="text-right">€ Sales</th>
@@ -70,6 +71,7 @@
                         <td>{{ sale.date|date('d/m/Y') }}</td>
                         <td class="text-right">{{ (sale.price)|number_format(2, ',', ' ') }} €</td>
                         <td class="text-right">{{ (sale.pa)|number_format(2, ',', ' ') }} €</td>
+                        <td class="text-right">{{ (sale.discount)|number_format(2, ',', ' ') }} €</td>
                         <td class="text-right">{{ sale.marge|number_format(2, ',', ' ') }} €</td>
                         <td class="text-center">{{ sale.percentCom }} %</td>
                         <td class="text-right">{{ sale.euroCom|number_format(2, ',', ' ') }}  €</td>
@@ -90,6 +92,7 @@
                 </th>
                 <th class="text-right">{{ total_price|number_format(2, ',', ' ') }} €</th>
                 <th class="text-right">{{ total_pa|number_format(2, ',', ' ') }} €</th>
+                <th></th>
                 <th class="text-right">{{ total_marge|number_format(2, ',', ' ') }} €</th>
                 <th></th>
                 <th class="text-right">{{ total_euroCom|number_format(2, ',', ' ') }} €</th>
@@ -111,6 +114,8 @@
                 <th scope="col" class="text-right">CA</th>
                 <th scope="col" class="text-right">Quantity</th>
                 <th scope="col" class="text-right">CA Total</th>
+                <th scope="col" class="text-right">Réduction</th>
+                <th scope="col" class="text-right">Marge</th>
                 <th scope="col" class="text-center">% Sales</th>
                 <th scope="col" class="text-right">€ Sales</th>
                 <th scope="col">Action</th>
@@ -120,11 +125,13 @@
 
             {% set total_price = 0 %}
             {% set total_euroCom = 0 %}
+            {% set total_marge = 0 %}
 
             {% for sale in user.sales %}
                 {% if get_class(sale.product) == 'ProductSponsoring' %}
                     {% set total_price = total_price + sale.totalPrice %}
                     {% set total_euroCom = total_euroCom + sale.euroCom %}
+                    {% set total_marge = total_marge + sale.marge %}
                     <tr>
                         <th scope="row">
                             {% for contact in sale.contact %}
@@ -139,6 +146,8 @@
                         <td class="text-right">{{ (sale.price)|number_format(2, ',', ' ') }} €</td>
                         <td class="text-right">{{ sale.quantity }}</td>
                         <td class="text-right">{{ (sale.totalPrice)|number_format(2, ',', ' ') }} €</td>
+                        <td class="text-right">{{ (sale.discount)|number_format(2, ',', ' ') }} €</td>
+                        <td class="text-right">{{ (sale.marge)|number_format(2, ',', ' ') }} €</td>
                         <td class="text-center">{{ sale.percentCom }} %</td>
                         <td class="text-right">{{ sale.euroCom|number_format(2, ',', ' ') }}  €</td>
                         <td class="action">
@@ -159,6 +168,8 @@
                 <th></th>
                 <th></th>
                 <th class="text-right">{{ total_price|number_format(2, ',', ' ') }} €</th>
+                <th></th>
+                <th class="text-right">{{ total_marge|number_format(2, ',', ' ') }} €</th>
                 <th></th>
                 <th class="text-right">{{ total_euroCom|number_format(2, ',', ' ') }} €</th>
                 <th></th>
@@ -179,6 +190,8 @@
                 <th scope="col" class="text-right">CA</th>
                 <th scope="col" class="text-right">Quantity</th>
                 <th scope="col" class="text-right">CA Total</th>
+                <th scope="col" class="text-right">Réduction</th>
+                <th scope="col" class="text-right">Marge</th>
                 <th scope="col" class="text-center">% Sales</th>
                 <th scope="col" class="text-right">€ Sales</th>
                 <th scope="col">Action</th>
@@ -187,11 +200,13 @@
             <tbody>
             {% set total_price = 0 %}
             {% set total_euroCom = 0 %}
+            {% set total_marge = 0 %}
 
             {% for sale in user.sales %}
                 {% if get_class(sale.product) == 'ProductPackageVip' %}
                     {% set total_price = total_price + sale.totalPrice %}
                     {% set total_euroCom = total_euroCom + sale.euroCom %}
+                    {% set total_marge = total_marge + sale.marge %}
                     <tr>
                         <th scope="row">
                             {% for contact in sale.contact %}
@@ -206,6 +221,8 @@
                         <td class="text-right">{{ (sale.price)|number_format(2, ',', ' ') }} €</td>
                         <td class="text-right">{{ (sale.quantity) }}</td>
                         <td class="text-right">{{ (sale.totalPrice)|number_format(2, ',', ' ') }} €</td>
+                        <td class="text-right">{{ (sale.discount)|number_format(2, ',', ' ') }} €</td>
+                        <td class="text-right">{{ (sale.marge)|number_format(2, ',', ' ') }} €</td>
                         <td class="text-center">{{ sale.percentCom }} %</td>
                         <td class="text-right">{{ sale.euroCom|number_format(2, ',', ' ') }}  €</td>
                         <td class="action">
@@ -226,6 +243,8 @@
                 <th></th>
                 <th></th>
                 <th class="text-right">{{ total_price|number_format(2, ',', ' ') }} €</th>
+                <th></th>
+                <th class="text-right">{{ total_marge|number_format(2, ',', ' ') }} €</th>
                 <th></th>
                 <th class="text-right">{{ total_euroCom|number_format(2, ',', ' ') }} €</th>
                 <th></th>
@@ -244,6 +263,8 @@
                 <th scope="col">Produit</th>
                 <th scope="col">Date</th>
                 <th scope="col" class="text-right">CA</th>
+                <th scope="col" class="text-right">Réduction</th>
+                <th scope="col" class="text-right">Marge</th>
                 <th scope="col" class="text-center">% Sales</th>
                 <th scope="col" class="text-right">€ Sales</th>
                 <th scope="col">Action</th>
@@ -252,11 +273,13 @@
             <tbody>
             {% set total_price = 0 %}
             {% set total_euroCom = 0 %}
+            {% set total_marge = 0 %}
 
             {% for sale in user.sales %}
                 {% if get_class(sale.product) == 'ProductDivers' %}
                     {% set total_price = total_price + sale.price %}
                     {% set total_euroCom = total_euroCom + sale.euroCom %}
+                    {% set total_marge = total_marge + sale.marge %}
                     <tr>
                         <th scope="row">
                             {% for contact in sale.contact %}
@@ -269,6 +292,8 @@
                         <th scope="row">{{ sale.product.name }}</th>
                         <td>{{ sale.date|date('d/m/Y') }}</td>
                         <td class="text-right">{{ (sale.price)|number_format(2, ',', ' ') }} €</td>
+                        <td class="text-right">{{ (sale.discount)|number_format(2, ',', ' ') }} €</td>
+                        <td class="text-right">{{ (sale.marge)|number_format(2, ',', ' ') }} €</td>
                         <td class="text-center">{{ sale.percentCom }} %</td>
                         <td class="text-right">{{ sale.euroCom|number_format(2, ',', ' ') }}  €</td>
                         <td class="action">
@@ -287,6 +312,8 @@
                     Totaux
                 </th>
                 <th class="text-right">{{ total_price|number_format(2, ',', ' ') }} €</th>
+                <th></th>
+                <th class="text-right">{{ total_marge|number_format(2, ',', ' ') }} €</th>
                 <th></th>
                 <th class="text-right">{{ total_euroCom|number_format(2, ',', ' ') }} €</th>
                 <th></th>

@@ -22,28 +22,47 @@
 
   {{ form_row(form.quantity) }}
   {{ form_row(form.price) }}
+  {{ form_row(form.discount_eur) }}
+  {{ form_row(form.discount_percent) }}
 
-  <p class="mt-4"><b>Prix total :</b> <span id="result">{{ (form.vars.value.price * form.vars.value.quantity)|number_format(2, ',', ' ') }}</span> €</p>
+  <p class="mt-4"><b>Réduction :</b> <span id="result_reduc">0,00</span> €</p>
+  <p><b>Prix total :</b> <span id="result">{{ (form.vars.value.price * form.vars.value.quantity)|number_format(2, ',', ' ') }}</span> €</p>
 
   <script>
-   var x = document.getElementById("Sales_quantity");
-   var y = document.getElementById("Sales_price");
+   function calcul(event) {
+    var q_v = document.getElementById("Sales_quantity").value;
+    var p_v = document.getElementById("Sales_price").value;
+    var re_v = document.getElementById("Sales_discount_eur").value;
+    var rp_v = document.getElementById("Sales_discount_percent").value;
 
-   x.addEventListener('change', (event) => {
-    var a = document.getElementById("Sales_quantity").value;
-    var b = document.getElementById("Sales_price").value;
-    var value = parseFloat(a.replace(',', '.')) * parseFloat(b.replace(',', '.'));
+    console.log(re_v);
+    if (re_v === '') {
+     re_v = '0';
+    }
+    if (rp_v === '') {
+     rp_v = '0';
+    }
+    var reduc_percent = parseFloat(q_v.replace(',', '.')) * parseFloat(p_v.replace(',', '.')) * parseFloat(rp_v.replace(',', '.')) / parseFloat(100);
+
+    console.log(reduc_percent);
+
+    var value = parseFloat(q_v.replace(',', '.')) * parseFloat(p_v.replace(',', '.')) - parseFloat(re_v.replace(',', '.'));
+    value = value - reduc_percent
+
+    var total_reduc = reduc_percent + parseFloat(re_v.replace(',', '.'));
+    document.getElementById("result_reduc").innerHTML = total_reduc.toFixed(2);
     document.getElementById("result").innerHTML = value.toFixed(2);
-   });
+    document.getElementById("Sales_discount").value = total_reduc;
+   }
+   var q = document.getElementById("Sales_quantity");
+   var p = document.getElementById("Sales_price");
+   var re = document.getElementById("Sales_discount_eur");
+   var rp = document.getElementById("Sales_discount_percent");
 
-   y.addEventListener('change', (event) => {
-    var a = document.getElementById("Sales_quantity").value;
-    var b = document.getElementById("Sales_price").value;
-    var value = parseFloat(a.replace(',', '.')) * parseFloat(b.replace(',', '.'));
-    document.getElementById("result").innerHTML = value.toFixed(2);
-   });
-
-
+   q.addEventListener('change', (event) => calcul(event));
+   p.addEventListener('change', (event) => calcul(event));
+   re.addEventListener('change', (event) => calcul(event));
+   rp.addEventListener('change', (event) => calcul(event));
   </script>
 
 
