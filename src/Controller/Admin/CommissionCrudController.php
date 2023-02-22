@@ -6,8 +6,6 @@ namespace App\Controller\Admin;
 
 use App\Entity\Commission;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
-use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
 
 class CommissionCrudController extends BaseCrudController
 {
