@@ -29,7 +29,6 @@ class UserCrudController extends BaseCrudController
 {
     public function __construct(private UserService $userService)
     {
-
     }
 
     #[Route(path: '/admin/{_locale}/modifier-mon-mot-de-passe', name: 'admin_password_update')]
@@ -75,14 +74,14 @@ class UserCrudController extends BaseCrudController
         return $actions;
     }
 
-    public function resetPassword(AdminContext $context)
+    public function resetPassword(AdminContext $context): RedirectResponse
     {
         $user = $context->getEntity()->getInstance();
         $this->userService->processSendingPasswordResetEmail($user);
         $this->addFlash('success', 'Mot de passe réinitialisé');
+
         return $this->redirect($context->getReferrer());
     }
-
 
     public static function getEntityFqcn(): string
     {

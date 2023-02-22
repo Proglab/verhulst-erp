@@ -1,10 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Service;
 
 use App\Entity\User;
-use App\Repository\UserRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
@@ -14,12 +14,10 @@ use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 class UserService
 {
     public function __construct(
-        private UserRepository $userRepository,
         private ResetPasswordHelperInterface $resetPasswordHelper,
         private TranslatorInterface $translator,
         private MailerInterface $mailer
     ) {
-
     }
 
     public function processSendingPasswordResetEmail(User $user): void
