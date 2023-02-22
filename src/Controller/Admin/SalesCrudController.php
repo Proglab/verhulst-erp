@@ -108,14 +108,14 @@ class SalesCrudController extends BaseCrudController
         $product = AssociationField::new('product')->setRequired(true);
         $contacts = AssociationField::new('contact')->setRequired(true);
         $date = DateField::new('date')->setLabel('Date de vente');
-        /**$percent_com = PercentField::new('percent_com')
+        $percent_com = PercentField::new('percent_com')
             ->setNumDecimals(2)
-            ->setStoredAsFractional(true)
-            ->setPermission('ROLE_ADMIN');
+            ->setStoredAsFractional(false)
+            ->setPermission('ROLE_ENCODE');
         $percent_vr = PercentField::new('percent_vr')
             ->setNumDecimals(2)
-            ->setStoredAsFractional(true)
-            ->setPermission('ROLE_ADMIN');**/
+            ->setStoredAsFractional(false)
+            ->setPermission('ROLE_ENCODE');
 
         $quantity = IntegerField::new('quantity')->setLabel('Quantité');
         $discount_eur = MoneyField::new('discount_eur')
@@ -143,7 +143,7 @@ class SalesCrudController extends BaseCrudController
                 break;
 
             case Crud::PAGE_EDIT:
-                $response = [$product, $contacts, $quantity, $price, $discount_edit, $date];
+                $response = [$product, $contacts, $quantity, $price, $discount_edit, $percent_com, $percent_vr, $date];
                 break;
             default:
                 $response = [$product, $contacts, $quantity, $price, $discount_eur, $discount_percent, $date, $discount];
