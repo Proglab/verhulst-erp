@@ -36,14 +36,14 @@ class ProductPackageVipCrudController extends BaseCrudController
         $actions = parent::configureActions($actions);
 
         return $actions
-            ->setPermission(Action::NEW, 'ROLE_ADMIN')
-            ->setPermission(Action::EDIT, 'ROLE_ADMIN')
+            ->setPermission(Action::NEW, 'ROLE_ENCODE')
+            ->setPermission(Action::EDIT, 'ROLE_ENCODE')
             ->setPermission(Action::DETAIL, 'ROLE_COMMERCIAL')
             ->setPermission(Action::INDEX, 'ROLE_COMMERCIAL')
-            ->setPermission(Action::DELETE, 'ROLE_ADMIN')
-            ->setPermission(Action::SAVE_AND_RETURN, 'ROLE_ADMIN')
-            ->setPermission(Action::SAVE_AND_ADD_ANOTHER, 'ROLE_ADMIN')
-            ->setPermission(Action::SAVE_AND_CONTINUE, 'ROLE_ADMIN')
+            ->setPermission(Action::DELETE, 'ROLE_ENCODE')
+            ->setPermission(Action::SAVE_AND_RETURN, 'ROLE_ENCODE')
+            ->setPermission(Action::SAVE_AND_ADD_ANOTHER, 'ROLE_ENCODE')
+            ->setPermission(Action::SAVE_AND_CONTINUE, 'ROLE_ENCODE')
         ;
     }
 
@@ -51,9 +51,9 @@ class ProductPackageVipCrudController extends BaseCrudController
     {
         $projectName = TextField::new('project.name')->setLabel('Nom du projet');
         $name = TextField::new('name')->setLabel('Nom du produit');
-        $percentVr = PercentField::new('percent_vr')->setLabel('Com Verhulst')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false)->setNumDecimals(2);
-        $percentDefaultFreelance = PercentField::new('percent_freelance')->setLabel('Com Freelance')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false)->setNumDecimals(2);
-        $percentDefaultSalarie = PercentField::new('percent_salarie')->setLabel('Com Salarié')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false)->setNumDecimals(2);
+        $percentVr = PercentField::new('percent_vr')->setLabel('Com Verhulst')->setPermission('ROLE_ENCODE')->setStoredAsFractional(false)->setNumDecimals(2);
+        $percentDefaultFreelance = PercentField::new('percent_freelance')->setLabel('Com Freelance')->setPermission('ROLE_ENCODE')->setStoredAsFractional(false)->setNumDecimals(2);
+        $percentDefaultSalarie = PercentField::new('percent_salarie')->setLabel('Com Salarié')->setPermission('ROLE_ENCODE')->setStoredAsFractional(false)->setNumDecimals(2);
         $ca = MoneyField::new('ca')->setCurrency('EUR')->setStoredAsCents(false)->setNumDecimals(2)->setLabel('Prix de vente');
         $description = TextEditorField::new('description');
         $quantityMax = IntegerField::new('quantity_max')->setLabel('Quantité max');

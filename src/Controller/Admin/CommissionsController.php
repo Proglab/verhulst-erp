@@ -34,7 +34,7 @@ class CommissionsController extends DashboardController
     }
 
     #[Route('/admin/{_locale}/commission', name: 'commission_index')]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_ENCODE')]
     public function com(string $_locale): Response
     {
         /** @var UserRepository $usersRepo */
@@ -86,7 +86,7 @@ class CommissionsController extends DashboardController
     }
 
     #[Route('/admin/{_locale}/commission/{project_id}/{user_id}', name: 'commission_index_edit', methods: ['POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_ENCODE')]
     public function comedit(string $_locale, int $project_id, int $user_id, Request $request): Response
     {
         $url = $this->generateUrl(
@@ -128,7 +128,7 @@ class CommissionsController extends DashboardController
     }
 
     #[Route('/admin/{_locale}/commission/{project_id}', name: 'commission_index_edit_vr', methods: ['POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_ENCODE')]
     public function comeditvr(string $_locale, int $project_id, Request $request): Response
     {
         $url = $this->generateUrl(

@@ -52,7 +52,7 @@ class ProjectCrudController extends BaseCrudController
     {
         $name = TextField::new('name')->setLabel('Nom du projet');
 
-        if ($this->isGranted('ROLE_ADMIN')) {
+        if ($this->isGranted('ROLE_ENCODE')) {
             $projectEvent = CollectionField::new('product_event')->setLabel('Event à la carte')->allowAdd(true)->allowDelete(true)->setEntryIsComplex()->useEntryCrudForm(ProductEventCrudController::class);
             $projectPackage = CollectionField::new('product_package')->setLabel('Package VIP')->allowAdd(true)->allowDelete(true)->setEntryIsComplex()->useEntryCrudForm(ProductPackageVipCrudController::class);
             $projectSponsor = CollectionField::new('product_sponsoring')->setLabel('Sponsoring')->allowAdd(true)->allowDelete(true)->setEntryIsComplex()->useEntryCrudForm(ProductSponsoringCrudController::class);
@@ -86,9 +86,9 @@ class ProjectCrudController extends BaseCrudController
     {
         $actions = parent::configureActions($actions);
         $actions
-            ->setPermission(Action::NEW, 'ROLE_ADMIN')
-            ->setPermission(Action::EDIT, 'ROLE_ADMIN')
-            ->setPermission(Action::DELETE, 'ROLE_ADMIN')
+            ->setPermission(Action::NEW, 'ROLE_ENCODE')
+            ->setPermission(Action::EDIT, 'ROLE_ENCODE')
+            ->setPermission(Action::DELETE, 'ROLE_ENCODE')
             ->setPermission(Action::DETAIL, 'ROLE_COMMERCIAL')
             ->setPermission(Action::INDEX, 'ROLE_COMMERCIAL')
             ->setPermission(Action::SAVE_AND_RETURN, 'ROLE_COMMERCIAL')
