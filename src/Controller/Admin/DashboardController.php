@@ -33,6 +33,7 @@ class DashboardController extends AbstractDashboardController
         return Dashboard::new()
             ->setTitle('<img src="/app-logo.png" />')
             ->renderContentMaximized()
+            ->setFaviconPath('build/favicon/favicon.ico')
             ->setLocales([
                 'fr' => 'Français',
                 'nl' => 'Neederlands',
