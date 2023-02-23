@@ -206,6 +206,9 @@ class Sales
 
     public function getDiscount(): float
     {
+        if ($this->discount === null) {
+            return 0;
+        }
         return $this->discount;
     }
 
