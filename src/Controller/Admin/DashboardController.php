@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Entity\Commission;
 use App\Entity\CompanyContact;
 use App\Entity\ProductDivers;
 use App\Entity\ProductEvent;
@@ -12,7 +13,6 @@ use App\Entity\ProductSponsoring;
 use App\Entity\Project;
 use App\Entity\Sales;
 use App\Entity\User;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -64,7 +64,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::section('Gestion')->setPermission('ROLE_ENCODE'),
             MenuItem::linkToCrud('admin.menu.project', 'fas fa-folder-open', Project::class)->setPermission('ROLE_ENCODE'),
             MenuItem::linkToCrud('admin.menu.client', 'fas fa-address-book', CompanyContact::class)->setPermission('ROLE_ENCODE'),
-            MenuItem::linkToRoute('admin.menu.commission', 'fas fa-hand-holding-dollar', 'commission_index')->setPermission('ROLE_ENCODE'),
+            MenuItem::linkToCrud('admin.menu.commission', 'fas fa-hand-holding-dollar', Commission::class)->setPermission('ROLE_ENCODE'),
 
             MenuItem::section(),
             MenuItem::linkToLogout('admin.menu.logout', 'fa-solid fa-door-open text-danger')->setCssClass('text-danger'),

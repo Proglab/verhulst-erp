@@ -8,6 +8,7 @@ use App\Repository\SalesRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
@@ -16,6 +17,12 @@ class DashboardPagesController extends DashboardController
 {
     public function __construct(private ChartBuilderInterface $chartBuilder, private UserRepository $userRepository, private SalesRepository $salesRepository, private RequestStack $requestStack)
     {
+    }
+
+    #[Route('/admin', name: 'admin')]
+    public function admin(): Response
+    {
+        return $this->redirectToRoute('dashboard_admin');
     }
 
     #[Route('/admin/{_locale}', name: 'dashboard_admin')]
@@ -141,6 +148,20 @@ class DashboardPagesController extends DashboardController
             'month' => $months[$month - 1],
             'month_num' => $month,
             'locale' => $this->requestStack->getCurrentRequest()->getLocale(),
+        ]);
+    }
+
+    #[Route('/admin/{_locale}/recap', name: 'app_admin_recap')]
+    public function recap(): Response
+    {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            throw new UnauthorizedHttpException('Unauthorized');
+        }
+
+        $users = $this->userRepository->getCommercials();
+
+        return $this->render('admin/recap/recap.html.twig', [
+            'users' => $users,
         ]);
     }
 }

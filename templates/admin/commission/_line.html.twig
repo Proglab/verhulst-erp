@@ -5,7 +5,7 @@
         <div class="form-widget">
             {% if product.percentVr != 0 %}
                 <div class="input-group">
-                    <input  hx-post="{{ url('commission_index_edit_vr', {'_locale': locale, 'project_id': product.id}) }}" hx-swap="outerHTML"
+                    <input  hx-post="{{ ea_url().setAction('editPercentVr').set('product_id', product.id) }}" hx-swap="outerHTML"
                             name="com"
                             type="text" class="form-control" value="{{ product.percentVr }}" >
 
@@ -15,7 +15,7 @@
                 </div>
             {% else %}
                 <div class="input-group">
-                    <input  hx-post="{{ url('commission_index_edit_vr', {'_locale': locale, 'project_id': product.id}) }}" hx-swap="outerHTML"
+                    <input  hx-post="{{ ea_url().setAction('editPercentVr').set('product_id', product.id) }}" hx-swap="outerHTML"
                             name="com"
                             type="text" class="form-control is-invalid" value="{{ product.percentVr }}" >
 
@@ -31,7 +31,7 @@
             <div class="form-widget">
                 <div class="input-group">
                         {% include 'admin/commission/_input_percent.html.twig' with {
-                                'url': url('commission_index_edit', {'_locale': locale, 'project_id': product.id, 'user_id': user.id}),
+                                'url': ea_url().setAction('editPercentCom').set('product_id', product.id).set('user_id', user.id),
                                 'type': commissions[product.project.id][product.id][user.id] is defined and commissions[product.project.id][product.id][user.id] > 0 ? '' : 'error',
                                 'value': commissions[product.project.id][product.id][user.id] is defined ? commissions[product.project.id][product.id][user.id] : 0
                             }
