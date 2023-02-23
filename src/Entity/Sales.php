@@ -30,10 +30,10 @@ class Sales
     #[ORM\ManyToMany(targetEntity: CompanyContact::class, inversedBy: 'sales')]
     private Collection $contact;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 6, scale: 4, nullable: true)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 4, scale: 2, nullable: true)]
     private ?float $percent_vr = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 6, scale: 4, nullable: true)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 4, scale: 2, nullable: true)]
     private ?float $percent_com = null;
 
     #[ORM\ManyToOne(inversedBy: 'sales')]
