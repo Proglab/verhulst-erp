@@ -6,4 +6,51 @@
                     Dashboard Administrateur
                 </h1>
             </div>
+
+            <div class="row">
+                <div class="col-5">
+                    <h3>Ventes Totales</h3>
+                    <div id="sales_tot">
+                        <ul class="nav justify-content-center">
+                            <li class="nav-item">
+                                {% set url = ea_url().setAction('sales_tot').set('year', year-1) %}
+                                <a class="nav-link active" aria-current="page" href="{{ url }}"><i class="fa-solid fa-left-long fa-2x"></i></a>
+                            </li>
+                            <li class="nav-item align-content-end">
+                                <a class="nav-link disabled" aria-current="page" href="#" hx-target="#sales_tot" hx-trigger="load" hx-get="{{ path('sales_tot', {_locale: locale, year: year}) }}" hx-swap="outerHTML"><b>{{ year }}</b></a>
+                            </li>
+                            <li class="nav-item">
+                                {% set url = ea_url().set('year', year+1) %}
+                                <a class="nav-link active" aria-current="page" href="{{ url }}"><i class="fa-solid fa-right-long fa-2x"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-3 offset-1">
+                    <h3>Ventes Commerciaux</h3>
+                    <div id="users_tot">
+                        <ul class="nav justify-content-center">
+                            <li class="nav-item">
+                                {% if month_num-1 < 1 %}
+                                    {% set url = ea_url().set('month', 12).set('year', year-1) %}
+                                {% else %}
+                                    {% set url = ea_url().set('month', month_num-1).set('year', year) %}
+                                {% endif %}
+                                <a class="nav-link active" aria-current="page" href="{{ url }}"><i class="fa-solid fa-left-long fa-2x"></i></a>
+                            </li>
+                            <li class="nav-item align-content-end">
+                                <a class="nav-link disabled" aria-current="page" href="#" hx-target="#users_tot" hx-trigger="load" hx-get="{{ path('users_tot', {_locale: locale, year: year, month: month_num}) }}" hx-swap="outerHTML"><b>{{ month }} {{ year }}</b></a>
+                            </li>
+                            <li class="nav-item">
+                                {% if month_num+1 > 12 %}
+                                    {% set url = ea_url().set('month', 1).set('year', year+1) %}
+                                {% else %}
+                                    {% set url = ea_url().set('month', month_num+1).set('year', year) %}
+                                {% endif %}
+                                <a class="nav-link active" aria-current="page" href="{{ url }}"><i class="fa-solid fa-right-long fa-2x"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 {% endblock %}

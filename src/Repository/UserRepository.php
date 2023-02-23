@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\User;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -55,32 +56,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         ;
     }
 
-    // /**
-    //  * @return User[] Returns an array of User objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getStatsByUser(DateTime $startDate, DateTime $endDate): array
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $sql = 'SELECT SUM((sales.price * sales.quantity) - sales.discount) as total, user.first_name, user.last_name, user.id 
+FROM `user` 
+LEFT JOIN sales ON (sales.user_id = user.id AND sales.date >= "'.$startDate->format('Y-m-d').'" AND sales.date <= "'.$endDate->format('Y-m-d').'") 
+WHERE `user`.`roles` LIKE "%COMMERCIAL%" 
+GROUP BY user.id';
 
-    /*
-    public function findOneBySomeField($value): ?User
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $query = $this->getEntityManager()->getConnection()->executeQuery($sql);
+        $result = $query->fetchAllAssociative();
+        return $result;
     }
-    */
 }

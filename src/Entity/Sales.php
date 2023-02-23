@@ -47,7 +47,7 @@ class Sales
     private int $quantity = 1;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 8, scale: 2, nullable: true)]
-    private ?float $discount = null;
+    private ?float $discount = 0.0;
 
     private ?float $discount_eur;
     private ?float $discount_percent;
@@ -204,12 +204,12 @@ class Sales
         return $this;
     }
 
-    public function getDiscount(): ?float
+    public function getDiscount(): float
     {
         return $this->discount;
     }
 
-    public function setDiscount(?float $discount): self
+    public function setDiscount(float $discount): self
     {
         $this->discount = $discount;
 

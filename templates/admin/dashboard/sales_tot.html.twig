@@ -1,0 +1,15 @@
+
+<div id="sales_tot">
+    <ul class="nav justify-content-center">
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#" hx-target="#sales_tot" hx-get="{{ path('sales_tot', {_locale: locale, year: year-1}) }}" hx-swap="replace"><i class="fa-solid fa-left-long fa-2x"></i></a>
+        </li>
+        <li class="nav-item align-content-end">
+            <a class="nav-link disabled" aria-current="page" href="#"><b>{{ year }}</b></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#" hx-target="#sales_tot" hx-get="{{ path('sales_tot', {_locale: locale, year: year+1}) }}" hx-swap="replace"><i class="fa-solid fa-right-long fa-2x"></i></a>
+        </li>
+    </ul>
+    {{ render_chart(chart) }}
+</div>

@@ -16,6 +16,7 @@
     <title>{{ page_title_block_output|striptags|raw }}</title>
 
     {% block head_stylesheets %}
+        {{ encore_entry_link_tags('app') }}
         <link rel="stylesheet" href="{{ asset('app.css', ea.assets.defaultAssetPackageName) }}">
     {% endblock %}
 
@@ -29,6 +30,7 @@
     {% endblock %}
 
     {% block head_javascript %}
+        {{ encore_entry_script_tags('app') }}
         <script src="{{ asset('app.js', ea.assets.defaultAssetPackageName) }}"></script>
     {% endblock head_javascript %}
 

@@ -16,7 +16,7 @@ class UserService
     public function __construct(
         private ResetPasswordHelperInterface $resetPasswordHelper,
         private TranslatorInterface $translator,
-        private MailerInterface $mailer
+        private MailerInterface $mailer,
     ) {
     }
 

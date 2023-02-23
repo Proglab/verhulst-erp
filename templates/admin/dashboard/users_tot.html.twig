@@ -1,0 +1,28 @@
+
+<div id="users_tot">
+    <ul class="nav justify-content-center">
+        <li class="nav-item">
+            {% if month_num-1 < 1 %}
+                {% set url = path('users_tot', {_locale: locale, year: year-1, month: 12}) %}
+            {% else %}
+                {% set url = path('users_tot', {_locale: locale, year: year, month: month_num-1}) %}
+            {% endif %}
+            <a class="nav-link active" aria-current="page" href="{{ url }}" hx-target="#users_tot" hx-get="{{ url }}" hx-swap="replace"><i class="fa-solid fa-left-long fa-2x"></i></a>
+        </li>
+        <li class="nav-item align-content-end">
+            <a class="nav-link disabled" aria-current="page" href="#"><b>{{ month }} {{ year }}</b></a>
+        </li>
+        <li class="nav-item">
+            {% if month_num+1 > 12 %}
+                {% set url = path('users_tot', {_locale: locale, year: year+1, month: 1}) %}
+            {% else %}
+                {% set url = path('users_tot', {_locale: locale, year: year, month: month_num+1}) %}
+            {% endif %}
+            <a class="nav-link active" aria-current="page" href="{{ url }}" hx-target="#users_tot" hx-get="{{ url }}" hx-swap="replace"><i class="fa-solid fa-right-long fa-2x"></i></a>
+        </li>
+    </ul>
+
+    {{ render_chart(chart2) }}
+</div>
+
+
