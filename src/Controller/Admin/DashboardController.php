@@ -70,7 +70,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToDashboard('admin.menu.dashboard', 'fa fa-chart-line')->setPermission('ROLE_ADMIN'),
             MenuItem::linkToRoute('admin.menu.recap', 'fa fa-sliders', 'app_admin_recap')->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('admin.menu.users', 'fas fa-users', User::class)->setPermission('ROLE_ADMIN'),
-            MenuItem::linkToCrud('Css', 'fas fa-users', Css::class)->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToCrud('Css', 'fas fa-brush', Css::class)->setPermission('ROLE_ADMIN'),
 
             MenuItem::section('Gestion')->setPermission('ROLE_ENCODE'),
             MenuItem::linkToCrud('admin.menu.project', 'fas fa-folder-open', Project::class)->setPermission('ROLE_ENCODE'),
