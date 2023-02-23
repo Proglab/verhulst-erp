@@ -25,9 +25,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class DashboardController extends AbstractDashboardController
 {
-
     #[Route('/admin', name: 'admin')]
     public function admin(): Response
+    {
+        return $this->redirectToRoute('dashboard_admin');
+    }
+
+    #[Route('/admin', name: 'app_admin_dashboard_index')]
+    public function admin2(): Response
     {
         return $this->redirectToRoute('dashboard_admin');
     }
