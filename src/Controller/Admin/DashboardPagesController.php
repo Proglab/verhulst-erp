@@ -20,12 +20,6 @@ class DashboardPagesController extends DashboardController
     {
     }
 
-    #[Route('/admin', name: 'admin')]
-    public function admin(): Response
-    {
-        return $this->redirectToRoute('dashboard_admin');
-    }
-
     #[Route('/admin/{_locale}', name: 'dashboard_admin')]
     public function index(): Response
     {

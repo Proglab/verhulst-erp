@@ -19,10 +19,19 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class DashboardController extends AbstractDashboardController
 {
+
+    #[Route('/admin', name: 'admin')]
+    public function admin(): Response
+    {
+        return $this->redirectToRoute('dashboard_admin');
+    }
+
     public function configureAssets(): Assets
     {
         $assets = parent::configureAssets();

@@ -18,6 +18,7 @@
     {% block head_stylesheets %}
         {{ encore_entry_link_tags('app') }}
         <link rel="stylesheet" href="{{ asset('app.css', ea.assets.defaultAssetPackageName) }}">
+        <link rel="stylesheet" href="/css/app.css">
     {% endblock %}
 
     {% block configured_stylesheets %}
@@ -350,8 +351,6 @@
                                 {% endblock content_header_wrapper %}
 
                                 <section id="main" class="content-body">
-
-                                    <link rel="stylesheet" href="/css/app.css">
                                     {% block main %}{% endblock %}
                                 </section>
 
