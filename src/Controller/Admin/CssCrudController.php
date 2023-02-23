@@ -30,7 +30,8 @@ class CssCrudController extends BaseCrudController
     {
         $crud->setEntityLabelInPlural('Css')
             ->setEntityLabelInSingular('Css')
-            ->showEntityActionsInlined(true);
+            ->showEntityActionsInlined(true)
+        ->setHelp(Crud::PAGE_EDIT, 'Ne modifier que si vous savez ce que vous faites !!!');
 
         return parent::configureCrud($crud);
     }
@@ -38,7 +39,7 @@ class CssCrudController extends BaseCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            CodeEditorField::new('content')->setLanguage('css'),
+            CodeEditorField::new('content')->setLanguage('css')->setHelp('Ne modifier que si vous savez ce que vous faites !!!')->setLabel('Contenu du fichier CSS'),
         ];
     }
 
