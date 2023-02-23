@@ -83,9 +83,9 @@ task('deploy:update_code', function () {
 
 set('repository', 'git@github.com:Proglab/verhulst-erp.git');
 
-add('shared_files', []);
+add('shared_files', ['public/css/app.css']);
 add('shared_dirs', ['var/files', 'public/files/products']);
-add('writable_dirs', ['var/files', 'public/files/products']);
+add('writable_dirs', ['var/files', 'public/files/products', 'public/css']);
 
 // Hosts
 

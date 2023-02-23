@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Repository\SalesRepository;
 use App\Repository\UserRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Form\Type\CodeEditorType;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
@@ -162,6 +163,26 @@ class DashboardPagesController extends DashboardController
 
         return $this->render('admin/recap/recap.html.twig', [
             'users' => $users,
+        ]);
+    }
+
+
+    #[Route('/admin/{_locale}/css', name: 'app_admin_css')]
+    public function css(): Response
+    {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            throw new UnauthorizedHttpException('Unauthorized');
+        }
+        $fileContent = file_get_contents(realpath(__DIR__.'/../../../../../shared/public/css/app.css'));
+
+        $form = $this->createFormBuilder()
+            ->add('task', CodeEditorType::class, ['attr' => ['data-ea-code-editor-field' => 'true', 'data-ea-align' => 'left']])
+            ->getForm();
+
+        $form->get('task')->setData($fileContent);
+
+        return $this->render('admin/css/edit.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 }
