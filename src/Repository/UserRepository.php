@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\User;
-use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -56,16 +55,17 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         ;
     }
 
-    public function getStatsByUser(DateTime $startDate, DateTime $endDate): array
+    public function getStatsByUser(\DateTime $startDate, \DateTime $endDate): array
     {
-        $sql = 'SELECT SUM((sales.price * sales.quantity) - sales.discount) as total, user.first_name, user.last_name, user.id 
-FROM `user` 
-LEFT JOIN sales ON (sales.user_id = user.id AND sales.date >= "'.$startDate->format('Y-m-d').'" AND sales.date <= "'.$endDate->format('Y-m-d').'") 
-WHERE `user`.`roles` LIKE "%COMMERCIAL%" 
+        $sql = 'SELECT SUM((sales.price * sales.quantity) - sales.discount) as total, user.first_name, user.last_name, user.id
+FROM `user`
+LEFT JOIN sales ON (sales.user_id = user.id AND sales.date >= "' . $startDate->format('Y-m-d') . '" AND sales.date <= "' . $endDate->format('Y-m-d') . '")
+WHERE `user`.`roles` LIKE "%COMMERCIAL%"
 GROUP BY user.id';
 
         $query = $this->getEntityManager()->getConnection()->executeQuery($sql);
         $result = $query->fetchAllAssociative();
+
         return $result;
     }
 }

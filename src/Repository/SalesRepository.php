@@ -57,11 +57,12 @@ class SalesRepository extends ServiceEntityRepository
     public function getStatsByMonth(int $year): array
     {
         $sql = 'SELECT SUM((`price` * `quantity`) - `discount`) as price , CONCAT(MONTH(date), "-", YEAR(date)) as date
-            FROM `sales` 
-            WHERE YEAR(date) = "'.$year.'"
+            FROM `sales`
+            WHERE YEAR(date) = "' . $year . '"
             GROUP BY CONCAT(MONTH(date), "-", YEAR(date))
             ORDER BY CONCAT(MONTH(date), "-", YEAR(date))';
         $query = $this->getEntityManager()->getConnection()->executeQuery($sql);
+
         return $query->fetchAllAssociative();
     }
 }
