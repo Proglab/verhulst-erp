@@ -69,6 +69,8 @@ class DashboardPagesController extends DashboardController
                 $datas[$i] = "0.00";
             }
         }
+        ksort($datas);
+
 
         $chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
 
