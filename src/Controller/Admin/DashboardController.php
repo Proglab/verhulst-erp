@@ -12,6 +12,7 @@ use App\Entity\ProductSponsoring;
 use App\Entity\Project;
 use App\Entity\Sales;
 use App\Entity\User;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -60,7 +61,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToRoute('admin.menu.recap', 'fa fa-sliders', 'app_admin_recap')->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('admin.menu.users', 'fas fa-users', User::class)->setPermission('ROLE_ADMIN'),
 
-            MenuItem::section('Encodeur')->setPermission('ROLE_ENCODE'),
+            MenuItem::section('Gestion')->setPermission('ROLE_ENCODE'),
             MenuItem::linkToCrud('admin.menu.project', 'fas fa-folder-open', Project::class)->setPermission('ROLE_ENCODE'),
             MenuItem::linkToCrud('admin.menu.client', 'fas fa-address-book', CompanyContact::class)->setPermission('ROLE_ENCODE'),
             MenuItem::linkToRoute('admin.menu.commission', 'fas fa-hand-holding-dollar', 'commission_index')->setPermission('ROLE_ENCODE'),
