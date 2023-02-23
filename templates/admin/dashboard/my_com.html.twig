@@ -1,0 +1,15 @@
+
+<div id="my_com">
+    <ul class="nav justify-content-center">
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#" hx-target="#my_com" hx-get="{{ path('my_com', {_locale: locale, year: year-1}) }}" hx-swap="outerHTML"><i class="fa-solid fa-left-long fa-2x"></i></a>
+        </li>
+        <li class="nav-item align-content-end">
+            <a class="nav-link disabled" aria-current="page" href="#"><b>{{ year }}</b></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#" hx-target="#my_com" hx-get="{{ path('my_com', {_locale: locale, year: year+1}) }}" hx-swap="outerHTML"><i class="fa-solid fa-right-long fa-2x"></i></a>
+        </li>
+    </ul>
+    {{ render_chart(chart) }}
+</div>

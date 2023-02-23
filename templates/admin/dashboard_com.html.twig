@@ -3,7 +3,127 @@
 {% block main %}
     <div class="content-header-title">
         <h1 class="title">
-            Dashboard Commercial
+            Taleau de bord
         </h1>
+    </div>
+
+    <div class="row">
+        <div class="col-5">
+            <h3>Mes ventes</h3>
+            <div id="my_sales">
+                <ul class="nav justify-content-center">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#"><i class="fa-solid fa-left-long fa-2x"></i></a>
+                    </li>
+                    <li class="nav-item align-content-end">
+                        <a class="nav-link disabled" aria-current="page" href="#" hx-target="#my_sales" hx-trigger="load" hx-get="{{ path('my_sales', {_locale: locale, year: year}) }}" hx-swap="outerHTML"><b>{{ year }}</b></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#"><i class="fa-solid fa-right-long fa-2x"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-5 offset-1">
+            <h3>Mes commissions</h3>
+            <div id="my_com">
+                <ul class="nav justify-content-center">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#"><i class="fa-solid fa-left-long fa-2x"></i></a>
+                    </li>
+                    <li class="nav-item align-content-end">
+                        <a class="nav-link disabled" aria-current="page" href="#" hx-target="#my_com" hx-trigger="load" hx-get="{{ path('my_com', {_locale: locale, year: year}) }}" hx-swap="outerHTML"><b>{{ year }}</b></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#"><i class="fa-solid fa-right-long fa-2x"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3>Mes 10 dernières ventes</h3>
+            <table class="table table-hover">
+                <thead class="table-primary">
+                <tr>
+                    <th scope="col">Société</th>
+                    <th scope="col">Projet</th>
+                    <th scope="col">Produit</th>
+                    <th scope="col">Date</th>
+                    <th scope="col" class="text-right">CA</th>
+                    <th scope="col" class="text-right">PA</th>
+                    <th scope="col" class="text-right">Quantity</th>
+                    <th scope="col" class="text-right">CA Total</th>
+                    <th scope="col" class="text-right">Réduction</th>
+                    <th scope="col" class="text-right">Marge</th>
+                    <th scope="col" class="text-center">% Sales</th>
+                    <th scope="col" class="text-right">€ Sales</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% set total_price = 0 %}
+                {% set total_euroCom = 0 %}
+                {% set total_marge = 0 %}
+
+                {% for sale in sales %}
+                    {% set total_price = total_price + sale.totalPrice %}
+                    {% set total_euroCom = total_euroCom + sale.euroCom %}
+                    {% set total_marge = total_marge + sale.marge %}
+                    <tr>
+                        <th scope="row">
+                            {% for contact in sale.contact %}
+                                {{ contact.firstname }} {{ contact.lastname }} ({{ contact.company.name }})<br>
+                            {% endfor %}
+                        </th>
+                        <th scope="row">
+                            {{ sale.product.project.name }}
+                        </th>
+                        <th scope="row">{{ sale.product.name }}</th>
+                        <td>{{ sale.date|date('d/m/Y') }}</td>
+                        <td class="text-right">{{ (sale.price)|number_format(2, ',', ' ') }} €</td>
+                        <td class="text-right">{{ (sale.pa)|number_format(2, ',', ' ') }} €</th>
+                        <td class="text-right">{{ (sale.quantity) }}</td>
+                        <td class="text-right">{{ (sale.totalPrice)|number_format(2, ',', ' ') }} €</td>
+                        <td class="text-right">{{ (sale.discount)|number_format(2, ',', ' ') }} €</td>
+                        <td class="text-right">{{ (sale.marge)|number_format(2, ',', ' ') }} €</td>
+                        <td class="text-center">{{ sale.percentCom }} %</td>
+                        <td class="text-right">{{ sale.euroCom|number_format(2, ',', ' ') }}  €</td>
+                        <td class="action">
+                            {% set url_edit = ea_url()
+                                .setAction('edit')
+                                .setController('App\\Controller\\Admin\\SalesCrudController')
+                                .setEntityId(sale.id)
+                            %}
+                            <a class=" action-edit" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i> <span class="action-label">Edit</span></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr class="table-primary">
+                    <th scope="row" colspan="4">
+                        Totaux
+                    </th>
+                    <th></th>
+                    <th></th>
+                    <th class="text-right">{{ total_price|number_format(2, ',', ' ') }} €</th>
+                    <th></th>
+                    <th></th>
+                    <th class="text-right">{{ total_marge|number_format(2, ',', ' ') }} €</th>
+                    <th></th>
+                    <th class="text-right">{{ total_euroCom|number_format(2, ',', ' ') }} €</th>
+                    <th></th>
+                </tr>
+                </tbody>
+            </table>
+
+
+
+
+
+
+
+
+        </div>
     </div>
 {% endblock %}

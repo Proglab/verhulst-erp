@@ -7,7 +7,7 @@
             {% else %}
                 {% set url = path('users_tot', {_locale: locale, year: year, month: month_num-1}) %}
             {% endif %}
-            <a class="nav-link active" aria-current="page" href="{{ url }}" hx-target="#users_tot" hx-get="{{ url }}" hx-swap="replace"><i class="fa-solid fa-left-long fa-2x"></i></a>
+            <a class="nav-link active" aria-current="page" href="{{ url }}" hx-target="#users_tot" hx-get="{{ url }}" hx-swap="outerHTML"><i class="fa-solid fa-left-long fa-2x"></i></a>
         </li>
         <li class="nav-item align-content-end">
             <a class="nav-link disabled" aria-current="page" href="#"><b>{{ month }} {{ year }}</b></a>
@@ -18,7 +18,7 @@
             {% else %}
                 {% set url = path('users_tot', {_locale: locale, year: year, month: month_num+1}) %}
             {% endif %}
-            <a class="nav-link active" aria-current="page" href="{{ url }}" hx-target="#users_tot" hx-get="{{ url }}" hx-swap="replace"><i class="fa-solid fa-right-long fa-2x"></i></a>
+            <a class="nav-link active" aria-current="page" href="{{ url }}" hx-target="#users_tot" hx-get="{{ url }}" hx-swap="outerHTML"><i class="fa-solid fa-right-long fa-2x"></i></a>
         </li>
     </ul>
 

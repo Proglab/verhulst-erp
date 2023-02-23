@@ -6,6 +6,7 @@ namespace App\Repository;
 
 use App\Entity\Product;
 use App\Entity\Sales;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -56,13 +57,119 @@ class SalesRepository extends ServiceEntityRepository
 
     public function getStatsByMonth(int $year): array
     {
-        $sql = 'SELECT SUM((`price` * `quantity`) - `discount`) as price , CONCAT(MONTH(date), "-", YEAR(date)) as date
-            FROM `sales`
-            WHERE YEAR(date) = "' . $year . '"
-            GROUP BY CONCAT(MONTH(date), "-", YEAR(date))
-            ORDER BY CONCAT(MONTH(date), "-", YEAR(date))';
-        $query = $this->getEntityManager()->getConnection()->executeQuery($sql);
+        /** @var Sales[] $sales */
+        $sales = $this->createQueryBuilder('s')
+            ->addSelect('p')
+            ->join('s.product', 'p')
+            ->where('s.date BETWEEN :start AND :end')
+            ->setParameter('start', $year . '-01-01')
+            ->setParameter('end', $year . '-12-31')
+            ->getQuery()
+            ->getResult();
 
-        return $query->fetchAllAssociative();
+        $datas = [];
+        foreach ($sales as $sale) {
+            if (!isset($datas[$sale->getDate()->format('m-Y')])) {
+                $datas[$sale->getDate()->format('m-Y')] = $sale->getMarge();
+            } else {
+                $datas[$sale->getDate()->format('m-Y')] += $sale->getMarge();
+            }
+        }
+        $return = [];
+        foreach ($datas as $date => $price) {
+            $return[] = ['date' => $date, 'price' => number_format($price, 2, '.', '')];
+        }
+
+        return $return;
+    }
+
+    public function getStatsByMonthByUser(int $year, User $user): array
+    {
+        /** @var Sales[] $sales */
+        $sales = $this->createQueryBuilder('s')
+            ->addSelect('p')
+            ->join('s.product', 'p')
+            ->where('s.date BETWEEN :start AND :end')
+            ->setParameter('start', $year . '-01-01')
+            ->setParameter('end', $year . '-12-31')
+            ->andWhere('s.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+
+        $datas = [];
+        foreach ($sales as $sale) {
+            if (!isset($datas[$sale->getDate()->format('m-Y')])) {
+                $datas[$sale->getDate()->format('m-Y')] = $sale->getMarge();
+            } else {
+                $datas[$sale->getDate()->format('m-Y')] += $sale->getMarge();
+            }
+        }
+        $return = [];
+        foreach ($datas as $date => $price) {
+            $return[] = ['date' => $date, 'price' => number_format($price, 2, '.', '')];
+        }
+
+        return $return;
+    }
+
+    public function getCommissionsStatsByMonthByUser(int $year, User $user): array
+    {
+        /** @var Sales[] $sales */
+        $sales = $this->createQueryBuilder('s')
+            ->addSelect('p')
+            ->join('s.product', 'p')
+            ->where('s.date BETWEEN :start AND :end')
+            ->setParameter('start', $year . '-01-01')
+            ->setParameter('end', $year . '-12-31')
+            ->andWhere('s.user = :user')
+            ->setParameter('user', $user)
+        ->getQuery()
+        ->getResult();
+
+        $datas = [];
+        foreach ($sales as $sale) {
+            if (!isset($datas[$sale->getDate()->format('m-Y')])) {
+                $datas[$sale->getDate()->format('m-Y')] = $sale->getEuroCom();
+            } else {
+                $datas[$sale->getDate()->format('m-Y')] += $sale->getEuroCom();
+            }
+        }
+        $return = [];
+        foreach ($datas as $date => $price) {
+            $return[] = ['date' => $date, 'price' => number_format($price, 2, '.', '')];
+        }
+
+        return $return;
+    }
+
+    /**
+     * @return Sales[]
+     */
+    public function get10LastSalesByUser(User $user): array
+    {
+        return $this->createQueryBuilder('s')
+            ->addSelect('p')
+            ->join('s.product', 'p')
+            ->andWhere('s.user = :user')
+            ->setParameter('user', $user)
+            ->setMaxResults(10)
+            ->orderBy('s.date', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return Sales[]
+     */
+    public function get10LastSales(): array
+    {
+        return $this->createQueryBuilder('s')
+            ->addSelect('p')
+            ->join('s.product', 'p')
+            ->setMaxResults(10)
+            ->orderBy('s.date', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 }
