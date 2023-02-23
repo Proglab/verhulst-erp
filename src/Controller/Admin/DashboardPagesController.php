@@ -160,14 +160,13 @@ class DashboardPagesController extends DashboardController
         ]);
     }
 
-
     #[Route('/admin/{_locale}/css', name: 'app_admin_css')]
     public function css(): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
             throw new UnauthorizedHttpException('Unauthorized');
         }
-        $fileContent = file_get_contents(realpath(__DIR__.'/../../../../../shared/public/css/app.css'));
+        $fileContent = file_get_contents(realpath(__DIR__ . '/../../../../../shared/public/css/app.css'));
 
         $form = $this->createFormBuilder()
             ->add('task', CodeEditorType::class, ['attr' => ['data-ea-code-editor-field' => 'true', 'data-ea-align' => 'left']])
