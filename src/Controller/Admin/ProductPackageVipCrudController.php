@@ -59,7 +59,7 @@ class ProductPackageVipCrudController extends BaseCrudController
         $quantityMax = IntegerField::new('quantity_max')->setLabel('Quantité max');
         $quantitySales = IntegerField::new('quantity_sales')->setLabel('Quantité vendue');
         $quantityAvailable = IntegerField::new('quantity_available')->setLabel('Quantité disponible');
-        $image = ImageField::new('doc')->setBasePath('files/products')->setUploadDir('../../shared/public/files/products')->setUploadedFileNamePattern('[slug]-[timestamp].[extension]');
+        $image = ImageField::new('doc')->setBasePath('files/products')->setUploadDir('../../shared/public/files/products')->setUploadedFileNamePattern('[slug]-[timestamp]-[randomhash].[extension]');
         $imageDwonload = TextField::new('download_url')->renderAsHtml()->setLabel('Document');
 
         switch ($pageName) {
