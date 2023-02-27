@@ -48,11 +48,11 @@ class ProductDiversCrudController extends BaseCrudController
     public function configureFields(string $pageName): iterable
     {
         $projectName = TextField::new('project.name')->setLabel('Nom du projet');
-        $project = AssociationField::new('project')->setLabel('Projet');
-        $name = TextField::new('name')->setLabel('Nom du produit');
-        $percentVr = PercentField::new('percent_vr')->setLabel('Com Verhulst')->setPermission('ROLE_ENCODE')->setStoredAsFractional(false)->setNumDecimals(2);
-        $percentDefaultFreelance = PercentField::new('percent_freelance')->setLabel('Com Freelance')->setPermission('ROLE_ENCODE')->setStoredAsFractional(false)->setNumDecimals(2);
-        $percentDefaultSalarie = PercentField::new('percent_salarie')->setLabel('Com Salarié')->setPermission('ROLE_ENCODE')->setStoredAsFractional(false)->setNumDecimals(2);
+        $project = AssociationField::new('project')->setLabel('Projet')->setRequired(true);
+        $name = TextField::new('name')->setLabel('Nom du produit')->setRequired(true);
+        $percentVr = PercentField::new('percent_vr')->setLabel('Com Verhulst')->setPermission('ROLE_ENCODE')->setStoredAsFractional(false)->setNumDecimals(2)->setRequired(true);
+        $percentDefaultFreelance = PercentField::new('percent_freelance')->setLabel('Com Freelance')->setPermission('ROLE_ENCODE')->setStoredAsFractional(false)->setNumDecimals(2)->setRequired(true);
+        $percentDefaultSalarie = PercentField::new('percent_salarie')->setLabel('Com Salarié')->setPermission('ROLE_ENCODE')->setStoredAsFractional(false)->setNumDecimals(2)->setRequired(true);
         $image = ImageField::new('doc')->setBasePath('files/products')->setUploadDir('../../shared/public/files/products')->setUploadedFileNamePattern('[slug]-[timestamp]-[randomhash].[extension]');
         $imageDwonload = TextField::new('download_url')->renderAsHtml()->setLabel('Document');
 

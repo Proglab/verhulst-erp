@@ -8,12 +8,16 @@ use App\Entity\ProductEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Symfony\Component\Form\FormInterface;
 
 class ProductEventCrudController extends BaseCrudController
 {
@@ -49,24 +53,26 @@ class ProductEventCrudController extends BaseCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $project = AssociationField::new('project');
+        $project = AssociationField::new('project')->setRequired(true);
         $projectName = TextField::new('project.name')->setLabel('Nom du projet');
-        $name = TextField::new('name')->setLabel('Nom du produit');
-        $date = DateField::new('date');
+        $name = TextField::new('name')->setLabel('Nom du produit')->setRequired(true);
+        $date = DateField::new('date')->setRequired(true);
         $percentVr = PercentField::new('percent_vr')
             ->setLabel('Com Verhulst')
             ->setPermission('ROLE_ADMIN')
             ->setNumDecimals(2)
-            ->setStoredAsFractional(false);
+            ->setStoredAsFractional(false)
+            ->setRequired(true);
 
         $pa = MoneyField::new('pa')
             ->setStoredAsCents(false)
             ->setNumDecimals(2)
             ->setLabel('Prix achat')
-            ->setCurrency('EUR');
+            ->setCurrency('EUR')
+            ->setRequired(true);
 
-        $percentDefaultFreelance = PercentField::new('percent_freelance')->setLabel('Com Freelance')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false)->setNumDecimals(2);
-        $percentDefaultSalarie = PercentField::new('percent_salarie')->setLabel('Com Salarié')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false)->setNumDecimals(2);
+        $percentDefaultFreelance = PercentField::new('percent_freelance')->setLabel('Com Freelance')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false)->setNumDecimals(2)->setRequired(true);
+        $percentDefaultSalarie = PercentField::new('percent_salarie')->setLabel('Com Salarié')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false)->setNumDecimals(2)->setRequired(true);
 
         $image = ImageField::new('doc')->setBasePath('files/products')->setUploadDir('../../shared/public/files/products')->setUploadedFileNamePattern('[slug]-[timestamp]-[randomhash].[extension]');
         $imageDwonload = TextField::new('download_url')->renderAsHtml()->setLabel('Document');
