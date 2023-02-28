@@ -19,7 +19,7 @@
                 <td><a href="{{ url }}"><i class="fa-solid fa-circle-check"></i></a></td>
                 <th scope="row">{{ project.name }}</th>
                 <td>{{ product.name }}</td>
-                <td>{{ product.description }}</td>
+                <td>{{ product.description|raw }}</td>
                 <td> - </td>
             </tr>
         {% endfor %}
@@ -32,7 +32,7 @@
                 <td><a href="{{ url }}"><i class="fa-solid fa-circle-check"></i></a></td>
                 <th scope="row">{{ project.name }}</th>
                 <td>{{ product.name }}</td>
-                <td>{{ product.description }}</td>
+                <td>{{ product.description|raw }}</td>
                 <td>{{ product.quantityAvailable }}</td>
             </tr>
         {% endfor %}
@@ -45,7 +45,7 @@
                 <td><a href="{{ url }}"><i class="fa-solid fa-circle-check"></i></a></td>
                 <th scope="row">{{ project.name }}</th>
                 <td>{{ product.name }}</td>
-                <td>{{ product.description }}</td>
+                <td>{{ product.description|raw }}</td>
                 <td>{{ product.quantityAvailable }}</td>
             </tr>
         {% endfor %}
@@ -58,7 +58,7 @@
                 <td><a href="{{ url }}"><i class="fa-solid fa-circle-check"></i></a></td>
                 <th scope="row">{{ project.name }}</th>
                 <td>{{ product.name }}</td>
-                <td>{{ product.description }}</td>
+                <td>{{ product.description|raw }}</td>
                 <td> - </td>
             </tr>
         {% endfor %}
