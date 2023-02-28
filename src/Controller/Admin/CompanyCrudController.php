@@ -142,12 +142,10 @@ class CompanyCrudController extends BaseCrudController
             if (0 === $entityInstance->getContact()->count()) {
                 $newForm->get('contact')->addError(new FormError('Vous devez enregistrer au moins un contact'));
             } else {
-
                 $i = 0;
                 foreach ($context->getRequest()->get('Company')['contact'] as $contact) {
                     $entityInstance->getContact()[$i]->setLang($contact['lang']);
                 }
-
 
                 $this->persistEntity($this->container->get('doctrine')->getManagerForClass($context->getEntity()->getFqcn()), $entityInstance);
 

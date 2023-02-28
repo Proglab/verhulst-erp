@@ -34,7 +34,6 @@
                                         <th scope="col">Produit</th>
                                         <th scope="col">Date</th>
                                         <th scope="col" class="text-right">CA</th>
-                                        <th scope="col" class="text-right">PA</th>
                                         <th scope="col" class="text-right">Réduction</th>
                                         <th scope="col" class="text-right">Marge</th>
                                         <th scope="col" class="text-center">% Sales</th>
@@ -58,7 +57,6 @@
                                     {% for sale in user.sales %}
                                         {% if get_class(sale.product) == 'ProductEvent' %}
                                             {% set total_price = total_price + sale.price %}
-                                            {% set total_pa = total_pa + sale.pa %}
                                             {% set total_marge = total_marge + sale.marge %}
                                             {% set total_euroCom = total_euroCom + sale.euroCom %}
                                             {% set total_eurovr = total_eurovr + sale.euroVr %}
@@ -76,7 +74,6 @@
                                                 <th scope="row">{{ sale.product.name }}</th>
                                                 <td>{{ sale.date|date('d/m/Y') }}</td>
                                                 <td class="text-right">{{ (sale.price)|number_format(2, ',', ' ') }} €</td>
-                                                <td class="text-right">{{ (sale.pa)|number_format(2, ',', ' ') }} €</td>
                                                 <td class="text-right">{{ (sale.discount)|number_format(2, ',', ' ') }} €</td>
                                                 <td class="text-right">{{ sale.marge|number_format(2, ',', ' ') }} €</td>
                                                 <td class="text-center">{{ sale.percentCom }} %</td>
@@ -100,7 +97,6 @@
                                             Totaux
                                         </th>
                                         <th class="text-right">{{ total_price|number_format(2, ',', ' ') }} €</th>
-                                        <th class="text-right">{{ total_pa|number_format(2, ',', ' ') }} €</th>
                                         <th class="text-right">{{ total_discount|number_format(2, ',', ' ') }} €</th>
                                         <th class="text-right">{{ total_marge|number_format(2, ',', ' ') }} €</th>
                                         <th></th>

@@ -52,7 +52,6 @@
                     <th scope="col">Produit</th>
                     <th scope="col">Date</th>
                     <th scope="col" class="text-right">CA</th>
-                    <th scope="col" class="text-right">PA</th>
                     <th scope="col" class="text-right">Quantity</th>
                     <th scope="col" class="text-right">CA Total</th>
                     <th scope="col" class="text-right">Réduction</th>
@@ -83,7 +82,6 @@
                         <th scope="row">{{ sale.product.name }}</th>
                         <td>{{ sale.date|date('d/m/Y') }}</td>
                         <td class="text-right">{{ (sale.price)|number_format(2, ',', ' ') }} €</td>
-                        <td class="text-right">{{ (sale.pa)|number_format(2, ',', ' ') }} €</th>
                         <td class="text-right">{{ (sale.quantity) }}</td>
                         <td class="text-right">{{ (sale.totalPrice)|number_format(2, ',', ' ') }} €</td>
                         <td class="text-right">{{ (sale.discount)|number_format(2, ',', ' ') }} €</td>
@@ -104,7 +102,6 @@
                     <th scope="row" colspan="4">
                         Totaux
                     </th>
-                    <th></th>
                     <th></th>
                     <th class="text-right">{{ total_price|number_format(2, ',', ' ') }} €</th>
                     <th></th>

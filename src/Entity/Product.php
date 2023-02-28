@@ -32,10 +32,10 @@ class Product
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Sales::class, orphanRemoval: true)]
     private Collection $sales;
-
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    private ?float $pa = 0;
-
+    /**
+        #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+        private ?float $pa = 0;
+     **/
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $doc = null;
 
@@ -164,6 +164,7 @@ class Product
         return $this;
     }
 
+    /**
     public function getPa(): ?float
     {
         return (float) $this->pa;
@@ -175,7 +176,7 @@ class Product
 
         return $this;
     }
-
+     **/
     public function getDoc(): ?string
     {
         return $this->doc;

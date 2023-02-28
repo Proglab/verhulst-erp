@@ -136,17 +136,12 @@ class Sales
 
     public function getMarge(): float
     {
-        return $this->getTotalPrice() - $this->product->getPa() * $this->quantity - $this->getDiscount();
+        return $this->getTotalPrice() - $this->getDiscount();
     }
 
     public function getDiffCa(): float
     {
         return $this->getMarge() - $this->getEuroCom() - $this->getEuroVr();
-    }
-
-    public function getPa(): float
-    {
-        return $this->product->getPa();
     }
 
     public function setPercentVr(?float $percent_vr): self
