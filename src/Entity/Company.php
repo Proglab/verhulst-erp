@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
 class Company
@@ -43,6 +44,8 @@ class Company
     private ?string $vat_number = null;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: CompanyContact::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
     private Collection $contact;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

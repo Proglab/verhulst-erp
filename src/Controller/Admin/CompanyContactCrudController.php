@@ -55,7 +55,7 @@ class CompanyContactCrudController extends BaseCrudController
         $firstname = TextField::new('firstname')->setLabel('Prénom')->setRequired(true)->setColumns(12);
         $lastname = TextField::new('lastname')->setLabel('Nom')->setRequired(true)->setColumns(12);
         $fullname = TextField::new('fullName')->setLabel('Nom');
-        $lang = ChoiceField::new('lang')->setLabel('Langue')->allowMultipleChoices(false)->renderExpanded(false)->setChoices(['fr' => 'fr', 'nl' => 'nl', 'en' => 'en'])->setRequired(true)->setColumns(12);
+        $lang = ChoiceField::new('lang')->setLabel('Langue')->allowMultipleChoices(false)->renderExpanded(false)->setChoices(['Français' => 'fr', 'Néerlandais' => 'nl', 'Anglais' => 'en'])->setRequired(true)->setColumns(12);
         $email = EmailField::new('email')->setLabel('E-mail')->setColumns(12);
         $phone = TextField::new('phone')->setLabel('Téléphone')->setColumns(12);
         $note = TextEditorField::new('note')->setLabel('Note');
@@ -75,7 +75,7 @@ class CompanyContactCrudController extends BaseCrudController
                 $response = [$company, $fullname, $lang, $email, $phone, $userName, $note];
                 break;
             case Crud::PAGE_EDIT:
-                $response = [/* $panel1, $companyName, $companyStreet, $companyNumber, $companyBox, $companyPc, $companyCity, $companyCountry, $companyVat, $panel2, */ $firstname, $lastname, $email, $phone, $note, $user];
+                $response = [/* $panel1, $companyName, $companyStreet, $companyNumber, $companyBox, $companyPc, $companyCity, $companyCountry, $companyVat, $panel2, */ $firstname, $lastname, $lang, $email, $phone, $note, $user];
                 break;
             default:
                 $response = [$company, $firstname, $lastname, $lang, $email, $phone, $note];
