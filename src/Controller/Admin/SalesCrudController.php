@@ -43,6 +43,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class SalesCrudController extends BaseCrudController
@@ -206,6 +207,9 @@ class SalesCrudController extends BaseCrudController
         ]);
     }
 
+    /**
+     * @return RedirectResponse|KeyValueStore|Response
+     */
     public function new(AdminContext $context)
     {
         return $this->render('admin/sales/new.html.twig', [

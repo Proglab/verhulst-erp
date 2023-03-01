@@ -29,6 +29,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -95,6 +96,9 @@ class CompanyCrudController extends BaseCrudController
         return $response;
     }
 
+    /**
+     * @return RedirectResponse|KeyValueStore|Response
+     */
     public function index(AdminContext $context)
     {
         $url = $this->adminUrlGenerator
@@ -105,6 +109,9 @@ class CompanyCrudController extends BaseCrudController
         return $this->redirect($url);
     }
 
+    /**
+     * @return KeyValueStore|Response
+     */
     public function new(AdminContext $context)
     {
         $event = new BeforeCrudActionEvent($context);
@@ -172,6 +179,9 @@ class CompanyCrudController extends BaseCrudController
         return $responseParameters;
     }
 
+    /**
+     * @return KeyValueStore|Response
+     */
     public function edit(AdminContext $context)
     {
         $event = new BeforeCrudActionEvent($context);

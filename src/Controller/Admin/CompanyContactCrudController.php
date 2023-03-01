@@ -9,6 +9,7 @@ use App\Repository\UserRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
@@ -17,6 +18,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class CompanyContactCrudController extends BaseCrudController
 {
@@ -105,6 +108,9 @@ class CompanyContactCrudController extends BaseCrudController
         return $actions;
     }
 
+    /**
+     * @return RedirectResponse|KeyValueStore|Response
+     */
     public function new(AdminContext $context)
     {
         $url = $this->adminUrlGenerator
@@ -115,6 +121,9 @@ class CompanyContactCrudController extends BaseCrudController
         return $this->redirect($url);
     }
 
+    /**
+     * @return RedirectResponse|KeyValueStore|Response
+     */
     public function edit(AdminContext $context)
     {
         /** @var CompanyContact $contact */
