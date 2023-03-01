@@ -25,7 +25,6 @@ Projet : {{ project.name }}
                         <div class="card-body">
                             <p><b>Date : </b> {{ product.date|date('d/m/Y') }}</p>
                             <p>{{ product.description|raw }}</p>
-                            <p><b>Prix d'achat : </b> {{ product.pa|number_format(2, ',', ' ') }} €</p>
                             {% if product.doc is not null %}
                                 <p><a href="/files/products/{{ product.doc }}" target="_blank">Download {{ product.doc }}</a></p>
                             {% endif %}
@@ -55,7 +54,6 @@ Projet : {{ project.name }}
                         </div>
                         <div class="card-body">
                             <p>{{ product.description|raw }}</p>
-                            <p><b>Prix d'achat : </b> {{ product.pa|number_format(2, ',', ' ') }} €</p>
                             {% if product.doc is not null %}
                                 <p><a href="/files/products/{{ product.doc }}" target="_blank">Download {{ product.doc }}</a></p>
                             {% endif %}
@@ -84,7 +82,6 @@ Projet : {{ project.name }}
                     </div>
                     <div class="card-body">
                         <p>{{ product.description|raw }}</p>
-                        <p><b>Prix d'achat : </b> {{ product.pa|number_format(2, ',', ' ') }} €</p>
                         {% if product.doc is not null %}
                             <p><a href="/files/products/{{ product.doc }}" target="_blank">Download {{ product.doc }}</a></p>
                         {% endif %}
@@ -114,7 +111,6 @@ Projet : {{ project.name }}
                     </div>
                     <div class="card-body">
                         <p>{{ product.description|raw }}</p>
-                        <p><b>Prix d'achat : </b> {{ product.pa|number_format(2, ',', ' ') }} €</p>
                         {% if product.doc is not null %}
                             <p><a href="/files/products/{{ product.doc }}" target="_blank">Download {{ product.doc }}</a></p>
                         {% endif %}
