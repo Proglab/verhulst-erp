@@ -12,7 +12,7 @@ set('ssh_multiplexing', false);
 set('keep_releases', 2);
 
 task('deploy:vendors', function () {
-    run('cd {{release_or_current_path}} && composer install --no-interaction --no-progress --optimize-autoloader');
+    run('cd {{release_or_current_path}} && COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --no-progress --optimize-autoloader');
 });
 
 task('deploy:setup', function () {

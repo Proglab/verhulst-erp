@@ -21,6 +21,7 @@ jobs:
         with:
           php-version: 8.1
           tools: composer:v2, deployer
+          coverage: none
 
       - name: Get Composer Cache Directory
         id: composer-cache
@@ -34,7 +35,7 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install Dependencies
-        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+        run: COMPOSER_MEMORY_LIMIT=-1 composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
       - name: Deploy
         uses: deployphp/action@v1
