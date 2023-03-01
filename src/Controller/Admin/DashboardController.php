@@ -50,6 +50,7 @@ class DashboardController extends AbstractDashboardController
             ->setTitle('<img src="/app-logo.png" />')
             ->renderContentMaximized()
             ->setFaviconPath('build/favicon/favicon.ico')
+            ->setTitle('Verhulst & Friends - ERP')
             ->setLocales([
                 'fr' => 'Français',
                 'nl' => 'Neederlands',

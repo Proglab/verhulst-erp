@@ -1,12 +1,8 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
+{% block content_title %}Tableau de bord{% endblock %}
+{% block page_title %}Verhulst & Friends - ERP - {{ block('content_title') }}{% endblock %}
 
 {% block main %}
-    <div class="content-header-title">
-        <h1 class="title">
-            Taleau de bord
-        </h1>
-    </div>
-
     <div class="row">
         <div class="col-5">
             <h3>Mes ventes</h3>
@@ -102,8 +98,8 @@
                     <th scope="row" colspan="4">
                         Totaux
                     </th>
-                    <th></th>
                     <th class="text-right">{{ total_price|number_format(2, ',', ' ') }} €</th>
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th class="text-right">{{ total_marge|number_format(2, ',', ' ') }} €</th>

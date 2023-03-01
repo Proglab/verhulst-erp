@@ -1,12 +1,9 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
-{% block main %}
-            <div class="content-header-title">
-                <h1 class="title">
-                    Dashboard Administrateur
-                </h1>
-            </div>
+{% block content_title %}Tableau de bord - Gestion{% endblock %}
+{% block page_title %}Verhulst & Friends - ERP - {{ block('content_title') }}{% endblock %}
 
+{% block main %}
             <div class="row">
                 <div class="col-5">
                     <h3>Ventes Totales</h3>

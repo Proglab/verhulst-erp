@@ -59,8 +59,8 @@ class ProductSponsoringCrudController extends BaseCrudController
         $quantityMax = IntegerField::new('quantity_max')->setLabel('Quantité max');
         $quantitySales = IntegerField::new('quantity_sales')->setLabel('Quantité vendue');
         $quantityAvailable = IntegerField::new('quantity_available')->setLabel('Quantité disponible');
-        $image = ImageField::new('doc')->setBasePath('files/products')->setUploadDir('../../shared/public/files/products')->setUploadedFileNamePattern('[slug]-[timestamp]-[randomhash].[extension]');
-        $imageDwonload = TextField::new('download_url')->renderAsHtml()->setLabel('Document');
+        $image = ImageField::new('doc')->setBasePath('files/products')->setUploadDir('../../shared/public/files/products')->setUploadedFileNamePattern('[slug]-[timestamp]-[randomhash].[extension]')->setLabel('Document (PDF)');
+        $imageDwonload = TextField::new('download_url')->renderAsHtml()->setLabel('Document (PDF)');
 
         switch ($pageName) {
             case Crud::PAGE_DETAIL:

@@ -12,7 +12,7 @@
         <meta name="generator" content="EasyAdmin" />
     {% endblock head_metas %}
 
-    {% set page_title_block_output %}{% block page_title %}{{ block('content_title') }}{% endblock %}{% endset %}
+    {% set page_title_block_output %}{% block page_title %}Verhulst & Friends - ERP - {{ block('content_title') }}{% endblock %}{% endset %}
     <title>{{ page_title_block_output|striptags|raw }}</title>
 
     {% block head_stylesheets %}
