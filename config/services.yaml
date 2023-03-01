@@ -8,7 +8,6 @@ parameters:
     enabled_locales:
         - en
         - fr
-
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -43,3 +42,9 @@ services:
     App\Twig\TwigStringExtension:
         arguments:
             $sanitizer: '@html_sanitizer'
+    Proglab\DiscordHandler:
+        arguments:
+            $webHooks: "%env(DISCORD_WEBHOOK)%"
+            $name: ""
+            $subName: ""
+            $level: "ERROR"

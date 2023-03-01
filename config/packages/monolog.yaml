@@ -6,23 +6,26 @@ when@dev:
     monolog:
         handlers:
             main:
-                type: stream
+                type: fingers_crossed
+                action_level: error
+                handler: grouped
+                excluded_http_codes: [404, 405]
+            grouped:
+                type: group
+                members: [ nested, discord ]
+            nested:
+                type: rotating_file
                 path: "%kernel.logs_dir%/%kernel.environment%.log"
                 level: debug
-                channels: ["!event"]
-            # uncomment to get logging in your browser
-            # you may have to allow bigger header sizes in your Web server configuration
-            #firephp:
-            #    type: firephp
-            #    level: info
-            #chromephp:
-            #    type: chromephp
-            #    level: info
+                max_files: 30
             console:
                 type: console
                 process_psr_3_messages: false
                 channels: ["!event", "!doctrine", "!console"]
-
+            discord:
+                type: service
+                id: Proglab\DiscordHandler
+                channels: ["!deprecation"]
 when@test:
     monolog:
         handlers:
@@ -43,19 +46,27 @@ when@prod:
             main:
                 type: fingers_crossed
                 action_level: error
-                handler: nested
-                excluded_http_codes: [404, 405]
-                buffer_size: 50 # How many messages should be saved? Prevent memory leaks
+                handler: grouped
+                excluded_http_codes: [404]
+            grouped:
+                type: group
+                members: [ nested, discord ]
             nested:
-                type: stream
-                path: php://stderr
+                type: rotating_file
+                path: "%kernel.logs_dir%/%kernel.environment%.log"
                 level: debug
-                formatter: monolog.formatter.json
+                max_files: 30
             console:
                 type: console
                 process_psr_3_messages: false
-                channels: ["!event", "!doctrine"]
+                channels: ["!event", "!doctrine", "!console", "!deprecation"]
+            discord:
+                type: service
+                id: DiscordHandler\DiscordHandler
+                channels: ["!deprecation"]
             deprecation:
-                type: stream
+                type: rotating_file
+                path: "%kernel.logs_dir%/%kernel.environment%.deprecation.log"
+                level: debug
+                max_files: 10
                 channels: [deprecation]
-                path: php://stderr
