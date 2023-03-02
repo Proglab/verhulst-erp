@@ -56,6 +56,22 @@ class ProductDiversCrudController extends BaseCrudController
         $image = ImageField::new('doc')->setBasePath('files/products')->setUploadDir('../../shared/public/files/products')->setUploadedFileNamePattern('[slug]-[timestamp]-[randomhash].[extension]')->setLabel('Document (PDF)');
         $imageDwonload = TextField::new('download_url')->renderAsHtml()->setLabel('Document (PDF)');
 
+        $percentFreelanceHidden = PercentField::new('percent_freelance')
+            ->setLabel('Commission Freelance')
+            ->setPermission('ROLE_ADMIN')
+            ->setNumDecimals(2)
+            ->setStoredAsFractional(false)
+            ->setRequired(false)
+            ->setCssClass('d-none');
+
+        $percentSalarieHidden = PercentField::new('percent_salarie')
+            ->setLabel('Commission Salarié')
+            ->setPermission('ROLE_ADMIN')
+            ->setNumDecimals(2)
+            ->setStoredAsFractional(false)
+            ->setRequired(false)
+            ->setCssClass('d-none');
+
         if ($this->isGranted('ROLE_ADMIN')) {
             switch ($pageName) {
                 case Crud::PAGE_DETAIL:
@@ -66,7 +82,7 @@ class ProductDiversCrudController extends BaseCrudController
                     $response = [$name, $percentVr, $percentDefaultFreelance, $percentDefaultSalarie, $image];
                     break;
                 case Crud::PAGE_EDIT:
-                    $response = [$name, $percentVr, $image];
+                    $response = [$name, $percentVr, $image, $percentFreelanceHidden, $percentSalarieHidden];
                     break;
                 default:
                     $response = [$name, $percentVr];

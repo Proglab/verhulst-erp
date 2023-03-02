@@ -25,7 +25,7 @@ class Product
     private ?string $name = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
-    private ?float $percent_vr = 20.0;
+    private ?float $percent_vr = 0.0;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Commission::class, orphanRemoval: true)]
     private Collection $commissions;
@@ -42,8 +42,11 @@ class Product
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    private ?float $percent_freelance = 10.0;
-    private ?float $percent_salarie = 5.0;
+    #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
+    private ?float $percent_freelance = 0.0;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
+    private ?float $percent_salarie = 0.0;
 
     public function __construct()
     {
@@ -73,9 +76,9 @@ class Product
         return $this->percent_vr;
     }
 
-    public function setPercentVr(float $percent_vr): self
+    public function setPercentVr(string $percent_vr): self
     {
-        $this->percent_vr = $percent_vr;
+        $this->percent_vr = (float) str_replace(',', '.', $percent_vr);
 
         return $this;
     }
@@ -85,9 +88,9 @@ class Product
         return $this->percent_freelance;
     }
 
-    public function setPercentFreelance(float $percent_freelance): self
+    public function setPercentFreelance(string $percent_freelance): self
     {
-        $this->percent_freelance = $percent_freelance;
+        $this->percent_freelance = (float) str_replace(',', '.', $percent_freelance);
 
         return $this;
     }
@@ -97,9 +100,9 @@ class Product
         return $this->percent_salarie;
     }
 
-    public function setPercentSalarie(float $percent_salarie): self
+    public function setPercentSalarie(string $percent_salarie): self
     {
-        $this->percent_salarie = $percent_salarie;
+        $this->percent_salarie = (float) str_replace(',', '.', $percent_salarie);
 
         return $this;
     }

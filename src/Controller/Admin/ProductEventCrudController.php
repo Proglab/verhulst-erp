@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\ProductEvent;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -59,26 +60,55 @@ class ProductEventCrudController extends BaseCrudController
             ->setStoredAsFractional(false)
             ->setRequired(true);
 
-        $percentDefaultFreelance = PercentField::new('percent_freelance')->setLabel('Commission Freelance')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false)->setNumDecimals(2)->setRequired(true);
-        $percentDefaultSalarie = PercentField::new('percent_salarie')->setLabel('Commission Salarié')->setPermission('ROLE_ADMIN')->setStoredAsFractional(false)->setNumDecimals(2)->setRequired(true);
+        $percentFreelance = PercentField::new('percent_freelance')
+            ->setLabel('Commission Freelance')
+            ->setPermission('ROLE_ADMIN')
+            ->setNumDecimals(2)
+            ->setStoredAsFractional(false)
+            ->setRequired(true);
+
+        $percentSalarie = PercentField::new('percent_salarie')
+            ->setLabel('Commission Salarié')
+            ->setPermission('ROLE_ADMIN')
+            ->setNumDecimals(2)
+            ->setStoredAsFractional(false)
+            ->setRequired(true);
+
+        $percentFreelanceHidden = PercentField::new('percent_freelance')
+            ->setLabel('Commission Freelance')
+            ->setPermission('ROLE_ADMIN')
+            ->setNumDecimals(2)
+            ->setStoredAsFractional(false)
+            ->setRequired(false)
+            ->setCssClass('d-none');
+
+        $percentSalarieHidden = PercentField::new('percent_salarie')
+            ->setLabel('Commission Salarié')
+            ->setPermission('ROLE_ADMIN')
+            ->setNumDecimals(2)
+            ->setStoredAsFractional(false)
+            ->setRequired(false)
+            ->setCssClass('d-none');
+
 
         $image = ImageField::new('doc')->setBasePath('files/products')->setUploadDir('../../shared/public/files/products')->setUploadedFileNamePattern('[slug]-[timestamp]-[randomhash].[extension]')->setLabel('Document (PDF)');
         $imageDwonload = TextField::new('download_url')->renderAsHtml()->setLabel('Document (PDF)');
 
         if ($this->isGranted('ROLE_ADMIN')) {
+
             switch ($pageName) {
                 case Crud::PAGE_DETAIL:
                 case Crud::PAGE_INDEX:
-                    $response = [$projectName, $name, $date, $percentVr, $imageDwonload];
+                    $response = [$projectName, $name, $date, $percentVr, $percentFreelance, $percentSalarie, $imageDwonload];
                     break;
                 case Crud::PAGE_NEW:
-                    $response = [$name, $date, $percentVr, $percentDefaultFreelance, $percentDefaultSalarie, $image];
+                    $response = [$name, $date, $percentVr, $percentFreelance, $percentSalarie, $image];
                     break;
                 case Crud::PAGE_EDIT:
-                    $response = [$name, $date, $percentVr, $image];
+                    $response = [$name, $date, $percentVr, $percentFreelanceHidden, $percentSalarieHidden, $image];
                     break;
                 default:
-                    $response = [$name, $date, $percentVr];
+                    $response = [$name, $date, $percentVr, $percentFreelance, $percentSalarie];
             }
         } else {
             switch ($pageName) {

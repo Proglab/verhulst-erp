@@ -9,15 +9,20 @@ use App\Entity\Product;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Repository\CommissionRepository;
+use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityPersistedEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityUpdatedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityDeletedEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class AdminProjectSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private UserRepository $userRepository, private CommissionRepository $commissionRepository)
+    public function __construct(private UserRepository $userRepository, private CommissionRepository $commissionRepository, private RequestStack $requestStack, private ProjectRepository $projectRepository)
     {
     }
 
@@ -26,7 +31,75 @@ class AdminProjectSubscriber implements EventSubscriberInterface
         return [
             BeforeEntityDeletedEvent::class => ['beforeEntityDeletedEvent'],
             AfterEntityPersistedEvent::class => ['afterEntityPersistedEvent'],
+            BeforeEntityUpdatedEvent::class => ['beforeEntityUpdatedEvent'],
         ];
+    }
+
+    public function beforeEntityUpdatedEvent(BeforeEntityUpdatedEvent $event): void
+    {
+        $entity = $event->getEntityInstance();
+        if (!($entity instanceof Project)) {
+            return;
+        }
+
+        $users = $this->userRepository->getCommercials();
+        /** @var User $user */
+        foreach ($users as $user) {
+            foreach ($entity->getProductEvent() as $event) {
+                if ($event->getId() === null) {
+                    $com = new Commission();
+                    $com->setUser($user);
+                    $com->setProduct($event);
+                    if ($user->isFreelance()) {
+                        $com->setPercentCom($event->getPercentFreelance());
+                    } else {
+                        $com->setPercentCom($event->getPercentSalarie());
+                    }
+                    $this->commissionRepository->save($com);
+                }
+            }
+            foreach ($entity->getProductPackage() as $event) {
+                if ($event->getId() === null) {
+                    $com = new Commission();
+                    $com->setUser($user);
+                    $com->setProduct($event);
+                    if ($user->isFreelance()) {
+                        $com->setPercentCom($event->getPercentFreelance());
+                    } else {
+                        $com->setPercentCom($event->getPercentSalarie());
+                    }
+                    $this->commissionRepository->save($com);
+                }
+            }
+            foreach ($entity->getProductSponsoring() as $event) {
+                if ($event->getId() === null) {
+                    $com = new Commission();
+                    $com->setUser($user);
+                    $com->setProduct($event);
+                    if ($user->isFreelance()) {
+                        $com->setPercentCom($event->getPercentFreelance());
+                    } else {
+                        $com->setPercentCom($event->getPercentSalarie());
+                    }
+                    $this->commissionRepository->save($com);
+                }
+            }
+            foreach ($entity->getProductDivers() as $event) {
+                if ($event->getId() === null) {
+                    $com = new Commission();
+                    $com->setUser($user);
+                    $com->setProduct($event);
+                    if ($user->isFreelance()) {
+                        $com->setPercentCom($event->getPercentFreelance());
+                    } else {
+                        $com->setPercentCom($event->getPercentSalarie());
+                    }
+                    $this->commissionRepository->save($com);
+                }
+            }
+        }
+
+        $this->projectRepository->save($entity, true);
     }
 
     public function afterEntityPersistedEvent(AfterEntityPersistedEvent $event): void
