@@ -87,8 +87,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     #[ORM\OneToMany(mappedBy: 'added_by', targetEntity: CompanyContact::class)]
     private Collection $companyContacts;
 
-    #[ORM\Column]
-    private ?bool $freelance = null;
+    #[ORM\Column(name: 'com', type: Types::STRING, nullable: false)]
+    private ?string $com = null;
 
     public function __construct()
     {
@@ -421,14 +421,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         return $this;
     }
 
-    public function isFreelance(): ?bool
+    public function getCom(): ?string
     {
-        return $this->freelance;
+        return $this->com;
     }
 
-    public function setFreelance(bool $freelance): self
+    public function setCom(string $com): self
     {
-        $this->freelance = $freelance;
+        $this->com = $com;
 
         return $this;
     }

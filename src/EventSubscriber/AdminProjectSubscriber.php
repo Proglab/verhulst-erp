@@ -13,16 +13,13 @@ use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityPersistedEvent;
-use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityUpdatedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityDeletedEvent;
-use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 class AdminProjectSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private UserRepository $userRepository, private CommissionRepository $commissionRepository, private RequestStack $requestStack, private ProjectRepository $projectRepository)
+    public function __construct(private UserRepository $userRepository, private CommissionRepository $commissionRepository, private ProjectRepository $projectRepository)
     {
     }
 
@@ -33,6 +30,25 @@ class AdminProjectSubscriber implements EventSubscriberInterface
             AfterEntityPersistedEvent::class => ['afterEntityPersistedEvent'],
             BeforeEntityUpdatedEvent::class => ['beforeEntityUpdatedEvent'],
         ];
+    }
+
+    public function createCom(User $user, Product $product, bool $flush = false): void
+    {
+        $com = new Commission();
+        $com->setUser($user);
+        $com->setProduct($product);
+        switch ($user->getCom()) {
+            case 'freelance':
+                $com->setPercentCom($product->getPercentFreelance());
+                break;
+            case 'salarie':
+                $com->setPercentCom($product->getPercentSalarie());
+                break;
+            case 'tv':
+                $com->setPercentCom($product->getPercentTv());
+                break;
+        }
+        $this->commissionRepository->save($com, $flush);
     }
 
     public function beforeEntityUpdatedEvent(BeforeEntityUpdatedEvent $event): void
@@ -46,55 +62,23 @@ class AdminProjectSubscriber implements EventSubscriberInterface
         /** @var User $user */
         foreach ($users as $user) {
             foreach ($entity->getProductEvent() as $event) {
-                if ($event->getId() === null) {
-                    $com = new Commission();
-                    $com->setUser($user);
-                    $com->setProduct($event);
-                    if ($user->isFreelance()) {
-                        $com->setPercentCom($event->getPercentFreelance());
-                    } else {
-                        $com->setPercentCom($event->getPercentSalarie());
-                    }
-                    $this->commissionRepository->save($com);
+                if (null === $event->getId()) {
+                    $this->createCom($user, $event);
                 }
             }
             foreach ($entity->getProductPackage() as $event) {
-                if ($event->getId() === null) {
-                    $com = new Commission();
-                    $com->setUser($user);
-                    $com->setProduct($event);
-                    if ($user->isFreelance()) {
-                        $com->setPercentCom($event->getPercentFreelance());
-                    } else {
-                        $com->setPercentCom($event->getPercentSalarie());
-                    }
-                    $this->commissionRepository->save($com);
+                if (null === $event->getId()) {
+                    $this->createCom($user, $event);
                 }
             }
             foreach ($entity->getProductSponsoring() as $event) {
-                if ($event->getId() === null) {
-                    $com = new Commission();
-                    $com->setUser($user);
-                    $com->setProduct($event);
-                    if ($user->isFreelance()) {
-                        $com->setPercentCom($event->getPercentFreelance());
-                    } else {
-                        $com->setPercentCom($event->getPercentSalarie());
-                    }
-                    $this->commissionRepository->save($com);
+                if (null === $event->getId()) {
+                    $this->createCom($user, $event);
                 }
             }
             foreach ($entity->getProductDivers() as $event) {
-                if ($event->getId() === null) {
-                    $com = new Commission();
-                    $com->setUser($user);
-                    $com->setProduct($event);
-                    if ($user->isFreelance()) {
-                        $com->setPercentCom($event->getPercentFreelance());
-                    } else {
-                        $com->setPercentCom($event->getPercentSalarie());
-                    }
-                    $this->commissionRepository->save($com);
+                if (null === $event->getId()) {
+                    $this->createCom($user, $event);
                 }
             }
         }
@@ -113,48 +97,16 @@ class AdminProjectSubscriber implements EventSubscriberInterface
         /** @var User $user */
         foreach ($users as $user) {
             foreach ($entity->getProductEvent() as $event) {
-                $com = new Commission();
-                $com->setUser($user);
-                $com->setProduct($event);
-                if ($user->isFreelance()) {
-                    $com->setPercentCom($event->getPercentFreelance());
-                } else {
-                    $com->setPercentCom($event->getPercentSalarie());
-                }
-                $this->commissionRepository->save($com, true);
+                $this->createCom($user, $event, true);
             }
             foreach ($entity->getProductPackage() as $event) {
-                $com = new Commission();
-                $com->setUser($user);
-                $com->setProduct($event);
-                if ($user->isFreelance()) {
-                    $com->setPercentCom($event->getPercentFreelance());
-                } else {
-                    $com->setPercentCom($event->getPercentSalarie());
-                }
-                $this->commissionRepository->save($com, true);
+                $this->createCom($user, $event, true);
             }
             foreach ($entity->getProductSponsoring() as $event) {
-                $com = new Commission();
-                $com->setUser($user);
-                $com->setProduct($event);
-                if ($user->isFreelance()) {
-                    $com->setPercentCom($event->getPercentFreelance());
-                } else {
-                    $com->setPercentCom($event->getPercentSalarie());
-                }
-                $this->commissionRepository->save($com, true);
+                $this->createCom($user, $event, true);
             }
             foreach ($entity->getProductDivers() as $event) {
-                $com = new Commission();
-                $com->setUser($user);
-                $com->setProduct($event);
-                if ($user->isFreelance()) {
-                    $com->setPercentCom($event->getPercentFreelance());
-                } else {
-                    $com->setPercentCom($event->getPercentSalarie());
-                }
-                $this->commissionRepository->save($com, true);
+                $this->createCom($user, $event, true);
             }
         }
     }

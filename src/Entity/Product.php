@@ -48,6 +48,9 @@ class Product
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
     private ?float $percent_salarie = 0.0;
 
+    #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
+    private ?float $percent_tv = 0.0;
+
     public function __construct()
     {
         $this->sales = new ArrayCollection();
@@ -103,6 +106,18 @@ class Product
     public function setPercentSalarie(string $percent_salarie): self
     {
         $this->percent_salarie = (float) str_replace(',', '.', $percent_salarie);
+
+        return $this;
+    }
+
+    public function getPercentTv(): ?float
+    {
+        return $this->percent_tv;
+    }
+
+    public function setPercentTv(string $percent_tv): self
+    {
+        $this->percent_tv = (float) str_replace(',', '.', $percent_tv);
 
         return $this;
     }

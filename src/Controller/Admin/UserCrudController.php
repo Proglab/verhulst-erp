@@ -97,7 +97,11 @@ class UserCrudController extends BaseCrudController
         $twoFa = BooleanField::new('isTotpEnabled')->setLabel('Double authentification');
         $role = ChoiceField::new('roles')->allowMultipleChoices(true)->renderExpanded(true)->setChoices(['Admin' => 'ROLE_ADMIN', 'Commercial' => 'ROLE_COMMERCIAL', 'Encodeur' => 'ROLE_ENCODE'])->setLabel('Rôle');
         $enabled = BooleanField::new('enabled')->setLabel('Validé');
-        $freelance = BooleanField::new('freelance')->setLabel('Freelance ?');
+        $freelance = ChoiceField::new('com')->setLabel('Type de Commisssion')->setChoices([
+            'Salarié' => 'salarie',
+            'Freelance' => 'freelance',
+            'TV' => 'tv',
+        ])->setRequired(true);
 
         switch ($pageName) {
             case Crud::PAGE_DETAIL:

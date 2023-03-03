@@ -53,6 +53,7 @@ class ProductDiversCrudController extends BaseCrudController
         $percentVr = PercentField::new('percent_vr')->setLabel('Commission Verhulst')->setPermission('ROLE_ENCODE')->setStoredAsFractional(false)->setNumDecimals(2)->setRequired(true);
         $percentDefaultFreelance = PercentField::new('percent_freelance')->setLabel('Commission Freelance')->setPermission('ROLE_ENCODE')->setStoredAsFractional(false)->setNumDecimals(2)->setRequired(true);
         $percentDefaultSalarie = PercentField::new('percent_salarie')->setLabel('Commission Salarié')->setPermission('ROLE_ENCODE')->setStoredAsFractional(false)->setNumDecimals(2)->setRequired(true);
+        $percentDefaultTv = PercentField::new('percent_tv')->setLabel('Commission TV')->setPermission('ROLE_ENCODE')->setStoredAsFractional(false)->setNumDecimals(2)->setRequired(true);
         $image = ImageField::new('doc')->setBasePath('files/products')->setUploadDir('../../shared/public/files/products')->setUploadedFileNamePattern('[slug]-[timestamp]-[randomhash].[extension]')->setLabel('Document (PDF)');
         $imageDwonload = TextField::new('download_url')->renderAsHtml()->setLabel('Document (PDF)');
 
@@ -72,6 +73,14 @@ class ProductDiversCrudController extends BaseCrudController
             ->setRequired(false)
             ->setCssClass('d-none');
 
+        $percentTvHidden = PercentField::new('percent_tv')
+            ->setLabel('Commission Tv')
+            ->setPermission('ROLE_ADMIN')
+            ->setNumDecimals(2)
+            ->setStoredAsFractional(false)
+            ->setRequired(false)
+            ->setCssClass('d-none');
+
         if ($this->isGranted('ROLE_ADMIN')) {
             switch ($pageName) {
                 case Crud::PAGE_DETAIL:
@@ -79,10 +88,10 @@ class ProductDiversCrudController extends BaseCrudController
                     $response = [$projectName, $name, $percentVr, $imageDwonload];
                     break;
                 case Crud::PAGE_NEW:
-                    $response = [$name, $percentVr, $percentDefaultFreelance, $percentDefaultSalarie, $image];
+                    $response = [$name, $percentVr, $percentDefaultFreelance, $percentDefaultSalarie, $percentDefaultTv, $image];
                     break;
                 case Crud::PAGE_EDIT:
-                    $response = [$name, $percentVr, $image, $percentFreelanceHidden, $percentSalarieHidden];
+                    $response = [$name, $percentVr, $image, $percentFreelanceHidden, $percentSalarieHidden, $percentTvHidden];
                     break;
                 default:
                     $response = [$name, $percentVr];

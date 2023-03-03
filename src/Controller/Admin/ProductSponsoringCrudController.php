@@ -62,6 +62,13 @@ class ProductSponsoringCrudController extends BaseCrudController
         $image = ImageField::new('doc')->setBasePath('files/products')->setUploadDir('../../shared/public/files/products')->setUploadedFileNamePattern('[slug]-[timestamp]-[randomhash].[extension]')->setLabel('Document (PDF)');
         $imageDwonload = TextField::new('download_url')->renderAsHtml()->setLabel('Document (PDF)');
 
+        $percentTv = PercentField::new('percent_tv')
+            ->setLabel('Commission Tv')
+            ->setPermission('ROLE_ADMIN')
+            ->setNumDecimals(2)
+            ->setStoredAsFractional(false)
+            ->setRequired(true);
+
         $percentFreelanceHidden = PercentField::new('percent_freelance')
             ->setLabel('Commission Freelance')
             ->setPermission('ROLE_ADMIN')
@@ -78,16 +85,24 @@ class ProductSponsoringCrudController extends BaseCrudController
             ->setRequired(false)
             ->setCssClass('d-none');
 
+        $percentTvHidden = PercentField::new('percent_tv')
+            ->setLabel('Commission Tv')
+            ->setPermission('ROLE_ADMIN')
+            ->setNumDecimals(2)
+            ->setStoredAsFractional(false)
+            ->setRequired(false)
+            ->setCssClass('d-none');
+
         switch ($pageName) {
             case Crud::PAGE_DETAIL:
             case Crud::PAGE_INDEX:
                 $response = [$projectName, $name, $percentVr, $ca, $description, $quantityMax, $quantitySales, $quantityAvailable, $imageDwonload];
                 break;
             case Crud::PAGE_NEW:
-                $response = [$name, $percentVr, $percentDefaultFreelance, $percentDefaultSalarie, $ca, $description, $quantityMax, $image];
+                $response = [$name, $percentVr, $percentDefaultFreelance, $percentDefaultSalarie, $percentTv, $ca, $description, $quantityMax, $image];
                 break;
             case Crud::PAGE_EDIT:
-                $response = [$name, $percentVr, $ca, $description, $quantityMax, $image, $percentFreelanceHidden, $percentSalarieHidden];
+                $response = [$name, $percentVr, $ca, $description, $quantityMax, $image, $percentFreelanceHidden, $percentSalarieHidden, $percentTvHidden];
                 break;
             default:
                 $response = [$name, $percentVr, $ca, $description, $quantityMax];

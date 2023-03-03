@@ -129,7 +129,7 @@ class CommissionCrudController extends BaseCrudController
         $productRepo = $this->entityManager->getRepository(Product::class);
         /** @var Product $product */
         $product = $productRepo->find($product_id);
-        $product->setPercentVr((float) $adminContext->getRequest()->request->get('com', 0));
+        $product->setPercentVr($adminContext->getRequest()->request->get('com', 0));
         $productRepo->save($product, true);
 
         return $this->render('admin/commission/_input_percent.html.twig', [
