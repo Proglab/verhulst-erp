@@ -6,6 +6,7 @@
         <th scope="col">Produit</th>
         <th scope="col">Description</th>
         <th scope="col">Quantité disponible</th>
+        <th scope="col">Prix</th>
     </tr>
     </thead>
     <tbody>
@@ -21,6 +22,7 @@
                 <td>{{ product.name }}</td>
                 <td>{{ product.description|raw }}</td>
                 <td> - </td>
+                <td> - </td>
             </tr>
         {% endfor %}
         {% for product in project.productPackage %}
@@ -34,6 +36,7 @@
                 <td>{{ product.name }}</td>
                 <td>{{ product.description|raw }}</td>
                 <td>{{ product.quantityAvailable }}</td>
+                <td>{% if product.ca is defined and product.ca > 0 %}{{ product.ca }}{% else %} - {% endif %}</td>
             </tr>
         {% endfor %}
         {% for product in project.productSponsoring %}
@@ -47,6 +50,7 @@
                 <td>{{ product.name }}</td>
                 <td>{{ product.description|raw }}</td>
                 <td>{{ product.quantityAvailable }}</td>
+                <td>{% if product.ca is defined and product.ca > 0 %}{{ product.ca }}{% else %} - {% endif %}</td>
             </tr>
         {% endfor %}
         {% for product in project.productDivers %}
@@ -59,6 +63,7 @@
                 <th scope="row">{{ project.name }}</th>
                 <td>{{ product.name }}</td>
                 <td>{{ product.description|raw }}</td>
+                <td> - </td>
                 <td> - </td>
             </tr>
         {% endfor %}
