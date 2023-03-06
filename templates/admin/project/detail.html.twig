@@ -12,15 +12,8 @@ Projet : {{ project.name }}
             {% for product in project.productEvent %}
                 <div class="col-lg-4">
                     <div class="card">
-                        <div class="card-header d-flex justify-content-between">
+                        <div class="card-header d-flex justify-content-between align-items-center">
                             <h3>{{ product.name }}</h3>
-                <!--
-                            <div>
-                                <a href="#">
-                                    <i class="fa-solid fa-pen-to-square fa-2x"></i>
-                                </a>
-                            </div>
-                            -->
                         </div>
                         <div class="card-body">
                             <p><b>Date : </b> {{ product.date|date('d/m/Y') }}</p>
@@ -44,6 +37,7 @@ Projet : {{ project.name }}
                     <div class="card">
                         <div class="card-header d-flex justify-content-between">
                             <h3>{{ product.name }}</h3>
+                            {% if product.ca is defined and product.ca > 0 %}<span class="btn-sm btn-primary">Prix de vente : {{ product.ca|number_format(2, ',', ' ') }} €</span>{% endif %}
                 <!--
                             <div>
                                 <a href="#">
@@ -73,6 +67,7 @@ Projet : {{ project.name }}
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <h3>{{ product.name }}</h3>
+                        {% if product.ca is defined and product.ca > 0 %}<span class="btn-sm btn-primary">Prix de vente : {{ product.ca|number_format(2, ',', ' ') }} €</span>{% endif %}
                         <!--
                         <div>
                             <a href="#">
