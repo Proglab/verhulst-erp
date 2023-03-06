@@ -37,7 +37,7 @@ Projet : {{ project.name }}
                     <div class="card">
                         <div class="card-header d-flex justify-content-between">
                             <h3>{{ product.name }}</h3>
-                            {% if product.ca is defined and product.ca > 0 %}<span class="btn-sm btn-primary">Prix de vente : {{ product.ca|number_format(2, ',', ' ') }} €</span>{% endif %}
+
                 <!--
                             <div>
                                 <a href="#">
@@ -47,6 +47,9 @@ Projet : {{ project.name }}
                             -->
                         </div>
                         <div class="card-body">
+                            <div class=" text-right">
+                            {% if product.ca is defined and product.ca > 0 %}<span class="btn-sm btn-primary">Prix de vente : {{ product.ca|number_format(2, ',', ' ') }} €</span>{% endif %}
+                            </div>
                             <p>{{ product.description|raw }}</p>
                             {% if product.doc is not null %}
                                 <p><a href="/files/products/{{ product.doc }}" target="_blank">Download {{ product.doc }}</a></p>
@@ -67,7 +70,6 @@ Projet : {{ project.name }}
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <h3>{{ product.name }}</h3>
-                        {% if product.ca is defined and product.ca > 0 %}<span class="btn-sm btn-primary">Prix de vente : {{ product.ca|number_format(2, ',', ' ') }} €</span>{% endif %}
                         <!--
                         <div>
                             <a href="#">
@@ -76,6 +78,9 @@ Projet : {{ project.name }}
                         </div>-->
                     </div>
                     <div class="card-body">
+                        <div class=" text-right">
+                            {% if product.ca is defined and product.ca > 0 %}<span class="btn-sm btn-primary">Prix de vente : {{ product.ca|number_format(2, ',', ' ') }} €</span>{% endif %}
+                        </div>
                         <p>{{ product.description|raw }}</p>
                         {% if product.doc is not null %}
                             <p><a href="/files/products/{{ product.doc }}" target="_blank">Download {{ product.doc }}</a></p>
