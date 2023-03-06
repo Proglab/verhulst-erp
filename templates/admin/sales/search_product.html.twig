@@ -36,7 +36,7 @@
                 <td>{{ product.name }}</td>
                 <td>{{ product.description|raw }}</td>
                 <td>{{ product.quantityAvailable }}</td>
-                <td>{% if product.ca is defined and product.ca > 0 %}{{ product.ca }}  €{% else %} - {% endif %}</td>
+                <td>{% if product.ca is defined and product.ca > 0 %}{{ product.ca|number_format(2, ',', ' ') }}  €{% else %} - {% endif %}</td>
             </tr>
         {% endfor %}
         {% for product in project.productSponsoring %}
@@ -50,7 +50,7 @@
                 <td>{{ product.name }}</td>
                 <td>{{ product.description|raw }}</td>
                 <td>{{ product.quantityAvailable }}</td>
-                <td>{% if product.ca is defined and product.ca > 0 %}{{ product.ca }}  €{% else %} - {% endif %}</td>
+                <td>{% if product.ca is defined and product.ca > 0 %}{{ product.ca|number_format(2, ',', ' ') }}  €{% else %} - {% endif %}</td>
             </tr>
         {% endfor %}
         {% for product in project.productDivers %}
