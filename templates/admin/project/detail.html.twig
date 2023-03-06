@@ -3,6 +3,7 @@
 {% block content_title %}
 Projet : {{ project.name }}
 {% endblock %}
+{% block page_title %}Verhulst & Friends - ERP - {{ block('content_title') }}{% endblock %}
 
 {% block main %}
     {% if project.productEvent.count > 0 %}
