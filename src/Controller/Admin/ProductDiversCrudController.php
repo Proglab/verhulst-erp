@@ -24,7 +24,9 @@ class ProductDiversCrudController extends BaseCrudController
     {
         $crud->setEntityLabelInPlural('Divers')
             ->setEntityLabelInSingular('Divers')
-            ->showEntityActionsInlined(true);
+            ->showEntityActionsInlined(true)
+            ->overrideTemplate('crud/index', 'admin/products/crud/index.html.twig')
+            ->setDefaultSort(['project.name'=> 'ASC']);
 
         return parent::configureCrud($crud);
     }
@@ -86,7 +88,7 @@ class ProductDiversCrudController extends BaseCrudController
             switch ($pageName) {
                 case Crud::PAGE_DETAIL:
                 case Crud::PAGE_INDEX:
-                    $response = [$projectName, $name, $percentVrListing, $imageDwonload];
+                    $response = [$name, $percentVrListing, $imageDwonload];
                     break;
                 case Crud::PAGE_NEW:
                     $response = [$name, $percentVr, $percentDefaultFreelance, $percentDefaultSalarie, $percentDefaultTv, $image];

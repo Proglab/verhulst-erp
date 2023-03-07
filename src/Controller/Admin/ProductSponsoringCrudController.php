@@ -26,7 +26,9 @@ class ProductSponsoringCrudController extends BaseCrudController
     {
         $crud->setEntityLabelInPlural('Sponsorings')
             ->setEntityLabelInSingular('Sponsoring')
-            ->showEntityActionsInlined(true);
+            ->showEntityActionsInlined(true)
+            ->overrideTemplate('crud/index', 'admin/products/crud/index.html.twig')
+            ->setDefaultSort(['project.name'=> 'ASC']);
 
         return parent::configureCrud($crud);
     }
@@ -98,7 +100,7 @@ class ProductSponsoringCrudController extends BaseCrudController
         switch ($pageName) {
             case Crud::PAGE_DETAIL:
             case Crud::PAGE_INDEX:
-                $response = [$projectName, $name, $percentVrListing, $caListing, $description, $quantityMax, $quantitySales, $quantityAvailable, $imageDwonload];
+                $response = [$name, $percentVrListing, $caListing, $description, $quantityMax, $quantitySales, $quantityAvailable, $imageDwonload];
                 break;
             case Crud::PAGE_NEW:
                 $response = [$name, $percentVr, $percentDefaultFreelance, $percentDefaultSalarie, $percentTv, $ca, $description, $quantityMax, $image];

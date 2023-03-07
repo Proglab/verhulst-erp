@@ -26,7 +26,9 @@ class ProductPackageVipCrudController extends BaseCrudController
     {
         $crud->setEntityLabelInPlural('Packages Vip')
             ->setEntityLabelInSingular('Package Vip')
-            ->showEntityActionsInlined(true);
+            ->showEntityActionsInlined(true)
+            ->overrideTemplate('crud/index', 'admin/products/crud/index.html.twig')
+            ->setDefaultSort(['project.name'=> 'ASC']);
 
         return parent::configureCrud($crud);
     }
@@ -99,7 +101,7 @@ class ProductPackageVipCrudController extends BaseCrudController
         switch ($pageName) {
             case Crud::PAGE_DETAIL:
             case Crud::PAGE_INDEX:
-                $response = [$projectName, $name, $percentVrListing, $caListing, $description, $quantityMaxListing, $quantitySalesListing, $quantityAvailableListing, $imageDwonload];
+                $response = [$name, $percentVrListing, $caListing, $description, $quantityMaxListing, $quantitySalesListing, $quantityAvailableListing, $imageDwonload];
                 break;
             case Crud::PAGE_NEW:
                 $response = [$name, $percentVr, $percentDefaultFreelance, $percentDefaultSalarie, $percentTv, $ca, $description, $quantityMax, $image];
