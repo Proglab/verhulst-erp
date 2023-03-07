@@ -46,6 +46,9 @@ class CompanyContact
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $note = null;
 
+    #[ORM\Column(length: 30, nullable: true)]
+    private ?string $gsm = null;
+
     public function __construct()
     {
         $this->sales = new ArrayCollection();
@@ -185,6 +188,18 @@ class CompanyContact
     public function setNote(?string $note): self
     {
         $this->note = $note;
+
+        return $this;
+    }
+
+    public function getGsm(): ?string
+    {
+        return $this->gsm;
+    }
+
+    public function setGsm(?string $gsm): self
+    {
+        $this->gsm = $gsm;
 
         return $this;
     }

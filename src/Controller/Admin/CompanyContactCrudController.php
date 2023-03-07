@@ -59,8 +59,10 @@ class CompanyContactCrudController extends BaseCrudController
         $lastname = TextField::new('lastname')->setLabel('Nom')->setRequired(true)->setColumns(12);
         $fullname = TextField::new('fullName')->setLabel('Nom');
         $lang = ChoiceField::new('lang')->setLabel('Langue')->allowMultipleChoices(false)->renderExpanded(false)->setChoices(['Français' => 'fr', 'Néerlandais' => 'nl', 'Anglais' => 'en'])->setRequired(true)->setColumns(12);
+        $langListing = ChoiceField::new('lang')->setLabel('Lang')->allowMultipleChoices(false)->renderExpanded(false)->setChoices(['Fr' => 'fr', 'Nl' => 'nl', 'En' => 'en'])->setRequired(true)->setColumns(12);
         $email = EmailField::new('email')->setLabel('E-mail')->setColumns(12);
         $phone = TextField::new('phone')->setLabel('Téléphone')->setColumns(12);
+        $gsm = TextField::new('gsm')->setLabel('Gsm')->setColumns(12);
         $note = TextEditorField::new('note')->setLabel('Note');
 
         $user = AssociationField::new('added_by')->setRequired(false)->setFormTypeOption('query_builder', function (UserRepository $entityRepository) {
@@ -68,14 +70,15 @@ class CompanyContactCrudController extends BaseCrudController
         })->setLabel('Commercial')->setValue($this->getUser());
 
         $userName = TextField::new('added_by.fullName')->setLabel('Commercial');
+        $userNameListing = TextField::new('added_by.fullNameMinified')->setLabel('Sales');
 
         switch ($pageName) {
             case Crud::PAGE_NEW:
-                $response = [$firstname, $lastname, $lang, $email, $phone, $note, $user];
+                $response = [$firstname, $lastname, $lang, $email, $phone, $gsm, $note, $user];
                 break;
             case Crud::PAGE_DETAIL:
             case Crud::PAGE_INDEX:
-                $response = [$company, $fullname, $lang, $email, $phone, $userName, $note];
+                $response = [$company, $fullname, $langListing, $email, $phone, $gsm, $userNameListing, $note];
                 break;
             case Crud::PAGE_EDIT:
                 $response = [/* $panel1, $companyName, $companyStreet, $companyNumber, $companyBox, $companyPc, $companyCity, $companyCountry, $companyVat, $panel2, */ $firstname, $lastname, $lang, $email, $phone, $note, $user];
