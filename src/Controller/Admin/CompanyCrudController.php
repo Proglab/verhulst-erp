@@ -152,8 +152,10 @@ class CompanyCrudController extends BaseCrudController
                 $i = 0;
                 foreach ($context->getRequest()->get('Company')['contact'] as $contact) {
                     $entityInstance->getContact()[$i]->setLang($contact['lang']);
+                    if ($entityInstance->getContact()[$i]->getAddedBy() === null) {
+                        $entityInstance->getContact()[$i]->setAddedBy($this->getUser());
+                    }
                 }
-
                 $this->persistEntity($this->container->get('doctrine')->getManagerForClass($context->getEntity()->getFqcn()), $entityInstance);
 
                 $this->container->get('event_dispatcher')->dispatch(new AfterEntityPersistedEvent($entityInstance));
