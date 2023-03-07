@@ -20,6 +20,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 
@@ -90,7 +91,6 @@ class ProjectCrudController extends BaseCrudController
     {
         $actions = parent::configureActions($actions);
 
-
         $clone = Action::new('cloneProject', 'Clone project')
             ->linkToCrudAction('cloneProject');
 
@@ -159,52 +159,52 @@ class ProjectCrudController extends BaseCrudController
         ]);
     }
 
-    public function cloneProject(AdminContext $context)
+    public function cloneProject(AdminContext $context): RedirectResponse
     {
         /** @var Project $project */
         $project = $context->getEntity()->getInstance();
 
         $project_new = clone $project;
 
-        foreach($project->getProductEvent() as $event) {
+        foreach ($project->getProductEvent() as $event) {
             $doc = $event->getDoc();
             $eventClone = clone $event;
             if (null !== $doc) {
                 $url = realpath($event->getUrl());
-                $newName = uniqid('-').'.pdf';
+                $newName = uniqid('-') . '.pdf';
                 copy($url, str_replace('.', $newName, $url));
                 $eventClone->setDoc(basename($newName));
             }
             $project_new->addProductEvent($eventClone);
         }
-        foreach($project->getProductPackage() as $event) {
+        foreach ($project->getProductPackage() as $event) {
             $doc = $event->getDoc();
             $eventClone = clone $event;
             if (null !== $doc) {
                 $url = realpath($event->getUrl());
-                $newName = uniqid('-').'.pdf';
+                $newName = uniqid('-') . '.pdf';
                 copy($url, str_replace('.', $newName, $url));
                 $eventClone->setDoc(basename($newName));
             }
             $project_new->addProductPackage($eventClone);
         }
-        foreach($project->getProductSponsoring() as $event) {
+        foreach ($project->getProductSponsoring() as $event) {
             $doc = $event->getDoc();
             $eventClone = clone $event;
             if (null !== $doc) {
                 $url = realpath($event->getUrl());
-                $newName = uniqid('-').'.pdf';
+                $newName = uniqid('-') . '.pdf';
                 copy($url, str_replace('.', $newName, $url));
                 $eventClone->setDoc(basename($newName));
             }
             $project_new->addProductSponsoring($eventClone);
         }
-        foreach($project->getProductDivers() as $event) {
+        foreach ($project->getProductDivers() as $event) {
             $doc = $event->getDoc();
             $eventClone = clone $event;
             if (null !== $doc) {
                 $url = realpath($event->getUrl());
-                $newName = uniqid('-').'.pdf';
+                $newName = uniqid('-') . '.pdf';
                 copy($url, str_replace('.', $newName, $url));
                 $eventClone->setDoc(basename($newName));
             }
@@ -218,9 +218,8 @@ class ProjectCrudController extends BaseCrudController
             ->setEntityId(null)
             ->generateUrl();
 
-        $this->addFlash('warning', 'N\'oubliez pas dèncoder les commissions pour le projet <strong>'.$project_new->getName().'</strong> !!!');
+        $this->addFlash('warning', 'N\'oubliez pas dèncoder les commissions pour le projet <strong>' . $project_new->getName() . '</strong> !!!');
 
         return $this->redirect($url);
-
     }
 }

@@ -47,6 +47,18 @@ class Project
         return $this->getName();
     }
 
+    public function __clone()
+    {
+        if ($this->id) {
+            $this->id = null;
+            $this->name = $this->name . ' (clone)';
+            $this->product_divers = new ArrayCollection();
+            $this->product_event = new ArrayCollection();
+            $this->product_package = new ArrayCollection();
+            $this->product_sponsoring = new ArrayCollection();
+        }
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -194,17 +206,5 @@ class Project
         $this->mail = $mail;
 
         return $this;
-    }
-
-    public function __clone()
-    {
-        if ($this->id) {
-            $this->id = null;
-            $this->name = $this->name.' (clone)';
-            $this->product_divers = new ArrayCollection();
-            $this->product_event = new ArrayCollection();
-            $this->product_package = new ArrayCollection();
-            $this->product_sponsoring = new ArrayCollection();
-        }
     }
 }
