@@ -68,7 +68,7 @@ class UserCrudController extends BaseCrudController
         $actions->add(Crud::PAGE_INDEX, $resetPassword);
 
         $actions->update(Crud::PAGE_INDEX, 'resetPassword', function (Action $action) {
-            return $action->setIcon('fa fa-unlock-keyhole');
+            return $action->setIcon('fa fa-unlock-keyhole')->setLabel(false)->setHtmlAttributes(['title' => 'Reset mot de passe']);
         });
 
         return $actions;

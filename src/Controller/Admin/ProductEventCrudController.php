@@ -51,16 +51,27 @@ class ProductEventCrudController extends BaseCrudController
         $project = AssociationField::new('project')->setRequired(true);
         $projectName = TextField::new('project.name')->setLabel('Nom du projet');
         $name = TextField::new('name')->setLabel('Nom du produit')->setRequired(true);
-        $date = DateField::new('date')->setRequired(true);
+        $date = DateField::new('date')->setRequired(true)->setFormat('dd/MM/yy');
         $percentVr = PercentField::new('percent_vr')
             ->setLabel('Commission Verhulst')
             ->setPermission('ROLE_ADMIN')
             ->setNumDecimals(2)
             ->setStoredAsFractional(false)
             ->setRequired(true);
-
+        $percentVrListing = PercentField::new('percent_vr')
+            ->setLabel('%V')
+            ->setPermission('ROLE_ADMIN')
+            ->setNumDecimals(2)
+            ->setStoredAsFractional(false)
+            ->setRequired(true);
         $percentFreelance = PercentField::new('percent_freelance')
             ->setLabel('Commission Freelance')
+            ->setPermission('ROLE_ADMIN')
+            ->setNumDecimals(2)
+            ->setStoredAsFractional(false)
+            ->setRequired(true);
+        $percentFreelanceListing = PercentField::new('percent_freelance')
+            ->setLabel('%Freelance')
             ->setPermission('ROLE_ADMIN')
             ->setNumDecimals(2)
             ->setStoredAsFractional(false)
@@ -72,9 +83,22 @@ class ProductEventCrudController extends BaseCrudController
             ->setNumDecimals(2)
             ->setStoredAsFractional(false)
             ->setRequired(true);
+        $percentSalarieListing = PercentField::new('percent_salarie')
+            ->setLabel('%Salarié')
+            ->setPermission('ROLE_ADMIN')
+            ->setNumDecimals(2)
+            ->setStoredAsFractional(false)
+            ->setRequired(true);
 
         $percentTv = PercentField::new('percent_tv')
             ->setLabel('Commission Tv')
+            ->setPermission('ROLE_ADMIN')
+            ->setNumDecimals(2)
+            ->setStoredAsFractional(false)
+            ->setRequired(true);
+
+        $percentTvListing = PercentField::new('percent_tv')
+            ->setLabel('%Tv')
             ->setPermission('ROLE_ADMIN')
             ->setNumDecimals(2)
             ->setStoredAsFractional(false)
@@ -105,13 +129,13 @@ class ProductEventCrudController extends BaseCrudController
             ->setCssClass('d-none');
 
         $image = ImageField::new('doc')->setBasePath('files/products')->setUploadDir('../../shared/public/files/products')->setUploadedFileNamePattern('[slug]-[timestamp]-[randomhash].[extension]')->setLabel('Document (PDF)');
-        $imageDwonload = TextField::new('download_url')->renderAsHtml()->setLabel('Document (PDF)');
+        $imageDwonload = TextField::new('download_url')->renderAsHtml()->setLabel('Doc (PDF)');
 
         if ($this->isGranted('ROLE_ADMIN')) {
             switch ($pageName) {
                 case Crud::PAGE_DETAIL:
                 case Crud::PAGE_INDEX:
-                    $response = [$projectName, $name, $date, $percentVr, $percentFreelance, $percentSalarie, $percentTv, $imageDwonload];
+                    $response = [$projectName, $name, $date, $percentVrListing, $percentFreelanceListing, $percentSalarieListing, $percentTvListing, $imageDwonload];
                     break;
                 case Crud::PAGE_NEW:
                     $response = [$name, $date, $percentVr, $percentFreelance, $percentSalarie, $percentTv, $image];

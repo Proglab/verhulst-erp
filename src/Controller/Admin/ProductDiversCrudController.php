@@ -51,6 +51,7 @@ class ProductDiversCrudController extends BaseCrudController
         $project = AssociationField::new('project')->setLabel('Projet')->setRequired(true);
         $name = TextField::new('name')->setLabel('Nom du produit')->setRequired(true);
         $percentVr = PercentField::new('percent_vr')->setLabel('Commission Verhulst')->setPermission('ROLE_ENCODE')->setStoredAsFractional(false)->setNumDecimals(2)->setRequired(true);
+        $percentVrListing = PercentField::new('percent_vr')->setLabel('%V')->setPermission('ROLE_ENCODE')->setStoredAsFractional(false)->setNumDecimals(2)->setRequired(true);
         $percentDefaultFreelance = PercentField::new('percent_freelance')->setLabel('Commission Freelance')->setPermission('ROLE_ENCODE')->setStoredAsFractional(false)->setNumDecimals(2)->setRequired(true);
         $percentDefaultSalarie = PercentField::new('percent_salarie')->setLabel('Commission Salarié')->setPermission('ROLE_ENCODE')->setStoredAsFractional(false)->setNumDecimals(2)->setRequired(true);
         $percentDefaultTv = PercentField::new('percent_tv')->setLabel('Commission TV')->setPermission('ROLE_ENCODE')->setStoredAsFractional(false)->setNumDecimals(2)->setRequired(true);
@@ -85,7 +86,7 @@ class ProductDiversCrudController extends BaseCrudController
             switch ($pageName) {
                 case Crud::PAGE_DETAIL:
                 case Crud::PAGE_INDEX:
-                    $response = [$projectName, $name, $percentVr, $imageDwonload];
+                    $response = [$projectName, $name, $percentVrListing, $imageDwonload];
                     break;
                 case Crud::PAGE_NEW:
                     $response = [$name, $percentVr, $percentDefaultFreelance, $percentDefaultSalarie, $percentDefaultTv, $image];

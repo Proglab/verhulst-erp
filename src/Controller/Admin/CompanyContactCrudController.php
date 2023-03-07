@@ -101,7 +101,7 @@ class CompanyContactCrudController extends BaseCrudController
             ->setPermission(Action::SAVE_AND_CONTINUE, 'ROLE_COMMERCIAL')
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->update(Crud::PAGE_INDEX, Action::DETAIL, function (Action $action) {
-                return $action->setIcon('fa fa-eye');
+                return $action->setIcon('fa fa-eye')->setLabel(false)->setHtmlAttributes(['title' => 'Consulter']);
             })
         ;
 

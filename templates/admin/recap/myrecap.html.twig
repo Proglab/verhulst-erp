@@ -37,11 +37,11 @@
                 <th scope="col">Produit</th>
                 <th scope="col">Date</th>
                 <th scope="col" class="text-right">CA</th>
-                <th scope="col" class="text-right">Réduction</th>
+                <th scope="col" class="text-right">Réduc</th>
                 <th scope="col" class="text-right">Marge</th>
-                <th scope="col" class="text-center">% Sales</th>
-                <th scope="col" class="text-right">€ Sales</th>
-                <th scope="col">Action</th>
+                <th scope="col" class="text-center">%S</th>
+                <th scope="col" class="text-right">€S</th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -65,20 +65,19 @@
                             {{ sale.product.project.name }}
                         </th>
                         <th scope="row">{{ sale.product.name }}</th>
-                        <td>{{ sale.date|date('d/m/Y') }}</td>
-                        <td class="text-right">{{ (sale.price)|number_format(2, ',', ' ') }} €</td>
-                        <td class="text-right">{{ (sale.pa)|number_format(2, ',', ' ') }} €</td>
-                        <td class="text-right">{{ (sale.discount)|number_format(2, ',', ' ') }} €</td>
-                        <td class="text-right">{{ sale.marge|number_format(2, ',', ' ') }} €</td>
-                        <td class="text-center">{{ sale.percentCom }} %</td>
-                        <td class="text-right">{{ sale.euroCom|number_format(2, ',', ' ') }}  €</td>
+                        <td>{{ sale.date|date('d/m/y') }}</td>
+                        <td class="text-right">{{ (sale.price)|number_format(2, ',', '') }}€</td>
+                        <td class="text-right">{{ (sale.discount)|number_format(2, ',', '') }}€</td>
+                        <td class="text-right">{{ sale.marge|number_format(2, ',', '') }}€</td>
+                        <td class="text-center">{{ sale.percentCom }}%</td>
+                        <td class="text-right">{{ sale.euroCom|number_format(2, ',', '') }}€</td>
                         <td class="action">
                             {% set url_edit = ea_url()
                                 .setAction('edit')
                                 .setController('App\\Controller\\Admin\\SalesCrudController')
                                 .setEntityId(sale.id)
                             %}
-                            <a class=" action-edit" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i> <span class="action-label">Edit</span></a>
+                            <a class=" action-edit" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i></a>
                         </td>
                     </tr>
                 {% endif %}
@@ -87,11 +86,11 @@
                 <th scope="row" colspan="4">
                     Totaux
                 </th>
-                <th class="text-right">{{ total_price|number_format(2, ',', ' ') }} €</th>
+                <th class="text-right">{{ total_price|number_format(2, ',', '') }}€</th>
                 <th></th>
-                <th class="text-right">{{ total_marge|number_format(2, ',', ' ') }} €</th>
+                <th class="text-right">{{ total_marge|number_format(2, ',', '') }}€</th>
                 <th></th>
-                <th class="text-right">{{ total_euroCom|number_format(2, ',', ' ') }} €</th>
+                <th class="text-right">{{ total_euroCom|number_format(2, ',', '') }}€</th>
                 <th></th>
             </tr>
             </tbody>
@@ -108,13 +107,13 @@
                 <th scope="col">Produit</th>
                 <th scope="col">Date</th>
                 <th scope="col" class="text-right">CA</th>
-                <th scope="col" class="text-right">Quantity</th>
-                <th scope="col" class="text-right">CA Total</th>
-                <th scope="col" class="text-right">Réduction</th>
+                <th scope="col" class="text-right">Q</th>
+                <th scope="col" class="text-right">CA Tot</th>
+                <th scope="col" class="text-right">Réduc</th>
                 <th scope="col" class="text-right">Marge</th>
-                <th scope="col" class="text-center">% Sales</th>
-                <th scope="col" class="text-right">€ Sales</th>
-                <th scope="col">Action</th>
+                <th scope="col" class="text-center">%S</th>
+                <th scope="col" class="text-right">€S</th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -138,21 +137,21 @@
                             {{ sale.product.project.name }}
                         </th>
                         <th scope="row">{{ sale.product.name }}</th>
-                        <td>{{ sale.date|date('d/m/Y') }}</td>
-                        <td class="text-right">{{ (sale.price)|number_format(2, ',', ' ') }} €</td>
+                        <td>{{ sale.date|date('d/m/y') }}</td>
+                        <td class="text-right">{{ (sale.price)|number_format(2, ',', '') }}€</td>
                         <td class="text-right">{{ sale.quantity }}</td>
-                        <td class="text-right">{{ (sale.totalPrice)|number_format(2, ',', ' ') }} €</td>
-                        <td class="text-right">{{ (sale.discount)|number_format(2, ',', ' ') }} €</td>
-                        <td class="text-right">{{ (sale.marge)|number_format(2, ',', ' ') }} €</td>
-                        <td class="text-center">{{ sale.percentCom }} %</td>
-                        <td class="text-right">{{ sale.euroCom|number_format(2, ',', ' ') }}  €</td>
+                        <td class="text-right">{{ (sale.totalPrice)|number_format(2, ',', '') }}€</td>
+                        <td class="text-right">{{ (sale.discount)|number_format(2, ',', '') }}€</td>
+                        <td class="text-right">{{ (sale.marge)|number_format(2, ',', '') }}€</td>
+                        <td class="text-center">{{ sale.percentCom }}%</td>
+                        <td class="text-right">{{ sale.euroCom|number_format(2, ',', '') }}€</td>
                         <td class="action">
                             {% set url_edit = ea_url()
                                 .setAction('edit')
                                 .setController('App\\Controller\\Admin\\SalesCrudController')
                                 .setEntityId(sale.id)
                             %}
-                            <a class=" action-edit" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i> <span class="action-label">Edit</span></a>
+                            <a class=" action-edit" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i></a>
                         </td>
                     </tr>
                 {% endif %}
@@ -163,11 +162,11 @@
                 </th>
                 <th></th>
                 <th></th>
-                <th class="text-right">{{ total_price|number_format(2, ',', ' ') }} €</th>
+                <th class="text-right">{{ total_price|number_format(2, ',', '') }}€</th>
                 <th></th>
-                <th class="text-right">{{ total_marge|number_format(2, ',', ' ') }} €</th>
+                <th class="text-right">{{ total_marge|number_format(2, ',', '') }}€</th>
                 <th></th>
-                <th class="text-right">{{ total_euroCom|number_format(2, ',', ' ') }} €</th>
+                <th class="text-right">{{ total_euroCom|number_format(2, ',', '') }}€</th>
                 <th></th>
             </tr>
             </tbody>
@@ -184,13 +183,13 @@
                 <th scope="col">Produit</th>
                 <th scope="col">Date</th>
                 <th scope="col" class="text-right">CA</th>
-                <th scope="col" class="text-right">Quantity</th>
-                <th scope="col" class="text-right">CA Total</th>
-                <th scope="col" class="text-right">Réduction</th>
+                <th scope="col" class="text-right">Q</th>
+                <th scope="col" class="text-right">CA Tot</th>
+                <th scope="col" class="text-right">Réduc</th>
                 <th scope="col" class="text-right">Marge</th>
-                <th scope="col" class="text-center">% Sales</th>
-                <th scope="col" class="text-right">€ Sales</th>
-                <th scope="col">Action</th>
+                <th scope="col" class="text-center">%S</th>
+                <th scope="col" class="text-right">€S</th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -213,21 +212,21 @@
                             {{ sale.product.project.name }}
                         </th>
                         <th scope="row">{{ sale.product.name }}</th>
-                        <td>{{ sale.date|date('d/m/Y') }}</td>
-                        <td class="text-right">{{ (sale.price)|number_format(2, ',', ' ') }} €</td>
+                        <td>{{ sale.date|date('d/m/y') }}</td>
+                        <td class="text-right">{{ (sale.price)|number_format(2, ',', '') }}€</td>
                         <td class="text-right">{{ (sale.quantity) }}</td>
-                        <td class="text-right">{{ (sale.totalPrice)|number_format(2, ',', ' ') }} €</td>
-                        <td class="text-right">{{ (sale.discount)|number_format(2, ',', ' ') }} €</td>
-                        <td class="text-right">{{ (sale.marge)|number_format(2, ',', ' ') }} €</td>
-                        <td class="text-center">{{ sale.percentCom }} %</td>
-                        <td class="text-right">{{ sale.euroCom|number_format(2, ',', ' ') }}  €</td>
+                        <td class="text-right">{{ (sale.totalPrice)|number_format(2, ',', '') }}€</td>
+                        <td class="text-right">{{ (sale.discount)|number_format(2, ',', '') }}€</td>
+                        <td class="text-right">{{ (sale.marge)|number_format(2, ',', '') }}€</td>
+                        <td class="text-center">{{ sale.percentCom }}%</td>
+                        <td class="text-right">{{ sale.euroCom|number_format(2, ',', '') }}€</td>
                         <td class="action">
                             {% set url_edit = ea_url()
                                 .setAction('edit')
                                 .setController('App\\Controller\\Admin\\SalesCrudController')
                                 .setEntityId(sale.id)
                             %}
-                            <a class=" action-edit" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i> <span class="action-label">Edit</span></a>
+                            <a class=" action-edit" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i></a>
                         </td>
                     </tr>
                 {% endif %}
@@ -238,11 +237,11 @@
                 </th>
                 <th></th>
                 <th></th>
-                <th class="text-right">{{ total_price|number_format(2, ',', ' ') }} €</th>
+                <th class="text-right">{{ total_price|number_format(2, ',', '') }}€</th>
                 <th></th>
-                <th class="text-right">{{ total_marge|number_format(2, ',', ' ') }} €</th>
+                <th class="text-right">{{ total_marge|number_format(2, ',', '') }}€</th>
                 <th></th>
-                <th class="text-right">{{ total_euroCom|number_format(2, ',', ' ') }} €</th>
+                <th class="text-right">{{ total_euroCom|number_format(2, ',', '') }}€</th>
                 <th></th>
             </tr>
             </tbody>
@@ -259,11 +258,11 @@
                 <th scope="col">Produit</th>
                 <th scope="col">Date</th>
                 <th scope="col" class="text-right">CA</th>
-                <th scope="col" class="text-right">Réduction</th>
+                <th scope="col" class="text-right">Réduc</th>
                 <th scope="col" class="text-right">Marge</th>
-                <th scope="col" class="text-center">% Sales</th>
-                <th scope="col" class="text-right">€ Sales</th>
-                <th scope="col">Action</th>
+                <th scope="col" class="text-center">%S</th>
+                <th scope="col" class="text-right">€S</th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -286,19 +285,19 @@
                             {{ sale.product.project.name }}
                         </th>
                         <th scope="row">{{ sale.product.name }}</th>
-                        <td>{{ sale.date|date('d/m/Y') }}</td>
-                        <td class="text-right">{{ (sale.price)|number_format(2, ',', ' ') }} €</td>
-                        <td class="text-right">{{ (sale.discount)|number_format(2, ',', ' ') }} €</td>
-                        <td class="text-right">{{ (sale.marge)|number_format(2, ',', ' ') }} €</td>
-                        <td class="text-center">{{ sale.percentCom }} %</td>
-                        <td class="text-right">{{ sale.euroCom|number_format(2, ',', ' ') }}  €</td>
+                        <td>{{ sale.date|date('d/m/y') }}</td>
+                        <td class="text-right">{{ (sale.price)|number_format(2, ',', '') }}€</td>
+                        <td class="text-right">{{ (sale.discount)|number_format(2, ',', '') }}€</td>
+                        <td class="text-right">{{ (sale.marge)|number_format(2, ',', '') }}€</td>
+                        <td class="text-center">{{ sale.percentCom }}%</td>
+                        <td class="text-right">{{ sale.euroCom|number_format(2, ',', '') }}€</td>
                         <td class="action">
                             {% set url_edit = ea_url()
                                 .setAction('edit')
                                 .setController('App\\Controller\\Admin\\SalesCrudController')
                                 .setEntityId(sale.id)
                             %}
-                            <a class=" action-edit" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i> <span class="action-label">Edit</span></a>
+                            <a class=" action-edit" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i></a>
                         </td>
                     </tr>
                 {% endif %}
@@ -307,11 +306,11 @@
                 <th scope="row" colspan="4">
                     Totaux
                 </th>
-                <th class="text-right">{{ total_price|number_format(2, ',', ' ') }} €</th>
+                <th class="text-right">{{ total_price|number_format(2, ',', '') }}€</th>
                 <th></th>
-                <th class="text-right">{{ total_marge|number_format(2, ',', ' ') }} €</th>
+                <th class="text-right">{{ total_marge|number_format(2, ',', '') }}€</th>
                 <th></th>
-                <th class="text-right">{{ total_euroCom|number_format(2, ',', ' ') }} €</th>
+                <th class="text-right">{{ total_euroCom|number_format(2, ',', '') }}€</th>
                 <th></th>
             </tr>
             </tbody>

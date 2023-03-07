@@ -15,10 +15,10 @@ abstract class BaseCrudController extends AbstractCrudController
     {
         return $actions
             ->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) {
-                return $action->setIcon('fa fa-pencil-alt')->setLabel('Edit')->setHtmlAttributes(['title' => 'Edit']);
+                return $action->setIcon('fa fa-pencil-alt')->setLabel(false)->setHtmlAttributes(['title' => 'Modifier']);
             })
             ->update(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) {
-                return $action->setIcon('fa fa-trash')->setLabel('Delete')->setHtmlAttributes(['title' => 'Delete']);
+                return $action->setIcon('fa fa-trash')->setLabel(false)->setHtmlAttributes(['title' => 'Supprimer']);
             })
             ->update(Crud::PAGE_EDIT, Action::SAVE_AND_RETURN, function (Action $action) {
                 return $action->setIcon('fa fa-save');

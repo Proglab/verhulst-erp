@@ -52,15 +52,17 @@ class ProductSponsoringCrudController extends BaseCrudController
         $projectName = TextField::new('project.name')->setLabel('Nom du projet');
         $name = TextField::new('name')->setLabel('Nom du produit')->setRequired(true);
         $percentVr = PercentField::new('percent_vr')->setLabel('Commission Verhulst')->setPermission('ROLE_ENCODE')->setStoredAsFractional(false)->setNumDecimals(2)->setRequired(true);
+        $percentVrListing = PercentField::new('percent_vr')->setLabel('%V')->setPermission('ROLE_ENCODE')->setStoredAsFractional(false)->setNumDecimals(2)->setRequired(true);
         $percentDefaultFreelance = PercentField::new('percent_freelance')->setLabel('Commission Freelance')->setPermission('ROLE_ENCODE')->setStoredAsFractional(false)->setNumDecimals(2)->setRequired(true);
         $percentDefaultSalarie = PercentField::new('percent_salarie')->setLabel('Commission Salarié')->setPermission('ROLE_ENCODE')->setStoredAsFractional(false)->setNumDecimals(2)->setRequired(true);
         $ca = MoneyField::new('ca')->setCurrency('EUR')->setStoredAsCents(false)->setNumDecimals(2)->setLabel('Prix de vente');
+        $caListing = MoneyField::new('ca')->setCurrency('EUR')->setStoredAsCents(false)->setNumDecimals(2)->setLabel('PV');
         $description = TextEditorField::new('description');
-        $quantityMax = IntegerField::new('quantity_max')->setLabel('Quantité max');
-        $quantitySales = IntegerField::new('quantity_sales')->setLabel('Quantité vendue');
-        $quantityAvailable = IntegerField::new('quantity_available')->setLabel('Quantité disponible');
+        $quantityMax = IntegerField::new('quantity_max')->setLabel('Q max');
+        $quantitySales = IntegerField::new('quantity_sales')->setLabel('Q vendue');
+        $quantityAvailable = IntegerField::new('quantity_available')->setLabel('Q dispo');
         $image = ImageField::new('doc')->setBasePath('files/products')->setUploadDir('../../shared/public/files/products')->setUploadedFileNamePattern('[slug]-[timestamp]-[randomhash].[extension]')->setLabel('Document (PDF)');
-        $imageDwonload = TextField::new('download_url')->renderAsHtml()->setLabel('Document (PDF)');
+        $imageDwonload = TextField::new('download_url')->renderAsHtml()->setLabel('Doc (PDF)');
 
         $percentTv = PercentField::new('percent_tv')
             ->setLabel('Commission Tv')
@@ -96,7 +98,7 @@ class ProductSponsoringCrudController extends BaseCrudController
         switch ($pageName) {
             case Crud::PAGE_DETAIL:
             case Crud::PAGE_INDEX:
-                $response = [$projectName, $name, $percentVr, $ca, $description, $quantityMax, $quantitySales, $quantityAvailable, $imageDwonload];
+                $response = [$projectName, $name, $percentVrListing, $caListing, $description, $quantityMax, $quantitySales, $quantityAvailable, $imageDwonload];
                 break;
             case Crud::PAGE_NEW:
                 $response = [$name, $percentVr, $percentDefaultFreelance, $percentDefaultSalarie, $percentTv, $ca, $description, $quantityMax, $image];
