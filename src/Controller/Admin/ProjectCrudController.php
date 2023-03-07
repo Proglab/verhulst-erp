@@ -172,8 +172,9 @@ class ProjectCrudController extends BaseCrudController
             if (null !== $doc) {
                 $url = realpath($event->getUrl());
                 $newName = uniqid('-') . '.pdf';
-                copy($url, str_replace('.', $newName, $url));
-                $eventClone->setDoc(basename($newName));
+                $newUrl = str_replace('.pdf', $newName, $url);
+                copy($url, $newUrl);
+                $eventClone->setDoc(basename($newUrl));
             }
             $project_new->addProductEvent($eventClone);
         }
@@ -183,8 +184,9 @@ class ProjectCrudController extends BaseCrudController
             if (null !== $doc) {
                 $url = realpath($event->getUrl());
                 $newName = uniqid('-') . '.pdf';
-                copy($url, str_replace('.', $newName, $url));
-                $eventClone->setDoc(basename($newName));
+                $newUrl = str_replace('.pdf', $newName, $url);
+                copy($url, $newUrl);
+                $eventClone->setDoc(basename($newUrl));
             }
             $project_new->addProductPackage($eventClone);
         }
@@ -194,8 +196,9 @@ class ProjectCrudController extends BaseCrudController
             if (null !== $doc) {
                 $url = realpath($event->getUrl());
                 $newName = uniqid('-') . '.pdf';
-                copy($url, str_replace('.', $newName, $url));
-                $eventClone->setDoc(basename($newName));
+                $newUrl = str_replace('.pdf', $newName, $url);
+                copy($url, $newUrl);
+                $eventClone->setDoc(basename($newUrl));
             }
             $project_new->addProductSponsoring($eventClone);
         }
@@ -205,8 +208,9 @@ class ProjectCrudController extends BaseCrudController
             if (null !== $doc) {
                 $url = realpath($event->getUrl());
                 $newName = uniqid('-') . '.pdf';
-                copy($url, str_replace('.', $newName, $url));
-                $eventClone->setDoc(basename($newName));
+                $newUrl = str_replace('.pdf', $newName, $url);
+                copy($url, $newUrl);
+                $eventClone->setDoc(basename($newUrl));
             }
             $project_new->addProductDiver($eventClone);
         }
@@ -218,7 +222,7 @@ class ProjectCrudController extends BaseCrudController
             ->setEntityId(null)
             ->generateUrl();
 
-        $this->addFlash('warning', 'N\'oubliez pas dèncoder les commissions pour le projet <strong>' . $project_new->getName() . '</strong> !!!');
+        $this->addFlash('warning', '⚠️⚠️⚠️N\'oubliez pas d\'encoder les commissions pour le projet <strong>' . $project_new->getName() . '</strong> !!! ⚠️⚠️⚠️');
 
         return $this->redirect($url);
     }

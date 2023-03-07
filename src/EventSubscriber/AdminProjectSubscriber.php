@@ -134,7 +134,9 @@ class AdminProjectSubscriber implements EventSubscriberInterface
     private function deleteDoc($product)
     {
         if (null !== $product->getDoc()) {
-            unlink($product->getUrl());
+            if (file_exists($product->getUrl())) {
+                unlink($product->getUrl());
+            }
         }
     }
 
