@@ -152,7 +152,7 @@ class CompanyCrudController extends BaseCrudController
                 $i = 0;
                 foreach ($context->getRequest()->get('Company')['contact'] as $contact) {
                     $entityInstance->getContact()[$i]->setLang($contact['lang']);
-                    if ($entityInstance->getContact()[$i]->getAddedBy() === null) {
+                    if (null === $entityInstance->getContact()[$i]->getAddedBy()) {
                         $entityInstance->getContact()[$i]->setAddedBy($this->getUser());
                     }
                 }

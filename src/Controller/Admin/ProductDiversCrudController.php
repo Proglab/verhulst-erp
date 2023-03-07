@@ -26,7 +26,7 @@ class ProductDiversCrudController extends BaseCrudController
             ->setEntityLabelInSingular('Divers')
             ->showEntityActionsInlined(true)
             ->overrideTemplate('crud/index', 'admin/products/crud/index.html.twig')
-            ->setDefaultSort(['project.name'=> 'ASC']);
+            ->setDefaultSort(['project.name' => 'ASC']);
 
         return parent::configureCrud($crud);
     }

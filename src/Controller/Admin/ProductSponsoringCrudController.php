@@ -28,7 +28,7 @@ class ProductSponsoringCrudController extends BaseCrudController
             ->setEntityLabelInSingular('Sponsoring')
             ->showEntityActionsInlined(true)
             ->overrideTemplate('crud/index', 'admin/products/crud/index.html.twig')
-            ->setDefaultSort(['project.name'=> 'ASC']);
+            ->setDefaultSort(['project.name' => 'ASC']);
 
         return parent::configureCrud($crud);
     }

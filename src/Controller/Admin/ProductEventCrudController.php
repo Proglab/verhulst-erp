@@ -5,20 +5,14 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\ProductEvent;
-use Doctrine\ORM\QueryBuilder;
-use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
-use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 
 class ProductEventCrudController extends BaseCrudController
 {
@@ -49,7 +43,7 @@ class ProductEventCrudController extends BaseCrudController
             ->setEntityLabelInSingular('Event')
             ->showEntityActionsInlined(true)
             ->overrideTemplate('crud/index', 'admin/products/crud/index.html.twig')
-            ->setDefaultSort(['project.name'=> 'ASC']);
+            ->setDefaultSort(['project.name' => 'ASC']);
 
         return parent::configureCrud($crud);
     }
