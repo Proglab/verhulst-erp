@@ -331,6 +331,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         return $this->lastName . ' ' . $this->firstName;
     }
 
+    public function getFullnameMinified(): string
+    {
+        return substr($this->firstName, 0, 1) . '.' . substr($this->lastName, 0, 1);
+    }
+
     /**
      * @return Collection<int, Sales>
      */
