@@ -57,6 +57,15 @@ class Product
         $this->commissions = new ArrayCollection();
     }
 
+    public function __clone()
+    {
+        if ($this->id) {
+            $this->id = null;
+            $this->commissions = new ArrayCollection();
+            $this->sales = new ArrayCollection();
+        }
+    }
+
     public function getId(): ?int
     {
         return $this->id;

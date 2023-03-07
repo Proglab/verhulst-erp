@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Project;
 use App\Entity\User;
+use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -17,13 +18,14 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 
 class ProjectCrudController extends BaseCrudController
 {
-    public function __construct(private MailerInterface $mailer)
+    public function __construct(private MailerInterface $mailer, private ProjectRepository $projectRepository, private AdminUrlGenerator $adminUrlGenerator)
     {
     }
 
@@ -87,6 +89,11 @@ class ProjectCrudController extends BaseCrudController
     public function configureActions(Actions $actions): Actions
     {
         $actions = parent::configureActions($actions);
+
+
+        $clone = Action::new('cloneProject', 'Clone project')
+            ->linkToCrudAction('cloneProject');
+
         $actions
             ->setPermission(Action::NEW, 'ROLE_ENCODE')
             ->setPermission(Action::EDIT, 'ROLE_ENCODE')
@@ -98,7 +105,11 @@ class ProjectCrudController extends BaseCrudController
             ->setPermission(Action::SAVE_AND_CONTINUE, 'ROLE_COMMERCIAL')
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->update(Crud::PAGE_INDEX, Action::DETAIL, function (Action $action) {
-                return $action->setIcon('fa fa-eye')->setLabel(false)->setHtmlAttributes(['title' => 'Consulter']);
+                return $action->setIcon('fa-solid fa-eye')->setLabel(false)->setHtmlAttributes(['title' => 'Consulter']);
+            })
+            ->add(Crud::PAGE_INDEX, $clone)
+            ->update(Crud::PAGE_INDEX, 'cloneProject', function (Action $action) {
+                return $action->setIcon('fa-solid fa-clone')->setLabel(false)->setHtmlAttributes(['title' => 'Clone']);
             })
         ;
 
@@ -146,5 +157,70 @@ class ProjectCrudController extends BaseCrudController
         return $this->render('admin/project/detail.html.twig', [
             'project' => $project->getInstance(),
         ]);
+    }
+
+    public function cloneProject(AdminContext $context)
+    {
+        /** @var Project $project */
+        $project = $context->getEntity()->getInstance();
+
+        $project_new = clone $project;
+
+        foreach($project->getProductEvent() as $event) {
+            $doc = $event->getDoc();
+            $eventClone = clone $event;
+            if (null !== $doc) {
+                $url = realpath($event->getUrl());
+                $newName = uniqid('-').'.pdf';
+                copy($url, str_replace('.', $newName, $url));
+                $eventClone->setDoc(basename($newName));
+            }
+            $project_new->addProductEvent($eventClone);
+        }
+        foreach($project->getProductPackage() as $event) {
+            $doc = $event->getDoc();
+            $eventClone = clone $event;
+            if (null !== $doc) {
+                $url = realpath($event->getUrl());
+                $newName = uniqid('-').'.pdf';
+                copy($url, str_replace('.', $newName, $url));
+                $eventClone->setDoc(basename($newName));
+            }
+            $project_new->addProductPackage($eventClone);
+        }
+        foreach($project->getProductSponsoring() as $event) {
+            $doc = $event->getDoc();
+            $eventClone = clone $event;
+            if (null !== $doc) {
+                $url = realpath($event->getUrl());
+                $newName = uniqid('-').'.pdf';
+                copy($url, str_replace('.', $newName, $url));
+                $eventClone->setDoc(basename($newName));
+            }
+            $project_new->addProductSponsoring($eventClone);
+        }
+        foreach($project->getProductDivers() as $event) {
+            $doc = $event->getDoc();
+            $eventClone = clone $event;
+            if (null !== $doc) {
+                $url = realpath($event->getUrl());
+                $newName = uniqid('-').'.pdf';
+                copy($url, str_replace('.', $newName, $url));
+                $eventClone->setDoc(basename($newName));
+            }
+            $project_new->addProductDiver($eventClone);
+        }
+        $this->projectRepository->save($project_new, true);
+
+        $url = $this->adminUrlGenerator
+            ->setController(CommissionCrudController::class)
+            ->setAction('index')
+            ->setEntityId(null)
+            ->generateUrl();
+
+        $this->addFlash('warning', 'N\'oubliez pas dèncoder les commissions pour le projet <strong>'.$project_new->getName().'</strong> !!!');
+
+        return $this->redirect($url);
+
     }
 }
