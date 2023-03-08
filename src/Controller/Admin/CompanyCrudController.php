@@ -104,6 +104,7 @@ class CompanyCrudController extends BaseCrudController
             case Crud::PAGE_INDEX:
             case Crud::PAGE_EDIT:
                 $response = [$panel1, $vat, $name, $street, $pc, $city, $country, $note, $panel2, $contacts];
+                // no break
             default:
                 $response = [$panel1, $vat, $name, $street, $pc, $city, $country, $note, $panel2, $contacts];
         }
