@@ -44,7 +44,6 @@ class CompanyContactCrudController extends BaseCrudController
 
     public function configureFields(string $pageName): iterable
     {
-
         $panel1 = FormField::addPanel('Société')->addCssClass('col-6');
         $panel2 = FormField::addPanel('Contact')->addCssClass('col-6');
         $company = TextField::new('company')->setRequired(true)->setLabel('Société');

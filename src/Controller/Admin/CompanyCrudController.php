@@ -96,6 +96,7 @@ class CompanyCrudController extends BaseCrudController
         $panel2 = FormField::addPanel()->addCssClass('col-6');
         $contacts = CollectionField::new('contact')->setLabel('Contacts')->allowAdd(true)->allowDelete(true)->useEntryCrudForm(CompanyContactCrudController::class)->setColumns(12)->setRequired(true);
         $note = TextEditorField::new('note')->setLabel('Note');
+
         return [$panel1, $vat, $name, $street, $number, $box, $pc, $city, $country, $note, $panel2, $contacts];
     }
 
