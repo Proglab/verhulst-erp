@@ -26,12 +26,6 @@ class Company
     private ?string $street = null;
 
     #[ORM\Column(length: 20, nullable: true)]
-    private ?string $number = null;
-
-    #[ORM\Column(length: 20, nullable: true)]
-    private ?string $box = null;
-
-    #[ORM\Column(length: 20, nullable: true)]
     private ?string $pc = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -86,30 +80,6 @@ class Company
     public function setStreet(?string $street): self
     {
         $this->street = $street;
-
-        return $this;
-    }
-
-    public function getNumber(): ?string
-    {
-        return $this->number;
-    }
-
-    public function setNumber(?string $number): self
-    {
-        $this->number = $number;
-
-        return $this;
-    }
-
-    public function getBox(): ?string
-    {
-        return $this->box;
-    }
-
-    public function setBox(?string $box): self
-    {
-        $this->box = $box;
 
         return $this;
     }

@@ -87,8 +87,6 @@ class CompanyCrudController extends BaseCrudController
         $panel1 = FormField::addPanel()->addCssClass('col-6');
         $name = TextField::new('name')->setRequired(true)->setColumns(12)->setLabel('Nom de la société');
         $street = TextField::new('street')->setRequired(true)->setColumns(12)->setLabel('Rue');
-        $number = TextField::new('number')->setLabel('Numéro');
-        $box = TextField::new('box')->setLabel('Boîte');
         $pc = TextField::new('pc')->setRequired(true)->setLabel('Code postal');
         $city = TextField::new('city')->setRequired(true)->setColumns(12)->setLabel('Ville');
         $country = CountryField::new('country')->setRequired(true)->setLabel('Pays');
@@ -100,14 +98,14 @@ class CompanyCrudController extends BaseCrudController
 
         switch ($pageName) {
             case Crud::PAGE_NEW:
-                $response = [$panel1, $vatNew, $name, $street, $number, $box, $pc, $city, $country, $note, $panel2, $contacts];
+                $response = [$panel1, $vatNew, $name, $street, $pc, $city, $country, $note, $panel2, $contacts];
                 break;
             case Crud::PAGE_DETAIL:
             case Crud::PAGE_INDEX:
             case Crud::PAGE_EDIT:
-                $response = [$panel1, $vat, $name, $street, $number, $box, $pc, $city, $country, $note, $panel2, $contacts];
+                $response = [$panel1, $vat, $name, $street, $pc, $city, $country, $note, $panel2, $contacts];
             default:
-                $response = [$panel1, $vat, $name, $street, $number, $box, $pc, $city, $country, $note, $panel2, $contacts];
+                $response = [$panel1, $vat, $name, $street, $pc, $city, $country, $note, $panel2, $contacts];
         }
 
         return $response;
