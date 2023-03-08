@@ -92,12 +92,25 @@ class CompanyCrudController extends BaseCrudController
         $pc = TextField::new('pc')->setRequired(true)->setLabel('Code postal');
         $city = TextField::new('city')->setRequired(true)->setColumns(12)->setLabel('Ville');
         $country = CountryField::new('country')->setRequired(true)->setLabel('Pays');
-        $vat = TextField::new('vat_number', 'Numéro de TVA')->setRequired(true)->setLabel('Numéro de TVA')->addWebpackEncoreEntries('company');
+        $vatNew = TextField::new('vat_number', 'Numéro de TVA')->setRequired(true)->setLabel('Numéro de TVA')->addWebpackEncoreEntries('company');
+        $vat = TextField::new('vat_number', 'Numéro de TVA')->setRequired(true)->setLabel('Numéro de TVA');
         $panel2 = FormField::addPanel()->addCssClass('col-6');
         $contacts = CollectionField::new('contact')->setLabel('Contacts')->allowAdd(true)->allowDelete(true)->useEntryCrudForm(CompanyContactCrudController::class)->setColumns(12)->setRequired(true);
         $note = TextEditorField::new('note')->setLabel('Note');
 
-        return [$panel1, $vat, $name, $street, $number, $box, $pc, $city, $country, $note, $panel2, $contacts];
+        switch ($pageName) {
+            case Crud::PAGE_NEW:
+                $response = [$panel1, $vatNew, $name, $street, $number, $box, $pc, $city, $country, $note, $panel2, $contacts];
+                break;
+            case Crud::PAGE_DETAIL:
+            case Crud::PAGE_INDEX:
+            case Crud::PAGE_EDIT:
+                $response = [$panel1, $vat, $name, $street, $number, $box, $pc, $city, $country, $note, $panel2, $contacts];
+            default:
+                $response = [$panel1, $vat, $name, $street, $number, $box, $pc, $city, $country, $note, $panel2, $contacts];
+        }
+
+        return $response;
     }
 
     /**

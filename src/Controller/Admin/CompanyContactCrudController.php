@@ -16,6 +16,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CountryField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\LanguageField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
@@ -55,10 +57,10 @@ class CompanyContactCrudController extends BaseCrudController
         $firstname = TextField::new('firstname')->setLabel('Prénom')->setRequired(true)->setColumns(12);
         $lastname = TextField::new('lastname')->setLabel('Nom')->setRequired(true)->setColumns(12);
         $fullname = TextField::new('fullName')->setLabel('Nom');
-        $lang = ChoiceField::new('lang')->setLabel('Langue')->allowMultipleChoices(false)->renderExpanded(false)->setChoices(['Français' => 'fr', 'Néerlandais' => 'nl', 'Anglais' => 'en'])->setRequired(true)->setColumns(12);
-        $langListing = ChoiceField::new('lang')->setLabel('Lang')->allowMultipleChoices(false)->renderExpanded(false)->setChoices(['Fr' => 'fr', 'Nl' => 'nl', 'En' => 'en'])->setRequired(true)->setColumns(12);
+        $lang = LanguageField::new('lang')->setLabel('Langue')->setRequired(true)->setColumns(12)->includeOnly(['fr', 'nl', 'en']);;
+        $langListing = LanguageField::new('lang')->setLabel('Lang')->showCode()->showName(false)->setRequired(true)->setColumns(12);
         $email = EmailField::new('email')->setLabel('E-mail')->setColumns(12);
-        $phone = TextField::new('phone')->setLabel('Téléphone')->setColumns(12);
+        $phone = TelephoneField::new('phone')->setLabel('Téléphone')->setColumns(12);
         $gsm = TextField::new('gsm')->setLabel('Gsm')->setColumns(12);
         $note = TextEditorField::new('note')->setLabel('Note');
 
