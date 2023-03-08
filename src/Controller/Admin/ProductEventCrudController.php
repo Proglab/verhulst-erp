@@ -8,6 +8,7 @@ use App\Entity\ProductEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
@@ -46,6 +47,13 @@ class ProductEventCrudController extends BaseCrudController
             ->setDefaultSort(['project.name' => 'ASC']);
 
         return parent::configureCrud($crud);
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add('date')
+        ;
     }
 
     public function configureFields(string $pageName): iterable
