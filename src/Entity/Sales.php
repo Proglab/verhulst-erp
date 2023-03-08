@@ -67,15 +67,6 @@ class Sales
         return (int) $this->price;
     }
 
-    public function getTotalPrice(): ?float
-    {
-        if (0 === $this->getQuantity()) {
-            return (int) $this->price;
-        }
-
-        return (int) $this->price * $this->getQuantity();
-    }
-
     public function setPrice(?float $price): self
     {
         $this->price = $price;
@@ -122,26 +113,6 @@ class Sales
     public function getPercentVr(): ?float
     {
         return $this->percent_vr;
-    }
-
-    public function getEuroVr(): float
-    {
-        return $this->getMarge() * $this->getPercentVr() / 100;
-    }
-
-    public function getEuroCom(): float
-    {
-        return $this->getMarge() * $this->getPercentCom() / 100;
-    }
-
-    public function getMarge(): float
-    {
-        return $this->getTotalPrice() - $this->getDiscount();
-    }
-
-    public function getDiffCa(): float
-    {
-        return $this->getMarge() - $this->getEuroCom() - $this->getEuroVr();
     }
 
     public function setPercentVr(?float $percent_vr): self
@@ -238,4 +209,37 @@ class Sales
 
         return $this;
     }
+
+
+    public function getDiffCa(): float
+    {
+        return $this->getMarge() - $this->getEuroCom() - $this->getEuroVr();
+    }
+
+
+    public function getTotalPrice(): ?float
+    {
+        if (0 === $this->getQuantity()) {
+            return (int) $this->price;
+        }
+
+        return (int) $this->price * $this->getQuantity();
+    }
+
+    public function getEuroVr(): float
+    {
+        return $this->getMarge() * ($this->getPercentVr() - $this->getPercentCom()) / 100;
+    }
+
+    public function getEuroCom(): float
+    {
+        return $this->getMarge() * $this->getPercentCom() / 100;
+    }
+
+    public function getMarge(): float
+    {
+        return $this->getTotalPrice() - $this->getDiscount();
+    }
+
+
 }

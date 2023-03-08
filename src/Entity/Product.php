@@ -191,19 +191,6 @@ class Product
         return $this;
     }
 
-    /**
-    public function getPa(): ?float
-    {
-        return (float) $this->pa;
-    }
-
-    public function setPa(?float $pa): self
-    {
-        $this->pa = $pa;
-
-        return $this;
-    }
-     **/
     public function getDoc(): ?string
     {
         return $this->doc;
