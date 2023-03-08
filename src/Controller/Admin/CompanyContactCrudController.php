@@ -71,6 +71,7 @@ class CompanyContactCrudController extends BaseCrudController
         $userNameListing = TextField::new('added_by.fullNameMinified')->setLabel('Sales');
 
         switch ($pageName) {
+            case Crud::PAGE_EDIT:
             case Crud::PAGE_NEW:
                 $response = [$firstname, $lastname, $lang, $email, $phone, $gsm, $note, $user];
                 break;
@@ -79,9 +80,6 @@ class CompanyContactCrudController extends BaseCrudController
                 break;
             case Crud::PAGE_INDEX:
                 $response = [$company, $fullname, $langListing, $email, $phone, $gsm, $userNameListing, $note];
-                break;
-            case Crud::PAGE_EDIT:
-                $response = [/* $panel1, $companyName, $companyStreet, $companyNumber, $companyBox, $companyPc, $companyCity, $companyCountry, $companyVat, $panel2, */ $firstname, $lastname, $lang, $email, $phone, $note, $user];
                 break;
             default:
                 $response = [$company, $firstname, $lastname, $lang, $email, $phone, $note];
