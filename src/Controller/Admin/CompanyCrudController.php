@@ -86,20 +86,17 @@ class CompanyCrudController extends BaseCrudController
     {
         $panel1 = FormField::addPanel()->addCssClass('col-6');
         $name = TextField::new('name')->setRequired(true)->setColumns(12)->setLabel('Nom de la société');
-        $street = TextField::new('street')->setColumns(12)->setLabel('Rue');
+        $street = TextField::new('street')->setRequired(true)->setColumns(12)->setLabel('Rue');
         $number = TextField::new('number')->setLabel('Numéro');
         $box = TextField::new('box')->setLabel('Boîte');
-        $pc = TextField::new('pc')->setLabel('Code postal');
-        $city = TextField::new('city')->setColumns(12)->setLabel('Ville');
-        $country = CountryField::new('country')->setLabel('Pays');
-        $vat = TextField::new('vat_number', 'Numéro de TVA')->setLabel('Numéro de TVA')->addWebpackEncoreEntries('company');
+        $pc = TextField::new('pc')->setRequired(true)->setLabel('Code postal');
+        $city = TextField::new('city')->setRequired(true)->setColumns(12)->setLabel('Ville');
+        $country = CountryField::new('country')->setRequired(true)->setLabel('Pays');
+        $vat = TextField::new('vat_number', 'Numéro de TVA')->setRequired(true)->setLabel('Numéro de TVA')->addWebpackEncoreEntries('company');
         $panel2 = FormField::addPanel()->addCssClass('col-6');
         $contacts = CollectionField::new('contact')->setLabel('Contacts')->allowAdd(true)->allowDelete(true)->useEntryCrudForm(CompanyContactCrudController::class)->setColumns(12)->setRequired(true);
         $note = TextEditorField::new('note')->setLabel('Note');
-
-        $response = [$panel1, $vat, $name, $street, $number, $box, $pc, $city, $country, $note, $panel2, $contacts];
-
-        return $response;
+        return [$panel1, $vat, $name, $street, $number, $box, $pc, $city, $country, $note, $panel2, $contacts];
     }
 
     /**
