@@ -43,14 +43,15 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/admin, roles: [ROLE_ADMIN, ROLE_COMMERCIAL] }
+        - { path: ^/admin, roles: [ROLE_ADMIN, ROLE_COMMERCIAL, ROLE_COMPTA] }
         # - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/connexion/authentification-a-double-facteur, role: IS_AUTHENTICATED_2FA_IN_PROGRESS }
         - { path: ^/switch-local, role: [PUBLIC_ACCESS] }
     role_hierarchy:
         ROLE_COMMERCIAL: [IS_AUTHENTICATED_REMEMBERED, IS_AUTHENTICATED_FULLY]
+        ROLE_COMPTA: [IS_AUTHENTICATED_REMEMBERED, IS_AUTHENTICATED_FULLY]
         ROLE_ENCODE: ROLE_COMMERCIAL
-        ROLE_ADMIN: ROLE_ENCODE
+        ROLE_ADMIN: [ROLE_ENCODE, ROLE_COMPTA]
         ROLE_BOSS: ROLE_ADMIN
 
 when@test:

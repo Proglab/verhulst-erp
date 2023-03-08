@@ -7,9 +7,11 @@ namespace App\Controller\Admin;
 use App\Entity\User;
 use App\Repository\SalesRepository;
 use App\Repository\UserRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Exception\ForbiddenActionException;
 use EasyCorp\Bundle\EasyAdminBundle\Form\Type\CodeEditorType;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
@@ -19,13 +21,17 @@ use Symfony\UX\Chartjs\Model\Chart;
 
 class DashboardPagesController extends DashboardController
 {
-    public function __construct(private ChartBuilderInterface $chartBuilder, private UserRepository $userRepository, private SalesRepository $salesRepository, private RequestStack $requestStack)
+    public function __construct(private ChartBuilderInterface $chartBuilder, private UserRepository $userRepository, private SalesRepository $salesRepository, private RequestStack $requestStack, private AdminUrlGenerator $adminUrlGenerator)
     {
     }
 
     #[Route('/admin/{_locale}', name: 'dashboard_admin')]
     public function index(): Response
     {
+        if (!$this->isGranted('ROLE_COMMERCIAL')) {
+            return $this->redirect($this->adminUrlGenerator->setController(ComptaCrudController::class)->setAction(Action::INDEX)->generateUrl());
+        }
+
         if (!$this->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('dashboard_com');
         }

@@ -52,6 +52,12 @@ class Sales
     private ?float $discount_eur;
     private ?float $discount_percent;
 
+    #[ORM\Column]
+    private ?bool $invoiced = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $invoiced_dt = null;
+
     public function __construct()
     {
         $this->contact = new ArrayCollection();
@@ -237,5 +243,29 @@ class Sales
     public function getMarge(): float
     {
         return $this->getTotalPrice() - $this->getDiscount();
+    }
+
+    public function isInvoiced(): ?bool
+    {
+        return $this->invoiced;
+    }
+
+    public function setInvoiced(bool $invoiced): self
+    {
+        $this->invoiced = $invoiced;
+
+        return $this;
+    }
+
+    public function getInvoicedDt(): ?\DateTimeInterface
+    {
+        return $this->invoiced_dt;
+    }
+
+    public function setInvoicedDt(?\DateTimeInterface $invoiced_dt): self
+    {
+        $this->invoiced_dt = $invoiced_dt;
+
+        return $this;
     }
 }

@@ -95,7 +95,7 @@ class UserCrudController extends BaseCrudController
         $lastname = TextField::new('lastName')->setLabel('Nom');
         $locale = ChoiceField::new('locale')->allowMultipleChoices(false)->renderExpanded(true)->setChoices(['Français' => 'fr', 'English' => 'en'])->setLabel('Langue');
         $twoFa = BooleanField::new('isTotpEnabled')->setLabel('Double authentification');
-        $role = ChoiceField::new('roles')->allowMultipleChoices(true)->renderExpanded(true)->setChoices(['Admin' => 'ROLE_ADMIN', 'Commercial' => 'ROLE_COMMERCIAL', 'Encodeur' => 'ROLE_ENCODE'])->setLabel('Rôle');
+        $role = ChoiceField::new('roles')->allowMultipleChoices(true)->renderExpanded(true)->setChoices(['Admin' => 'ROLE_ADMIN', 'Commercial' => 'ROLE_COMMERCIAL', 'Encodeur' => 'ROLE_ENCODE', 'Compta' => 'ROLE_COMPTA'])->setLabel('Rôle');
         $enabled = BooleanField::new('enabled')->setLabel('Validé');
         $freelance = ChoiceField::new('com')->setLabel('Type de Commisssion')->setChoices([
             'Salarié' => 'salarie',
