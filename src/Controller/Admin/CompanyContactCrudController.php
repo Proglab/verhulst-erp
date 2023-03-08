@@ -15,6 +15,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CountryField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
@@ -43,18 +44,15 @@ class CompanyContactCrudController extends BaseCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $company = TextField::new('company')->setRequired(true)->setLabel('Société');
-        /*
-                $companyName = TextField::new('company.name')->setLabel('Société')->setRequired(true)->setColumns(12);
-                $companyStreet = TextField::new('company.street')->setLabel('Rue')->setColumns(12);
-                $companyNumber = TextField::new('company.number')->setLabel('Numéro');
-                $companyBox = TextField::new('company.box')->setLabel('Boîte');
-                $companyPc = TextField::new('company.pc')->setLabel('Code postal');
-                $companyCity = TextField::new('company.city')->setLabel('Ville')->setColumns(12);
-                $companyCountry = CountryField::new('company.country')->setLabel('Pays');
-                $companyVat = TextField::new('company.vat_number')->setLabel('Numéro de TVA');
-        */
 
+        $panel1 = FormField::addPanel('Société')->addCssClass('col-6');
+        $panel2 = FormField::addPanel('Contact')->addCssClass('col-6');
+        $company = TextField::new('company')->setRequired(true)->setLabel('Société');
+        $companyStreet = TextField::new('company.street')->setLabel('Rue')->setColumns(12);
+        $companyPc = TextField::new('company.pc')->setLabel('Code postal');
+        $companyCity = TextField::new('company.city')->setLabel('Ville')->setColumns(12);
+        $companyCountry = CountryField::new('company.country')->setLabel('Pays');
+        $companyVat = TextField::new('company.vat_number')->setLabel('Numéro de TVA');
         $firstname = TextField::new('firstname')->setLabel('Prénom')->setRequired(true)->setColumns(12);
         $lastname = TextField::new('lastname')->setLabel('Nom')->setRequired(true)->setColumns(12);
         $fullname = TextField::new('fullName')->setLabel('Nom');
@@ -77,6 +75,8 @@ class CompanyContactCrudController extends BaseCrudController
                 $response = [$firstname, $lastname, $lang, $email, $phone, $gsm, $note, $user];
                 break;
             case Crud::PAGE_DETAIL:
+                $response = [$panel1, $company, $companyVat, $companyStreet, $companyPc, $companyCity, $companyCountry, $panel2, $fullname, $lang, $email, $phone, $gsm, $note, $userName];
+                break;
             case Crud::PAGE_INDEX:
                 $response = [$company, $fullname, $langListing, $email, $phone, $gsm, $userNameListing, $note];
                 break;
