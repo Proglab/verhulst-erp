@@ -29,15 +29,17 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class CompanyCrudController extends BaseCrudController
 {
-    public function __construct(private AdminUrlGenerator $adminUrlGenerator)
+    public function __construct(private readonly AdminUrlGenerator $adminUrlGenerator, private readonly HttpClientInterface $client)
     {
     }
 
@@ -53,6 +55,10 @@ class CompanyCrudController extends BaseCrudController
     public function configureActions(Actions $actions): Actions
     {
         $actions = parent::configureActions($actions);
+
+        Action::new('getVatInfos', false)
+            ->linkToCrudAction('getVatInfos');
+
         $actions
             ->setPermission(Action::NEW, 'ROLE_COMMERCIAL')
             ->setPermission(Action::EDIT, 'ROLE_COMMERCIAL')
@@ -86,12 +92,12 @@ class CompanyCrudController extends BaseCrudController
         $pc = TextField::new('pc')->setLabel('Code postal');
         $city = TextField::new('city')->setColumns(12)->setLabel('Ville');
         $country = CountryField::new('country')->setLabel('Pays');
-        $vat = TextField::new('vat_number')->setLabel('Numéro de TVA');
+        $vat = TextField::new('vat_number', 'Numéro de TVA')->setLabel('Numéro de TVA')->addWebpackEncoreEntries('company');
         $panel2 = FormField::addPanel()->addCssClass('col-6');
         $contacts = CollectionField::new('contact')->setLabel('Contacts')->allowAdd(true)->allowDelete(true)->useEntryCrudForm(CompanyContactCrudController::class)->setColumns(12)->setRequired(true);
         $note = TextEditorField::new('note')->setLabel('Note');
 
-        $response = [$panel1, $name, $street, $number, $box, $pc, $city, $country, $vat, $note, $panel2, $contacts];
+        $response = [$panel1, $vat, $name, $street, $number, $box, $pc, $city, $country, $note, $panel2, $contacts];
 
         return $response;
     }
@@ -268,5 +274,54 @@ class CompanyCrudController extends BaseCrudController
         }
 
         return $responseParameters;
+    }
+
+    public function getVatInfos(AdminContext $context): JsonResponse
+    {
+        $vat = $context->getRequest()->get('vat');
+        $vat = str_replace('.', '', $vat);
+        $vat = str_replace(' ', '', $vat);
+
+        if (empty($vat)) {
+            return new JsonResponse(['vat_null'], 500);
+        }
+
+        if (11 !== \strlen($vat) && 12 !== \strlen($vat)) {
+            return new JsonResponse([], 500);
+        }
+
+        if (11 === \strlen($vat)) {
+            $vatCountry = substr($vat, 0, -9);
+            $vatNum = substr($vat, -9, 9);
+            $vat = $vatCountry . '0' . $vatNum;
+        } else {
+            $vatCountry = substr($vat, 0, -10);
+            $vatNum = substr($vat, -10, 10);
+        }
+
+        if (!is_numeric($vatNum)) {
+            return new JsonResponse([], 500);
+        }
+
+        if (2 !== \strlen($vatCountry)) {
+            return new JsonResponse([], 500);
+        }
+
+        $response = $this->client->request(
+            'GET',
+            'https://anyapi.io/api/v1/vat/validate?apiKey=' . $_ENV['ANYAPI_KEY'] . '8&vat_number=' . $vat
+        );
+        $content = json_decode($response->getContent());
+        $content->vat = $vat;
+
+        if (false === $content->valid || false === $content->validFormat) {
+            return new JsonResponse($content, 404);
+        }
+
+        $content->company->street = explode(',', $content->company->address)[0];
+        $content->company->pc = (string) (int) explode(',', $content->company->address)[1];
+        $content->company->town = trim(str_replace($content->company->pc, '', explode(',', $content->company->address)[1]));
+
+        return new JsonResponse($content);
     }
 }

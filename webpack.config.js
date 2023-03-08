@@ -24,6 +24,7 @@ Encore
      */
     .addEntry('app', './assets/app.js')
     .addEntry('htmx', './assets/htmx.js')
+    .addEntry('company', './assets/portal/js/company.js')
 
     .addEntry('wysiwyg_css', './assets/trix.css')
     .addEntry('wysiwyg_js', './assets/trix.js')
