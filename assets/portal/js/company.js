@@ -1,10 +1,11 @@
 const $ = require('jquery');
 
-//BE760577097
-
 $( document ).ready(function() {
     var company = $( "#Company_vat_number" );
     company.change(function() {
+
+        $('#Company_vat_number').parent().append("<i class=\"fas fa-spinner fa-pulse\" id=\"loading\"></i>");
+
         var jqxhr = $.ajax( "/admin/fr?crudAction=getVatInfos&crudControllerFqcn=App%5CController%5CAdmin%5CCompanyCrudController&vat=" + company.val() )
             .done(function(result) {
                 console.log(result)
@@ -20,10 +21,12 @@ $( document ).ready(function() {
                     $( "#"+id ).trigger('click');
                 };
                 window.setTimeout( show_popup, 100 );
-                company.parent().parent().removeClass( "has-error" )
+                company.parent().parent().removeClass( "has-error" );
+                $("#loading").remove();
             })
             .fail(function() {
-                company.parent().parent().addClass( "has-error" )
+                company.parent().parent().addClass( "has-error" );
+                $("#loading").remove();
             });
     });
 });

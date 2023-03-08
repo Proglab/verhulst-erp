@@ -210,12 +210,10 @@ class Sales
         return $this;
     }
 
-
     public function getDiffCa(): float
     {
         return $this->getMarge() - $this->getEuroCom() - $this->getEuroVr();
     }
-
 
     public function getTotalPrice(): ?float
     {
@@ -240,6 +238,4 @@ class Sales
     {
         return $this->getTotalPrice() - $this->getDiscount();
     }
-
-
 }
