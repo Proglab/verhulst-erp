@@ -40,20 +40,21 @@ class ComptaCrudController extends BaseCrudController
             ->setEntityLabelInSingular('Vente')
             ->showEntityActionsInlined(true)
             ->setEntityPermission('ROLE_COMPTA')
-        ->setDefaultSort(['invoiced' => 'ASC']);
+            ->setDefaultSort(['invoiced' => 'ASC'])
+            ->overrideTemplate('crud/detail', 'admin/crud/detail_2cols.html.twig');
 
         return parent::configureCrud($crud);
     }
 
     public function configureFields(string $pageName): iterable
     {
-        $panelProduct = FormField::addPanel('Produit')->addCssClass('col-sm-6');
+        $panelProduct = FormField::addPanel('Produit')->setCustomOption('cols', 1);
 
-        $panelClient = FormField::addPanel('Client')->addCssClass('col-sm-6');
+        $panelClient = FormField::addPanel('Client')->setCustomOption('cols', 2);
 
-        $panelVente = FormField::addPanel('Vente')->addCssClass('col-sm-6');
+        $panelVente = FormField::addPanel('Vente')->setCustomOption('cols', 1);
 
-        $panelContact = FormField::addPanel('Contact')->addCssClass('col-sm-6');
+        $panelContact = FormField::addPanel('Contact')->setCustomOption('cols', 2);
 
         $price = MoneyField::new('price')
             ->setStoredAsCents(false)
@@ -75,7 +76,7 @@ class ComptaCrudController extends BaseCrudController
 
         $project = TextField::new('product.project')->setLabel('Projet');
         $product = TextField::new('product')->setLabel('Product');
-        $description = TextField::new('product.description')->setLabel('description')->renderAsHtml();
+        $description = TextField::new('product.description')->setLabel('Description')->renderAsHtml();
 
         $user = TextField::new('user.fullname')->setLabel('Vendeur');
         $userMail = EmailField::new('user.email')->setLabel('Mail');

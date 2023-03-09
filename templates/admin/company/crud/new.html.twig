@@ -1,0 +1,36 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+{% extends '@EasyAdmin/crud/new.html.twig' %}
+
+{% block new_form %}
+    {{ form_start(new_form) }}
+        <div class="row">
+            <div class="col-6">
+                <div class="field-form_panel row">
+                    <h3> Société</h3>
+                    {{ form_row(new_form.vat_number) }}
+                    {{ form_row(new_form.name) }}
+                    {{ form_row(new_form.street) }}
+                    {{ form_row(new_form.pc) }}
+                    {{ form_row(new_form.city) }}
+                    {{ form_row(new_form.country) }}
+                    {{ form_row(new_form.note) }}
+                </div>
+                <div class="field-form_panel">
+                    <h3>Facturation</h3>
+                    {{ form_row(new_form.billing_street) }}
+                    {{ form_row(new_form.billing_pc) }}
+                    {{ form_row(new_form.billing_city) }}
+                    {{ form_row(new_form.billing_country) }}
+                    {{ form_row(new_form.billing_mail) }}
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="field-form_panel">
+                    <h3>Contact</h3>
+                    {{ form_row(new_form.contact) }}
+                </div>
+            </div>
+        </div>
+    {{ form_end(new_form) }}
+{% endblock new_form %}

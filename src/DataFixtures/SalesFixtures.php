@@ -50,7 +50,7 @@ class SalesFixtures extends Fixture implements DependentFixtureInterface
             $commission = new Sales();
             $commission->setUser($com['user']);
             $commission->setProduct($com['product']);
-            $commission->addContact($com['client']);
+            $commission->setContact($com['client']);
             $commission->setDate(new \DateTime());
             $commission->setPrice($com['price']);
             $commission->setPercentVr($p->getPercentVr());

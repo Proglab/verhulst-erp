@@ -45,6 +45,21 @@ class Company
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $note = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $billing_street = null;
+
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $billing_pc = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $billing_city = null;
+
+    #[ORM\Column(length: 2, nullable: true)]
+    private ?string $billing_country = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $billing_mail = null;
+
     public function __construct()
     {
         $this->contact = new ArrayCollection();
@@ -170,6 +185,66 @@ class Company
     public function setNote(?string $note): self
     {
         $this->note = $note;
+
+        return $this;
+    }
+
+    public function getBillingStreet(): ?string
+    {
+        return $this->billing_street;
+    }
+
+    public function setBillingStreet(?string $billing_street): self
+    {
+        $this->billing_street = $billing_street;
+
+        return $this;
+    }
+
+    public function getBillingPc(): ?string
+    {
+        return $this->billing_pc;
+    }
+
+    public function setBillingPc(?string $billing_pc): self
+    {
+        $this->billing_pc = $billing_pc;
+
+        return $this;
+    }
+
+    public function getBillingCity(): ?string
+    {
+        return $this->billing_city;
+    }
+
+    public function setBillingCity(?string $billing_city): self
+    {
+        $this->billing_city = $billing_city;
+
+        return $this;
+    }
+
+    public function getBillingCountry(): ?string
+    {
+        return $this->billing_country;
+    }
+
+    public function setBillingCountry(?string $billing_country): self
+    {
+        $this->billing_country = $billing_country;
+
+        return $this;
+    }
+
+    public function getBillingMail(): ?string
+    {
+        return $this->billing_mail;
+    }
+
+    public function setBillingMail(?string $billing_mail): self
+    {
+        $this->billing_mail = $billing_mail;
 
         return $this;
     }

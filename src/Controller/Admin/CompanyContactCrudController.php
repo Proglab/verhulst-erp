@@ -38,15 +38,16 @@ class CompanyContactCrudController extends BaseCrudController
     {
         $crud->setEntityLabelInPlural('Clients')
             ->setEntityLabelInSingular('Client')
-            ->showEntityActionsInlined(true);
+            ->showEntityActionsInlined(true)
+            ->overrideTemplate('crud/detail', 'admin/crud/detail_2cols.html.twig');
 
         return parent::configureCrud($crud);
     }
 
     public function configureFields(string $pageName): iterable
     {
-        $panel1 = FormField::addPanel('Société')->addCssClass('col-6');
-        $panel2 = FormField::addPanel('Contact')->addCssClass('col-6');
+        $panel1 = FormField::addPanel('Société')->setCustomOption('cols', 1);
+        $panel2 = FormField::addPanel('Contact')->setCustomOption('cols', 2);
         $company = TextField::new('company')->setRequired(true)->setLabel('Société');
         $companyStreet = TextField::new('company.street')->setLabel('Rue')->setColumns(12);
         $companyPc = TextField::new('company.pc')->setLabel('Code postal');
@@ -61,7 +62,16 @@ class CompanyContactCrudController extends BaseCrudController
         $email = EmailField::new('email')->setLabel('E-mail')->setColumns(12);
         $phone = TelephoneField::new('phone')->setLabel('Téléphone')->setColumns(12);
         $gsm = TextField::new('gsm')->setLabel('Gsm')->setColumns(12);
-        $note = TextEditorField::new('note')->setLabel('Note');
+        $note = TextEditorField::new('note')->setLabel('Note')->setColumns(12);
+        $noteView = TextField::new('note')->setLabel('Note')->renderAsHtml();
+
+        $panel3 = FormField::addPanel('Facturation')->setCustomOption('cols', 1);
+
+        $billingstreet = TextField::new('company.billing_street')->setRequired(true)->setColumns(12)->setLabel('Rue');
+        $billingPc = TextField::new('company.billing_pc')->setRequired(true)->setColumns(12)->setLabel('Code postal');
+        $billingcity = TextField::new('company.billing_city')->setRequired(true)->setColumns(12)->setLabel('Ville');
+        $billingcountry = CountryField::new('company.billing_country')->setRequired(true)->setLabel('Pays');
+        $billingmail = EmailField::new('company.billing_mail')->setRequired(true)->setLabel('Email');
 
         $user = AssociationField::new('added_by')->setRequired(false)->setFormTypeOption('query_builder', function (UserRepository $entityRepository) {
             return $entityRepository->getCommercialsQb();
@@ -76,7 +86,7 @@ class CompanyContactCrudController extends BaseCrudController
                 $response = [$firstname, $lastname, $lang, $email, $phone, $gsm, $note, $user];
                 break;
             case Crud::PAGE_DETAIL:
-                $response = [$panel1, $company, $companyVat, $companyStreet, $companyPc, $companyCity, $companyCountry, $panel2, $fullname, $lang, $email, $phone, $gsm, $note, $userName];
+                $response = [$panel1, $company, $companyVat, $companyStreet, $companyPc, $companyCity, $companyCountry, $panel2, $fullname, $lang, $email, $phone, $gsm, $userName, $noteView, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $billingmail];
                 break;
             case Crud::PAGE_INDEX:
                 $response = [$company, $fullname, $langListing, $email, $phone, $gsm, $userNameListing, $note];
@@ -100,6 +110,7 @@ class CompanyContactCrudController extends BaseCrudController
             ->setPermission(Action::SAVE_AND_RETURN, 'ROLE_COMMERCIAL')
             ->setPermission(Action::SAVE_AND_ADD_ANOTHER, 'ROLE_COMMERCIAL')
             ->setPermission(Action::SAVE_AND_CONTINUE, 'ROLE_COMMERCIAL')
+            ->remove(crud::PAGE_DETAIL, Action::EDIT)
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->update(Crud::PAGE_INDEX, Action::DETAIL, function (Action $action) {
                 return $action->setIcon('fa fa-eye')->setLabel(false)->setHtmlAttributes(['title' => 'Consulter']);

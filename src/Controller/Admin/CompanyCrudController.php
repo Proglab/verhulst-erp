@@ -23,6 +23,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Factory\EntityFactory;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CountryField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -47,7 +48,9 @@ class CompanyCrudController extends BaseCrudController
     {
         $crud->setEntityLabelInPlural('Clients')
             ->setEntityLabelInSingular('Client')
-        ->showEntityActionsInlined(true);
+        ->showEntityActionsInlined(true)
+            ->overrideTemplate('crud/new', 'admin/company/crud/new.html.twig')
+            ->overrideTemplate('crud/edit', 'admin/company/crud/edit.html.twig');
 
         return parent::configureCrud($crud);
     }
@@ -84,7 +87,7 @@ class CompanyCrudController extends BaseCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $panel1 = FormField::addPanel()->addCssClass('col-6');
+        $panel1 = FormField::addPanel('Société')->addCssClass('col-5')->setCustomOption('cols', 1);
         $name = TextField::new('name')->setRequired(true)->setColumns(12)->setLabel('Nom de la société');
         $street = TextField::new('street')->setRequired(true)->setColumns(12)->setLabel('Rue');
         $pc = TextField::new('pc')->setRequired(true)->setLabel('Code postal');
@@ -92,17 +95,26 @@ class CompanyCrudController extends BaseCrudController
         $country = CountryField::new('country')->setRequired(true)->setLabel('Pays');
         $vatNew = TextField::new('vat_number', 'Numéro de TVA')->setRequired(true)->setLabel('Numéro de TVA')->addWebpackEncoreEntries('company');
         $vat = TextField::new('vat_number', 'Numéro de TVA')->setRequired(true)->setLabel('Numéro de TVA');
-        $panel2 = FormField::addPanel()->addCssClass('col-6');
-        $contacts = CollectionField::new('contact')->setLabel('Contacts')->allowAdd(true)->allowDelete(true)->useEntryCrudForm(CompanyContactCrudController::class)->setColumns(12)->setRequired(true);
-        $note = TextEditorField::new('note')->setLabel('Note');
+        $panel2 = FormField::addPanel('Contact')->addCssClass('col-5')->setCustomOption('cols', 2);
+        $contacts = CollectionField::new('contact')->setLabel(false)->allowAdd(true)->allowDelete(true)->useEntryCrudForm(CompanyContactCrudController::class)->setColumns(12)->setRequired(true);
+        $note = TextEditorField::new('note')->setLabel('Note')->setColumns(12);
+        $panel3 = FormField::addPanel('Facturation')->addCssClass('col-5')->renderCollapsed()->setCustomOption('cols', 1);
+
+        $billingstreet = TextField::new('billing_street')->setColumns(12)->setLabel('Rue');
+        $billingPc = TextField::new('billing_pc')->setColumns(12)->setLabel('Code postal');
+        $billingcity = TextField::new('billing_city')->setColumns(12)->setLabel('Ville');
+        $billingcountry = CountryField::new('billing_country')->setLabel('Pays');
+        $billingmail = EmailField::new('billing_mail')->setLabel('Email');
 
         switch ($pageName) {
+            case Crud::PAGE_EDIT:
+                $response = [$panel1, $vat, $name, $street, $pc, $city, $country, $panel2, $contacts, $note, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $billingmail];
+                break;
             case Crud::PAGE_NEW:
-                $response = [$panel1, $vatNew, $name, $street, $pc, $city, $country, $note, $panel2, $contacts];
+                $response = [$panel1, $vatNew, $name, $street, $pc, $city, $country, $panel2, $contacts, $note, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $billingmail];
                 break;
             case Crud::PAGE_DETAIL:
             case Crud::PAGE_INDEX:
-            case Crud::PAGE_EDIT:
                 $response = [$panel1, $vat, $name, $street, $pc, $city, $country, $note, $panel2, $contacts];
                 break;
             default:
