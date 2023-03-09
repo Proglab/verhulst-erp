@@ -76,17 +76,21 @@ class ComptaCrudController extends BaseCrudController
         $project = TextField::new('product.project')->setLabel('Projet');
         $product = TextField::new('product')->setLabel('Product');
         $description = TextField::new('product.description')->setLabel('description')->renderAsHtml();
-        $company = TextField::new('contact[0].company')->setLabel('Société');
-        $companyVat = TextField::new('contact[0].company.vat_number')->setLabel('Tva');
-        $companyStreet = TextField::new('contact[0].company.street')->setLabel('Rue');
-        $companyPc = TextField::new('contact[0].company.pc')->setLabel('Code postal');
-        $companyCity = TextField::new('contact[0].company.city')->setLabel('Ville');
-        $companyCountry = CountryField::new('contact[0].company.country')->setLabel('Pays');
+
+        $user = TextField::new('user.fullname')->setLabel('Vendeur');
+        $userMail = EmailField::new('user.email')->setLabel('Mail');
+
+        $company = TextField::new('contact.company')->setLabel('Société');
+        $companyVat = TextField::new('contact.company.vat_number')->setLabel('Tva');
+        $companyStreet = TextField::new('contact.company.street')->setLabel('Rue');
+        $companyPc = TextField::new('contact.company.pc')->setLabel('Code postal');
+        $companyCity = TextField::new('contact.company.city')->setLabel('Ville');
+        $companyCountry = CountryField::new('contact.company.country')->setLabel('Pays');
         $date = DateField::new('date')->setLabel('Date de vente')->setFormat('dd/MM/yy');
-        $contact = TextField::new('contact[0].fullname')->setLabel('Nom');
-        $contactTel = TelephoneField::new('contact[0].tel')->setLabel('Tel');
-        $contactGsm = TelephoneField::new('contact[0].gsm')->setLabel('Gsm');
-        $contactEmail = EmailField::new('contact[0].email')->setLabel('Mail');
+        $contact = TextField::new('contact.fullname')->setLabel('Nom');
+        $contactTel = TelephoneField::new('contact.phone')->setLabel('Tel');
+        $contactGsm = TelephoneField::new('contact.gsm')->setLabel('Gsm');
+        $contactEmail = EmailField::new('contact.email')->setLabel('Mail');
         $quantity = IntegerField::new('quantity')->setLabel('Quantité');
         $discount = MoneyField::new('discount')
             ->setStoredAsCents(false)
@@ -115,7 +119,7 @@ class ComptaCrudController extends BaseCrudController
 
             case Crud::PAGE_DETAIL:
                 $response = [$panelProduct,
-                    $project, $product, $description,
+                    $project, $product, $user, $userMail, $description,
                     $panelClient,
                     $company, $companyVat, $companyStreet, $companyPc, $companyCity, $companyCountry,
                     $panelVente,

@@ -65,9 +65,7 @@
                                             {% set total_discount = total_discount + sale.discount %}
                                             <tr>
                                                 <th scope="row">
-                                                    {% for contact in sale.contact %}
-                                                        {{ contact.company.name }} ({{ contact.firstname }} {{ contact.lastname }})<br>
-                                                    {% endfor %}
+                                                    {{ sale.contact.firstname }} {{ sale.contact.lastname }} ({{ sale.contact.company.name }})
                                                 </th>
                                                 <th scope="row">
                                                     {{ sale.product.project.name }}
@@ -151,9 +149,7 @@
                                             {% set total_marge = total_marge + sale.marge  %}
                                             <tr>
                                                 <th scope="row">
-                                                    {% for contact in sale.contact %}
-                                                        {{ contact.company.name }} ({{ contact.firstname }} {{ contact.lastname }})<br>
-                                                    {% endfor %}
+                                                    {{ sale.contact.firstname }} {{ sale.contact.lastname }} ({{ sale.contact.company.name }})
                                                 </th>
                                                 <th scope="row">
                                                     {{ sale.product.project.name }}
@@ -241,9 +237,7 @@
                                             {% set total_marge = total_marge + sale.marge  %}
                                             <tr>
                                                 <th scope="row">
-                                                    {% for contact in sale.contact %}
-                                                        {{ contact.company.name }} ({{ contact.firstname }} {{ contact.lastname }})<br>
-                                                    {% endfor %}
+                                                    {{ sale.contact.firstname }} {{ sale.contact.lastname }} ({{ sale.contact.company.name }})
                                                 </th>
                                                 <th scope="row">
                                                     {{ sale.product.project.name }}
@@ -329,9 +323,7 @@
                                             {% set total_marge = total_marge + sale.marge  %}
                                             <tr>
                                                 <th scope="row">
-                                                    {% for contact in sale.contact %}
-                                                        {{ contact.company.name }} ({{ contact.firstname }} {{ contact.lastname }})<br>
-                                                    {% endfor %}
+                                                    {{ sale.contact.firstname }} {{ sale.contact.lastname }} ({{ sale.contact.company.name }})
                                                 </th>
                                                 <th scope="row">
                                                     {{ sale.product.project.name }}

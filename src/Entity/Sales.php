@@ -27,9 +27,6 @@ class Sales
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\ManyToMany(targetEntity: CompanyContact::class, inversedBy: 'sales')]
-    private Collection $contact;
-
     #[ORM\Column(type: Types::DECIMAL, precision: 4, scale: 2, nullable: true)]
     private ?float $percent_vr = null;
 
@@ -58,10 +55,9 @@ class Sales
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $invoiced_dt = null;
 
-    public function __construct()
-    {
-        $this->contact = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'sales')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?CompanyContact $contact = null;
 
     public function getId(): ?int
     {
@@ -88,30 +84,6 @@ class Sales
     public function setUser(?User $user): self
     {
         $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, CompanyContact>
-     */
-    public function getContact(): Collection
-    {
-        return $this->contact;
-    }
-
-    public function addContact(CompanyContact $contact): self
-    {
-        if (!$this->contact->contains($contact)) {
-            $this->contact->add($contact);
-        }
-
-        return $this;
-    }
-
-    public function removeContact(CompanyContact $contact): self
-    {
-        $this->contact->removeElement($contact);
 
         return $this;
     }
@@ -265,6 +237,18 @@ class Sales
     public function setInvoicedDt(?\DateTimeInterface $invoiced_dt): self
     {
         $this->invoiced_dt = $invoiced_dt;
+
+        return $this;
+    }
+
+    public function getContact(): ?CompanyContact
+    {
+        return $this->contact;
+    }
+
+    public function setContact(?CompanyContact $contact): self
+    {
+        $this->contact = $contact;
 
         return $this;
     }

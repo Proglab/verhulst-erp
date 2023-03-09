@@ -34,9 +34,6 @@ class CompanyContact
     #[ORM\JoinColumn(nullable: false)]
     private ?Company $company = null;
 
-    #[ORM\ManyToMany(targetEntity: Sales::class, mappedBy: 'contact')]
-    private Collection $sales;
-
     #[ORM\Column(length: 30, nullable: true)]
     private ?string $phone = null;
 
@@ -48,6 +45,9 @@ class CompanyContact
 
     #[ORM\Column(length: 30, nullable: true)]
     private ?string $gsm = null;
+
+    #[ORM\OneToMany(mappedBy: 'contact', targetEntity: Sales::class)]
+    private Collection $sales;
 
     public function __construct()
     {
@@ -129,33 +129,6 @@ class CompanyContact
         return $this;
     }
 
-    /**
-     * @return Collection<int, Sales>
-     */
-    public function getSales(): Collection
-    {
-        return $this->sales;
-    }
-
-    public function addSale(Sales $sale): self
-    {
-        if (!$this->sales->contains($sale)) {
-            $this->sales->add($sale);
-            $sale->addContact($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSale(Sales $sale): self
-    {
-        if ($this->sales->removeElement($sale)) {
-            $sale->removeContact($this);
-        }
-
-        return $this;
-    }
-
     public function getPhone(): ?string
     {
         return $this->phone;
@@ -200,6 +173,36 @@ class CompanyContact
     public function setGsm(?string $gsm): self
     {
         $this->gsm = $gsm;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Sales>
+     */
+    public function getSales(): Collection
+    {
+        return $this->sales;
+    }
+
+    public function addSale(Sales $sale): self
+    {
+        if (!$this->sales->contains($sale)) {
+            $this->sales->add($sale);
+            $sale->setContact($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSale(Sales $sale): self
+    {
+        if ($this->sales->removeElement($sale)) {
+            // set the owning side to null (unless already changed)
+            if ($sale->getContact() === $this) {
+                $sale->setContact(null);
+            }
+        }
 
         return $this;
     }
