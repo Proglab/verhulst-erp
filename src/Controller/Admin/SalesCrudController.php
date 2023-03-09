@@ -305,9 +305,15 @@ class SalesCrudController extends BaseCrudController
             $this->container->get('event_dispatcher')->dispatch(new AfterEntityPersistedEvent($entityInstance));
             $context->getEntity()->setInstance($entityInstance);
 
+            if (isset($_POST['submit'])) {
             return $this->redirect($this->adminUrlGenerator
                 ->setAction(Action::INDEX)
                 ->generateUrl());
+            } else {
+                return $this->redirect($this->adminUrlGenerator
+                    ->setAction('listProduct')
+                    ->generateUrl());
+            }
         }
 
         $responseParameters = $this->configureResponseParameters(KeyValueStore::new([

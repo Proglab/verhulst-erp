@@ -53,7 +53,7 @@ class Sales
     private ?float $discount_percent;
 
     #[ORM\Column]
-    private ?bool $invoiced = null;
+    private ?bool $invoiced = false;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $invoiced_dt = null;
