@@ -46,8 +46,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
-use Symfony\Component\Routing\Annotation\Route;
 
 class SalesCrudController extends BaseCrudController
 {
@@ -213,7 +211,6 @@ class SalesCrudController extends BaseCrudController
         ]);
     }
 
-
     public function sales_by_users_list(): Response
     {
         $users = $this->userRepository->getCommercials();
@@ -222,7 +219,6 @@ class SalesCrudController extends BaseCrudController
             'users' => $users,
         ]);
     }
-
 
     /**
      * @return RedirectResponse|KeyValueStore|Response
