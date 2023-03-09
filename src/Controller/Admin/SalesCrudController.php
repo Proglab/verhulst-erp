@@ -15,6 +15,7 @@ use App\Entity\Sales;
 use App\Entity\User;
 use App\Repository\CompanyRepository;
 use App\Repository\ProjectRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -45,10 +46,12 @@ use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 class SalesCrudController extends BaseCrudController
 {
-    public function __construct(private EntityManagerInterface $entityManager, private AdminUrlGenerator $adminUrlGenerator)
+    public function __construct(private EntityManagerInterface $entityManager, private AdminUrlGenerator $adminUrlGenerator, private UserRepository $userRepository)
     {
     }
 
@@ -71,6 +74,9 @@ class SalesCrudController extends BaseCrudController
 
         $listProduct = Action::new('listProduct', false)
             ->linkToCrudAction('listProduct');
+
+        $searchClient = Action::new('sales_by_users_list', false)
+            ->linkToCrudAction('sales_by_users_list');
 
         $actions = parent::configureActions($actions);
         $actions
@@ -206,6 +212,17 @@ class SalesCrudController extends BaseCrudController
             'user' => $user,
         ]);
     }
+
+
+    public function sales_by_users_list(): Response
+    {
+        $users = $this->userRepository->getCommercials();
+
+        return $this->render('admin/sales/sales_by_users_list.html.twig', [
+            'users' => $users,
+        ]);
+    }
+
 
     /**
      * @return RedirectResponse|KeyValueStore|Response

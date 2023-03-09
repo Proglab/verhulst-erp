@@ -234,21 +234,7 @@ class DashboardPagesController extends DashboardController
         ]);
     }
 
-    #[Route('/admin/{_locale}/recap', name: 'app_admin_recap')]
-    public function recap(): Response
-    {
-        if (!$this->isGranted('ROLE_ADMIN')) {
-            throw new UnauthorizedHttpException('Unauthorized');
-        }
-
-        $users = $this->userRepository->getCommercials();
-
-        return $this->render('admin/recap/recap.html.twig', [
-            'users' => $users,
-        ]);
-    }
-
-    #[Route('/admin/{_locale}/dashboard/sales_tot', name: 'sales_tot')]
+    #[Route('/admin/{_locale}/dashboard/charts/sales_tot', name: 'sales_tot')]
     public function sales_tot(): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
