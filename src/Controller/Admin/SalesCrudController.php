@@ -306,14 +306,14 @@ class SalesCrudController extends BaseCrudController
             $context->getEntity()->setInstance($entityInstance);
 
             if (isset($_POST['submit'])) {
-            return $this->redirect($this->adminUrlGenerator
-                ->setAction(Action::INDEX)
-                ->generateUrl());
-            } else {
                 return $this->redirect($this->adminUrlGenerator
-                    ->setAction('listProduct')
+                    ->setAction(Action::INDEX)
                     ->generateUrl());
             }
+
+            return $this->redirect($this->adminUrlGenerator
+                ->setAction('listProduct')
+                ->generateUrl());
         }
 
         $responseParameters = $this->configureResponseParameters(KeyValueStore::new([
