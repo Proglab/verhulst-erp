@@ -10,7 +10,6 @@ use App\Repository\UserRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Exception\ForbiddenActionException;
-use EasyCorp\Bundle\EasyAdminBundle\Form\Type\CodeEditorType;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,13 +28,12 @@ class DashboardPagesController extends DashboardController
     public function index(): Response
     {
         if (!$this->isGranted('ROLE_COMMERCIAL')) {
-            return $this->redirect($this->adminUrlGenerator->setController(ComptaCrudController::class)->setAction(Action::INDEX)->generateUrl());
+            return $this->redirect($this->adminUrlGenerator->setController(ComptaCrudController::class)->setAction(Action::INDEX)->set('filters[invoiced]', '0')->generateUrl());
         }
 
         if (!$this->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('dashboard_com');
         }
-
         $months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
         $default_year = (new \DateTime())->format('Y');
         $year = $this->requestStack->getCurrentRequest()->get('year', $default_year);
@@ -44,7 +42,7 @@ class DashboardPagesController extends DashboardController
 
         $sales = $this->salesRepository->get10LastSales();
 
-        return $this->render('admin/dashboard.html.twig', [
+        return $this->render('admin/dashboard/admin.html.twig', [
             'year' => $year,
             'month' => $months[$month - 1],
             'month_num' => $month,
@@ -68,7 +66,7 @@ class DashboardPagesController extends DashboardController
         $me = $this->getUser();
         $sales = $this->salesRepository->get10LastSalesByUser($me);
 
-        return $this->render('admin/dashboard_com.html.twig', [
+        return $this->render('admin/dashboard/com.html.twig', [
             'year' => $year,
             'month' => $months[$month - 1],
             'month_num' => $month,
@@ -77,7 +75,7 @@ class DashboardPagesController extends DashboardController
         ]);
     }
 
-    #[Route('/admin/{_locale}/dashboard/my-sales', name: 'my_sales')]
+    #[Route('/admin/{_locale}/dashboard/charts/my-ca', name: 'my_sales')]
     public function my_sales(AdminContext $adminContext): Response
     {
         if (!$this->isGranted('ROLE_COMMERCIAL')) {
@@ -127,14 +125,14 @@ class DashboardPagesController extends DashboardController
             ],
         ]);
 
-        return $this->render('admin/dashboard/my_sales.html.twig', [
+        return $this->render('admin/dashboard/charts/_my_ca.html.twig', [
             'chart' => $chart,
             'year' => $year,
             'locale' => $this->requestStack->getCurrentRequest()->getLocale(),
         ]);
     }
 
-    #[Route('/admin/{_locale}/dashboard/my-com', name: 'my_com')]
+    #[Route('/admin/{_locale}/dashboard/charts/my-com', name: 'my_com')]
     public function my_com(AdminContext $adminContext): Response
     {
         if (!$this->isGranted('ROLE_COMMERCIAL')) {
@@ -184,10 +182,69 @@ class DashboardPagesController extends DashboardController
             ],
         ]);
 
-        return $this->render('admin/dashboard/my_com.html.twig', [
+        return $this->render('admin/dashboard/charts/_my_com.html.twig', [
             'chart' => $chart,
             'year' => $year,
             'locale' => $this->requestStack->getCurrentRequest()->getLocale(),
+        ]);
+    }
+
+    /**
+     * Monthly CA by users.
+     */
+    #[Route('/admin/{_locale}/dashboard/charts/monthly_ca_by_users', name: 'users_tot')]
+    public function users_tot(): Response
+    {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('dashboard_com');
+        }
+        $months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+        $default_year = (new \DateTime())->format('Y');
+        $year = $this->requestStack->getCurrentRequest()->get('year', $default_year);
+        $default_month = (new \DateTime())->format('m');
+        $month = $this->requestStack->getCurrentRequest()->get('month', $default_month);
+        $day = (new \DateTime($year . '-' . $month . '-01'))->format('t');
+        $chart2 = $this->chartBuilder->createChart(Chart::TYPE_DOUGHNUT);
+        $sales = $this->userRepository->getStatsByUser(new \DateTime($year . '-' . $month . '-01'), new \DateTime($year . '-' . $month . '-' . $day));
+        $users_data = [];
+        $sales_data = [];
+        foreach ($sales as $sale) {
+            $users_data[] = $sale['first_name'] . ' ' . $sale['last_name'];
+            $sales_data[] = empty($sale['total']) ? 0 : $sale['total'];
+        }
+
+        $chart2->setData([
+            'labels' => $users_data,
+            'datasets' => [
+                [
+                    'label' => 'Dataset 1',
+                    'data' => $sales_data,
+                    'borderColor' => 'white',
+                    'backgroundColor' => ['#e32727', '#e29f21', '#ffdd31', '#d0d626', '#4f7423', '#6adb28', '#2cd9d1', '#2a395b', '#3539e0', '#a736de'],
+                ],
+            ],
+        ]);
+
+        return $this->render('admin/dashboard/charts/_monthly_ca_by_users.html.twig', [
+            'chart2' => $chart2,
+            'year' => $year,
+            'month' => $months[$month - 1],
+            'month_num' => $month,
+            'locale' => $this->requestStack->getCurrentRequest()->getLocale(),
+        ]);
+    }
+
+    #[Route('/admin/{_locale}/recap', name: 'app_admin_recap')]
+    public function recap(): Response
+    {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            throw new UnauthorizedHttpException('Unauthorized');
+        }
+
+        $users = $this->userRepository->getCommercials();
+
+        return $this->render('admin/recap/recap.html.twig', [
+            'users' => $users,
         ]);
     }
 
@@ -239,87 +296,10 @@ class DashboardPagesController extends DashboardController
             ],
         ]);
 
-        return $this->render('admin/dashboard/sales_tot.html.twig', [
+        return $this->render('admin/dashboard/charts/_tot_sales.html.twig', [
             'chart' => $chart,
             'year' => $year,
             'locale' => $this->requestStack->getCurrentRequest()->getLocale(),
-        ]);
-    }
-
-    #[Route('/admin/{_locale}/dashboard/users_tot', name: 'users_tot')]
-    public function users_tot(): Response
-    {
-        if (!$this->isGranted('ROLE_ADMIN')) {
-            return $this->redirectToRoute('dashboard_com');
-        }
-
-        $months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-
-        $default_year = (new \DateTime())->format('Y');
-        $year = $this->requestStack->getCurrentRequest()->get('year', $default_year);
-        $default_month = (new \DateTime())->format('m');
-        $month = $this->requestStack->getCurrentRequest()->get('month', $default_month);
-        $day = (new \DateTime($year . '-' . $month . '-01'))->format('t');
-        $chart2 = $this->chartBuilder->createChart(Chart::TYPE_DOUGHNUT);
-        $sales = $this->userRepository->getStatsByUser(new \DateTime($year . '-' . $month . '-01'), new \DateTime($year . '-' . $month . '-' . $day));
-        $users_data = [];
-        $sales_data = [];
-        foreach ($sales as $sale) {
-            $users_data[] = $sale['first_name'] . ' ' . $sale['last_name'];
-            $sales_data[] = empty($sale['total']) ? 0 : $sale['total'];
-        }
-
-        $chart2->setData([
-            'labels' => $users_data,
-            'datasets' => [
-                [
-                    'label' => 'Dataset 1',
-                    'data' => $sales_data,
-                    'borderColor' => 'white',
-                    'backgroundColor' => ['#e32727', '#e29f21', '#ffdd31', '#d0d626', '#4f7423', '#6adb28', '#2cd9d1', '#2a395b', '#3539e0', '#a736de'],
-                ],
-            ],
-        ]);
-
-        return $this->render('admin/dashboard/users_tot.html.twig', [
-            'chart2' => $chart2,
-            'year' => $year,
-            'month' => $months[$month - 1],
-            'month_num' => $month,
-            'locale' => $this->requestStack->getCurrentRequest()->getLocale(),
-        ]);
-    }
-
-    #[Route('/admin/{_locale}/recap', name: 'app_admin_recap')]
-    public function recap(): Response
-    {
-        if (!$this->isGranted('ROLE_ADMIN')) {
-            throw new UnauthorizedHttpException('Unauthorized');
-        }
-
-        $users = $this->userRepository->getCommercials();
-
-        return $this->render('admin/recap/recap.html.twig', [
-            'users' => $users,
-        ]);
-    }
-
-    #[Route('/admin/{_locale}/css', name: 'app_admin_css')]
-    public function css(): Response
-    {
-        if (!$this->isGranted('ROLE_ADMIN')) {
-            throw new UnauthorizedHttpException('Unauthorized');
-        }
-        $fileContent = file_get_contents(realpath(__DIR__ . '/../../../../../shared/public/css/app.css'));
-
-        $form = $this->createFormBuilder()
-            ->add('task', CodeEditorType::class, ['attr' => ['data-ea-code-editor-field' => 'true', 'data-ea-align' => 'left']])
-            ->getForm();
-
-        $form->get('task')->setData($fileContent);
-
-        return $this->render('admin/css/edit.html.twig', [
-            'form' => $form->createView(),
         ]);
     }
 }

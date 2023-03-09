@@ -202,7 +202,7 @@ class SalesCrudController extends BaseCrudController
     {
         $user = $this->getUser();
 
-        return $this->render('admin/recap/myrecap.html.twig', [
+        return $this->render('admin/sales/index.html.twig', [
             'user' => $user,
         ]);
     }
@@ -224,7 +224,7 @@ class SalesCrudController extends BaseCrudController
         $repo = $this->entityManager->getRepository(Company::class);
         $company = $repo->search($request->get('search'));
 
-        return $this->render('admin/sales/search_client.html.twig', [
+        return $this->render('admin/sales/ajax/search_client.html.twig', [
                 'companies' => $company,
             ]
         );
@@ -249,7 +249,7 @@ class SalesCrudController extends BaseCrudController
         $repo = $this->entityManager->getRepository(Project::class);
         $projects = $repo->search($request->get('search'));
 
-        return $this->render('admin/sales/search_product.html.twig', [
+        return $this->render('admin/sales/ajax/search_product.html.twig', [
                 'projects' => $projects,
                 'contact_id' => $request->get('contactId'),
             ]

@@ -31,7 +31,8 @@ class CssCrudController extends BaseCrudController
         $crud->setEntityLabelInPlural('Css')
             ->setEntityLabelInSingular('Css')
             ->showEntityActionsInlined(true)
-        ->setHelp(Crud::PAGE_EDIT, 'Ne modifier que si vous savez ce que vous faites !!!');
+        ->setHelp(Crud::PAGE_EDIT, 'Ne modifier que si vous savez ce que vous faites !!!')
+        ->setEntityPermission('ROLE_TECH');
 
         return parent::configureCrud($crud);
     }
