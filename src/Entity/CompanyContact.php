@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CompanyContactRepository::class)]
 class CompanyContact
@@ -19,32 +20,43 @@ class CompanyContact
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 2)]
+    #[Assert\NotBlank]
+    #[Assert\Language]
+    #[Assert\Length(max: 2)]
     private ?string $lang = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
+    #[Assert\Email]
     private ?string $email = null;
+
+    #[ORM\Column(length: 30, nullable: true)]
+    #[Assert\Length(max: 30)]
+    private ?string $phone = null;
+
+    #[ORM\Column(length: 30, nullable: true)]
+    #[Assert\Length(max: 30)]
+    private ?string $gsm = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $note = null;
 
     #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'contact')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Company $company = null;
 
-    #[ORM\Column(length: 30, nullable: true)]
-    private ?string $phone = null;
-
     #[ORM\ManyToOne(inversedBy: 'companyContacts')]
     private ?User $added_by = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $note = null;
-
-    #[ORM\Column(length: 30, nullable: true)]
-    private ?string $gsm = null;
 
     #[ORM\OneToMany(mappedBy: 'contact', targetEntity: Sales::class)]
     private Collection $sales;

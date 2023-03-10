@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ORM\InheritanceType('SINGLE_TABLE')]
@@ -22,34 +23,42 @@ class Product
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
+    #[Assert\Length(max: 6)]
+    #[Assert\PositiveOrZero]
     private ?float $percent_vr = 0.0;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Commission::class, orphanRemoval: true)]
-    private Collection $commissions;
-
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Sales::class, orphanRemoval: true)]
-    private Collection $sales;
-    /**
-        #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-        private ?float $pa = 0;
-     **/
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
     private ?string $doc = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
+    #[Assert\Length(max: 6)]
+    #[Assert\PositiveOrZero]
     private ?float $percent_freelance = 0.0;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
+    #[Assert\Length(max: 6)]
+    #[Assert\PositiveOrZero]
     private ?float $percent_salarie = 0.0;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
+    #[Assert\Length(max: 6)]
+    #[Assert\PositiveOrZero]
     private ?float $percent_tv = 0.0;
+
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Commission::class, orphanRemoval: true)]
+    private Collection $commissions;
+
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Sales::class, orphanRemoval: true)]
+    private Collection $sales;
 
     public function __construct()
     {
@@ -88,7 +97,7 @@ class Product
         return $this->percent_vr;
     }
 
-    public function setPercentVr(string $percent_vr): self
+    public function setPercentVr(float|string|null $percent_vr): self
     {
         $this->percent_vr = (float) str_replace(',', '.', $percent_vr);
 

@@ -7,6 +7,7 @@ namespace App\Entity;
 use App\Repository\ProductPackageVipRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: ProductPackageVipRepository::class)]
@@ -14,14 +15,17 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 class ProductPackageVip extends Product
 {
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    #[Assert\Length(max: 11)]
+    #[Assert\PositiveOrZero]
     private ?float $ca = null;
+
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    #[Assert\PositiveOrZero]
+    private ?int $quantity_max = null;
 
     #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'product_package')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Project $project = null;
-
-    #[ORM\Column(type: Types::INTEGER, nullable: true)]
-    private ?int $quantity_max = null;
 
     public function __toString()
     {

@@ -8,6 +8,7 @@ use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
 class Project
@@ -18,7 +19,11 @@ class Project
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private ?string $name = null;
+
+    private ?bool $mail = null;
 
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: ProductEvent::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $product_event;
@@ -31,8 +36,6 @@ class Project
 
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: ProductDivers::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $product_divers;
-
-    private ?bool $mail = null;
 
     public function __construct()
     {

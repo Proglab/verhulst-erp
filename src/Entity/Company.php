@@ -20,45 +20,64 @@ class Company
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: false)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255, nullable: false)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private ?string $street = null;
 
-    #[ORM\Column(length: 20, nullable: true)]
+    #[ORM\Column(length: 20, nullable: false)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 20)]
     private ?string $pc = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255, nullable: false)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private ?string $city = null;
 
-    #[ORM\Column(length: 2, nullable: true)]
+    #[ORM\Column(length: 2, nullable: false)]
+    #[Assert\NotBlank]
+    #[Assert\Country()]
     private ?string $country = null;
 
     #[ORM\Column(length: 30, nullable: true)]
+    #[Assert\Length(max: 30)]
+    #[Assert\Unique]
     private ?string $vat_number = null;
-
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: CompanyContact::class, cascade: ['persist'], orphanRemoval: true)]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank]
-    private Collection $contact;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $note = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
     private ?string $billing_street = null;
 
     #[ORM\Column(length: 20, nullable: true)]
+    #[Assert\Length(max: 20)]
     private ?string $billing_pc = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
     private ?string $billing_city = null;
 
     #[ORM\Column(length: 2, nullable: true)]
+    #[Assert\Country()]
+    #[Assert\Length(max: 2)]
     private ?string $billing_country = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Email(message: 'Veuillez renseigner un email valide')]
+    #[Assert\Length(max: 255)]
     private ?string $billing_mail = null;
+
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: CompanyContact::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
+    private Collection $contact;
 
     public function __construct()
     {
@@ -80,7 +99,7 @@ class Company
         return $this->name;
     }
 
-    public function setName(?string $name): self
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -92,7 +111,7 @@ class Company
         return $this->street;
     }
 
-    public function setStreet(?string $street): self
+    public function setStreet(string $street): self
     {
         $this->street = $street;
 
@@ -104,7 +123,7 @@ class Company
         return $this->pc;
     }
 
-    public function setPc(?string $pc): self
+    public function setPc(string $pc): self
     {
         $this->pc = $pc;
 
@@ -116,7 +135,7 @@ class Company
         return $this->city;
     }
 
-    public function setCity(?string $city): self
+    public function setCity(string $city): self
     {
         $this->city = $city;
 
@@ -128,7 +147,7 @@ class Company
         return $this->country;
     }
 
-    public function setCountry(?string $country): self
+    public function setCountry(string $country): self
     {
         $this->country = $country;
 

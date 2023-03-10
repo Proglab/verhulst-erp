@@ -7,6 +7,7 @@ namespace App\Entity;
 use App\Repository\ProductSponsoringRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProductSponsoringRepository::class)]
 class ProductSponsoring extends Product
@@ -16,9 +17,12 @@ class ProductSponsoring extends Product
     private ?Project $project = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    #[Assert\Length(max: 11)]
+    #[Assert\PositiveOrZero]
     private ?float $ca = null;
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    #[Assert\PositiveOrZero]
     private ?int $quantity_max = null;
 
     public function __toString()

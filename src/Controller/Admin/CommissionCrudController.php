@@ -22,10 +22,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CommissionCrudController extends BaseCrudController
 {
-    public function __construct(private EntityManagerInterface $entityManager, private AdminUrlGenerator $adminUrlGenerator)
+    public function __construct(private EntityManagerInterface $entityManager, private AdminUrlGenerator $adminUrlGenerator, protected ValidatorInterface $validator)
     {
     }
 
@@ -76,14 +77,6 @@ class CommissionCrudController extends BaseCrudController
         ;
 
         $param = $adminContext->getRequest()->get('com');
-        if (!is_numeric($param)) {
-            return $this->render('admin/commission/_input_percent.html.twig', [
-                'url' => $url,
-                'type' => 'error',
-                'value' => $param,
-            ]);
-        }
-
         $user = $this->entityManager->getRepository(User::class)->find($user_id);
         $product = $this->entityManager->getRepository(Product::class)->find($product_id);
 
@@ -98,14 +91,23 @@ class CommissionCrudController extends BaseCrudController
             $com->setProduct($product);
         }
 
-        $com->setPercentCom((float) $adminContext->getRequest()->get('com', 0));
+        $com->setPercentCom($param);
+        $errors = $this->validator->validate($product);
+        if (0 === \count($errors)) {
+            $comRepo->save($com, true);
 
-        $comRepo->save($com, true);
+            return $this->render('admin/commission/_input_percent.html.twig', [
+                'url' => $url,
+                'type' => 0.0 === $com->getPercentCom() ? 'error' : '',
+                'value' => $com->getPercentCom(),
+            ]);
+        }
 
         return $this->render('admin/commission/_input_percent.html.twig', [
             'url' => $url,
-            'type' => 0.0 === $com->getPercentCom() ? 'error' : '',
-            'value' => $com->getPercentCom(),
+            'type' => 'error',
+            'value' => $param,
+            'errors' => $errors,
         ]);
     }
 
@@ -118,24 +120,28 @@ class CommissionCrudController extends BaseCrudController
         ;
 
         $com = $adminContext->getRequest()->get('com');
-        if (!is_numeric($com)) {
-            return $this->render('admin/commission/_input_percent.html.twig', [
-                'url' => $url,
-                'type' => 'error',
-                'value' => $com,
-            ]);
-        }
         /** @var ProductRepository $productRepo */
         $productRepo = $this->entityManager->getRepository(Product::class);
         /** @var Product $product */
         $product = $productRepo->find($product_id);
-        $product->setPercentVr($adminContext->getRequest()->request->get('com', 0));
-        $productRepo->save($product, true);
+        $product->setPercentVr($com);
+        $errors = $this->validator->validate($product);
+
+        if (0 === \count($errors)) {
+            $productRepo->save($product, true);
+
+            return $this->render('admin/commission/_input_percent.html.twig', [
+                'url' => $url,
+                'type' => (0.0 === $product->getPercentVr() ? 'error' : ''),
+                'value' => $product->getPercentVr(),
+            ]);
+        }
 
         return $this->render('admin/commission/_input_percent.html.twig', [
             'url' => $url,
-            'type' => (0.0 === $product->getPercentVr() ? 'error' : ''),
-            'value' => $product->getPercentVr(),
+            'type' => 'error',
+            'value' => $com,
+            'errors' => $errors,
         ]);
     }
 

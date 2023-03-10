@@ -34,9 +34,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     use VerifiedTrait;
 
     final public const ROLE_ADMIN = 'ROLE_ADMIN';
+    final public const ROLE_TECH = 'ROLE_TECH';
+    final public const ROLE_COMPTA = 'ROLE_COMPTA';
     final public const ROLE_COMMERCIAL = 'ROLE_COMMERCIAL';
-    final public const ROLE_USER = 'ROLE_USER';
+    final public const ROLE_ENCODE = 'ROLE_ENCODE';
     final public const ROLE_BOSS = 'ROLE_BOSS';
+    final public const ROLE_USER = 'ROLE_USER';
 
     #[ORM\Column(type: Types::STRING, length: 180, unique: true)]
     #[Assert\NotBlank]
@@ -51,12 +54,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     private ?string $password = null;
 
     #[ORM\Column(type: Types::STRING, length: 255)]
-    #[Assert\Length(min: 1, max: 20, minMessage: 'Le prénom doit contenir au moins 1 caractère', maxMessage: 'Le prénom doit contenir au plus 20 caractères')]
+    #[Assert\Length(min: 1, max: 255, minMessage: 'Le prénom doit contenir au moins 1 caractère', maxMessage: 'Le prénom doit contenir au plus 20 caractères')]
     #[Assert\NotBlank(message: 'Veuillez renseigner un prénom')]
     private ?string $firstName = null;
 
     #[ORM\Column(type: Types::STRING, length: 255)]
-    #[Assert\Length(min: 1, max: 20, minMessage: 'Le nom doit contenir au plus 20 caractères')]
+    #[Assert\Length(min: 1, max: 255, minMessage: 'Le nom doit contenir au plus 20 caractères')]
     #[Assert\NotBlank(message: 'Veuillez renseigner un nom')]
     private ?string $lastName = null;
 
@@ -87,7 +90,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     #[ORM\OneToMany(mappedBy: 'added_by', targetEntity: CompanyContact::class)]
     private Collection $companyContacts;
 
-    #[ORM\Column(name: 'com', type: Types::STRING, nullable: false)]
+    #[ORM\Column(name: 'com', type: Types::STRING, nullable: true)]
     private ?string $com = null;
 
     public function __construct()
@@ -105,6 +108,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         return $this->getFirstName() . ' ' . $this->getLastName();
     }
 
+    /**
     #[ORM\PrePersist]
     #[ORM\PreUpdate]
     public function setFullNameCharacteristics(): void
@@ -116,7 +120,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
             $this->firstName = ucfirst(strtolower($this->firstName));
         }
     }
-
+     **/
     public function getEmail(): ?string
     {
         return $this->email;
@@ -431,7 +435,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         return $this->com;
     }
 
-    public function setCom(string $com): self
+    public function setCom(?string $com): self
     {
         $this->com = $com;
 

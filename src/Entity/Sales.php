@@ -8,6 +8,7 @@ use App\Repository\SalesRepository;
 use App\Validator as MyAssert;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SalesRepository::class)]
 #[MyAssert\MaxProductSales]
@@ -18,33 +19,38 @@ class Sales
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: false)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 11)]
+    #[Assert\Currency]
+    #[Assert\PositiveOrZero]
     private ?float $price = null;
 
-    #[ORM\ManyToOne(inversedBy: 'sales')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
-
     #[ORM\Column(type: Types::DECIMAL, precision: 4, scale: 2, nullable: true)]
+    #[Assert\Length(max: 5)]
+    #[Assert\PositiveOrZero]
     private ?float $percent_vr = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 4, scale: 2, nullable: true)]
+    #[Assert\Length(max: 5)]
+    #[Assert\PositiveOrZero]
     private ?float $percent_com = null;
-
-    #[ORM\ManyToOne(inversedBy: 'sales')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Product $product = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column(nullable: false)]
+    #[Assert\Positive]
     private int $quantity = 1;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 8, scale: 2, nullable: true)]
+    #[Assert\Length(max: 9)]
+    #[Assert\PositiveOrZero]
     private ?float $discount = 0.0;
 
+    #[Assert\PositiveOrZero]
     private ?float $discount_eur;
+    #[Assert\PositiveOrZero]
     private ?float $discount_percent;
 
     #[ORM\Column]
@@ -55,6 +61,17 @@ class Sales
 
     #[ORM\ManyToOne(inversedBy: 'sales')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
+    private ?User $user = null;
+
+    #[ORM\ManyToOne(inversedBy: 'sales')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
+    private ?Product $product = null;
+
+    #[ORM\ManyToOne(inversedBy: 'sales')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
     private ?CompanyContact $contact = null;
 
     public function getId(): ?int
