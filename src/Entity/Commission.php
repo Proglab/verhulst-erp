@@ -44,7 +44,7 @@ class Commission
 
     public function setPercentCom(float|string|null $percent_com): self
     {
-        $this->percent_com = (float) str_replace(',', '.', $percent_com);
+        $this->percent_com = (float) str_replace(',', '.', (string) $percent_com);
 
         return $this;
     }

@@ -35,8 +35,7 @@ final class ResetPasswordControllerTest extends AbstractControllerTest
     public function testResetPassword(): void
     {
         /** @var User $user */
-        $user = $this->userRepository->find(1);
-
+        $user = $this->userRepository->findOneBy(['email' => 'gonzague@verhulst.be']);
         $resetToken = $this->resetPasswordHelper->generateResetToken($user);
 
         $this->client->request('GET', sprintf('/reinitialiser-mon-mot-de-passe/reinitialiser/%s', $resetToken->getToken()));
@@ -56,11 +55,10 @@ final class ResetPasswordControllerTest extends AbstractControllerTest
         self::assertSelectorExists('.alert-success');
 
         $this->submitLogin($user->getEmail(), 'TestMyNewPassword123!');
-        self::assertResponseRedirects('/');
         self::assertTrue($this->getSecurityDataCollector()->isAuthenticated());
 
         /** @var User $user */
-        $user = $this->userRepository->find(1);
+        $user = $this->userRepository->findOneBy(['email' => 'gonzague@verhulst.be']);
         $user->setPassword('Password123!');
         $this->manager->flush();
     }

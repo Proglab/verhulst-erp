@@ -41,8 +41,6 @@ final class CompanyFactory extends ModelFactory
         return [
             'name' => self::faker()->company(),
             'street' => self::faker()->streetAddress(),
-            'number' => random_int(1, 200),
-            'box' => self::faker()->randomDigit(),
             'pc' => self::faker()->postcode(),
             'city' => self::faker()->city(),
             'country' => 'BE',

@@ -53,7 +53,7 @@ class ResetPasswordController extends BaseController
             return $this->processSendingPasswordResetEmail($form->get('email')->getData());
         }
 
-        return $this->renderForm('security/reset_password/request.html.twig', [
+        return $this->render('security/reset_password/request.html.twig', [
             'requestForm' => $form,
             'element' => 'reset-password',
         ]);
@@ -137,7 +137,7 @@ class ResetPasswordController extends BaseController
             return $this->redirectToRoute('app_login');
         }
 
-        return $this->renderForm('security/reset_password/reset.html.twig', [
+        return $this->render('security/reset_password/reset.html.twig', [
             'resetForm' => $form,
             'element' => 'reset-password',
         ]);

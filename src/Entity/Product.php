@@ -99,7 +99,7 @@ class Product
 
     public function setPercentVr(float|string|null $percent_vr): self
     {
-        $this->percent_vr = (float) str_replace(',', '.', $percent_vr);
+        $this->percent_vr = (float) str_replace(',', '.', (string) $percent_vr);
 
         return $this;
     }

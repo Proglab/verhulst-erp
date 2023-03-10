@@ -1,0 +1,65 @@
+name: Tests suite
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  symfony-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          tools: composer:v2
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, ctype, intl
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v3
+        name: Get cache
+        id: cache
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install Dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Install Npm
+        run: |
+          npm install
+          npm run build
+
+      - name: Create Database
+        env:
+          DATABASE_URL: sqlite:///%kernel.project_dir%/var/database_test.db
+        run: |
+          rm -rf migrations
+          mkdir migrations
+          php bin/console doctrine:database:create
+          php bin/console doctrine:migrations:diff
+          php bin/console d:m:m --no-interaction --env=test
+          php bin/console d:f:l --no-interaction --env=test
+
+      - name: PHPUnit
+        uses: docker://proglab/actions-phpunit-symfony@master
+        run: php -d memory_limit=-1 ./vendor/bin/simple-phpunit --testdox
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: log
+          path: var/log

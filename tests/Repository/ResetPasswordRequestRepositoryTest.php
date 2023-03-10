@@ -28,7 +28,7 @@ class ResetPasswordRequestRepositoryTest extends AbstractRepositoryTest
         self::assertInstanceOf(
             ResetPasswordRequest::class,
             $this->resetPasswordRequestRepository->createResetPasswordRequest(
-                $this->userRepository->find(1),
+                $user = $this->userRepository->findOneBy(['email' => 'fabrice@insideweb.be']),
                 new \DateTimeImmutable(),
                 'selector',
                 'hashed token'

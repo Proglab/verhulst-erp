@@ -166,14 +166,14 @@ class SecurityController extends BaseController
     #[Route(path: '/modifier-mon-mot-de-passe', name: 'app_password_update')]
     public function updatePassword(Request $request): RedirectResponse|Response
     {
-        return $this->renderForm('security/update_password.html.twig');
+        return $this->render('security/update_password.html.twig');
     }
 
     #[IsGranted(User::ROLE_USER)]
     #[Route(path: '/authentification-2-facteurs', name: 'app_2fa_enable')]
     public function enable2fa(Request $request): Response
     {
-        return $this->renderForm('security/2fa/enable2fa.html.twig');
+        return $this->render('security/2fa/enable2fa.html.twig');
     }
 
     #[IsGranted(User::ROLE_USER)]
@@ -218,6 +218,6 @@ class SecurityController extends BaseController
     #[Route(path: '/mon-profil', name: 'app_update_profile')]
     public function updateProfile(Request $request): Response
     {
-        return $this->renderForm('security/update_profile.html.twig');
+        return $this->render('security/update_profile.html.twig');
     }
 }
