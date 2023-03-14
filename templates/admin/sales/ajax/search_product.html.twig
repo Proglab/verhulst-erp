@@ -5,8 +5,8 @@
         <th scope="col">Projet</th>
         <th scope="col">Produit</th>
         <th scope="col">Description</th>
-        <th scope="col">Quantité disponible</th>
-        <th scope="col">Prix</th>
+        <th scope="col">Q dispo</th>
+        <th scope="col" style="width: 100px;">Prix</th>
     </tr>
     </thead>
     <tbody>
@@ -30,7 +30,7 @@
                 .setAction('createSale')
                 .set('contactId', contact_id)
                 .set('productId', product.id)%}
-            <tr>
+            <tr style="{% if product.quantityAvailable is not null and product.quantityAvailable == 0 %}background-color:#f5d8e0;{% endif %}">
                 <td><a href="{{ url }}"><i class="fa-solid fa-circle-check"></i></a></td>
                 <th scope="row">{{ project.name }}</th>
                 <td>{{ product.name }}</td>
