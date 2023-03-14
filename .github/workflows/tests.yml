@@ -19,7 +19,6 @@ jobs:
         with:
           php-version: '8.1'
           tools: composer:v2
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, ctype, intl
 
       - name: Get Composer Cache Directory
         id: composer-cache
@@ -38,10 +37,29 @@ jobs:
       - name: Install Dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
-      - name: Install Npm
-        run: |
-          npm install
-          npm run build
+      - name: Cache node modules
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+        name: List the state of node modules
+        continue-on-error: true
+        run: npm list
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
 
       - name: Create Database
         env:
@@ -55,10 +73,10 @@ jobs:
           php bin/console d:f:l --no-interaction --env=test
 
       - name: PHPUnit
-        uses: docker://proglab/actions-phpunit-symfony@master
-        run: php -d memory_limit=-1 ./vendor/bin/simple-phpunit --testdox
+        uses: docker://proglab/actions-phpunit-symfony-php8.1:v1.0.3
 
       - name: Archive production artifacts
+        if: ${{ failure() }}
         uses: actions/upload-artifact@v1
         with:
           name: log

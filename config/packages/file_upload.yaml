@@ -1,0 +1,7 @@
+parameters:
+  files.products.upload_dir: '../../shared/public/files/products'
+  files.products.base_path: 'files/products'
+
+when@test:
+  parameters:
+    files.products.upload_dir: 'public/files/products'

@@ -1,3 +1,9 @@
+### Badges
+[![Tests suite](https://github.com/Proglab/verhulst-erp/actions/workflows/tests.yml/badge.svg)](https://github.com/Proglab/verhulst-erp/actions/workflows/tests.yml)
+
+[![CI (Php Stan + PHP-CS-FIXER + security-checker)](https://github.com/Proglab/verhulst-erp/actions/workflows/ci.yml/badge.svg)](https://github.com/Proglab/verhulst-erp/actions/workflows/ci.yml)
+
+
 ### Description
 
 Symfony 6 Skeleton est un projet servant de squelette de base pour tout projet Symfony.
