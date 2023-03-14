@@ -294,10 +294,10 @@ class SalesCrudController extends BaseCrudController
         /** @var Product $product */
         $product = $this->entityManager->getRepository(Product::class)->find($context->getRequest()->get('productId'));
         $entity->setProduct($product);
-        $entity->addContact($contact);
+        $entity->setContact($contact);
         $entity->setUser($this->getUser());
         if ($product instanceof ProductPackageVip || $product instanceof ProductSponsoring) {
-            $entity->setPrice($product->getCa());
+            $entity->setPrice((string) $product->getCa());
         }
 
         $newForm = $this->createNewForm($context->getEntity(), $context->getCrud()->getNewFormOptions(), $context);

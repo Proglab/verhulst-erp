@@ -22,7 +22,6 @@ class Sales
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: false)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 11)]
-    #[Assert\Currency]
     #[Assert\PositiveOrZero]
     private ?float $price = null;
 
@@ -84,9 +83,9 @@ class Sales
         return (int) $this->price;
     }
 
-    public function setPrice(?float $price): self
+    public function setPrice(string|float|null $price): self
     {
-        $this->price = $price;
+        $this->price = (float) str_replace(',', '.', $price);
 
         return $this;
     }
