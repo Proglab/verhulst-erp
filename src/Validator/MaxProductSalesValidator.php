@@ -40,14 +40,14 @@ class MaxProductSalesValidator extends ConstraintValidator
 
         $quantity_sales = $this->salesRepository->getQuantitySaleByProduct($product);
 
-        if ($sales->getId() === null && null !== $product->getQuantityMax() && $quantity_sales + $sales->getQuantity() > $product->getQuantityMax()) {
+        if (null === $sales->getId() && null !== $product->getQuantityMax() && $quantity_sales + $sales->getQuantity() > $product->getQuantityMax()) {
             $this->context
                 ->buildViolation(sprintf($constraint->maxSalesExceededMessage, $quantity_sales, $product->getQuantityMax()))
                 ->atPath('Sales.quantity')
                 ->addViolation();
         }
 
-        if ($sales->getId() !== null) {
+        if (null !== $sales->getId()) {
             $newSales = clone $sales;
             $this->entityManager->refresh($sales);
             if (null !== $product->getQuantityMax() && $quantity_sales - $sales->getQuantity() + $newSales->getQuantity() > $product->getQuantityMax()) {
@@ -65,8 +65,6 @@ class MaxProductSalesValidator extends ConstraintValidator
             $sales->setPercentCom($newSales->getPercentCom());
             $sales->setPercentVr($newSales->getPercentVr());
             $sales->setDate($newSales->getDate());
-
         }
-
     }
 }
