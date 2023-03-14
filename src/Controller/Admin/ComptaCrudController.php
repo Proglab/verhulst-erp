@@ -76,6 +76,10 @@ class ComptaCrudController extends BaseCrudController
 
         $project = TextField::new('product.project')->setLabel('Projet');
         $product = TextField::new('product')->setLabel('Product');
+
+        $dateBegin = DateField::new('product.date_begin')->setLabel('Du')->setFormat('dd/MM/yy');
+        $dateEnd = DateField::new('product.date_end')->setLabel('Au')->setFormat('dd/MM/yy');
+
         $description = TextField::new('product.description')->setLabel('Description')->renderAsHtml();
 
         $user = TextField::new('user.fullname')->setLabel('Vendeur');
@@ -120,7 +124,7 @@ class ComptaCrudController extends BaseCrudController
 
             case Crud::PAGE_DETAIL:
                 $response = [$panelProduct,
-                    $project, $product, $user, $userMail, $description,
+                    $project, $product, $dateBegin, $dateEnd, $user, $userMail, $description,
                     $panelClient,
                     $company, $companyVat, $companyStreet, $companyPc, $companyCity, $companyCountry,
                     $panelVente,

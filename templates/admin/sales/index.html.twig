@@ -62,7 +62,15 @@
                         <th scope="row">
                             {{ sale.product.project.name }}
                         </th>
-                        <th scope="row">{{ sale.product.name }}</th>
+                        <th scope="row">{{ sale.product.name }}
+                            {% if sale.product.dateBegin is not null %}
+                                {% if sale.product.dateBegin|date('d/m/y') == sale.product.dateEnd|date('d/m/y') %}
+                                    ({{ sale.product.dateBegin|date('d/m/y') }})
+                                {% else %}
+                                    (Du {{ sale.product.dateBegin|date('d/m/y') }} Au {{ sale.product.dateEnd|date('d/m/y') }})
+                                {% endif %}
+                            {% endif %}
+                        </th>
                         <td>{{ sale.date|date('d/m/y') }}</td>
                         <td class="text-right">{{ (sale.price)|number_format(2, ',', '') }}€</td>
                         <td class="text-right">{{ (sale.discount)|number_format(2, ',', '') }}€</td>
