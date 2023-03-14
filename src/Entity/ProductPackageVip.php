@@ -8,10 +8,8 @@ use App\Repository\ProductPackageVipRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: ProductPackageVipRepository::class)]
-#[Vich\Uploadable]
 class ProductPackageVip extends Product
 {
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
@@ -22,10 +20,6 @@ class ProductPackageVip extends Product
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     #[Assert\PositiveOrZero]
     private ?int $quantity_max = null;
-
-    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'product_package')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Project $project = null;
 
     public function __toString()
     {
@@ -40,18 +34,6 @@ class ProductPackageVip extends Product
     public function setCa(?float $ca): self
     {
         $this->ca = $ca;
-
-        return $this;
-    }
-
-    public function getProject(): ?Project
-    {
-        return $this->project;
-    }
-
-    public function setProject(?Project $project): self
-    {
-        $this->project = $project;
 
         return $this;
     }
@@ -85,5 +67,25 @@ class ProductPackageVip extends Product
         }
 
         return null;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->getDateBegin();
+    }
+
+    public function setDate(?\DateTimeInterface $date): self
+    {
+        parent::setDateBegin($date);
+
+        return $this;
+    }
+
+    public function setDateBegin(?\DateTimeInterface $date): self
+    {
+        parent::setDateBegin($date);
+        parent::setDateEnd($date);
+
+        return $this;
     }
 }

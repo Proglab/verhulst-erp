@@ -45,10 +45,14 @@ final class ProductPackageFactory extends ModelFactory
 
     protected function getDefaults(): array
     {
+        $date = new \DateTime(self::faker()->date());
+
         return [
             'name' => self::faker()->sentence(random_int(1, 3)),
             'ca' => self::faker()->randomFloat(2, 100, 1000),
             'percent_vr' => random_int(15, 40),
+            'date_begin' => $date,
+            'date_end' => $date,
         ];
     }
 

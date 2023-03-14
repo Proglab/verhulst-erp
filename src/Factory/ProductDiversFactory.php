@@ -47,6 +47,8 @@ final class ProductDiversFactory extends ModelFactory
     {
         return [
             'name' => self::faker()->sentence(random_int(1, 3)),
+            'date_begin' => new \DateTime(self::faker()->date()),
+            'date_end' => new \DateTime(self::faker()->date()),
             'percent_vr' => random_int(15, 40),
         ];
     }

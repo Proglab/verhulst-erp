@@ -12,10 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ProductSponsoringRepository::class)]
 class ProductSponsoring extends Product
 {
-    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'product_sponsoring')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Project $project = null;
-
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     #[Assert\Length(max: 11)]
     #[Assert\PositiveOrZero]
@@ -38,18 +34,6 @@ class ProductSponsoring extends Product
     public function setCa(?float $ca): self
     {
         $this->ca = $ca;
-
-        return $this;
-    }
-
-    public function getProject(): ?Project
-    {
-        return $this->project;
-    }
-
-    public function setProject(?Project $project): self
-    {
-        $this->project = $project;
 
         return $this;
     }

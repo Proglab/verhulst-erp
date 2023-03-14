@@ -8,6 +8,7 @@ use App\Entity\ProductSponsoring;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
@@ -65,6 +66,8 @@ class ProductSponsoringCrudController extends BaseCrudController
         $quantityAvailable = IntegerField::new('quantity_available')->setLabel('Q dispo');
         $image = ImageField::new('doc')->setBasePath($this->getParameter('files.products.base_path'))->setUploadDir($this->getParameter('files.products.upload_dir'))->setUploadedFileNamePattern('[slug]-[timestamp]-[randomhash].[extension]')->setLabel('Document (PDF)');
         $imageDwonload = TextField::new('download_url')->renderAsHtml()->setLabel('Doc (PDF)');
+        $dateBegin = DateField::new('date_begin')->setRequired(true)->setFormat('dd/MM/yy')->setLabel('Date début');
+        $dateEnd = DateField::new('date_end')->setRequired(true)->setFormat('dd/MM/yy')->setLabel('Date fin');
 
         $percentTv = PercentField::new('percent_tv')
             ->setLabel('Commission Tv')
@@ -100,16 +103,16 @@ class ProductSponsoringCrudController extends BaseCrudController
         switch ($pageName) {
             case Crud::PAGE_DETAIL:
             case Crud::PAGE_INDEX:
-                $response = [$name, $percentVrListing, $caListing, $description, $quantityMax, $quantitySales, $quantityAvailable, $imageDwonload];
+                $response = [$name, $dateBegin, $dateEnd, $percentVrListing, $caListing, $description, $quantityMax, $quantitySales, $quantityAvailable, $imageDwonload];
                 break;
             case Crud::PAGE_NEW:
-                $response = [$name, $percentVr, $percentDefaultFreelance, $percentDefaultSalarie, $percentTv, $ca, $description, $quantityMax, $image];
+                $response = [$name, $dateBegin, $dateEnd, $percentVr, $percentDefaultFreelance, $percentDefaultSalarie, $percentTv, $ca, $description, $quantityMax, $image];
                 break;
             case Crud::PAGE_EDIT:
-                $response = [$name, $percentVr, $ca, $description, $quantityMax, $image, $percentFreelanceHidden, $percentSalarieHidden, $percentTvHidden];
+                $response = [$name, $dateBegin, $dateEnd, $percentVr, $ca, $description, $quantityMax, $image, $percentFreelanceHidden, $percentSalarieHidden, $percentTvHidden];
                 break;
             default:
-                $response = [$name, $percentVr, $ca, $description, $quantityMax];
+                $response = [$name, $dateBegin, $dateEnd, $percentVr, $ca, $description, $quantityMax];
         }
 
         return $response;

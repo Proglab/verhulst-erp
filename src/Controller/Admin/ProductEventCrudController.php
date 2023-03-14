@@ -52,7 +52,7 @@ class ProductEventCrudController extends BaseCrudController
     public function configureFilters(Filters $filters): Filters
     {
         return $filters
-            ->add('date')
+            ->add('date_begin')
         ;
     }
 
@@ -61,7 +61,8 @@ class ProductEventCrudController extends BaseCrudController
         $project = AssociationField::new('project')->setRequired(true);
         $projectName = TextField::new('project.name')->setLabel('Nom du projet');
         $name = TextField::new('name')->setLabel('Nom du produit')->setRequired(true);
-        $date = DateField::new('date')->setRequired(true)->setFormat('dd/MM/yy');
+        $dateBegin = DateField::new('date_begin')->setRequired(true)->setFormat('dd/MM/yy')->setLabel('Date début');
+        $dateEnd = DateField::new('date_end')->setRequired(true)->setFormat('dd/MM/yy')->setLabel('Date fin');
         $percentVr = PercentField::new('percent_vr')
             ->setLabel('Commission Verhulst')
             ->setPermission('ROLE_ADMIN')
@@ -145,29 +146,29 @@ class ProductEventCrudController extends BaseCrudController
             switch ($pageName) {
                 case Crud::PAGE_DETAIL:
                 case Crud::PAGE_INDEX:
-                    $response = [$name, $date, $percentVrListing, $percentFreelanceListing, $percentSalarieListing, $percentTvListing, $imageDwonload];
+                    $response = [$name, $dateBegin, $dateEnd, $percentVrListing, $percentFreelanceListing, $percentSalarieListing, $percentTvListing, $imageDwonload];
                     break;
                 case Crud::PAGE_NEW:
-                    $response = [$name, $date, $percentVr, $percentFreelance, $percentSalarie, $percentTv, $image];
+                    $response = [$name, $dateBegin, $dateEnd, $percentVr, $percentFreelance, $percentSalarie, $percentTv, $image];
                     break;
                 case Crud::PAGE_EDIT:
-                    $response = [$name, $date, $percentVr, $percentFreelanceHidden, $percentSalarieHidden, $percentTvHidden, $image];
+                    $response = [$name, $dateBegin, $dateEnd, $percentVr, $percentFreelanceHidden, $percentSalarieHidden, $percentTvHidden, $image];
                     break;
                 default:
-                    $response = [$name, $date, $percentVr, $percentFreelance, $percentSalarie, $percentTv];
+                    $response = [$name, $dateBegin, $dateEnd, $percentVr, $percentFreelance, $percentSalarie, $percentTv];
             }
         } else {
             switch ($pageName) {
                 case Crud::PAGE_DETAIL:
                 case Crud::PAGE_INDEX:
-                    $response = [$projectName, $name, $date, $percentVr, $imageDwonload];
+                    $response = [$projectName, $name, $dateBegin, $dateEnd, $percentVr, $imageDwonload];
                     break;
                 case Crud::PAGE_NEW:
                 case Crud::PAGE_EDIT:
-                    $response = [$project, $name, $date, $percentVr, $image];
+                    $response = [$project, $name, $dateBegin, $dateEnd, $percentVr, $image];
                     break;
                 default:
-                    $response = [$name, $date, $percentVr];
+                    $response = [$name, $dateBegin, $dateEnd, $percentVr];
             }
         }
 

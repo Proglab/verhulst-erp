@@ -7,7 +7,7 @@ Projet : {{ project.name }}
 
 {% block main %}
     {% if project.productEvent.count > 0 %}
-        <h2 class="text-uppercase text-center font-weight-bolder verhulst mb-4">Events</h2>
+        <h2 class="text-uppercase text-center font-weight-bolder verhulst mb-4 p-2">Events</h2>
         <!-- Three columns of text below the carousel -->
         <div class="row mb-4">
             {% for product in project.productEvent %}
@@ -17,7 +17,8 @@ Projet : {{ project.name }}
                             <h3>{{ product.name }}</h3>
                         </div>
                         <div class="card-body">
-                            <p><b>Date : </b> {{ product.date|date('d/m/Y') }}</p>
+                            <p><b>Du : </b> {% if product.dateBegin is not null %}{{ product.dateBegin|date('d/m/Y') }}{% else %}-{% endif %}</p>
+                            <p><b>Au : </b> {% if product.dateEnd is not null %}{{ product.dateEnd|date('d/m/Y') }}{% else %}-{% endif %}</p>
                             <p>{{ product.description|raw }}</p>
                             {% if product.doc is not null %}
                                 <p><a href="/files/products/{{ product.doc }}" target="_blank">Download {{ product.doc }}</a></p>
@@ -31,7 +32,7 @@ Projet : {{ project.name }}
     {% endif %}
 
     {% if project.productPackage.count > 0 %}
-        <h2 class="text-uppercase text-center font-weight-bolder verhulst mb-4">Package</h2>
+        <h2 class="text-uppercase text-center font-weight-bolder verhulst mb-4 p-2">Package</h2>
         <div class="row mb-4">
             {% for product in project.productPackage %}
                 <div class="col-lg-4">
@@ -49,8 +50,9 @@ Projet : {{ project.name }}
                         </div>
                         <div class="card-body">
                             <div class=" text-right">
-                            {% if product.ca is defined and product.ca > 0 %}<span class="btn-sm btn-primary">Prix de vente : {{ product.ca|number_format(2, ',', ' ') }} €</span>{% endif %}
+                                {% if product.ca is defined and product.ca > 0 %}<span class="btn-sm btn-primary">Prix de vente : {{ product.ca|number_format(2, ',', ' ') }} €</span>{% endif %}
                             </div>
+                            <p><b>Date : </b> {% if product.dateBegin is not null %}{{ product.dateBegin|date('d/m/Y') }}{% else %}-{% endif %}</p>
                             <p>{{ product.description|raw }}</p>
                             {% if product.doc is not null %}
                                 <p><a href="/files/products/{{ product.doc }}" target="_blank">Download {{ product.doc }}</a></p>
@@ -64,7 +66,7 @@ Projet : {{ project.name }}
     {% endif %}
 
     {% if project.productSponsoring.count > 0 %}
-    <h2 class="text-uppercase text-center font-weight-bolder verhulst mb-4">Sponsoring</h2>
+    <h2 class="text-uppercase text-center font-weight-bolder verhulst mb-4 p-2">Sponsoring</h2>
     <div class="row">
         {% for product in project.productSponsoring %}
             <div class="col-lg-4">
@@ -82,6 +84,8 @@ Projet : {{ project.name }}
                         <div class=" text-right">
                             {% if product.ca is defined and product.ca > 0 %}<span class="btn-sm btn-primary">Prix de vente : {{ product.ca|number_format(2, ',', ' ') }} €</span>{% endif %}
                         </div>
+                        <p><b>Du : </b> {% if product.dateBegin is not null %}{{ product.dateBegin|date('d/m/Y') }}{% else %}-{% endif %}</p>
+                        <p><b>Au : </b> {% if product.dateEnd is not null %}{{ product.dateEnd|date('d/m/Y') }}{% else %}-{% endif %}</p>
                         <p>{{ product.description|raw }}</p>
                         {% if product.doc is not null %}
                             <p><a href="/files/products/{{ product.doc }}" target="_blank">Download {{ product.doc }}</a></p>
@@ -95,7 +99,7 @@ Projet : {{ project.name }}
     {% endif %}
 
     {% if project.productDivers.count > 0 %}
-    <h2 class="text-uppercase text-center font-weight-bolder verhulst mb-4">Divers</h2>
+    <h2 class="text-uppercase text-center font-weight-bolder verhulst mb-4 p-2">Divers</h2>
     <div class="row">
         {% for product in project.productDivers %}
             <div class="col-lg-4">
@@ -111,6 +115,8 @@ Projet : {{ project.name }}
                         -->
                     </div>
                     <div class="card-body">
+                        <p><b>Du : </b> {% if product.dateBegin is not null %}{{ product.dateBegin|date('d/m/Y') }}{% else %}-{% endif %}</p>
+                        <p><b>Au : </b> {% if product.dateEnd is not null %}{{ product.dateEnd|date('d/m/Y') }}{% else %}-{% endif %}</p>
                         <p>{{ product.description|raw }}</p>
                         {% if product.doc is not null %}
                             <p><a href="/files/products/{{ product.doc }}" target="_blank">Download {{ product.doc }}</a></p>

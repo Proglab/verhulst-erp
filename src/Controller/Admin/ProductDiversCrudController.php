@@ -9,6 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -59,6 +60,8 @@ class ProductDiversCrudController extends BaseCrudController
         $percentDefaultTv = PercentField::new('percent_tv')->setLabel('Commission TV')->setPermission('ROLE_ENCODE')->setStoredAsFractional(false)->setNumDecimals(2)->setRequired(true);
         $image = ImageField::new('doc')->setBasePath($this->getParameter('files.products.base_path'))->setUploadDir($this->getParameter('files.products.upload_dir'))->setUploadedFileNamePattern('[slug]-[timestamp]-[randomhash].[extension]')->setLabel('Document (PDF)');
         $imageDwonload = TextField::new('download_url')->renderAsHtml()->setLabel('Document (PDF)');
+        $dateBegin = DateField::new('date_begin')->setRequired(true)->setFormat('dd/MM/yy')->setLabel('Date début');
+        $dateEnd = DateField::new('date_end')->setRequired(true)->setFormat('dd/MM/yy')->setLabel('Date fin');
 
         $percentFreelanceHidden = PercentField::new('percent_freelance')
             ->setLabel('Commission Freelance')
@@ -88,29 +91,29 @@ class ProductDiversCrudController extends BaseCrudController
             switch ($pageName) {
                 case Crud::PAGE_DETAIL:
                 case Crud::PAGE_INDEX:
-                    $response = [$name, $percentVrListing, $imageDwonload];
+                    $response = [$name, $dateBegin, $dateEnd, $percentVrListing, $imageDwonload];
                     break;
                 case Crud::PAGE_NEW:
-                    $response = [$name, $percentVr, $percentDefaultFreelance, $percentDefaultSalarie, $percentDefaultTv, $image];
+                    $response = [$name, $dateBegin, $dateEnd, $percentVr, $percentDefaultFreelance, $percentDefaultSalarie, $percentDefaultTv, $image];
                     break;
                 case Crud::PAGE_EDIT:
-                    $response = [$name, $percentVr, $image, $percentFreelanceHidden, $percentSalarieHidden, $percentTvHidden];
+                    $response = [$name, $dateBegin, $dateEnd, $percentVr, $image, $percentFreelanceHidden, $percentSalarieHidden, $percentTvHidden];
                     break;
                 default:
-                    $response = [$name, $percentVr];
+                    $response = [$name, $dateBegin, $dateEnd, $percentVr];
             }
         } else {
             switch ($pageName) {
                 case Crud::PAGE_DETAIL:
                 case Crud::PAGE_INDEX:
-                    $response = [$projectName, $name, $percentVr];
+                    $response = [$projectName, $name, $dateBegin, $dateEnd, $percentVr];
                     break;
                 case Crud::PAGE_NEW:
                 case Crud::PAGE_EDIT:
-                    $response = [$project, $name, $percentVr, $image];
+                    $response = [$project, $name, $dateBegin, $dateEnd, $percentVr, $image];
                     break;
                 default:
-                    $response = [$name, $percentVr];
+                    $response = [$name, $dateBegin, $dateEnd, $percentVr];
             }
         }
 

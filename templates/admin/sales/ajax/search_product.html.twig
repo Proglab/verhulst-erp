@@ -5,6 +5,8 @@
         <th scope="col">Projet</th>
         <th scope="col">Produit</th>
         <th scope="col">Description</th>
+        <th scope="col">Du</th>
+        <th scope="col">Au</th>
         <th scope="col">Q dispo</th>
         <th scope="col" style="width: 100px;">Prix</th>
     </tr>
@@ -21,6 +23,8 @@
                 <th scope="row">{{ project.name }}</th>
                 <td>{{ product.name }}</td>
                 <td>{{ product.description|raw }}</td>
+                <td>{% if product.dateBegin is not null %}{{ product.dateBegin|date('d/m/y') }}{% else %}-{% endif %}</td>
+                <td>{% if product.dateEnd is not null %}{{ product.dateEnd|date('d/m/Y') }}{% else %}-{% endif %}</td>
                 <td> - </td>
                 <td> - </td>
             </tr>
@@ -35,6 +39,8 @@
                 <th scope="row">{{ project.name }}</th>
                 <td>{{ product.name }}</td>
                 <td>{{ product.description|raw }}</td>
+                <td>{% if product.dateBegin is not null %}{{ product.dateBegin|date('d/m/y') }}{% else %}-{% endif %}</td>
+                <td>{% if product.dateEnd is not null %}{{ product.dateEnd|date('d/m/Y') }}{% else %}-{% endif %}</td>
                 <td>{{ product.quantityAvailable }}</td>
                 <td>{% if product.ca is defined and product.ca > 0 %}{{ product.ca|number_format(2, ',', ' ') }}  €{% else %} - {% endif %}</td>
             </tr>
@@ -49,6 +55,8 @@
                 <th scope="row">{{ project.name }}</th>
                 <td>{{ product.name }}</td>
                 <td>{{ product.description|raw }}</td>
+                <td>{% if product.dateBegin is not null %}{{ product.dateBegin|date('d/m/y') }}{% else %}-{% endif %}</td>
+                <td>{% if product.dateEnd is not null %}{{ product.dateEnd|date('d/m/Y') }}{% else %}-{% endif %}</td>
                 <td>{{ product.quantityAvailable }}</td>
                 <td>{% if product.ca is defined and product.ca > 0 %}{{ product.ca|number_format(2, ',', ' ') }}  €{% else %} - {% endif %}</td>
             </tr>
@@ -63,6 +71,8 @@
                 <th scope="row">{{ project.name }}</th>
                 <td>{{ product.name }}</td>
                 <td>{{ product.description|raw }}</td>
+                <td>{% if product.dateBegin is not null %}{{ product.dateBegin|date('d/m/y') }}{% else %}-{% endif %}</td>
+                <td>{% if product.dateEnd is not null %}{{ product.dateEnd|date('d/m/Y') }}{% else %}-{% endif %}</td>
                 <td> - </td>
                 <td> - </td>
             </tr>

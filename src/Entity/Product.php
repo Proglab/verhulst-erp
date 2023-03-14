@@ -54,11 +54,21 @@ class Product
     #[Assert\PositiveOrZero]
     private ?float $percent_tv = 0.0;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $date_begin = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $date_end = null;
+
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Commission::class, orphanRemoval: true)]
     private Collection $commissions;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Sales::class, orphanRemoval: true)]
     private Collection $sales;
+
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'product_divers')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Project $project = null;
 
     public function __construct()
     {
@@ -234,6 +244,42 @@ class Product
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getDateBegin(): ?\DateTimeInterface
+    {
+        return $this->date_begin;
+    }
+
+    public function setDateBegin(?\DateTimeInterface $date): self
+    {
+        $this->date_begin = $date;
+
+        return $this;
+    }
+
+    public function getDateEnd(): ?\DateTimeInterface
+    {
+        return $this->date_end;
+    }
+
+    public function setDateEnd(?\DateTimeInterface $date): self
+    {
+        $this->date_end = $date;
+
+        return $this;
+    }
+
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
+    public function setProject(?Project $project): self
+    {
+        $this->project = $project;
 
         return $this;
     }

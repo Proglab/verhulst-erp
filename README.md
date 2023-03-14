@@ -67,3 +67,13 @@ docker run --init --rm -v {DIR_TO_PROJECT}:/project -w /project jakzal/phpqa php
 ```
 vendor\bin\dep.bat deploy -vvv
 ```
+
+### Tests
+```
+php bin/console doctrine:database:drop --force  --env=test
+php bin/console doctrine:database:create  --env=test
+php bin/console doctrine:migrations:diff  --env=test
+php bin/console doctrine:migrations:migrate --env=test
+php bin/console doctrine:fixtures:load --env=test
+.\vendor\bin\phpunit.bat 
+```

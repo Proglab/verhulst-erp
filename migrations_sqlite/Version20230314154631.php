@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230310143256 extends AbstractMigration
+final class Version20230314154631 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -28,7 +28,7 @@ final class Version20230310143256 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_6C30FCEF979B1AD6 ON company_contact (company_id)');
         $this->addSql('CREATE INDEX IDX_6C30FCEF55B127A4 ON company_contact (added_by_id)');
         $this->addSql('CREATE TABLE css (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, content CLOB NOT NULL)');
-        $this->addSql('CREATE TABLE product (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, project_id INTEGER NOT NULL, name VARCHAR(255) NOT NULL, percent_vr NUMERIC(5, 2) DEFAULT NULL, doc VARCHAR(255) DEFAULT NULL, description CLOB DEFAULT NULL, percent_freelance NUMERIC(5, 2) DEFAULT NULL, percent_salarie NUMERIC(5, 2) DEFAULT NULL, percent_tv NUMERIC(5, 2) DEFAULT NULL, type VARCHAR(255) NOT NULL, ca NUMERIC(10, 2) DEFAULT NULL, quantity_max INTEGER DEFAULT NULL, date DATETIME DEFAULT NULL, CONSTRAINT FK_D34A04AD166D1F9C FOREIGN KEY (project_id) REFERENCES project (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE product (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, project_id INTEGER NOT NULL, name VARCHAR(255) NOT NULL, percent_vr NUMERIC(5, 2) DEFAULT NULL, doc VARCHAR(255) DEFAULT NULL, description CLOB DEFAULT NULL, percent_freelance NUMERIC(5, 2) DEFAULT NULL, percent_salarie NUMERIC(5, 2) DEFAULT NULL, percent_tv NUMERIC(5, 2) DEFAULT NULL, date_begin DATETIME DEFAULT NULL, date_end DATETIME DEFAULT NULL, type VARCHAR(255) NOT NULL, ca NUMERIC(10, 2) DEFAULT NULL, quantity_max INTEGER DEFAULT NULL, CONSTRAINT FK_D34A04AD166D1F9C FOREIGN KEY (project_id) REFERENCES project (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_D34A04AD166D1F9C ON product (project_id)');
         $this->addSql('CREATE TABLE project (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL)');
         $this->addSql('CREATE TABLE resend_confirmation_email_request (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, hashed_token VARCHAR(255) NOT NULL, requested_at DATETIME NOT NULL --(DC2Type:datetime_immutable)
