@@ -63,7 +63,7 @@ class ProductSponsoringCrudController extends BaseCrudController
         $quantityMax = IntegerField::new('quantity_max')->setLabel('Q max');
         $quantitySales = IntegerField::new('quantity_sales')->setLabel('Q vendue');
         $quantityAvailable = IntegerField::new('quantity_available')->setLabel('Q dispo');
-        $image = ImageField::new('doc')->setBasePath('files/products')->setUploadDir('../../shared/public/files/products')->setUploadedFileNamePattern('[slug]-[timestamp]-[randomhash].[extension]')->setLabel('Document (PDF)');
+        $image = ImageField::new('doc')->setBasePath($this->getParameter('files.products.base_path'))->setUploadDir($this->getParameter('files.products.upload_dir'))->setUploadedFileNamePattern('[slug]-[timestamp]-[randomhash].[extension]')->setLabel('Document (PDF)');
         $imageDwonload = TextField::new('download_url')->renderAsHtml()->setLabel('Doc (PDF)');
 
         $percentTv = PercentField::new('percent_tv')
