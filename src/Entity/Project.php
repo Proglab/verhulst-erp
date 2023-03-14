@@ -37,6 +37,9 @@ class Project
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: ProductDivers::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $product_divers;
 
+    #[ORM\Column]
+    private ?bool $archive = false;
+
     public function __construct()
     {
         $this->product_event = new ArrayCollection();
@@ -207,6 +210,18 @@ class Project
     public function setMail(?bool $mail): self
     {
         $this->mail = $mail;
+
+        return $this;
+    }
+
+    public function isArchive(): ?bool
+    {
+        return $this->archive;
+    }
+
+    public function setArchive(bool $archive): self
+    {
+        $this->archive = $archive;
 
         return $this;
     }

@@ -69,9 +69,10 @@ class DashboardController extends AbstractDashboardController
                 MenuItem::linkToCrud('Package Vip', 'fa fa-chess-king', ProductPackageVip::class)->setCssClass('mx-2')->setPermission('ROLE_COMMERCIAL'),
                 MenuItem::linkToCrud('Sponsoring', 'fa fa-mug-hot', ProductSponsoring::class)->setCssClass('mx-2')->setPermission('ROLE_COMMERCIAL'),
                 MenuItem::linkToCrud('Divers', 'fa fa-globe', ProductDivers::class)->setCssClass('mx-2')->setPermission('ROLE_COMMERCIAL'),
+                MenuItem::linkToCrud('Archives', 'fa fa-box-archive', Project::class)->setController(ProjectArchiveCrudController::class)->setCssClass('mx-2')->setPermission('ROLE_COMMERCIAL'),
 
             MenuItem::linkToCrud('admin.menu.client', 'fas fa-address-book', CompanyContact::class)->setPermission('ROLE_COMMERCIAL'),
-            MenuItem::linkToCrud('admin.menu.sales', 'fas fa-comments-dollar', Sales::class)->setPermission('ROLE_COMMERCIAL'),
+            MenuItem::linkToCrud('admin.menu.sales', 'fas fa-comments-dollar', Sales::class)->setController(ComptaCrudController::class)->setPermission('ROLE_COMMERCIAL'),
 
             MenuItem::section('Admin')->setPermission('ROLE_ADMIN'),
             MenuItem::linkToDashboard('admin.menu.dashboard', 'fa fa-chart-line')->setPermission('ROLE_ADMIN'),

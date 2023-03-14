@@ -9,15 +9,21 @@ use App\Entity\User;
 use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -69,20 +75,9 @@ class ProjectCrudController extends BaseCrudController
             $projectDivers = CollectionField::new('product_divers')->setLabel('Divers')->allowAdd(true)->allowDelete(false)->setEntryIsComplex()->useEntryCrudForm(ProductDiversCrudController::class)->setRequired(true);
         }
 
-        $mail = BooleanField::new('mail')->setLabel('Prévenir les commerciaux ?')->setPermission('ROLE_ADMIN');
+        $archive = BooleanField::new('archive')->setLabel('Archive')->setPermission('ROLE_COMMERCIAL');
 
-        switch ($pageName) {
-            case Crud::PAGE_DETAIL:
-            case Crud::PAGE_INDEX:
-            case Crud::PAGE_EDIT:
-                $response = [$name, $projectEvent, $projectSponsor, $projectPackage, $projectDivers];
-                break;
-            case Crud::PAGE_NEW:
-                $response = [$name, $mail, $projectEvent, $projectSponsor, $projectPackage, $projectDivers];
-                break;
-            default:
-                $response = [$name, $projectEvent, $projectSponsor, $projectPackage, $projectDivers];
-        }
+        $response = [$name, $projectEvent, $projectSponsor, $projectPackage, $projectDivers, $archive];
 
         return $response;
     }
@@ -93,6 +88,9 @@ class ProjectCrudController extends BaseCrudController
 
         $clone = Action::new('cloneProject', 'Clone project')
             ->linkToCrudAction('cloneProject');
+
+        $archive = Action::new('archiveProject', 'Archive project')
+            ->linkToCrudAction('archiveProject');
 
         $actions
             ->setPermission(Action::NEW, 'ROLE_ENCODE')
@@ -110,6 +108,10 @@ class ProjectCrudController extends BaseCrudController
             ->add(Crud::PAGE_INDEX, $clone)
             ->update(Crud::PAGE_INDEX, 'cloneProject', function (Action $action) {
                 return $action->setIcon('fa-solid fa-clone')->setLabel(false)->setHtmlAttributes(['title' => 'Clone']);
+            })
+            ->add(Crud::PAGE_INDEX, $archive)
+            ->update(Crud::PAGE_INDEX, 'archiveProject', function (Action $action) {
+                return $action->setIcon('fa-solid fa-box-archive')->setLabel(false)->setHtmlAttributes(['title' => 'Archive']);
             })
         ;
 
@@ -225,5 +227,16 @@ class ProjectCrudController extends BaseCrudController
         $this->addFlash('warning', '⚠️⚠️⚠️N\'oubliez pas d\'encoder les commissions pour le projet <strong>' . $project_new->getName() . '</strong> !!! ⚠️⚠️⚠️');
 
         return $this->redirect($url);
+    }
+
+
+    public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
+    {
+        /** @var QueryBuilder $qb */
+        $qb = $this->container->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
+        $qb->andWhere('entity.archive = :archive')
+            ->setParameter('archive', false);
+
+        return $qb;
     }
 }
