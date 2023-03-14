@@ -85,7 +85,7 @@ class Sales
 
     public function setPrice(string|float|null $price): self
     {
-        $this->price = (float) str_replace(',', '.', $price);
+        $this->price = (float) str_replace(',', '.', (string) $price);
 
         return $this;
     }
