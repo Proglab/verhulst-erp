@@ -33,7 +33,7 @@ use Symfony\Component\Mailer\MailerInterface;
 
 class ProjectCrudController extends BaseCrudController
 {
-    public function __construct(private MailerInterface $mailer, private ProjectRepository $projectRepository, private AdminUrlGenerator $adminUrlGenerator)
+    public function __construct(protected MailerInterface $mailer, protected ProjectRepository $projectRepository, protected AdminUrlGenerator $adminUrlGenerator)
     {
     }
 

@@ -20,11 +20,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 
 class ProjectArchiveCrudController extends ProjectCrudController
 {
-    public function __construct(private ProjectRepository $projectRepository, private AdminUrlGenerator $adminUrlGenerator)
+    public function __construct(protected MailerInterface $mailer, protected ProjectRepository $projectRepository, protected AdminUrlGenerator $adminUrlGenerator)
     {
+        parent::__construct($mailer, $projectRepository, $adminUrlGenerator);
     }
 
     public static function getEntityFqcn(): string

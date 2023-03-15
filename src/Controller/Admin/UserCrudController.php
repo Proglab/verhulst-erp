@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use App\Repository\UserRepository;
 use App\Service\UserService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -21,14 +22,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
-use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UserCrudController extends BaseCrudController
 {
-    public function __construct(private UserService $userService, private AdminUrlGenerator $adminUrlGenerator)
+    public function __construct(private UserService $userService, private UserRepository $userRepository)
     {
     }
 
@@ -66,7 +66,6 @@ class UserCrudController extends BaseCrudController
         $resetPassword = Action::new('resetPassword', 'Reset mot de passe')
             ->linkToCrudAction('resetPassword');
 
-
         $switchUser = Action::new('switchUser', 'Switch user')
             ->linkToCrudAction('switchUser');
 
@@ -94,12 +93,13 @@ class UserCrudController extends BaseCrudController
         return $this->redirect($context->getReferrer());
     }
 
-
     public function switchUser(AdminContext $context): RedirectResponse
     {
-        /** @var  $user */
-        $user = $context->getEntity()->getInstance();
-        return $this->redirect($this->generateUrl('admin').'?_switch_user='.$user->getEmail());
+        $userId = $context->getRequest()->get('entityId');
+
+        $user = $this->userRepository->find($userId);
+
+        return $this->redirect($this->generateUrl('admin') . '?_switch_user=' . $user->getEmail());
     }
 
     public static function getEntityFqcn(): string
@@ -120,7 +120,7 @@ class UserCrudController extends BaseCrudController
             'Salarié' => 'salarie',
             'Freelance' => 'freelance',
             'TV' => 'tv',
-        ])->setRequired(true);
+        ]);
 
         switch ($pageName) {
             case Crud::PAGE_DETAIL:
