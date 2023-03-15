@@ -38,7 +38,7 @@ security:
             # https://symfony.com/doc/current/security.html#the-firewall
 
             # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
+            switch_user: true
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
@@ -52,7 +52,7 @@ security:
         ROLE_COMPTA: [IS_AUTHENTICATED_REMEMBERED, IS_AUTHENTICATED_FULLY]
         ROLE_TECH: [IS_AUTHENTICATED_REMEMBERED, IS_AUTHENTICATED_FULLY]
         ROLE_ENCODE: ROLE_COMMERCIAL
-        ROLE_ADMIN: [ROLE_ENCODE, ROLE_COMPTA]
+        ROLE_ADMIN: [ROLE_ENCODE, ROLE_COMPTA, ROLE_ALLOWED_TO_SWITCH]
         ROLE_BOSS: [ROLE_ADMIN, ROLE_TECH]
 
 when@test:

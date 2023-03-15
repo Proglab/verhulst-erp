@@ -21,13 +21,14 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UserCrudController extends BaseCrudController
 {
-    public function __construct(private UserService $userService)
+    public function __construct(private UserService $userService, private AdminUrlGenerator $adminUrlGenerator)
     {
     }
 
@@ -65,11 +66,21 @@ class UserCrudController extends BaseCrudController
         $resetPassword = Action::new('resetPassword', 'Reset mot de passe')
             ->linkToCrudAction('resetPassword');
 
+
+        $switchUser = Action::new('switchUser', 'Switch user')
+            ->linkToCrudAction('switchUser');
+
         $actions->add(Crud::PAGE_INDEX, $resetPassword);
 
         $actions->update(Crud::PAGE_INDEX, 'resetPassword', function (Action $action) {
             return $action->setIcon('fa fa-unlock-keyhole')->setLabel(false)->setHtmlAttributes(['title' => 'Reset mot de passe']);
         });
+
+        $actions->add(Crud::PAGE_INDEX, $switchUser);
+        $actions->update(Crud::PAGE_INDEX, 'switchUser', function (Action $action) {
+            return $action->setIcon('fa fa-user-secret')->setLabel(false)->setHtmlAttributes(['title' => 'Switch user']);
+        });
+        $actions->setPermission('switchUser', 'ROLE_ALLOWED_TO_SWITCH');
 
         return $actions;
     }
@@ -81,6 +92,14 @@ class UserCrudController extends BaseCrudController
         $this->addFlash('success', 'Mot de passe réinitialisé');
 
         return $this->redirect($context->getReferrer());
+    }
+
+
+    public function switchUser(AdminContext $context): RedirectResponse
+    {
+        /** @var  $user */
+        $user = $context->getEntity()->getInstance();
+        return $this->redirect($this->generateUrl('admin').'?_switch_user='.$user->getEmail());
     }
 
     public static function getEntityFqcn(): string
