@@ -20,8 +20,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
@@ -63,6 +64,9 @@ class ProjectCrudController extends BaseCrudController
     {
         $name = TextField::new('name')->setLabel('Nom du projet');
 
+        $dateBegin = DateField::new('date_begin')->setLabel('Du')->setRequired(true);
+        $dateEnd = DateField::new('date_end')->setLabel('Au')->setRequired(true);
+
         if ($this->isGranted('ROLE_ENCODE')) {
             $projectEvent = CollectionField::new('product_event')->setLabel('Event à la carte')->allowAdd(true)->allowDelete(true)->setEntryIsComplex()->useEntryCrudForm(ProductEventCrudController::class)->setRequired(true);
             $projectPackage = CollectionField::new('product_package')->setLabel('Package VIP')->allowAdd(true)->allowDelete(true)->setEntryIsComplex()->useEntryCrudForm(ProductPackageVipCrudController::class)->setRequired(true);
@@ -75,9 +79,25 @@ class ProjectCrudController extends BaseCrudController
             $projectDivers = CollectionField::new('product_divers')->setLabel('Divers')->allowAdd(true)->allowDelete(false)->setEntryIsComplex()->useEntryCrudForm(ProductDiversCrudController::class)->setRequired(true);
         }
 
-        $archive = BooleanField::new('archive')->setLabel('Archive')->setPermission('ROLE_COMMERCIAL');
+        if ($this->isGranted('ROLE_ENCODE')) {
+            $projectEventIndex = AssociationField::new('product_event')->setLabel('Event à la carte')->setRequired(true);
+            $projectPackageIndex = AssociationField::new('product_package')->setLabel('Package VIP')->setRequired(true);
+            $projectSponsorIndex = AssociationField::new('product_sponsoring')->setLabel('Sponsoring')->setRequired(true);
+            $projectDiversIndex = AssociationField::new('product_divers')->setLabel('Divers')->setRequired(true);
+        } else {
+            $projectEventIndex = AssociationField::new('product_event')->setLabel('Event à la carte')->setRequired(true);
+            $projectPackageIndex = AssociationField::new('product_package')->setLabel('Package VIP')->setRequired(true);
+            $projectSponsorIndex = AssociationField::new('product_sponsoring')->setLabel('Sponsoring')->setRequired(true);
+            $projectDiversIndex = AssociationField::new('product_divers')->setLabel('Divers')->setRequired(true);
+        }
 
-        $response = [$name, $projectEvent, $projectSponsor, $projectPackage, $projectDivers, $archive];
+        switch ($pageName) {
+            case Crud::PAGE_INDEX:
+                $response = [$name, $dateBegin, $dateEnd, $projectEventIndex, $projectSponsorIndex, $projectPackageIndex, $projectDiversIndex];
+                break;
+            default:
+                $response = [$name, $dateBegin, $dateEnd, $projectEvent, $projectSponsor, $projectPackage, $projectDivers];
+        }
 
         return $response;
     }
@@ -111,6 +131,10 @@ class ProjectCrudController extends BaseCrudController
             })
             ->add(Crud::PAGE_INDEX, $archive)
             ->update(Crud::PAGE_INDEX, 'archiveProject', function (Action $action) {
+                return $action->setIcon('fa-solid fa-box-archive')->setLabel(false)->setHtmlAttributes(['title' => 'Archive']);
+            })
+            ->add(Crud::PAGE_DETAIL, $archive)
+            ->update(Crud::PAGE_DETAIL, 'archiveProject', function (Action $action) {
                 return $action->setIcon('fa-solid fa-box-archive')->setLabel(false)->setHtmlAttributes(['title' => 'Archive']);
             })
         ;
@@ -216,6 +240,7 @@ class ProjectCrudController extends BaseCrudController
             }
             $project_new->addProductDiver($eventClone);
         }
+        $project_new->setArchive(false);
         $this->projectRepository->save($project_new, true);
 
         $url = $this->adminUrlGenerator
@@ -229,6 +254,23 @@ class ProjectCrudController extends BaseCrudController
         return $this->redirect($url);
     }
 
+    public function archiveProject(AdminContext $context): RedirectResponse
+    {
+        /** @var Project $project */
+        $project = $context->getEntity()->getInstance();
+        $project->setArchive(true);
+        $this->projectRepository->save($project, true);
+
+        $url = $this->adminUrlGenerator
+            ->setController(self::class)
+            ->setAction('index')
+            ->setEntityId(null)
+            ->generateUrl();
+
+        $this->addFlash('success', 'Le projet <strong>' . $project->getName() . '</strong> a bien été archivé');
+
+        return $this->redirect($url);
+    }
 
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
     {

@@ -5,16 +5,6 @@ Projet : {{ project.name }}
 {% endblock %}
 {% block page_title %}Verhulst & Friends - ERP - {{ block('content_title') }}{% endblock %}
 
-{% block page_actions %}
-    {% set url = ea_url()
-        .setAction('archiveProject') %}
-    <div class="global-actions">
-        <a class=" action-new btn btn-primary" href="{{ url }}" data-action-name="new">
-            <i class="action-icon fa fa-box-archive"></i> <span class="action-label">Archive</span>
-        </a>
-    </div>
-{% endblock %}
-
 {% block main %}
     {% if project.productEvent.count > 0 %}
         <h2 class="text-uppercase text-center font-weight-bolder verhulst mb-4 p-2">Events</h2>

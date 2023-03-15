@@ -7,6 +7,7 @@ namespace App\Entity;
 use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -39,6 +40,12 @@ class Project
 
     #[ORM\Column]
     private ?bool $archive = false;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $date_begin = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $date_end = null;
 
     public function __construct()
     {
@@ -222,6 +229,30 @@ class Project
     public function setArchive(bool $archive): self
     {
         $this->archive = $archive;
+
+        return $this;
+    }
+
+    public function getDateBegin(): ?\DateTimeInterface
+    {
+        return $this->date_begin;
+    }
+
+    public function setDateBegin(?\DateTimeInterface $date_begin): self
+    {
+        $this->date_begin = $date_begin;
+
+        return $this;
+    }
+
+    public function getDateEnd(): ?\DateTimeInterface
+    {
+        return $this->date_end;
+    }
+
+    public function setDateEnd(?\DateTimeInterface $date_end): self
+    {
+        $this->date_end = $date_end;
 
         return $this;
     }
