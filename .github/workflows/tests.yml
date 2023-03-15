@@ -66,11 +66,12 @@ jobs:
           DATABASE_URL: sqlite:///%kernel.project_dir%/var/database_test.db
         run: |
           rm -rf migrations
-          rm -rf migrations_sqlite
           mkdir migrations
+          rm -rf migrations_sqlite
           mkdir migrations_sqlite
-          php bin/console doctrine:database:create
-          php bin/console doctrine:migrations:diff
+          pwd .
+          php bin/console doctrine:database:create --env=test
+          php bin/console doctrine:migrations:diff --env=test
           php bin/console d:m:m --no-interaction --env=test
           php bin/console d:f:l --no-interaction --env=test
 
