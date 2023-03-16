@@ -77,3 +77,13 @@ php bin/console doctrine:migrations:migrate --env=test
 php bin/console doctrine:fixtures:load --env=test
 .\vendor\bin\phpunit.bat 
 ```
+
+### Php-cs-fixer
+```
+docker run --init --rm -v "$(pwd):/project" -v "$(pwd)/tmp-phpqa:/tmp" -w /project jakzal/phpqa:php8.1 php-cs-fixer fix src
+```
+
+### Php stan
+```
+docker run --init -it --rm -v "$(pwd):/project" -v "$(pwd)/tmp-phpqa:/tmp" -w /project jakzal/phpqa phpstan analyse src
+```
