@@ -9,12 +9,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\ActionDto;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\CrudDto;
-use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
-use EasyCorp\Bundle\EasyAdminBundle\Provider\AdminContextProvider;
 use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class BaseCrudController extends AbstractCrudController
 {
@@ -51,18 +47,18 @@ abstract class BaseCrudController extends AbstractCrudController
         ;
     }
 
-    public function getVoters(AdminContext $adminContext)
+    public function getVoters(AdminContext $adminContext): Response
     {
         $viewParams = [];
-        foreach($adminContext->getCrud()->getActionsConfig()->getActionPermissions() as $action => $permission) {
+        foreach ($adminContext->getCrud()->getActionsConfig()->getActionPermissions() as $action => $permission) {
             $viewParams[$action] = [
                 'granted' => $this->isGranted(Permission::EA_EXECUTE_ACTION, ['action' => $action]) && !\in_array($action, $adminContext->getCrud()->getActionsConfig()->getDisabledActions(), true),
-                'permission' => $permission
+                'permission' => $permission,
             ];
         }
+
         return $this->render('admin/voters.html.twig',
             ['title' => $adminContext->getCrud()->getEntityFqcn(), 'datas' => $viewParams]
         );
     }
-
 }

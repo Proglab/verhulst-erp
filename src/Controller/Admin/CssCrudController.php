@@ -63,7 +63,7 @@ class CssCrudController extends BaseCrudController
             ->disable(Action::SAVE_AND_CONTINUE)
             ->disable(Action::DETAIL)
 
-            ;
+        ;
     }
 
     public function index(AdminContext $context): RedirectResponse

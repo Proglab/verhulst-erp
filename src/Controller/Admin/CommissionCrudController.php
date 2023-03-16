@@ -21,7 +21,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
-use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -55,7 +54,6 @@ class CommissionCrudController extends BaseCrudController
         $editPercentVr = Action::new('editPercentVr', null)
             ->linkToCrudAction('editPercentVr');
 
-
         return $actions
             ->setPermission('editPercentCom', 'ROLE_ADMIN')
             ->setPermission('editPercentVr', 'ROLE_ADMIN')
@@ -68,7 +66,6 @@ class CommissionCrudController extends BaseCrudController
             ->remove(Crud::PAGE_EDIT, Action::SAVE_AND_RETURN)
             ->remove(Crud::PAGE_NEW, Action::SAVE_AND_RETURN);
     }
-
 
     public function editPercentCom(AdminContext $adminContext): Response
     {
