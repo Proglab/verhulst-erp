@@ -18,6 +18,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Controller\DashboardControllerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -89,6 +90,7 @@ class DashboardController extends AbstractDashboardController
 
             MenuItem::section('Techniciens uniquements')->setPermission('ROLE_TECH'),
             MenuItem::linkToCrud('Css', 'fas fa-brush', Css::class)->setPermission('ROLE_TECH'),
+            MenuItem::linkToRoute('Droits', 'fas fa-right-to-bracket', 'dashboard_droits')->setPermission($this->isGranted('IS_IMPERSONATOR') ? isset($this->getUser()->getRoles()[0]) ? $this->getUser()->getRoles()[0] : 'ROLE_BOSS' : 'ROLE_BOSS'),
 
             MenuItem::section(),
             MenuItem::linkToLogout('admin.menu.logout', 'fa-solid fa-door-open text-danger')->setCssClass('text-danger'),

@@ -47,6 +47,7 @@ class ProductPackageVipCrudController extends BaseCrudController
             ->setPermission(Action::SAVE_AND_RETURN, 'ROLE_ENCODE')
             ->setPermission(Action::SAVE_AND_ADD_ANOTHER, 'ROLE_ENCODE')
             ->setPermission(Action::SAVE_AND_CONTINUE, 'ROLE_ENCODE')
+            ->setPermission(Action::DELETE, 'ROLE_ADMIN')
         ;
     }
 

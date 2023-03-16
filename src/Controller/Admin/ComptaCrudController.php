@@ -155,8 +155,11 @@ class ComptaCrudController extends BaseCrudController
 
         $actions
             ->disable(Action::NEW)
-            ->setPermission(Action::EDIT, 'ROLE_COMPTA')
             ->disable(Action::DELETE)
+            ->disable(Action::SAVE_AND_CONTINUE)
+            ->disable(Action::SAVE_AND_RETURN)
+            ->disable(Action::SAVE_AND_ADD_ANOTHER)
+            ->setPermission(Action::EDIT, 'ROLE_ADMIN')
             ->setPermission(Action::DETAIL, 'ROLE_COMPTA')
             ->setPermission(Action::INDEX, 'ROLE_COMPTA')
             ->setPermission('setInvoiced', 'ROLE_COMPTA')

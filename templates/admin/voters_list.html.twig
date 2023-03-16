@@ -1,0 +1,20 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}Tableau de bord - Les droits{% endblock %}
+{% block page_title %}Verhulst & Friends - ERP - {{ block('content_title') }}{% endblock %}
+
+{% block main %}
+    <div class="row">
+        {% for controller in controllers %}
+        <div class="col-4">
+            <h4>{{ controller }}</h4>
+            {% set url = ea_url()
+                .setDashboard('App\\Controller\\Admin\\DashboardPagesController')
+                .setController(controller)
+                .setAction('getVoters') %}
+            <div hx-get="{{ url }}" hx-trigger="load">
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

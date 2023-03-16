@@ -94,7 +94,6 @@ class UserFixtures extends Fixture
         $user = UserFactory::new()
             ->enabled()
             ->verified()
-            ->adminAndCommercial()
             ->create([
                 'firstname' => 'Gonzague', // 1
                 'lastname' => 'Lefere',
@@ -106,7 +105,6 @@ class UserFixtures extends Fixture
         $user = UserFactory::new()
             ->enabled()
             ->verified()
-            ->adminAndCommercial()
             ->create([
                 'firstname' => 'Gonzague', // 1
                 'lastname' => 'Lefere',

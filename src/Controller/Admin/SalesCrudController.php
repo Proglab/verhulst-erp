@@ -78,6 +78,8 @@ class SalesCrudController extends BaseCrudController
 
         $actions = parent::configureActions($actions);
         $actions
+            ->setPermission('listProduct', 'ROLE_COMMERCIAL')
+            ->setPermission('sales_by_users_list', 'ROLE_COMMERCIAL')
             ->setPermission(Action::NEW, 'ROLE_COMMERCIAL')
             ->setPermission(Action::EDIT, 'ROLE_COMMERCIAL')
             ->setPermission(Action::DELETE, 'ROLE_COMMERCIAL')

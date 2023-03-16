@@ -80,6 +80,7 @@ class UserCrudController extends BaseCrudController
             return $action->setIcon('fa fa-user-secret')->setLabel(false)->setHtmlAttributes(['title' => 'Switch user']);
         });
         $actions->setPermission('switchUser', 'ROLE_ALLOWED_TO_SWITCH');
+        $actions->setPermission('resetPassword', 'ROLE_ADMIN');
 
         return $actions;
     }

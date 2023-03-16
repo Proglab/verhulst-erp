@@ -113,9 +113,11 @@ class ProjectCrudController extends BaseCrudController
             ->linkToCrudAction('archiveProject');
 
         $actions
+            ->setPermission('cloneProject', 'ROLE_ENCODE')
+            ->setPermission('archiveProject', 'ROLE_COMMERCIAL')
             ->setPermission(Action::NEW, 'ROLE_ENCODE')
             ->setPermission(Action::EDIT, 'ROLE_ENCODE')
-            ->setPermission(Action::DELETE, 'ROLE_ENCODE')
+            ->setPermission(Action::DELETE, 'ROLE_ADMIN')
             ->setPermission(Action::DETAIL, 'ROLE_COMMERCIAL')
             ->setPermission(Action::INDEX, 'ROLE_COMMERCIAL')
             ->setPermission(Action::SAVE_AND_RETURN, 'ROLE_COMMERCIAL')

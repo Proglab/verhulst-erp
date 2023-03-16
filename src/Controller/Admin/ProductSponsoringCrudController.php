@@ -43,7 +43,7 @@ class ProductSponsoringCrudController extends BaseCrudController
             ->setPermission(Action::EDIT, 'ROLE_ENCODE')
             ->setPermission(Action::DETAIL, 'ROLE_COMMERCIAL')
             ->setPermission(Action::INDEX, 'ROLE_COMMERCIAL')
-            ->setPermission(Action::DELETE, 'ROLE_ENCODE')
+            ->setPermission(Action::DELETE, 'ROLE_ADMIN')
             ->setPermission(Action::SAVE_AND_RETURN, 'ROLE_ENCODE')
             ->setPermission(Action::SAVE_AND_ADD_ANOTHER, 'ROLE_ENCODE')
             ->setPermission(Action::SAVE_AND_CONTINUE, 'ROLE_ENCODE')

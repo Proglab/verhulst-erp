@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
+use Symfony\Component\Finder\Finder;
 
 class DashboardPagesController extends DashboardController
 {
@@ -285,6 +286,24 @@ class DashboardPagesController extends DashboardController
             'chart' => $chart,
             'year' => $year,
             'locale' => $this->requestStack->getCurrentRequest()->getLocale(),
+        ]);
+    }
+
+    #[Route('/admin/{_locale}/droits', name: 'dashboard_droits')]
+    public function droits(): Response
+    {
+        $finder = new Finder();
+        $files = $finder->files()->in(__DIR__);
+        $params = [];
+        foreach ($files as $file) {
+            if ($file->getBasename() === 'BaseCrudController.php' || $file->getBasename() === 'DashboardController.php' || $file->getBasename() === 'DashboardPagesController.php') {
+                continue;
+            }
+            $params[] = 'App\\Controller\\Admin\\'.str_replace('.php', '', $file->getBasename());
+        }
+
+        return $this->render('admin/voters_list.html.twig', [
+            'controllers' => $params
         ]);
     }
 }

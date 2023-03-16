@@ -63,6 +63,7 @@ class CompanyCrudController extends BaseCrudController
             ->linkToCrudAction('getVatInfos');
 
         $actions
+            ->setPermission('getVatInfos', 'ROLE_COMMERCIAL')
             ->setPermission(Action::NEW, 'ROLE_COMMERCIAL')
             ->setPermission(Action::EDIT, 'ROLE_COMMERCIAL')
             ->setPermission(Action::DELETE, 'ROLE_COMMERCIAL')

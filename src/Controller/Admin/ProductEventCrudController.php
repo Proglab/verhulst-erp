@@ -25,13 +25,12 @@ class ProductEventCrudController extends BaseCrudController
     public function configureActions(Actions $actions): Actions
     {
         $actions = parent::configureActions($actions);
-
         return $actions
             ->setPermission(Action::NEW, 'ROLE_COMMERCIAL')
             ->setPermission(Action::EDIT, 'ROLE_COMMERCIAL')
             ->setPermission(Action::DETAIL, 'ROLE_COMMERCIAL')
             ->setPermission(Action::INDEX, 'ROLE_COMMERCIAL')
-            ->setPermission(Action::DELETE, 'ROLE_ENCODE')
+            ->setPermission(Action::DELETE, 'ROLE_ADMIN')
             ->setPermission(Action::SAVE_AND_RETURN, 'ROLE_COMMERCIAL')
             ->setPermission(Action::SAVE_AND_ADD_ANOTHER, 'ROLE_COMMERCIAL')
             ->setPermission(Action::SAVE_AND_CONTINUE, 'ROLE_COMMERCIAL')

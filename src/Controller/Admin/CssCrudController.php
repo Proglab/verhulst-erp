@@ -55,15 +55,27 @@ class CssCrudController extends BaseCrudController
             ->remove(Crud::PAGE_DETAIL, Action::EDIT)
             ->remove(Crud::PAGE_DETAIL, Action::DELETE)
             ->remove(Crud::PAGE_DETAIL, Action::INDEX)
-            ->remove(Crud::PAGE_NEW, Action::SAVE_AND_RETURN);
+            ->remove(Crud::PAGE_NEW, Action::SAVE_AND_RETURN)
+            ->disable(Action::NEW)
+            ->disable(Action::DELETE)
+            ->disable(Action::INDEX)
+            ->disable(Action::SAVE_AND_ADD_ANOTHER)
+            ->disable(Action::SAVE_AND_CONTINUE)
+            ->disable(Action::DETAIL)
+
+            ;
     }
 
     public function index(AdminContext $context): RedirectResponse
     {
         $css = $this->cssRepository->findOneBy([]);
         if (empty($css)) {
+            $path = realpath(__DIR__ . '/../../../../../shared/public/css/app.css');
             $css = new Css();
-            $css->setContent(file_get_contents(realpath(__DIR__ . '/../../../../../shared/public/css/app.css')));
+            if (!file_exists(realpath($path))) {
+                file_put_contents($path, '');
+            }
+            $css->setContent(file_get_contents(realpath($path)));
             $this->cssRepository->save($css, true);
         }
 
