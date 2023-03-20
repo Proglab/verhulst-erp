@@ -89,7 +89,7 @@ class CompanyContactCrudController extends BaseCrudController
                 $response = [$panel1, $company, $companyVat, $companyStreet, $companyPc, $companyCity, $companyCountry, $panel2, $fullname, $lang, $email, $phone, $gsm, $userName, $noteView, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $billingmail];
                 break;
             case Crud::PAGE_INDEX:
-                $response = [$company, $fullname, $langListing, $email, $phone, $gsm, $userNameListing, $note];
+                $response = [$company, $companyVat, $fullname, $langListing, $email, $phone, $gsm, $userNameListing, $note];
                 break;
             default:
                 $response = [$company, $firstname, $lastname, $lang, $email, $phone, $note];

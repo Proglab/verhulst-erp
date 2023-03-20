@@ -48,7 +48,7 @@ class CompanyCrudController extends BaseCrudController
     {
         $crud->setEntityLabelInPlural('Clients')
             ->setEntityLabelInSingular('Client')
-        ->showEntityActionsInlined(true)
+            ->showEntityActionsInlined(true)
             ->overrideTemplate('crud/new', 'admin/company/crud/new.html.twig')
             ->overrideTemplate('crud/edit', 'admin/company/crud/edit.html.twig');
 
@@ -164,6 +164,7 @@ class CompanyCrudController extends BaseCrudController
 
         $newForm = $this->createNewForm($context->getEntity(), $context->getCrud()->getNewFormOptions(), $context);
         $newForm->handleRequest($context->getRequest());
+
         /** @var Company $entityInstance */
         $entityInstance = $newForm->getData();
         $context->getEntity()->setInstance($entityInstance);
@@ -332,18 +333,22 @@ class CompanyCrudController extends BaseCrudController
 
         $response = $this->client->request(
             'GET',
-            'https://anyapi.io/api/v1/vat/validate?apiKey=' . $_ENV['ANYAPI_KEY'] . '8&vat_number=' . $vat
+            'http://apilayer.net/api/validate?access_key=' . $_ENV['ANYAPI_KEY'] . '&vat_number=' . $vat . '&format=1'
         );
         $content = json_decode($response->getContent());
-        $content->vat = $vat;
 
-        if (false === $content->valid || false === $content->validFormat) {
+        if (false === $content->valid || false === $content->format_valid) {
             return new JsonResponse($content, 404);
         }
-
-        $content->company->street = explode(',', $content->company->address)[0];
-        $content->company->pc = (string) (int) explode(',', $content->company->address)[1];
-        $content->company->town = trim(str_replace($content->company->pc, '', explode(',', $content->company->address)[1]));
+        $content->vat = $vat;
+        $content->company = new \stdClass();
+        $content->company->name = $content->company_name;
+        $content->company->street = explode("\n", $content->company_address)[0];
+        $content->company->pc = (string) (int) explode("\n", $content->company_address)[1];
+        $content->company->town = trim(str_replace($content->company->pc, '', explode("\n", $content->company_address)[1]));
+        $content->country = new \stdClass();
+        $content->country->isoCode = new \stdClass();
+        $content->country->isoCode->short = $content->country_code;
 
         return new JsonResponse($content);
     }
