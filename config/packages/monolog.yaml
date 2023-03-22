@@ -62,7 +62,7 @@ when@prod:
                 channels: ["!event", "!doctrine", "!console", "!deprecation"]
             discord:
                 type: service
-                id: DiscordHandler\DiscordHandler
+                id: Proglab\DiscordHandler
                 channels: ["!deprecation"]
             deprecation:
                 type: rotating_file
