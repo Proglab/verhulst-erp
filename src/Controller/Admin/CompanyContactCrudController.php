@@ -12,6 +12,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CountryField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
@@ -61,6 +62,19 @@ class CompanyContactCrudController extends BaseCrudController
         $langListing = LanguageField::new('lang')->setLabel('Lang')->showCode()->showName(false)->setRequired(true)->setColumns(12);
         $email = EmailField::new('email')->setLabel('E-mail')->setColumns(12)->setRequired(true);
         $phone = TelephoneField::new('phone')->setLabel('Téléphone')->setColumns(12);
+        $userStreet = TextField::new('street')->setLabel('Rue')->setColumns(12);
+        $userPc = TextField::new('pc')->setLabel('Code postal')->setColumns(12);
+        $userCity = TextField::new('city')->setLabel('Ville')->setColumns(12);
+        $userCountry = CountryField::new('country')->setLabel('Pays')->setColumns(12);
+        $interest = ChoiceField::new('interests')->setChoices([
+            'Vip Sport' => ['Vip Football' => 'vip_football', 'Vip Tennis' => 'vip_tennis', 'Vip Padel' => 'vip_padel', 'Vip F1' => 'vip_f1', 'Vip Hockey' => 'hockey'],
+            'Vip Culturel' => ['Concert' => 'concert', 'Gastro' => 'gastro'],
+            'Event a la carte' => ['Teambuilding' => 'teambuilding', 'Incentive' => 'incentive', 'Family day' => 'family_day'],
+            'Sponsoring / LEd' => ['Football' => 'sponsoring_football', 'Hockey' => 'sponsoring_hockey', 'Athlètes' => 'sponsoring_athletes', 'Led Boarding' => 'sponsoring_led_boarding'],
+        ])->allowMultipleChoices(true)->setColumns(12)->setLabel('Intérêts')->setRequired(false);
+
+        $fonction = TextField::new('function')->setLabel('Fonction')->setColumns(12);
+
         $gsm = TextField::new('gsm')->setLabel('Gsm')->setColumns(12);
         $note = TextEditorField::new('note')->setLabel('Note')->setColumns(12);
         $noteView = TextField::new('note')->setLabel('Note')->renderAsHtml();
@@ -83,10 +97,10 @@ class CompanyContactCrudController extends BaseCrudController
         switch ($pageName) {
             case Crud::PAGE_EDIT:
             case Crud::PAGE_NEW:
-                $response = [$firstname, $lastname, $lang, $email, $phone, $gsm, $note, $user];
+                $response = [$firstname, $lastname, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $fonction, $interest, $note, $user];
                 break;
             case Crud::PAGE_DETAIL:
-                $response = [$panel1, $company, $companyVat, $companyStreet, $companyPc, $companyCity, $companyCountry, $panel2, $fullname, $lang, $email, $phone, $gsm, $userName, $noteView, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $billingmail];
+                $response = [$panel1, $company, $companyVat, $companyStreet, $companyPc, $companyCity, $companyCountry, $panel2, $fullname, $fonction, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $interest, $userName, $noteView, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $billingmail];
                 break;
             case Crud::PAGE_INDEX:
                 $response = [$company, $companyVat, $fullname, $langListing, $email, $phone, $gsm, $userNameListing, $note];

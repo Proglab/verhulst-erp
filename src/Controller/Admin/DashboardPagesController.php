@@ -288,7 +288,7 @@ class DashboardPagesController extends DashboardController
             'locale' => $this->requestStack->getCurrentRequest()->getLocale(),
         ]);
     }
-    
+
     #[Route('{_locale}/admin/droits', name: 'dashboard_droits')]
     public function droits(): Response
     {
@@ -298,6 +298,7 @@ class DashboardPagesController extends DashboardController
         foreach ($files as $file) {
             $params[] = 'App\\Controller\\Admin' . str_replace('.php', '', str_replace(__DIR__, '', $file->getPathname()));
         }
+
         return $this->render('admin/voters_list.html.twig', [
             'controllers' => $params,
         ]);

@@ -49,6 +49,29 @@ class CompanyContact
     #[Assert\Length(max: 30)]
     private ?string $gsm = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
+    private ?string $street = null;
+
+    #[ORM\Column(length: 20, nullable: true)]
+    #[Assert\Length(max: 20)]
+    private ?string $pc = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
+    private ?string $city = null;
+
+    #[ORM\Column(length: 2, nullable: true)]
+    #[Assert\Country()]
+    private ?string $country = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
+    private ?string $fonction = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?array $interests = [];
+
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $note = null;
 
@@ -190,6 +213,56 @@ class CompanyContact
         return $this;
     }
 
+    public function getStreet(): ?string
+    {
+        return $this->street;
+    }
+
+    public function setStreet(?string $street): void
+    {
+        $this->street = $street;
+    }
+
+    public function getPc(): ?string
+    {
+        return $this->pc;
+    }
+
+    public function setPc(?string $pc): void
+    {
+        $this->pc = $pc;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(?string $city): void
+    {
+        $this->city = $city;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?string $country): void
+    {
+        $this->country = $country;
+    }
+
+    public function getFunction(): ?string
+    {
+        return $this->fonction;
+    }
+
+    public function setFunction(?string $function): void
+    {
+        $this->fonction = $function;
+    }
+
     /**
      * @return Collection<int, Sales>
      */
@@ -216,6 +289,18 @@ class CompanyContact
                 $sale->setContact(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getInterests(): array
+    {
+        return $this->interests;
+    }
+
+    public function setInterests(?array $interests): self
+    {
+        $this->interests = $interests;
 
         return $this;
     }
