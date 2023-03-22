@@ -288,20 +288,16 @@ class DashboardPagesController extends DashboardController
             'locale' => $this->requestStack->getCurrentRequest()->getLocale(),
         ]);
     }
-
-    #[Route('/admin/{_locale}/droits', name: 'dashboard_droits')]
+    
+    #[Route('{_locale}/admin/droits', name: 'dashboard_droits')]
     public function droits(): Response
     {
         $finder = new Finder();
-        $files = $finder->files()->in(__DIR__);
+        $files = $finder->files()->in(__DIR__)->name('*CrudController*.php')->notName('*Base*');
         $params = [];
         foreach ($files as $file) {
-            if ('BaseCrudController.php' === $file->getBasename() || 'DashboardController.php' === $file->getBasename() || 'DashboardPagesController.php' === $file->getBasename()) {
-                continue;
-            }
-            $params[] = 'App\\Controller\\Admin\\' . str_replace('.php', '', $file->getBasename());
+            $params[] = 'App\\Controller\\Admin' . str_replace('.php', '', str_replace(__DIR__, '', $file->getPathname()));
         }
-
         return $this->render('admin/voters_list.html.twig', [
             'controllers' => $params,
         ]);
