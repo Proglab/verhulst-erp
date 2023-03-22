@@ -39,14 +39,13 @@ class ProductPackageVipCrudController extends BaseCrudController
         $actions = parent::configureActions($actions);
 
         return $actions
-            ->setPermission(Action::NEW, 'ROLE_ENCODE')
+            ->disable(Action::NEW)
             ->setPermission(Action::EDIT, 'ROLE_ENCODE')
             ->setPermission(Action::DETAIL, 'ROLE_COMMERCIAL')
             ->setPermission(Action::INDEX, 'ROLE_COMMERCIAL')
-            ->setPermission(Action::DELETE, 'ROLE_ENCODE')
-            ->setPermission(Action::SAVE_AND_RETURN, 'ROLE_ENCODE')
-            ->setPermission(Action::SAVE_AND_ADD_ANOTHER, 'ROLE_ENCODE')
-            ->setPermission(Action::SAVE_AND_CONTINUE, 'ROLE_ENCODE')
+            ->disable(Action::SAVE_AND_RETURN)
+            ->disable(Action::SAVE_AND_ADD_ANOTHER)
+            ->disable(Action::SAVE_AND_CONTINUE)
             ->setPermission(Action::DELETE, 'ROLE_ADMIN')
         ;
     }

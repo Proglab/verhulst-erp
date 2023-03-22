@@ -37,7 +37,7 @@ class ProductDiversCrudController extends BaseCrudController
         $actions = parent::configureActions($actions);
 
         return $actions
-            ->setPermission(Action::NEW, 'ROLE_COMMERCIAL')
+            ->setPermission(Action::NEW, 'CAN_ADD_PRODUCT')
             ->setPermission(Action::EDIT, 'ROLE_COMMERCIAL')
             ->setPermission(Action::DETAIL, 'ROLE_COMMERCIAL')
             ->setPermission(Action::INDEX, 'ROLE_COMMERCIAL')
@@ -87,7 +87,7 @@ class ProductDiversCrudController extends BaseCrudController
             ->setRequired(false)
             ->setCssClass('d-none');
 
-        if ($this->isGranted('ROLE_ADMIN')) {
+        if ($this->isGranted('ROLE_ENCODE')) {
             switch ($pageName) {
                 case Crud::PAGE_DETAIL:
                 case Crud::PAGE_INDEX:
