@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Service\SecurityChecker;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class BaseCrudController extends AbstractCrudController
 {
+    public function __construct(private SecurityChecker $securityChecker)
+    {
+    }
+
     public function configureActions(Actions $actions): Actions
     {
         $getVoters = Action::new('getVoters', null)
@@ -49,10 +53,13 @@ abstract class BaseCrudController extends AbstractCrudController
 
     public function getVoters(AdminContext $adminContext): Response
     {
+        $request = $adminContext->getRequest();
+        $role = $request->get('role');
         $viewParams = [];
         foreach ($adminContext->getCrud()->getActionsConfig()->getActionPermissions() as $action => $permission) {
             $viewParams[$action] = [
-                'granted' => $this->isGranted(Permission::EA_EXECUTE_ACTION, ['action' => $action]) && !\in_array($action, $adminContext->getCrud()->getActionsConfig()->getDisabledActions(), true),
+                'granted' => $this->securityChecker->isGrantedByRole($permission, $action) && !\in_array($action, $adminContext->getCrud()->getActionsConfig()->getDisabledActions(), true),
+                // 'granted' => \in_array($permission, $roles) && !\in_array($action, $adminContext->getCrud()->getActionsConfig()->getDisabledActions(), true),
                 'permission' => $permission,
             ];
         }

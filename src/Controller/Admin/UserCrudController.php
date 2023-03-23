@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use App\Service\SecurityChecker;
 use App\Service\UserService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -28,8 +29,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserCrudController extends BaseCrudController
 {
-    public function __construct(private UserService $userService, private UserRepository $userRepository)
+    public function __construct(private UserService $userService, private UserRepository $userRepository, protected SecurityChecker $securityChecker)
     {
+        parent::__construct($securityChecker);
     }
 
     #[Route(path: '/admin/{_locale}/modifier-mon-mot-de-passe', name: 'admin_password_update')]

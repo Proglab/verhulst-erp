@@ -9,7 +9,7 @@
         <div class="col-4">
             <h4>{{ controller }}</h4>
             {% set url = ea_url()
-                .setDashboard('App\\Controller\\Admin\\DashboardPagesController')
+                .setDashboard('App\\Controller\\Admin\\DashboardController')
                 .setController(controller)
                 .setAction('getVoters') %}
             <div hx-get="{{ url }}" hx-trigger="load">

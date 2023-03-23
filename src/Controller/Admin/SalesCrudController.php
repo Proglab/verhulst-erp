@@ -16,6 +16,7 @@ use App\Entity\User;
 use App\Repository\CompanyRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
+use App\Service\SecurityChecker;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -49,8 +50,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SalesCrudController extends BaseCrudController
 {
-    public function __construct(private EntityManagerInterface $entityManager, private AdminUrlGenerator $adminUrlGenerator, private UserRepository $userRepository)
+    public function __construct(private EntityManagerInterface $entityManager, private AdminUrlGenerator $adminUrlGenerator, private UserRepository $userRepository, protected SecurityChecker $securityChecker)
     {
+        parent::__construct($securityChecker);
     }
 
     public function configureCrud(Crud $crud): Crud

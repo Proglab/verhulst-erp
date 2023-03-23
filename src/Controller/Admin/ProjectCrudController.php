@@ -8,6 +8,7 @@ use App\Entity\Project;
 use App\Entity\User;
 use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
+use App\Service\SecurityChecker;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -33,8 +34,9 @@ use Symfony\Component\Mailer\MailerInterface;
 
 class ProjectCrudController extends BaseCrudController
 {
-    public function __construct(protected MailerInterface $mailer, protected ProjectRepository $projectRepository, protected AdminUrlGenerator $adminUrlGenerator)
+    public function __construct(protected MailerInterface $mailer, protected ProjectRepository $projectRepository, protected AdminUrlGenerator $adminUrlGenerator, protected SecurityChecker $securityChecker)
     {
+        parent::__construct($securityChecker);
     }
 
     public function configureAssets(Assets $assets): Assets

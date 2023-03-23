@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Sales;
 use App\Repository\SalesRepository;
+use App\Service\SecurityChecker;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -25,8 +26,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ComptaCrudController extends BaseCrudController
 {
-    public function __construct(private SalesRepository $salesRepository, private AdminUrlGenerator $adminUrlGenerator)
+    public function __construct(private SalesRepository $salesRepository, private AdminUrlGenerator $adminUrlGenerator, protected SecurityChecker $securityChecker)
     {
+        parent::__construct($securityChecker);
     }
 
     public static function getEntityFqcn(): string

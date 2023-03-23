@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Css;
 use App\Repository\CssRepository;
+use App\Service\SecurityChecker;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -17,8 +18,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class CssCrudController extends BaseCrudController
 {
-    public function __construct(private CssRepository $cssRepository, private AdminUrlGenerator $adminUrlGenerator)
+    public function __construct(private CssRepository $cssRepository, private AdminUrlGenerator $adminUrlGenerator, protected SecurityChecker $securityChecker)
     {
+        parent::__construct($securityChecker);
     }
 
     public static function getEntityFqcn(): string

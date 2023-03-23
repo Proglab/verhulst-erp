@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Project;
 use App\Repository\ProjectRepository;
+use App\Service\SecurityChecker;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
@@ -24,9 +25,9 @@ use Symfony\Component\Mailer\MailerInterface;
 
 class ProjectArchiveCrudController extends ProjectCrudController
 {
-    public function __construct(protected MailerInterface $mailer, protected ProjectRepository $projectRepository, protected AdminUrlGenerator $adminUrlGenerator)
+    public function __construct(protected MailerInterface $mailer, protected ProjectRepository $projectRepository, protected AdminUrlGenerator $adminUrlGenerator, protected SecurityChecker $securityChecker)
     {
-        parent::__construct($mailer, $projectRepository, $adminUrlGenerator);
+        parent::__construct($mailer, $projectRepository, $adminUrlGenerator, $securityChecker);
     }
 
     public static function getEntityFqcn(): string

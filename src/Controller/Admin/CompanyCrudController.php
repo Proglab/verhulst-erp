@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\Company;
+use App\Service\SecurityChecker;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -40,8 +41,9 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class CompanyCrudController extends BaseCrudController
 {
-    public function __construct(private readonly AdminUrlGenerator $adminUrlGenerator, private readonly HttpClientInterface $client)
+    public function __construct(private readonly AdminUrlGenerator $adminUrlGenerator, private readonly HttpClientInterface $client, protected SecurityChecker $securityChecker)
     {
+        parent::__construct($securityChecker);
     }
 
     public function configureCrud(Crud $crud): Crud
@@ -66,7 +68,7 @@ class CompanyCrudController extends BaseCrudController
             ->setPermission('getVatInfos', 'ROLE_COMMERCIAL')
             ->setPermission(Action::NEW, 'ROLE_COMMERCIAL')
             ->setPermission(Action::EDIT, 'ROLE_COMMERCIAL')
-            ->setPermission(Action::DELETE, 'ROLE_COMMERCIAL')
+            ->setPermission(Action::DELETE, 'ROLE_ADMIN')
             ->setPermission(Action::DETAIL, 'ROLE_COMMERCIAL')
             ->setPermission(Action::INDEX, 'ROLE_COMMERCIAL')
             ->setPermission(Action::SAVE_AND_RETURN, 'ROLE_COMMERCIAL')

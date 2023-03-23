@@ -15,6 +15,7 @@ use App\Entity\User;
 use App\Repository\CommissionRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
+use App\Service\SecurityChecker;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -26,8 +27,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CommissionCrudController extends BaseCrudController
 {
-    public function __construct(private EntityManagerInterface $entityManager, private AdminUrlGenerator $adminUrlGenerator, protected ValidatorInterface $validator)
+    public function __construct(private EntityManagerInterface $entityManager, private AdminUrlGenerator $adminUrlGenerator, protected ValidatorInterface $validator, protected SecurityChecker $securityChecker)
     {
+        parent::__construct($securityChecker);
     }
 
     public function configureCrud(Crud $crud): Crud

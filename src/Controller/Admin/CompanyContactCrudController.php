@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\CompanyContact;
 use App\Repository\UserRepository;
+use App\Service\SecurityChecker;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -26,8 +27,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CompanyContactCrudController extends BaseCrudController
 {
-    public function __construct(private AdminUrlGenerator $adminUrlGenerator)
+    public function __construct(private AdminUrlGenerator $adminUrlGenerator, protected SecurityChecker $securityChecker)
     {
+        parent::__construct($securityChecker);
     }
 
     public static function getEntityFqcn(): string
@@ -118,7 +120,7 @@ class CompanyContactCrudController extends BaseCrudController
         $actions
             ->setPermission(Action::NEW, 'ROLE_COMMERCIAL')
             ->setPermission(Action::EDIT, 'ROLE_COMMERCIAL')
-            ->setPermission(Action::DELETE, 'ROLE_COMMERCIAL')
+            ->setPermission(Action::DELETE, 'ROLE_ADMIN')
             ->setPermission(Action::DETAIL, 'ROLE_COMMERCIAL')
             ->setPermission(Action::INDEX, 'ROLE_COMMERCIAL')
             ->setPermission(Action::SAVE_AND_RETURN, 'ROLE_COMMERCIAL')
