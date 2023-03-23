@@ -85,9 +85,13 @@ class CompanyContact
     #[ORM\OneToMany(mappedBy: 'contact', targetEntity: Sales::class)]
     private Collection $sales;
 
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Todo::class, orphanRemoval: true)]
+    private Collection $todos;
+
     public function __construct()
     {
         $this->sales = new ArrayCollection();
+        $this->todos = new ArrayCollection();
     }
 
     public function __toString()
@@ -301,6 +305,36 @@ class CompanyContact
     public function setInterests(?array $interests): self
     {
         $this->interests = $interests;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Todo>
+     */
+    public function getTodos(): Collection
+    {
+        return $this->todos;
+    }
+
+    public function addTodo(Todo $todo): self
+    {
+        if (!$this->todos->contains($todo)) {
+            $this->todos->add($todo);
+            $todo->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTodo(Todo $todo): self
+    {
+        if ($this->todos->removeElement($todo)) {
+            // set the owning side to null (unless already changed)
+            if ($todo->getClient() === $this) {
+                $todo->setClient(null);
+            }
+        }
 
         return $this;
     }

@@ -1,0 +1,22 @@
+{% if field.value is not null %}
+    {% if field.value == '-' %}
+    {% else %}
+        <span class="{% if  field.value.invert == 0 %}text-danger{% endif %}">
+        {% if  field.value.invert == 0 %}
+            -
+        {% endif %}
+        {% if field.value|date("%y") != 0 %}
+            {{ "%years% An"|trans({'%years%': field.value|date("%y")}) }}
+        {% endif %}
+        {% if field.value|date("%m") != 0 %}
+            {{ "%months% Mois"|trans({'%months%': field.value|date("%m")}) }}
+        {% endif %}
+        {% if field.value|date("%d") != 0 %}
+            {{ "%days% Jours"|trans({'%days%': field.value|date("%d")}) }}
+        {% endif %}
+        {% if field.value|date("%y") == 0 and field.value|date("%m") == 0 and field.value|date("%d") == 0 %}
+            Aujourd'hui
+        {% endif %}
+        </span>
+    {% endif %}
+{% endif %}

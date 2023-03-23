@@ -93,6 +93,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     #[ORM\Column(name: 'com', type: Types::STRING, nullable: true)]
     private ?string $com = null;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Todo::class, orphanRemoval: true)]
+    private Collection $todos;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -101,6 +104,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         $this->sales = new ArrayCollection();
         $this->commissions = new ArrayCollection();
         $this->companyContacts = new ArrayCollection();
+        $this->todos = new ArrayCollection();
     }
 
     public function __toString()
@@ -438,6 +442,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     public function setCom(?string $com): self
     {
         $this->com = $com;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Todo>
+     */
+    public function getTodos(): Collection
+    {
+        return $this->todos;
+    }
+
+    public function addTodo(Todo $todo): self
+    {
+        if (!$this->todos->contains($todo)) {
+            $this->todos->add($todo);
+            $todo->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTodo(Todo $todo): self
+    {
+        if ($this->todos->removeElement($todo)) {
+            // set the owning side to null (unless already changed)
+            if ($todo->getUser() === $this) {
+                $todo->setUser(null);
+            }
+        }
 
         return $this;
     }
