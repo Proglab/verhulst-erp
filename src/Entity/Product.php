@@ -20,55 +20,55 @@ class Product
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    protected ?int $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
-    private ?string $name = null;
+    protected ?string $name = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
     #[Assert\Length(max: 6)]
     #[Assert\PositiveOrZero]
-    private ?float $percent_vr = 0.0;
+    protected ?float $percent_vr = 0.0;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
-    private ?string $doc = null;
+    protected ?string $doc = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $description = null;
+    protected ?string $description = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
     #[Assert\Length(max: 6)]
     #[Assert\PositiveOrZero]
-    private ?float $percent_freelance = 0.0;
+    protected ?float $percent_freelance = 0.0;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
     #[Assert\Length(max: 6)]
     #[Assert\PositiveOrZero]
-    private ?float $percent_salarie = 0.0;
+    protected ?float $percent_salarie = 0.0;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
     #[Assert\Length(max: 6)]
     #[Assert\PositiveOrZero]
-    private ?float $percent_tv = 0.0;
+    protected ?float $percent_tv = 0.0;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $date_begin = null;
+    protected ?\DateTimeInterface $date_begin = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $date_end = null;
+    protected ?\DateTimeInterface $date_end = null;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Commission::class, orphanRemoval: true)]
-    private Collection $commissions;
+    protected Collection $commissions;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Sales::class, orphanRemoval: true)]
-    private Collection $sales;
+    protected Collection $sales;
 
     #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'product_divers')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Project $project = null;
+    protected ?Project $project = null;
 
     public function __construct()
     {
