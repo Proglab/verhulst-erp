@@ -174,22 +174,26 @@
                                     {% endblock header_navbar %}
                                 </nav>
                                 {% endblock header %}
+                                <div class="row justify-content-center align-self-end">
+                                    <a href="#" class="btn btn-secondary" title="ouvrir le menu" id="sidebar-toogle">
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </a>
+                                </div>
                             </header>
 
                             {% block main_menu_wrapper %}
                                 {{ include(ea.templatePath('main_menu')) }}
                             {% endblock main_menu_wrapper %}
                         {% endblock sidebar %}
+                        <div class="container">
 
-                        <div class="container d-flex">
+                        </div>
+                        <div class="container">
                             <div class="row justify-content-center align-self-end">
                                 {{ lastest_tag }}
                             </div>
                         </div>
-
                         <div id="sidebar-resizer-handler" class="resizer-handler resizer-handler-left"></div>
-
-
                     </aside>
                 </div>
 
