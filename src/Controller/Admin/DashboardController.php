@@ -31,14 +31,14 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
 class DashboardController extends AbstractDashboardController
 {
-    // public function __construct(private ChartBuilderInterface $chartBuilder, private UserRepository $userRepository, private SalesRepository $salesRepository, private RequestStack $requestStack, private AdminUrlGenerator $adminUrlGenerator, private TodoRepository $todoRepository)
-    public function __construct(private ChartBuilderInterface $chartBuilder, private UserRepository $userRepository, private SalesRepository $salesRepository, private RequestStack $requestStack, private AdminUrlGenerator $adminUrlGenerator)
+    public function __construct(private ChartBuilderInterface $chartBuilder, private UserRepository $userRepository, private SalesRepository $salesRepository, private RequestStack $requestStack, private AdminUrlGenerator $adminUrlGenerator, private RoleHierarchyInterface $roleHierarchy)
     {
     }
 
@@ -403,6 +403,9 @@ class DashboardController extends AbstractDashboardController
     #[Route('{_locale}/admin/droits', name: 'dashboard_droits')]
     public function droits(): Response
     {
+        $roles = $this->roleHierarchy->getReachableRoleNames(['ROLE_ADMIN']);
+        $roles = array_diff($roles, ['ROLE_ALLOWED_TO_SWITCH', 'IS_AUTHENTICATED_REMEMBERED', 'IS_AUTHENTICATED_FULLY', 'ROLE_USER']);
+
         $finder = new Finder();
         $files = $finder->files()->in(__DIR__)->name('*CrudController*.php')->notName('*Base*');
         $params = [];
@@ -410,7 +413,18 @@ class DashboardController extends AbstractDashboardController
             $params[] = 'App\\Controller\\Admin' . str_replace('.php', '', str_replace(__DIR__, '', $file->getPathname()));
         }
 
+        if ($this->requestStack->getCurrentRequest()->get('role')) {
+            $myroles = $this->requestStack->getCurrentRequest()->get('role');
+        } else {
+            $myroles = $this->getUser()->getRoles();
+            $myroles = array_diff($myroles, ['ROLE_ALLOWED_TO_SWITCH', 'IS_AUTHENTICATED_REMEMBERED', 'IS_AUTHENTICATED_FULLY', 'ROLE_USER']);
+            $myroles = implode(',', $myroles);
+        }
+
+
         return $this->render('admin/voters_list.html.twig', [
+            'myRoles' => $myroles,
+            'roles' => $roles,
             'controllers' => $params,
         ]);
     }

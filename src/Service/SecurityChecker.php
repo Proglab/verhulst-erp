@@ -32,6 +32,6 @@ class SecurityChecker
         }
         $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
 
-        return $this->accessDecisionManager->decide($token, [$role], $object);
+        return $this->accessDecisionManager->decide($token, [$attribute], $object);
     }
 }

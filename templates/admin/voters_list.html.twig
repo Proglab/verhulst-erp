@@ -3,14 +3,22 @@
 {% block content_title %}Tableau de bord - Les droits{% endblock %}
 {% block page_title %}Verhulst & Friends - ERP - {{ block('content_title') }}{% endblock %}
 
+{% block page_actions %}
+    {% for role in roles %}
+        <a href="{{ ea_url().set('role', role) }}" class="btn btn-primary">{{ role }}</a>
+    {% endfor %}
+{% endblock %}
+
 {% block main %}
+    <h2>Vérification du role : {{ myRoles}}</h2>
     <div class="row">
         {% for controller in controllers %}
         <div class="col-4">
             <h4>{{ controller }}</h4>
             {% set url = ea_url()
                 .setController(controller)
-                .setAction('getVoters') %}
+                .setAction('getVoters')
+                .set('role', ea.request.get('role'))%}
             <div hx-get="{{ url }}" hx-trigger="load">
             </div>
         </div>

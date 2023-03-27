@@ -9,14 +9,17 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
+use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
 class ProductVoter extends Voter
 {
     public const CAN_ADD_PRODUCT = 'CAN_ADD_PRODUCT';
 
-    public function __construct(private Security $security, private RequestStack $requestStack, private SecurityChecker $securityChecker)
-    {
+    public function __construct(private RoleHierarchyInterface $roleHierarchy) {
+
     }
 
     protected function supports(string $attribute, mixed $subject): bool
@@ -32,24 +35,12 @@ class ProductVoter extends Voter
             return false;
         }
 
-        if ($this->security->isGranted('ROLE_ADMIN')) {
-            $role = $this->requestStack->getCurrentRequest()->get('role');
-            if (null === $role) {
-                return $this->process();
-            }
+        $roles = $this->roleHierarchy->getReachableRoleNames($user->getRoles());
 
-            return $this->securityChecker->isGrantedByRole($role, $attribute, $subject);
-        }
-
-        return $this->process();
-    }
-
-    private function process()
-    {
-        if (!$this->security->isGranted('ROLE_ENCODE') && $this->security->isGranted('ROLE_COMMERCIAL')) {
+        if (!in_array('ROLE_ENCODE', $roles) && in_array('ROLE_COMMERCIAL', $roles)) {
             return true;
         }
-
+        
         return false;
     }
 }
