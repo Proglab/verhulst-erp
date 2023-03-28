@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\CompanyContact;
+use App\Form\TodoType;
+use App\Repository\TodoRepository;
 use App\Repository\UserRepository;
 use App\Service\SecurityChecker;
+use Doctrine\DBAL\Query\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -14,6 +17,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CountryField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
@@ -96,13 +100,17 @@ class CompanyContactCrudController extends BaseCrudController
         $userName = TextField::new('added_by.fullName')->setLabel('Commercial');
         $userNameListing = TextField::new('added_by.fullNameMinified')->setLabel('Sales');
 
+
+        $panel4 = FormField::addPanel('To do')->setCustomOption('cols', 1);
+        $items = AssociationField::new('todos')->setTemplatePath('admin/contact/crud.detail.html.twig')->setLabel(false);
+
         switch ($pageName) {
             case Crud::PAGE_EDIT:
             case Crud::PAGE_NEW:
                 $response = [$firstname, $lastname, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $fonction, $interest, $note, $user];
                 break;
             case Crud::PAGE_DETAIL:
-                $response = [$panel1, $company, $companyVat, $companyStreet, $companyPc, $companyCity, $companyCountry, $panel2, $fullname, $fonction, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $interest, $userName, $noteView, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $billingmail];
+                $response = [$panel1, $company, $companyVat, $companyStreet, $companyPc, $companyCity, $companyCountry, $panel2, $fullname, $fonction, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $interest, $userName, $noteView, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $billingmail, $panel4, $items];
                 break;
             case Crud::PAGE_INDEX:
                 $response = [$company, $companyVat, $fullname, $langListing, $email, $phone, $gsm, $userNameListing, $note];

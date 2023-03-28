@@ -39,6 +39,78 @@
     </div>
     <div class="row mt-5">
         <div class="col-12">
+            <h3>Mes Todos</h3>
+            <table class="table table-hover">
+                <thead class="table-primary">
+                <tr>
+                    <th scope="col">Type</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Client</th>
+                    <th scope="col">Projet</th>
+                    <th scope="col">Todo</th>
+                    <th scope="col">Fait ?</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for todo in todos %}
+                    <tr class="{% if todo.done %}alert alert-success{% else %}{% if todo.dateReminder|date('Y-m-d') < date('now')|date('Y-m-d') %}alert alert-danger{% else %}alert alert-warning{% endif %}{% endif %}">
+                        <th scope="row">
+                            {{ todo.type }}
+                        </th>
+                        <th scope="row">
+                            {{ todo.dateReminder|date('d/m/Y') }}
+                        </th>
+                        <th scope="row">
+                            {% if todo.client is not null %}{{ todo.client.fullName }}{% endif %}
+                        </th>
+                        <th scope="row">{% if todo.project is not null %}{{ todo.project.name }}{% endif %}</th>
+                        <td>
+                            <div class="modal fade" id="exampleModal{{ todo.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            {{ todo.todo|raw }}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{ todo.todo|striptags|slice(0, 50) }}
+                            {% if todo.todo|striptags|length > 50 %}
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal{{ todo.id }}"><i class="far fa-eye"></i></a>
+                            {% endif %}
+                        </td>
+                        <td>{% if todo.done %}<i class="fa-solid fa-check"></i>{% else %}<i class="fa-solid fa-hourglass"></i>{% endif %}</td>
+                        <td class="action">
+                            {% set url_edit = ea_url()
+                                .setAction('edit')
+                                .setController('App\\Controller\\Admin\\TodoCrudController')
+                                .setEntityId(todo.id)
+                                .set('referrer', ea.request.requestUri)
+                            %}
+                            <a class=" action-edit m-2" href="{{ url_edit }}" title="Modifier" data-action-name="Modifier"><i class="action-icon fa fa-pencil-alt" title="Modifier"></i></a>
+                            {% set url_detail = ea_url()
+                                .setAction('detail')
+                                .setController('App\\Controller\\Admin\\TodoCrudController')
+                                .setEntityId(todo.id)
+                            %}
+                            <a class=" action-edit m-2" href="{{ url_detail }}" title="Modifier" data-action-name="Voir"><i class="action-icon fa fa-eye" title="Voir"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-12">
             <h3>Mes 10 dernières ventes</h3>
             <table class="table table-hover">
                 <thead class="table-primary">
@@ -90,7 +162,7 @@
                                 .setController('App\\Controller\\Admin\\SalesCrudController')
                                 .setEntityId(sale.id)
                             %}
-                            <a class=" action-edit" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i> <span class="action-label">Edit</span></a>
+                            <a class=" action-edit" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i> <span class="action-label" title="Modifier"></span></a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -107,14 +179,6 @@
                 </tr>
                 </tbody>
             </table>
-
-
-
-
-
-
-
-
         </div>
     </div>
 {% endblock %}

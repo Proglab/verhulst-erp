@@ -22,7 +22,7 @@ class Todo
     private ?\DateTimeInterface $date_reminder = null;
 
     #[ORM\ManyToOne(inversedBy: 'todos')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?CompanyContact $client = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -36,10 +36,17 @@ class Todo
     private ?bool $done = false;
 
     #[ORM\ManyToOne(inversedBy: 'todos')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?User $user = null;
 
     private ?\DateTimeInterface $time_remaining;
+
+    #[ORM\ManyToOne(inversedBy: 'todos')]
+    private ?Project $project = null;
+
+    #[ORM\ManyToOne(inversedBy: 'todos')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?TodoType $type = null;
 
     public function getId(): ?int
     {
@@ -129,5 +136,29 @@ class Todo
         }
 
         return $this->getDateReminder()->diff(new \DateTime('now'));
+    }
+
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
+    public function setProject(?Project $project): self
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+    public function getType(): ?TodoType
+    {
+        return $this->type;
+    }
+
+    public function setType(?TodoType $type): self
+    {
+        $this->type = $type;
+
+        return $this;
     }
 }

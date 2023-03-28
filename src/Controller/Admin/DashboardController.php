@@ -14,6 +14,7 @@ use App\Entity\ProductSponsoring;
 use App\Entity\Project;
 use App\Entity\Sales;
 use App\Entity\Todo;
+use App\Entity\TodoType;
 use App\Entity\User;
 use App\Repository\SalesRepository;
 use App\Repository\TodoRepository;
@@ -38,7 +39,7 @@ use Symfony\UX\Chartjs\Model\Chart;
 
 class DashboardController extends AbstractDashboardController
 {
-    public function __construct(private ChartBuilderInterface $chartBuilder, private UserRepository $userRepository, private SalesRepository $salesRepository, private RequestStack $requestStack, private AdminUrlGenerator $adminUrlGenerator, private RoleHierarchyInterface $roleHierarchy)
+    public function __construct(private ChartBuilderInterface $chartBuilder, private UserRepository $userRepository, private SalesRepository $salesRepository, private RequestStack $requestStack, private AdminUrlGenerator $adminUrlGenerator, private RoleHierarchyInterface $roleHierarchy, private TodoRepository $todoRepository)
     {
     }
 
@@ -90,10 +91,8 @@ class DashboardController extends AbstractDashboardController
 
             MenuItem::linkToCrud('admin.menu.client', 'fas fa-address-book', CompanyContact::class)->setPermission('ROLE_COMMERCIAL'),
             MenuItem::linkToCrud('admin.menu.sales', 'fas fa-comments-dollar', Sales::class)->setController(SalesCrudController::class)->setPermission('ROLE_COMMERCIAL'),
-           // MenuItem::linkToCrud('admin.menu.todo', 'fas fa-calendar-check', Todo::class)->setPermission('ROLE_COMMERCIAL')
-           //     ->setBadge($this->todoRepository->countAllNoDone(), 'danger'),
 
-            MenuItem::linkToCrud('admin.menu.todo', 'fas fa-clipboard-check', Todo::class)->setPermission('ROLE_ENCODE'),
+            MenuItem::linkToCrud('admin.menu.todo', 'fas fa-clipboard-check', Todo::class)->setPermission('ROLE_COMMERCIAL'),
             MenuItem::section('Admin')->setPermission('ROLE_ADMIN'),
             MenuItem::linkToDashboard('admin.menu.dashboard', 'fa fa-chart-line')->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('admin.menu.recap', 'fa fa-sliders', Sales::class)->setAction('sales_by_users_list')->setPermission('ROLE_ADMIN'),
@@ -104,6 +103,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('admin.menu.client', 'fas fa-address-book', CompanyContact::class)->setPermission('ROLE_ENCODE'),
             MenuItem::linkToCrud('admin.menu.commission', 'fas fa-hand-holding-dollar', Commission::class)->setPermission('ROLE_ENCODE'),
             MenuItem::linkToCrud('admin.menu.todo', 'fas fa-clipboard-check', Todo::class)->setPermission('ROLE_ENCODE'),
+            MenuItem::linkToCrud('admin.menu.todo.category', 'fas fa-list', TodoType::class)->setCssClass('mx-2')->setPermission('ROLE_ENCODE'),
 
             MenuItem::section('Compta')->setPermission('ROLE_COMPTA'),
             MenuItem::linkToCrud('admin.menu.sales', 'fas fa-comments-dollar', Sales::class)->setController(ComptaCrudController::class)->setPermission('ROLE_COMPTA'),
@@ -154,6 +154,7 @@ class DashboardController extends AbstractDashboardController
         $month = $this->requestStack->getCurrentRequest()->get('month', $default_month);
 
         $sales = $this->salesRepository->get10LastSales();
+        $todos = $this->todoRepository->findAllToday();
 
         return $this->render('admin/dashboard/admin.html.twig', [
             'year' => $year,
@@ -161,6 +162,7 @@ class DashboardController extends AbstractDashboardController
             'month_num' => $month,
             'locale' => $this->requestStack->getCurrentRequest()->getLocale(),
             'sales' => $sales,
+            'todos' => $todos
         ]);
     }
 
@@ -179,12 +181,14 @@ class DashboardController extends AbstractDashboardController
         $me = $this->getUser();
         $sales = $this->salesRepository->get10LastSalesByUser($me);
 
+        $todos = $this->todoRepository->findAllTodayByUser($this->getUser());
         return $this->render('admin/dashboard/com.html.twig', [
             'year' => $year,
             'month' => $months[$month - 1],
             'month_num' => $month,
             'locale' => $this->requestStack->getCurrentRequest()->getLocale(),
             'sales' => $sales,
+            'todos' => $todos,
         ]);
     }
 

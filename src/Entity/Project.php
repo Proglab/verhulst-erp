@@ -47,12 +47,16 @@ class Project
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date_end = null;
 
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: Todo::class)]
+    private Collection $todos;
+
     public function __construct()
     {
         $this->product_event = new ArrayCollection();
         $this->product_package = new ArrayCollection();
         $this->product_sponsoring = new ArrayCollection();
         $this->product_divers = new ArrayCollection();
+        $this->todos = new ArrayCollection();
     }
 
     public function __toString()
@@ -253,6 +257,36 @@ class Project
     public function setDateEnd(?\DateTimeInterface $date_end): self
     {
         $this->date_end = $date_end;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Todo>
+     */
+    public function getTodos(): Collection
+    {
+        return $this->todos;
+    }
+
+    public function addTodo(Todo $todo): self
+    {
+        if (!$this->todos->contains($todo)) {
+            $this->todos->add($todo);
+            $todo->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTodo(Todo $todo): self
+    {
+        if ($this->todos->removeElement($todo)) {
+            // set the owning side to null (unless already changed)
+            if ($todo->getProject() === $this) {
+                $todo->setProject(null);
+            }
+        }
 
         return $this;
     }
