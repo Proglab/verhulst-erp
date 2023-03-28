@@ -23,8 +23,8 @@ class TodoCrudController extends BaseCrudController
 
     public function configureCrud(Crud $crud): Crud
     {
-        $crud->setEntityLabelInPlural('Todos')
-            ->setEntityLabelInSingular('Todo')
+        $crud->setEntityLabelInPlural('To do')
+            ->setEntityLabelInSingular('To do')
             ->showEntityActionsInlined(true)
         ->setDefaultSort(['date_reminder' => 'ASC']);
 

@@ -93,6 +93,7 @@ class DashboardController extends AbstractDashboardController
            // MenuItem::linkToCrud('admin.menu.todo', 'fas fa-calendar-check', Todo::class)->setPermission('ROLE_COMMERCIAL')
            //     ->setBadge($this->todoRepository->countAllNoDone(), 'danger'),
 
+            MenuItem::linkToCrud('admin.menu.todo', 'fas fa-clipboard-check', Todo::class)->setPermission('ROLE_ENCODE'),
             MenuItem::section('Admin')->setPermission('ROLE_ADMIN'),
             MenuItem::linkToDashboard('admin.menu.dashboard', 'fa fa-chart-line')->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('admin.menu.recap', 'fa fa-sliders', Sales::class)->setAction('sales_by_users_list')->setPermission('ROLE_ADMIN'),
@@ -102,6 +103,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('admin.menu.project', 'fas fa-folder-open', Project::class)->setPermission('ROLE_ENCODE'),
             MenuItem::linkToCrud('admin.menu.client', 'fas fa-address-book', CompanyContact::class)->setPermission('ROLE_ENCODE'),
             MenuItem::linkToCrud('admin.menu.commission', 'fas fa-hand-holding-dollar', Commission::class)->setPermission('ROLE_ENCODE'),
+            MenuItem::linkToCrud('admin.menu.todo', 'fas fa-clipboard-check', Todo::class)->setPermission('ROLE_ENCODE'),
 
             MenuItem::section('Compta')->setPermission('ROLE_COMPTA'),
             MenuItem::linkToCrud('admin.menu.sales', 'fas fa-comments-dollar', Sales::class)->setController(ComptaCrudController::class)->setPermission('ROLE_COMPTA'),
@@ -109,7 +111,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::section('Techniciens uniquements')->setPermission('ROLE_TECH'),
             MenuItem::linkToCrud('Css', 'fas fa-brush', Css::class)->setPermission('ROLE_TECH'),
             MenuItem::linkToRoute('Droits', 'fas fa-right-to-bracket', 'dashboard_droits')
-                ->setPermission($this->isGranted('IS_IMPERSONATOR') ? isset($this->getUser()->getRoles()[0]) ? $this->getUser()->getRoles()[0] : 'ROLE_BOSS' : 'ROLE_BOSS'),
+                ->setPermission('ROLE_TECH'),
 
             MenuItem::section(),
             MenuItem::linkToLogout('admin.menu.logout', 'fa-solid fa-door-open text-danger')->setCssClass('text-danger'),
@@ -401,8 +403,13 @@ class DashboardController extends AbstractDashboardController
     }
 
     #[Route('{_locale}/admin/droits', name: 'dashboard_droits')]
+
     public function droits(): Response
     {
+        if (!$this->isGranted('ROLE_BOSS')) {
+            throw new ForbiddenActionException('no access');
+        }
+
         $roles = $this->roleHierarchy->getReachableRoleNames(['ROLE_ADMIN']);
         $roles = array_diff($roles, ['ROLE_ALLOWED_TO_SWITCH', 'IS_AUTHENTICATED_REMEMBERED', 'IS_AUTHENTICATED_FULLY', 'ROLE_USER']);
 

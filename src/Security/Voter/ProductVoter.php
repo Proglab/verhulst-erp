@@ -40,7 +40,7 @@ class ProductVoter extends Voter
         if (!in_array('ROLE_ENCODE', $roles) && in_array('ROLE_COMMERCIAL', $roles)) {
             return true;
         }
-        
+
         return false;
     }
 }
