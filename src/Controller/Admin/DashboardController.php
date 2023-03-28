@@ -162,7 +162,7 @@ class DashboardController extends AbstractDashboardController
             'month_num' => $month,
             'locale' => $this->requestStack->getCurrentRequest()->getLocale(),
             'sales' => $sales,
-            'todos' => $todos
+            'todos' => $todos,
         ]);
     }
 
@@ -182,6 +182,7 @@ class DashboardController extends AbstractDashboardController
         $sales = $this->salesRepository->get10LastSalesByUser($me);
 
         $todos = $this->todoRepository->findAllTodayByUser($this->getUser());
+
         return $this->render('admin/dashboard/com.html.twig', [
             'year' => $year,
             'month' => $months[$month - 1],
@@ -407,11 +408,10 @@ class DashboardController extends AbstractDashboardController
     }
 
     #[Route('{_locale}/admin/droits', name: 'dashboard_droits')]
-
-    public function droits(): Response
+    public function droits(AdminContext $context): Response
     {
         if (!$this->isGranted('ROLE_BOSS')) {
-            throw new ForbiddenActionException('no access');
+            throw new ForbiddenActionException($context);
         }
 
         $roles = $this->roleHierarchy->getReachableRoleNames(['ROLE_ADMIN']);
@@ -431,7 +431,6 @@ class DashboardController extends AbstractDashboardController
             $myroles = array_diff($myroles, ['ROLE_ALLOWED_TO_SWITCH', 'IS_AUTHENTICATED_REMEMBERED', 'IS_AUTHENTICATED_FULLY', 'ROLE_USER']);
             $myroles = implode(',', $myroles);
         }
-
 
         return $this->render('admin/voters_list.html.twig', [
             'myRoles' => $myroles,

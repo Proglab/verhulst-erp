@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\User;
-use App\Repository\UserRepository;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 
 class SecurityChecker
 {
-    public function __construct(private AccessDecisionManagerInterface $accessDecisionManager, private UserRepository $userRepository)
+    public function __construct(private AccessDecisionManagerInterface $accessDecisionManager)
     {
     }
 

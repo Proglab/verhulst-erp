@@ -8,6 +8,7 @@ use App\Entity\Todo;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @extends ServiceEntityRepository<Todo>
@@ -92,13 +93,13 @@ class TodoRepository extends ServiceEntityRepository
             ->andWhere('t.done = :done')
             ->setParameter('done', false)
             ->andWhere('t.date_reminder <= :date')
-            ->setParameter('date', (new \DateTime('now'))->format('Y-m-d').' 23:23:59')
+            ->setParameter('date', (new \DateTime('now'))->format('Y-m-d') . ' 23:23:59')
             ->andWhere('t.user = :user')
             ->setParameter('user', $user)
             ->orderBy('t.date_reminder', 'ASC')
             ->getQuery()
             ->getResult()
-            ;
+        ;
     }
 
     public function findAllNoDoneToday(): array
@@ -107,11 +108,11 @@ class TodoRepository extends ServiceEntityRepository
             ->andWhere('t.done = :done')
             ->setParameter('done', false)
             ->andWhere('t.date_reminder <= :date')
-            ->setParameter('date', (new \DateTime('now'))->format('Y-m-d').' 23:23:59')
+            ->setParameter('date', (new \DateTime('now'))->format('Y-m-d') . ' 23:23:59')
             ->orderBy('t.date_reminder', 'ASC')
             ->getQuery()
             ->getResult()
-            ;
+        ;
     }
 
     public function countAllNoDoneTodayByUser(User $user): int
@@ -126,32 +127,30 @@ class TodoRepository extends ServiceEntityRepository
             ->setParameter('user', $user)
             ->getQuery()
             ->getSingleScalarResult()
-            ;
+        ;
     }
 
-    public function findAllTodayByUser(User $user): array
+    public function findAllTodayByUser(UserInterface $user): array
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.date_reminder <= :date')
-            ->setParameter('date', (new \DateTime('now'))->format('Y-m-d').' 23:23:59')
+            ->setParameter('date', (new \DateTime('now'))->format('Y-m-d') . ' 23:23:59')
             ->andWhere('t.user = :user')
             ->setParameter('user', $user)
             ->orderBy('t.date_reminder', 'ASC')
             ->getQuery()
             ->getResult()
-            ;
+        ;
     }
 
     public function findAllToday(): array
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.date_reminder <= :date')
-            ->setParameter('date', (new \DateTime('now'))->format('Y-m-d').' 23:23:59')
+            ->setParameter('date', (new \DateTime('now'))->format('Y-m-d') . ' 23:23:59')
             ->orderBy('t.date_reminder', 'ASC')
             ->getQuery()
             ->getResult()
-            ;
+        ;
     }
-
-
 }

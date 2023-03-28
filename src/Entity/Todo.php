@@ -39,8 +39,6 @@ class Todo
     #[ORM\JoinColumn(nullable: true)]
     private ?User $user = null;
 
-    private ?\DateTimeInterface $time_remaining;
-
     #[ORM\ManyToOne(inversedBy: 'todos')]
     private ?Project $project = null;
 
@@ -129,7 +127,7 @@ class Todo
         return $this;
     }
 
-    public function getTimeRemaining()
+    public function getTimeRemaining(): \DateInterval|string
     {
         if ($this->isDone()) {
             return '-';

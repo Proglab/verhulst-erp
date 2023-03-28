@@ -57,7 +57,7 @@ abstract class BaseCrudController extends AbstractCrudController
         $role = $request->get('role');
         $viewParams = [];
 
-        if (is_null($role)) {
+        if (null === $role) {
             $role = $this->getUser()->getRoles();
         }
 
