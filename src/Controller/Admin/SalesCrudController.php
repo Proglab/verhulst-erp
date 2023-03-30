@@ -36,11 +36,17 @@ use EasyCorp\Bundle\EasyAdminBundle\Exception\ForbiddenActionException;
 use EasyCorp\Bundle\EasyAdminBundle\Exception\InsufficientEntityPermissionException;
 use EasyCorp\Bundle\EasyAdminBundle\Factory\EntityFactory;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CountryField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\HiddenField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
@@ -59,7 +65,8 @@ class SalesCrudController extends BaseCrudController
     {
         $crud->setEntityLabelInPlural('Ventes')
             ->setEntityLabelInSingular('Vente')
-            ->showEntityActionsInlined(true);
+            ->showEntityActionsInlined(true)
+            ->overrideTemplate('crud/detail', 'admin/crud/detail_2cols.html.twig');
 
         return parent::configureCrud($crud);
     }
@@ -146,6 +153,46 @@ class SalesCrudController extends BaseCrudController
             ->setCurrency('EUR')
             ->setLabel('Réduction (EUR)');
 
+        $panelProduct = FormField::addPanel('Produit')->setCustomOption('cols', 1);
+
+        $panelClient = FormField::addPanel('Client')->setCustomOption('cols', 2);
+
+        $panelVente = FormField::addPanel('Vente')->setCustomOption('cols', 1);
+
+        $panelContact = FormField::addPanel('Contact')->setCustomOption('cols', 2);
+
+        $project = TextField::new('product.project')->setLabel('Projet');
+        $dateBegin = DateField::new('product.date_begin')->setLabel('Du')->setFormat('dd/MM/yy');
+        $dateEnd = DateField::new('product.date_end')->setLabel('Au')->setFormat('dd/MM/yy');
+        $user = TextField::new('user.fullname')->setLabel('Vendeur');
+        $userMail = EmailField::new('user.email')->setLabel('Mail');
+        $description = TextField::new('product.description')->setLabel('Description')->renderAsHtml();
+
+        $company = TextField::new('contact.company')->setLabel('Société');
+        $companyVat = TextField::new('contact.company.vat_number')->setLabel('Tva');
+        $companyStreet = TextField::new('contact.company.street')->setLabel('Rue');
+        $companyPc = TextField::new('contact.company.pc')->setLabel('Code postal');
+        $companyCity = TextField::new('contact.company.city')->setLabel('Ville');
+        $companyCountry = CountryField::new('contact.company.country')->setLabel('Pays');
+        $priceTotal = MoneyField::new('total_price')
+            ->setStoredAsCents(false)
+            ->setNumDecimals(2)
+            ->setRequired(true)
+            ->setCurrency('EUR')->setLabel('Prix Total');
+        $priceMarge = MoneyField::new('marge')
+            ->setStoredAsCents(false)
+            ->setNumDecimals(2)
+            ->setRequired(true)
+            ->setCurrency('EUR')->setLabel('Prix final');
+        $invoiced = BooleanField::new('invoiced')
+            ->setLabel('Facturé')->setDisabled(true);
+        $dateValidation = DateField::new('invoicedDt')->setLabel('Date de validation')->setFormat('dd/MM/yy HH:MM');
+        $contact = TextField::new('contact.fullname')->setLabel('Nom');
+        $contactTel = TelephoneField::new('contact.phone')->setLabel('Tel');
+        $contactGsm = TelephoneField::new('contact.gsm')->setLabel('Gsm');
+        $contactEmail = EmailField::new('contact.email')->setLabel('Mail');
+
+
         switch ($pageName) {
             case Crud::PAGE_NEW:
                 $response = [$product, $contacts, $quantity, $price, $discount_eur, $discount_percent, $date, $discount];
@@ -153,6 +200,16 @@ class SalesCrudController extends BaseCrudController
 
             case Crud::PAGE_EDIT:
                 $response = [$product, $contacts, $quantity, $price, $discount_edit, $percent_com, $percent_vr, $date];
+                break;
+            case Crud::PAGE_DETAIL:
+                $response = [$panelProduct,
+                    $project, $product, $dateBegin, $dateEnd, $user, $userMail, $description,
+                    $panelClient,
+                    $company, $companyVat, $companyStreet, $companyPc, $companyCity, $companyCountry,
+                    $panelVente,
+                    $price, $quantity, $priceTotal, $discount, $priceMarge, $date, $invoiced, $dateValidation,
+                    $panelContact,
+                    $contact, $contactTel, $contactGsm, $contactEmail];
                 break;
             default:
                 $response = [$product, $contacts, $quantity, $price, $discount_eur, $discount_percent, $date, $discount];

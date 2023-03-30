@@ -196,7 +196,13 @@
                                         .setController('App\\Controller\\Admin\\SalesCrudController')
                                         .setEntityId(sale.id)
                                     %}
-                                    <a class=" action-edit" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i></a>
+                                    <a class=" action-edit m-2" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i></a>
+                                    {% set url_detail = ea_url()
+                                        .setAction('detail')
+                                        .setController('App\\Controller\\Admin\\SalesCrudController')
+                                        .setEntityId(sale.id)
+                                    %}
+                                    <a class=" action-edit m-2" href="{{ url_detail }}" title="Détails" data-action-name="detail"><i class="action-icon fa fa-eye"></i> <span class="action-label" title="Détails"></span></a>
                                 </td>
                             </tr>
                         {% endfor %}
