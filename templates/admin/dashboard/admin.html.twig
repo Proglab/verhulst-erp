@@ -173,9 +173,7 @@
                                     {{ sale.user.fullnameMinified }}
                                 </th>
                                 <th scope="row">
-                                    {% for contact in sale.contact %}
-                                        {{ contact.company.name }} ({{ contact.firstname }} {{ contact.lastname }})<br>
-                                    {% endfor %}
+                                        {{ sale.contact.company.name }} ({{ sale.contact.firstname }} {{ sale.contact.lastname }})
                                 </th>
                                 <th scope="row">
                                     {{ sale.product.project.name }}
