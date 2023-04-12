@@ -60,7 +60,7 @@ class CompanyContactCrudController extends BaseCrudController
         $firstname = TextField::new('firstname')->setLabel('Prénom')->setRequired(true)->setColumns(12);
         $lastname = TextField::new('lastname')->setLabel('Nom')->setRequired(true)->setColumns(12);
         $fullname = TextField::new('fullName')->setLabel('Nom');
-        $lang = LanguageField::new('lang')->setLabel('Langue')->setRequired(true)->setColumns(12)->includeOnly(['fr', 'nl', 'en']);
+        $lang = LanguageField::new('lang')->setLabel('Langue')->setRequired(true)->setColumns(12)->includeOnly(['fr', 'nl', 'en', 'it', 'es', 'de']);
         $langListing = LanguageField::new('lang')->setLabel('Lang')->showCode()->showName(false)->setRequired(true)->setColumns(12);
         $email = EmailField::new('email')->setLabel('E-mail')->setColumns(12)->setRequired(true);
         $phone = TelephoneField::new('phone')->setLabel('Téléphone')->setColumns(12);

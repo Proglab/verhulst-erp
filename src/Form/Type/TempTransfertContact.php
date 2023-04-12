@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Form\Type;
 
 use App\Entity\CompanyContact;
+use App\Entity\TempCompanyContact;
 use App\Entity\User;
 use App\Form\Model\ResetPasswordModel;
 use App\Repository\CompanyContactRepository;
@@ -38,7 +39,7 @@ class TempTransfertContact extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => CompanyContact::class,
+            'data_class' => TempCompanyContact::class,
         ]);
     }
 }

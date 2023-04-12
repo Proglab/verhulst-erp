@@ -1,0 +1,22 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+{% block content_title %}Transférer le contact {{ contact.firstname }} {{ contact.lastname }} ({{ contact.company.name }}){% endblock %}
+{% block page_title %}Verhulst & Friends - ERP - {{ block('content_title') }}{% endblock %}
+
+{% block main %}
+
+    <h2>A qui désirez-vous transférer le contact ?</h2>
+    {{ form_start(form) }}
+    <div class="form-control">
+        {{ form_label(form.added_by, 'Transférer à') }}
+        {{ form_widget(form.added_by) }}
+        <div class="form-error">
+            {{ form_errors(form.added_by) }}
+        </div>
+        <input type="submit" value="Transférer" class="btn btn-primary mt-3" /> <a href="{{ referrer }}" class="btn btn-danger mx-3 mt-3">Annuler</a>
+    </div>
+    {{ form_end(form) }}
+
+{% endblock %}
