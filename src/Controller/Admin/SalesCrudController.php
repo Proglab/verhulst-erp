@@ -192,7 +192,6 @@ class SalesCrudController extends BaseCrudController
         $contactGsm = TelephoneField::new('contact.gsm')->setLabel('Gsm');
         $contactEmail = EmailField::new('contact.email')->setLabel('Mail');
 
-
         switch ($pageName) {
             case Crud::PAGE_NEW:
                 $response = [$product, $contacts, $quantity, $price, $discount_eur, $discount_percent, $date, $discount];

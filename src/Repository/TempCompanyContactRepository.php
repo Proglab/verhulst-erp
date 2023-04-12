@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\CompanyContact;
 use App\Entity\TempCompanyContact;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<CompanyContact>
+ * @extends ServiceEntityRepository<TempCompanyContact>
  *
- * @method CompanyContact|null find($id, $lockMode = null, $lockVersion = null)
- * @method CompanyContact|null findOneBy(array $criteria, array $orderBy = null)
- * @method CompanyContact[]    findAll()
- * @method CompanyContact[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method TempCompanyContact|null find($id, $lockMode = null, $lockVersion = null)
+ * @method TempCompanyContact|null findOneBy(array $criteria, array $orderBy = null)
+ * @method TempCompanyContact[]    findAll()
+ * @method TempCompanyContact[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class TempCompanyContactRepository extends ServiceEntityRepository
 {

@@ -13,19 +13,15 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
-use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CountryField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\LanguageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class TempCompanyContactCrudController extends BaseCrudController
 {
@@ -101,13 +97,12 @@ class TempCompanyContactCrudController extends BaseCrudController
         $transfert = Action::new('transfert', 'Transférer le contact')
             ->linkToCrudAction('transfertContact')
             ->displayIf(function (TempCompanyContact $entity) {
-
                 if (empty($entity->getAddedBy())) {
                     return true;
                 }
-                return ($entity->getAddedBy()->getUserIdentifier() === $this->getUser()->getUserIdentifier());
-            });
 
+                return $entity->getAddedBy()->getUserIdentifier() === $this->getUser()->getUserIdentifier();
+            });
 
         $actions = parent::configureActions($actions);
         $actions
@@ -125,7 +120,8 @@ class TempCompanyContactCrudController extends BaseCrudController
                         if (empty($entity->getAddedBy())) {
                             return true;
                         }
-                        return ($entity->getAddedBy()->getUserIdentifier() === $this->getUser()->getUserIdentifier());
+
+                        return $entity->getAddedBy()->getUserIdentifier() === $this->getUser()->getUserIdentifier();
                     });
                 }
             )
@@ -135,7 +131,8 @@ class TempCompanyContactCrudController extends BaseCrudController
                         if (empty($entity->getAddedBy())) {
                             return true;
                         }
-                        return ($entity->getAddedBy()->getUserIdentifier() === $this->getUser()->getUserIdentifier());
+
+                        return $entity->getAddedBy()->getUserIdentifier() === $this->getUser()->getUserIdentifier();
                     });
                 }
             )
@@ -164,20 +161,21 @@ class TempCompanyContactCrudController extends BaseCrudController
         return $this->redirect($url);
     }
 
-    public function transfertContact(AdminContext $context)
+    public function transfertContact(AdminContext $context): Response
     {
         $form = $this->createForm(TempTransfertContact::class, $context->getEntity()->getInstance());
 
         $form->handleRequest($context->getRequest());
         if ($form->isSubmitted() && $form->isValid()) {
             $this->companyContactRepository->save($form->getData(), true);
+
             return $this->redirect($context->getReferrer());
         }
 
         return $this->render('admin/contact/action_transfert.html.twig', [
             'contact' => $context->getEntity()->getInstance(),
             'form' => $form,
-            'referrer' => $context->getReferrer()
+            'referrer' => $context->getReferrer(),
         ]);
     }
 }
