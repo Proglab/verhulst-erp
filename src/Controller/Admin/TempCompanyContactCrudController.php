@@ -67,6 +67,8 @@ class TempCompanyContactCrudController extends BaseCrudController
         $userCity = TextField::new('city')->setLabel('Ville')->setColumns(12);
         $userCountry = CountryField::new('country')->setLabel('Pays')->setColumns(12);
 
+        $oldDB = EmailField::new('company.address')->setRequired(true)->setLabel('Ancienne DB - Adresse')->setDisabled(true)->setColumns(12);
+
         $fonction = TextField::new('function')->setLabel('Fonction')->setColumns(12);
 
         $gsm = TelephoneField::new('gsm')->setLabel('Gsm')->setColumns(12)->setHelp('Mettre au format international (+32499163111) ');
@@ -80,7 +82,7 @@ class TempCompanyContactCrudController extends BaseCrudController
         switch ($pageName) {
             case Crud::PAGE_EDIT:
             case Crud::PAGE_DETAIL:
-                $response = [$panel1, $company, $companyVat, $companyStreet, $companyPc, $companyCity, $companyCountry, $panel2, $firstname, $lastname, $fonction, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $user];
+                $response = [$panel1, $company, $companyVat, $companyStreet, $companyPc, $companyCity, $companyCountry, $oldDB, $panel2, $firstname, $lastname, $fonction, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $user];
                 break;
             case Crud::PAGE_INDEX:
                 $response = [$company, $companyVat, $fullname, $langListing, $email, $phone, $gsm, $userNameListing];
