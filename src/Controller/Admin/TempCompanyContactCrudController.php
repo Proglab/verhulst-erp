@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Entity\Company;
+use App\Entity\CompanyContact;
 use App\Entity\TempCompanyContact;
 use App\Form\Type\TempTransfertContact;
+use App\Repository\CompanyContactRepository;
+use App\Repository\CompanyRepository;
 use App\Repository\TempCompanyContactRepository;
 use App\Service\SecurityChecker;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -20,13 +25,16 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\LanguageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class TempCompanyContactCrudController extends BaseCrudController
 {
-    public function __construct(private AdminUrlGenerator $adminUrlGenerator, protected SecurityChecker $securityChecker, private TempCompanyContactRepository $companyContactRepository)
+    public function __construct(private AdminUrlGenerator $adminUrlGenerator, protected SecurityChecker $securityChecker, private TempCompanyContactRepository $companyContactRepository, private ValidatorInterface $validator, private EntityManagerInterface $entityManager)
     {
         parent::__construct($securityChecker);
     }
@@ -34,7 +42,7 @@ class TempCompanyContactCrudController extends BaseCrudController
     public function configureFilters(Filters $filters): Filters
     {
         return $filters
-            ->add('added_by')
+            ->add(EntityFilter::new('added_by')->setLabel('Commercial'))
             ;
     }
 
@@ -111,12 +119,31 @@ class TempCompanyContactCrudController extends BaseCrudController
                     return true;
                 }
 
+                if ($this->isGranted('ROLE_ADMIN')) {
+                    return true;
+                }
+
+                return $entity->getAddedBy()->getUserIdentifier() === $this->getUser()->getUserIdentifier();
+            });
+
+        $validation = Action::new('validate', 'Valider le contact')
+            ->linkToCrudAction('validerContact')
+            ->displayIf(function (TempCompanyContact $entity) {
+                if (empty($entity->getAddedBy())) {
+                    return true;
+                }
+
+                if ($this->isGranted('ROLE_ADMIN')) {
+                    return true;
+                }
+
                 return $entity->getAddedBy()->getUserIdentifier() === $this->getUser()->getUserIdentifier();
             });
 
         $actions = parent::configureActions($actions);
         $actions
             ->add(Crud::PAGE_DETAIL, $transfert)
+            ->add(Crud::PAGE_DETAIL, $validation)
             ->setPermission(Action::EDIT, 'ROLE_COMMERCIAL')
             ->setPermission(Action::DELETE, 'ROLE_COMMERCIAL')
             ->setPermission(Action::DETAIL, 'ROLE_COMMERCIAL')
@@ -131,6 +158,10 @@ class TempCompanyContactCrudController extends BaseCrudController
                             return true;
                         }
 
+                        if ($this->isGranted('ROLE_ADMIN')) {
+                            return true;
+                        }
+
                         return $entity->getAddedBy()->getUserIdentifier() === $this->getUser()->getUserIdentifier();
                     });
                 }
@@ -139,6 +170,10 @@ class TempCompanyContactCrudController extends BaseCrudController
                 function (Action $action) {
                     return $action->displayIf(function (TempCompanyContact $entity) {
                         if (empty($entity->getAddedBy())) {
+                            return true;
+                        }
+
+                        if ($this->isGranted('ROLE_ADMIN')) {
                             return true;
                         }
 
@@ -187,5 +222,107 @@ class TempCompanyContactCrudController extends BaseCrudController
             'form' => $form,
             'referrer' => $context->getReferrer(),
         ]);
+    }
+
+
+    public function validerContact(AdminContext $context): RedirectResponse
+    {
+        /** @var TempCompanyContact $contact */
+        $contact = $context->getEntity()->getInstance();
+
+        $errors = $this->validator->validate($contact);
+        if (count($errors) > 0) {
+            foreach ($errors as $error) {
+                $this->addFlash('danger', $error->getPropertyPath(). ' : '.$error->getMessage());
+                return new RedirectResponse($context->getReferrer());
+            }
+        }
+
+        //valider la société
+        /** @var CompanyRepository $repoCompany */
+        $repoCompany = $this->entityManager->getRepository(Company::class);
+        $count1 = $repoCompany->count(['vat_number' => $contact->getCompany()->getVatNumber()]);
+        $count2 = $repoCompany->count(['name' => $contact->getCompany()->getName()]);
+
+        if ($count1 == 0 && $count2 == 0) {
+            $company = new Company();
+            $company->setName($contact->getCompany()->getName());
+            $company->setStreet($contact->getCompany()->getStreet());
+            $company->setPc($contact->getCompany()->getPc());
+            $company->setCity($contact->getCompany()->getCity());
+            $company->setCountry($contact->getCompany()->getCountry());
+            $company->setVatNumber($contact->getCompany()->getVatNumber());
+            $repoCompany->save($company, true);
+            $this->addFlash('success', $contact->getCompany()->getName().' importé');
+        } else {
+            $company = $repoCompany->findOneBy(['vat_number' => $contact->getCompany()->getVatNumber()]);
+            if (empty($company)) {
+                $company = $repoCompany->findOneBy(['name' => $contact->getCompany()->getName()]);
+            }
+        }
+
+        /** @var CompanyContactRepository $repoCompanyContact */
+        $repoCompanyContact = $this->entityManager->getRepository(CompanyContact::class);
+
+
+        $count3 = $repoCompanyContact->count(['email' => $contact->getEmail()]);
+        if (empty($contact->getPhone())) {
+            $count4 = 0;
+        } else {
+            $count4 = $repoCompanyContact->count(['phone' => $contact->getPhone()]);
+        }
+        if (empty($contact->getGsm())) {
+            $count5 = 0;
+        } else {
+            $count5 = $repoCompanyContact->count(['gsm' => $contact->getGsm()]);
+        }
+
+        if ($count3 == 0 && $count4 == 0 && $count5 == 0) {
+            $contactNew = new CompanyContact();
+            $contactNew->setCompany($company);
+            $contactNew->setStreet($contact->getStreet());
+            $contactNew->setPc($contact->getPc());
+            $contactNew->setCity($contact->getCity());
+            $contactNew->setCountry($contact->getCountry());
+            $contactNew->setEmail($contact->getEmail());
+            $contactNew->setFirstname($contact->getFirstname());
+            $contactNew->setLastname($contact->getLastname());
+            $contactNew->setAddedBy($contact->getAddedBy());
+            $contactNew->setFunction($contact->getFunction());
+            $contactNew->setGsm($contact->getGsm());
+            $contactNew->setPhone($contact->getPhone());
+            $contactNew->setLang($contact->getLang());
+
+            $repoCompanyContact->save($contactNew, true);
+
+            /** @var TempCompanyContactRepository $repo */
+            $repo = $this->entityManager->getRepository(TempCompanyContact::class);
+            $contacts = $repo->findBy(['email' => $contact->getEmail()]);
+
+            foreach ($contacts as $c) {
+                $repo->remove($c, true);
+            }
+
+            $this->addFlash('success', 'Le contact '.$contactNew->getFullName().' a bien été importé');
+
+            return new RedirectResponse(
+                $this->adminUrlGenerator->setController(CompanyContactCrudController::class)
+                    ->setAction(Crud::PAGE_DETAIL)
+                    ->setEntityId($contactNew->getId())
+                    ->generateUrl());
+
+        } else {
+            if ($count3 > 0) {
+                $this->addFlash('danger', 'Le mail <b>' . $contact->getEmail().'</b> existe déjà');
+            }
+            if ($count4 > 0) {
+                $this->addFlash('danger', 'Le téléphone <b>' . $contact->getPhone().'</b> existe déjà');
+            }
+            if ($count5 > 0) {
+                $this->addFlash('danger', 'Le gsm <b>' . $contact->getGsm().'</b> existe déjà');
+            }
+
+            return new RedirectResponse($context->getReferrer());
+        }
     }
 }

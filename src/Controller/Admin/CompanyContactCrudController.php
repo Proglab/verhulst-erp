@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\CompanyContact;
-use App\Repository\UserRepository;
+use App\Form\Type\TransfertContact;
+use App\Repository\CompanyContactRepository;
 use App\Service\SecurityChecker;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -27,7 +28,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CompanyContactCrudController extends BaseCrudController
 {
-    public function __construct(private AdminUrlGenerator $adminUrlGenerator, protected SecurityChecker $securityChecker)
+    public function __construct(private AdminUrlGenerator $adminUrlGenerator, protected SecurityChecker $securityChecker, private CompanyContactRepository $companyContactRepository)
     {
         parent::__construct($securityChecker);
     }
@@ -87,11 +88,9 @@ class CompanyContactCrudController extends BaseCrudController
         $billingPc = TextField::new('company.billing_pc')->setRequired(true)->setColumns(12)->setLabel('Code postal');
         $billingcity = TextField::new('company.billing_city')->setRequired(true)->setColumns(12)->setLabel('Ville');
         $billingcountry = CountryField::new('company.billing_country')->setRequired(true)->setLabel('Pays');
-        $billingmail = EmailField::new('company.billing_mail')->setRequired(true)->setLabel('Email');
 
-        $user = AssociationField::new('added_by')->setRequired(false)->setFormTypeOption('query_builder', function (UserRepository $entityRepository) {
-            return $entityRepository->getCommercialsQb();
-        })->setLabel('Commercial')->setValue($this->getUser());
+        $user = TextField::new('added_by')->setColumns(12)->setRequired(false)
+            ->setLabel('Commercial')->setDisabled(true);
 
         $userName = TextField::new('added_by.fullName')->setLabel('Commercial');
         $userNameListing = TextField::new('added_by.fullNameMinified')->setLabel('Sales');
@@ -105,7 +104,7 @@ class CompanyContactCrudController extends BaseCrudController
                 $response = [$firstname, $lastname, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $fonction, $interest, $note, $user];
                 break;
             case Crud::PAGE_DETAIL:
-                $response = [$panel1, $company, $companyVat, $companyStreet, $companyPc, $companyCity, $companyCountry, $panel2, $fullname, $fonction, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $interest, $userName, $noteView, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $billingmail, $panel4, $items];
+                $response = [$panel1, $company, $companyVat, $companyStreet, $companyPc, $companyCity, $companyCountry, $panel2, $fullname, $fonction, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $interest, $userName, $noteView, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $panel4, $items];
                 break;
             case Crud::PAGE_INDEX:
                 $response = [$company, $companyVat, $fullname, $langListing, $email, $phone, $gsm, $userNameListing, $note];
@@ -119,8 +118,23 @@ class CompanyContactCrudController extends BaseCrudController
 
     public function configureActions(Actions $actions): Actions
     {
+        $transfert = Action::new('transfert', 'Transférer le contact')
+            ->linkToCrudAction('transfertContact')
+            ->displayIf(function (CompanyContact $entity) {
+                if (!empty($entity->getAddedBy())) {
+                    $com = $entity->getAddedBy()->getUserIdentifier() === $this->getUser()->getUserIdentifier();
+                } else {
+                    $com = null;
+                }
+                $role = $this->isGranted('ROLE_ADMIN');
+
+                return ($com === $this->getUser()->getUserIdentifier()) || $role;
+            });
+
+
         $actions = parent::configureActions($actions);
         $actions
+            ->add(Crud::PAGE_DETAIL, $transfert)
             ->setPermission(Action::NEW, 'ROLE_COMMERCIAL')
             ->setPermission(Action::EDIT, 'ROLE_COMMERCIAL')
             ->setPermission(Action::DELETE, 'ROLE_ADMIN')
@@ -166,5 +180,22 @@ class CompanyContactCrudController extends BaseCrudController
             ->generateUrl();
 
         return $this->redirect($url);
+    }
+
+    public function transfertContact(AdminContext $context)
+    {
+        $form = $this->createForm(TransfertContact::class, $context->getEntity()->getInstance());
+
+        $form->handleRequest($context->getRequest());
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->companyContactRepository->save($form->getData(), true);
+            return $this->redirect($context->getReferrer());
+        }
+
+        return $this->render('admin/contact/action_transfert.html.twig', [
+            'contact' => $context->getEntity()->getInstance(),
+            'form' => $form,
+            'referrer' => $context->getReferrer()
+        ]);
     }
 }

@@ -109,6 +109,9 @@ class TempCompanyCrudController extends BaseCrudController
         $billingcountry = CountryField::new('billing_country')->setLabel('Pays');
         $billingmail = EmailField::new('billing_mail')->setLabel('Email');
 
+        $oldDB = EmailField::new('company.address')->setRequired(true)->setLabel('Ancienne DB - Adresse')->setDisabled(true)->setColumns(12);
+
+
         switch ($pageName) {
             case Crud::PAGE_EDIT:
                 $response = [$panel1, $vat, $name, $street, $pc, $city, $country, $panel2, $contacts, $note, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $billingmail];
