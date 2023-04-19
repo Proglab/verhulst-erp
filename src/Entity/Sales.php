@@ -25,6 +25,12 @@ class Sales
     #[Assert\PositiveOrZero]
     private ?float $price = null;
 
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: false)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 11)]
+    #[Assert\PositiveOrZero]
+    private ?float $pa = 0;
+
     #[ORM\Column(type: Types::DECIMAL, precision: 4, scale: 2, nullable: true)]
     #[Assert\Length(max: 5)]
     #[Assert\PositiveOrZero]
@@ -86,6 +92,18 @@ class Sales
     public function setPrice(string|float|null $price): self
     {
         $this->price = (float) str_replace(',', '.', (string) $price);
+
+        return $this;
+    }
+
+    public function getPa(): ?float
+    {
+        return (int) $this->pa;
+    }
+
+    public function setPa(string|float|null $pa): self
+    {
+        $this->pa = (float) str_replace(',', '.', (string) $pa);
 
         return $this;
     }
@@ -228,7 +246,7 @@ class Sales
 
     public function getMarge(): float
     {
-        return $this->getTotalPrice() - $this->getDiscount();
+        return $this->getTotalPrice() - ($this->getPa() * $this->getQuantity()) - $this->getDiscount();
     }
 
     public function isInvoiced(): ?bool

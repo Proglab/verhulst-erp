@@ -69,6 +69,9 @@ class ProductSponsoringCrudController extends BaseCrudController
         $dateBegin = DateField::new('date_begin')->setRequired(true)->setFormat('dd/MM/yy')->setLabel('Date début');
         $dateEnd = DateField::new('date_end')->setRequired(true)->setFormat('dd/MM/yy')->setLabel('Date fin');
 
+        $pa = MoneyField::new('pa')->setCurrency('EUR')->setStoredAsCents(false)->setNumDecimals(2)->setLabel('Prix d\'achat')->setRequired(false);
+        $paListing = MoneyField::new('pa')->setCurrency('EUR')->setStoredAsCents(false)->setNumDecimals(2)->setLabel('PA')->setRequired(false);
+
         $percentTv = PercentField::new('percent_tv')
             ->setLabel('Commission Tv')
             ->setPermission('ROLE_ADMIN')
@@ -103,16 +106,16 @@ class ProductSponsoringCrudController extends BaseCrudController
         switch ($pageName) {
             case Crud::PAGE_DETAIL:
             case Crud::PAGE_INDEX:
-                $response = [$name, $dateBegin, $dateEnd, $percentVrListing, $caListing, $description, $quantityMax, $quantitySales, $quantityAvailable, $imageDwonload];
+                $response = [$name, $dateBegin, $dateEnd, $percentVrListing, $paListing, $caListing, $description, $quantityMax, $quantitySales, $quantityAvailable, $imageDwonload];
                 break;
             case Crud::PAGE_NEW:
-                $response = [$name, $dateBegin, $dateEnd, $percentVr, $percentDefaultFreelance, $percentDefaultSalarie, $percentTv, $ca, $description, $quantityMax, $image];
+                $response = [$name, $dateBegin, $dateEnd, $percentVr, $percentDefaultFreelance, $percentDefaultSalarie, $percentTv, $pa, $ca, $description, $quantityMax, $image];
                 break;
             case Crud::PAGE_EDIT:
-                $response = [$name, $dateBegin, $dateEnd, $percentVr, $ca, $description, $quantityMax, $image, $percentFreelanceHidden, $percentSalarieHidden, $percentTvHidden];
+                $response = [$name, $dateBegin, $dateEnd, $percentVr, $pa, $ca, $description, $quantityMax, $image, $percentFreelanceHidden, $percentSalarieHidden, $percentTvHidden];
                 break;
             default:
-                $response = [$name, $dateBegin, $dateEnd, $percentVr, $ca, $description, $quantityMax];
+                $response = [$name, $dateBegin, $dateEnd, $percentVr, $pa, $ca, $description, $quantityMax];
         }
 
         return $response;

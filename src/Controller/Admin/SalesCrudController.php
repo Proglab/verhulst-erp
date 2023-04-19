@@ -179,6 +179,11 @@ class SalesCrudController extends BaseCrudController
             ->setNumDecimals(2)
             ->setRequired(true)
             ->setCurrency('EUR')->setLabel('Prix Total');
+        $pa = MoneyField::new('pa')
+            ->setStoredAsCents(false)
+            ->setNumDecimals(2)
+            ->setRequired(true)
+            ->setCurrency('EUR')->setLabel('Prix d\'achat');
         $priceMarge = MoneyField::new('marge')
             ->setStoredAsCents(false)
             ->setNumDecimals(2)
@@ -194,11 +199,11 @@ class SalesCrudController extends BaseCrudController
 
         switch ($pageName) {
             case Crud::PAGE_NEW:
-                $response = [$product, $contacts, $quantity, $price, $discount_eur, $discount_percent, $date, $discount];
+                $response = [$product, $contacts, $quantity, $pa, $price, $discount_eur, $discount_percent, $date, $discount];
                 break;
 
             case Crud::PAGE_EDIT:
-                $response = [$product, $contacts, $quantity, $price, $discount_edit, $percent_com, $percent_vr, $date];
+                $response = [$product, $contacts, $quantity, $pa, $price, $discount_edit, $percent_com, $percent_vr, $date];
                 break;
             case Crud::PAGE_DETAIL:
                 $response = [$panelProduct,
@@ -206,12 +211,12 @@ class SalesCrudController extends BaseCrudController
                     $panelClient,
                     $company, $companyVat, $companyStreet, $companyPc, $companyCity, $companyCountry,
                     $panelVente,
-                    $price, $quantity, $priceTotal, $discount, $priceMarge, $date, $invoiced, $dateValidation,
+                    $pa, $price, $quantity, $priceTotal, $discount, $priceMarge, $date, $invoiced, $dateValidation,
                     $panelContact,
                     $contact, $contactTel, $contactGsm, $contactEmail];
                 break;
             default:
-                $response = [$product, $contacts, $quantity, $price, $discount_eur, $discount_percent, $date, $discount];
+                $response = [$product, $contacts, $quantity, $pa, $price, $discount_eur, $discount_percent, $date, $discount];
         }
 
         return $response;

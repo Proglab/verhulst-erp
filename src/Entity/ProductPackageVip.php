@@ -17,6 +17,11 @@ class ProductPackageVip extends Product
     #[Assert\PositiveOrZero]
     private ?float $ca = null;
 
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    #[Assert\Length(max: 11)]
+    #[Assert\PositiveOrZero]
+    private ?float $pa = null;
+
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     #[Assert\PositiveOrZero]
     private ?int $quantity_max = null;
@@ -34,6 +39,18 @@ class ProductPackageVip extends Product
     public function setCa(?float $ca): self
     {
         $this->ca = $ca;
+
+        return $this;
+    }
+
+    public function getPa(): ?float
+    {
+        return $this->pa;
+    }
+
+    public function setPa(?float $pa): self
+    {
+        $this->pa = $pa;
 
         return $this;
     }

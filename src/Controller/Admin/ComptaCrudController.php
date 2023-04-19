@@ -58,6 +58,12 @@ class ComptaCrudController extends BaseCrudController
 
         $panelContact = FormField::addPanel('Contact')->setCustomOption('cols', 2);
 
+        $pa = MoneyField::new('pa')
+            ->setStoredAsCents(false)
+            ->setNumDecimals(2)
+            ->setRequired(true)
+            ->setCurrency('EUR')->setLabel('Prix d\'achat');
+
         $price = MoneyField::new('price')
             ->setStoredAsCents(false)
             ->setNumDecimals(2)
@@ -121,7 +127,7 @@ class ComptaCrudController extends BaseCrudController
 
         switch ($pageName) {
             case Crud::PAGE_INDEX:
-                $response = [$company, $project, $product, $price, $quantity, $discount, $total, $date, $invoiced, $dateValidation];
+                $response = [$company, $project, $product, $pa, $price, $quantity, $discount, $total, $date, $invoiced, $dateValidation];
                 break;
 
             case Crud::PAGE_DETAIL:
@@ -130,7 +136,7 @@ class ComptaCrudController extends BaseCrudController
                     $panelClient,
                     $company, $companyVat, $companyStreet, $companyPc, $companyCity, $companyCountry,
                     $panelVente,
-                    $price, $quantity, $priceTotal, $discount, $priceMarge, $date, $invoiced, $dateValidation,
+                    $pa, $price, $quantity, $priceTotal, $discount, $priceMarge, $date, $invoiced, $dateValidation,
                     $panelContact,
                     $contact, $contactTel, $contactGsm, $contactEmail];
                 break;
@@ -138,7 +144,7 @@ class ComptaCrudController extends BaseCrudController
                 $response = [$invoiced];
                 break;
             default:
-                $response = [$project, $product, $quantity, $price, $date, $discount];
+                $response = [$project, $product, $quantity, $pa, $price, $date, $discount];
         }
 
         return $response;
