@@ -70,7 +70,7 @@ class TempCompanyContactCrudController extends BaseCrudController
         $companyPc = TextField::new('company.pc')->setLabel('Code postal');
         $companyCity = TextField::new('company.city')->setLabel('Ville')->setColumns(12);
         $companyCountry = CountryField::new('company.country')->setLabel('Pays');
-        $companyVat = TextField::new('company.vat_number')->setLabel('Numéro de TVA')->setHelp('Mettre au format Européen (BE0760577097)');
+        $companyVat = TextField::new('company.vat_number')->setLabel('Numéro de TVA')->setHelp('Mettre au format Européen (BE0760577097)')->setRequired(false);
         $firstname = TextField::new('firstname')->setLabel('Prénom')->setRequired(true)->setColumns(12);
         $lastname = TextField::new('lastname')->setLabel('Nom')->setRequired(true)->setColumns(12);
         $fullname = TextField::new('fullName')->setLabel('Nom');

@@ -96,8 +96,8 @@ class CompanyCrudController extends BaseCrudController
         $pc = TextField::new('pc')->setRequired(true)->setLabel('Code postal');
         $city = TextField::new('city')->setRequired(true)->setColumns(12)->setLabel('Ville');
         $country = CountryField::new('country')->setRequired(true)->setLabel('Pays');
-        $vatNew = TextField::new('vat_number', 'Numéro de TVA')->setRequired(true)->setLabel('Numéro de TVA')->addWebpackEncoreEntries('company');
-        $vat = TextField::new('vat_number', 'Numéro de TVA')->setRequired(true)->setLabel('Numéro de TVA');
+        $vatNew = TextField::new('vat_number', 'Numéro de TVA')->setRequired(false)->setLabel('Numéro de TVA')->addWebpackEncoreEntries('company');
+        $vat = TextField::new('vat_number', 'Numéro de TVA')->setRequired(false)->setLabel('Numéro de TVA');
         $panel2 = FormField::addPanel('Contact')->addCssClass('col-5')->setCustomOption('cols', 2);
         $contacts = CollectionField::new('contact')->setLabel(false)->allowAdd(true)->allowDelete(true)->useEntryCrudForm(CompanyContactCrudController::class)->setColumns(12)->setRequired(true);
         $note = TextEditorField::new('note')->setLabel('Note')->setColumns(12);
