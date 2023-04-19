@@ -123,16 +123,12 @@ class CompanyContactCrudController extends BaseCrudController
         $transfert = Action::new('transfert', 'Transférer le contact')
             ->linkToCrudAction('transfertContact')
             ->displayIf(function (CompanyContact $entity) {
-                if (!empty($entity->getAddedBy())) {
-                    $com = $entity->getAddedBy()->getUserIdentifier() === $this->getUser()->getUserIdentifier();
-                } else {
-                    $com = null;
+                if (!empty($entity->getAddedBy() && $entity->getAddedBy()->getUserIdentifier() === $this->getUser()->getUserIdentifier() && $this->isGranted('ROLE_ADMIN'))) {
+                    return true;
                 }
-                $role = $this->isGranted('ROLE_ADMIN');
 
-                return ($com === $this->getUser()->getUserIdentifier()) || $role;
+                return false;
             });
-
 
         $actions = parent::configureActions($actions);
         $actions
@@ -184,20 +180,21 @@ class CompanyContactCrudController extends BaseCrudController
         return $this->redirect($url);
     }
 
-    public function transfertContact(AdminContext $context)
+    public function transfertContact(AdminContext $context): RedirectResponse|Response
     {
         $form = $this->createForm(TransfertContact::class, $context->getEntity()->getInstance());
 
         $form->handleRequest($context->getRequest());
         if ($form->isSubmitted() && $form->isValid()) {
             $this->companyContactRepository->save($form->getData(), true);
+
             return $this->redirect($context->getReferrer());
         }
 
         return $this->render('admin/contact/action_transfert.html.twig', [
             'contact' => $context->getEntity()->getInstance(),
             'form' => $form,
-            'referrer' => $context->getReferrer()
+            'referrer' => $context->getReferrer(),
         ]);
     }
 }

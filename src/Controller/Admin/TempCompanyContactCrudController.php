@@ -25,7 +25,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\LanguageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -43,7 +42,7 @@ class TempCompanyContactCrudController extends BaseCrudController
     {
         return $filters
             ->add(EntityFilter::new('added_by')->setLabel('Commercial'))
-            ;
+        ;
     }
 
     public static function getEntityFqcn(): string
@@ -224,27 +223,27 @@ class TempCompanyContactCrudController extends BaseCrudController
         ]);
     }
 
-
     public function validerContact(AdminContext $context): RedirectResponse
     {
         /** @var TempCompanyContact $contact */
         $contact = $context->getEntity()->getInstance();
 
         $errors = $this->validator->validate($contact);
-        if (count($errors) > 0) {
+        if (\count($errors) > 0) {
             foreach ($errors as $error) {
-                $this->addFlash('danger', $error->getPropertyPath(). ' : '.$error->getMessage());
+                $this->addFlash('danger', $error->getPropertyPath() . ' : ' . $error->getMessage());
+
                 return new RedirectResponse($context->getReferrer());
             }
         }
 
-        //valider la société
+        // valider la société
         /** @var CompanyRepository $repoCompany */
         $repoCompany = $this->entityManager->getRepository(Company::class);
         $count1 = $repoCompany->count(['vat_number' => $contact->getCompany()->getVatNumber()]);
         $count2 = $repoCompany->count(['name' => $contact->getCompany()->getName()]);
 
-        if ($count1 == 0 && $count2 == 0) {
+        if (0 === $count1 && 0 === $count2) {
             $company = new Company();
             $company->setName($contact->getCompany()->getName());
             $company->setStreet($contact->getCompany()->getStreet());
@@ -253,7 +252,7 @@ class TempCompanyContactCrudController extends BaseCrudController
             $company->setCountry($contact->getCompany()->getCountry());
             $company->setVatNumber($contact->getCompany()->getVatNumber());
             $repoCompany->save($company, true);
-            $this->addFlash('success', $contact->getCompany()->getName().' importé');
+            $this->addFlash('success', $contact->getCompany()->getName() . ' importé');
         } else {
             $company = $repoCompany->findOneBy(['vat_number' => $contact->getCompany()->getVatNumber()]);
             if (empty($company)) {
@@ -263,7 +262,6 @@ class TempCompanyContactCrudController extends BaseCrudController
 
         /** @var CompanyContactRepository $repoCompanyContact */
         $repoCompanyContact = $this->entityManager->getRepository(CompanyContact::class);
-
 
         $count3 = $repoCompanyContact->count(['email' => $contact->getEmail()]);
         if (empty($contact->getPhone())) {
@@ -277,7 +275,7 @@ class TempCompanyContactCrudController extends BaseCrudController
             $count5 = $repoCompanyContact->count(['gsm' => $contact->getGsm()]);
         }
 
-        if ($count3 == 0 && $count4 == 0 && $count5 == 0) {
+        if (0 === $count3 && 0 === $count4 && 0 === $count5) {
             $contactNew = new CompanyContact();
             $contactNew->setCompany($company);
             $contactNew->setStreet($contact->getStreet());
@@ -303,26 +301,24 @@ class TempCompanyContactCrudController extends BaseCrudController
                 $repo->remove($c, true);
             }
 
-            $this->addFlash('success', 'Le contact '.$contactNew->getFullName().' a bien été importé');
+            $this->addFlash('success', 'Le contact ' . $contactNew->getFullName() . ' a bien été importé');
 
             return new RedirectResponse(
                 $this->adminUrlGenerator->setController(CompanyContactCrudController::class)
                     ->setAction(Crud::PAGE_DETAIL)
                     ->setEntityId($contactNew->getId())
                     ->generateUrl());
-
-        } else {
-            if ($count3 > 0) {
-                $this->addFlash('danger', 'Le mail <b>' . $contact->getEmail().'</b> existe déjà');
-            }
-            if ($count4 > 0) {
-                $this->addFlash('danger', 'Le téléphone <b>' . $contact->getPhone().'</b> existe déjà');
-            }
-            if ($count5 > 0) {
-                $this->addFlash('danger', 'Le gsm <b>' . $contact->getGsm().'</b> existe déjà');
-            }
-
-            return new RedirectResponse($context->getReferrer());
         }
+        if ($count3 > 0) {
+            $this->addFlash('danger', 'Le mail <b>' . $contact->getEmail() . '</b> existe déjà');
+        }
+        if ($count4 > 0) {
+            $this->addFlash('danger', 'Le téléphone <b>' . $contact->getPhone() . '</b> existe déjà');
+        }
+        if ($count5 > 0) {
+            $this->addFlash('danger', 'Le gsm <b>' . $contact->getGsm() . '</b> existe déjà');
+        }
+
+        return new RedirectResponse($context->getReferrer());
     }
 }
