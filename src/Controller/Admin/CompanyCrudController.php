@@ -97,6 +97,7 @@ class CompanyCrudController extends BaseCrudController
         $city = TextField::new('city')->setRequired(true)->setColumns(12)->setLabel('Ville');
         $country = CountryField::new('country')->setRequired(true)->setLabel('Pays');
         $vatNew = TextField::new('vat_number', 'Numéro de TVA')->setRequired(false)->setLabel('Numéro de TVA')->addWebpackEncoreEntries('company');
+        $companyVatNa = BooleanField::new('vat_na')->setLabel('Non assujetti')->setRequired(false);
         $vat = TextField::new('vat_number', 'Numéro de TVA')->setRequired(false)->setLabel('Numéro de TVA');
         $panel2 = FormField::addPanel('Contact')->addCssClass('col-5')->setCustomOption('cols', 2);
         $contacts = CollectionField::new('contact')->setLabel(false)->allowAdd(true)->allowDelete(true)->useEntryCrudForm(CompanyContactCrudController::class)->setColumns(12)->setRequired(true);
@@ -111,14 +112,14 @@ class CompanyCrudController extends BaseCrudController
 
         switch ($pageName) {
             case Crud::PAGE_EDIT:
-                $response = [$panel1, $vat, $name, $street, $pc, $city, $country, $panel2, $contacts, $note, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $billingmail];
+                $response = [$panel1, $vat, $companyVatNa, $name, $street, $pc, $city, $country, $panel2, $contacts, $note, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $billingmail];
                 break;
             case Crud::PAGE_NEW:
-                $response = [$panel1, $vatNew, $name, $street, $pc, $city, $country, $panel2, $contacts, $note, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $billingmail];
+                $response = [$panel1, $vatNew, $companyVatNa, $name, $street, $pc, $city, $country, $panel2, $contacts, $note, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $billingmail];
                 break;
             case Crud::PAGE_DETAIL:
             case Crud::PAGE_INDEX:
-                $response = [$panel1, $vat, $name, $street, $pc, $city, $country, $note, $panel2, $contacts];
+                $response = [$panel1, $vat, $companyVatNa, $name, $street, $pc, $city, $country, $note, $panel2, $contacts];
                 break;
             default:
                 $response = [$panel1, $vat, $name, $street, $pc, $city, $country, $note, $panel2, $contacts];
