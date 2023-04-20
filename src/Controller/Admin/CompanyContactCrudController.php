@@ -80,7 +80,7 @@ class CompanyContactCrudController extends BaseCrudController
 
         $fonction = TextField::new('function')->setLabel('Fonction')->setColumns(12);
 
-        $gsm = TextField::new('gsm')->setLabel('Gsm')->setColumns(12);
+        $gsm = TelephoneField::new('gsm')->setLabel('Gsm')->setColumns(12);
         $note = TextEditorField::new('note')->setLabel('Note')->setColumns(12);
         $noteView = TextField::new('note')->setLabel('Note')->renderAsHtml();
 

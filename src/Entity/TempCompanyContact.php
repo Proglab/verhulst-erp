@@ -151,7 +151,11 @@ class TempCompanyContact
 
     public function getPhone(): ?string
     {
-        return $this->phone;
+        $phone = str_replace(' ', '', $this->phone);
+        $phone = str_replace('/', '', $phone);
+        $phone = str_replace('.', '', $phone);
+
+        return $phone;
     }
 
     public function setPhone(?string $phone): self
@@ -175,7 +179,11 @@ class TempCompanyContact
 
     public function getGsm(): ?string
     {
-        return $this->gsm;
+        $phone = str_replace(' ', '', $this->gsm);
+        $phone = str_replace('/', '', $phone);
+        $phone = str_replace('.', '', $phone);
+
+        return $phone;
     }
 
     public function setGsm(?string $gsm): self
