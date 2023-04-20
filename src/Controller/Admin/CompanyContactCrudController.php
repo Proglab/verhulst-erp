@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\CompanyContact;
+use App\Entity\User;
 use App\Form\Type\TransfertContact;
 use App\Repository\CompanyContactRepository;
+use App\Repository\UserRepository;
 use App\Service\SecurityChecker;
+use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -90,14 +93,18 @@ class CompanyContactCrudController extends BaseCrudController
         $billingPc = TextField::new('company.billing_pc')->setRequired(true)->setColumns(12)->setLabel('Code postal');
         $billingcity = TextField::new('company.billing_city')->setRequired(true)->setColumns(12)->setLabel('Ville');
         $billingcountry = CountryField::new('company.billing_country')->setRequired(true)->setLabel('Pays');
-
-
-
         $user = TextField::new('added_by')->setColumns(12)->setRequired(false)
             ->setLabel('Commercial')->setDisabled(true);
 
+        $userAdd = AssociationField::new('added_by')->setColumns(12)->setRequired(false)
+        ->setLabel('Commercial')->setQueryBuilder(
+            function (QueryBuilder $queryBuilder) {
+                /** @var UserRepository $repo */
+                $repo = $queryBuilder->getEntityManager()->getRepository(User::class);
 
-
+                return $repo->getCommercialsQb();
+            }
+        );
 
         $userName = TextField::new('added_by.fullName')->setLabel('Commercial');
         $userNameListing = TextField::new('added_by.fullNameMinified')->setLabel('Sales');
@@ -107,8 +114,10 @@ class CompanyContactCrudController extends BaseCrudController
 
         switch ($pageName) {
             case Crud::PAGE_EDIT:
-            case Crud::PAGE_NEW:
                 $response = [$firstname, $lastname, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $fonction, $interest, $note, $user];
+                break;
+            case Crud::PAGE_NEW:
+                $response = [$firstname, $lastname, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $fonction, $interest, $note, $userAdd];
                 break;
             case Crud::PAGE_DETAIL:
                 $response = [$panel1, $company, $companyVat, $companyVatNa, $companyStreet, $companyPc, $companyCity, $companyCountry, $panel2, $fullname, $fonction, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $interest, $userName, $noteView, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $panel4, $items];

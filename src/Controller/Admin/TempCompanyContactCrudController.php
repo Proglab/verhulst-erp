@@ -7,6 +7,7 @@ namespace App\Controller\Admin;
 use App\Entity\Company;
 use App\Entity\CompanyContact;
 use App\Entity\TempCompanyContact;
+use App\Entity\User;
 use App\Form\Type\TempTransfertContact;
 use App\Repository\CompanyContactRepository;
 use App\Repository\CompanyRepository;
@@ -275,7 +276,6 @@ class TempCompanyContactCrudController extends BaseCrudController
             }
         }
 
-
         /** @var CompanyContactRepository $repoCompanyContact */
         $repoCompanyContact = $this->entityManager->getRepository(CompanyContact::class);
 
@@ -308,7 +308,9 @@ class TempCompanyContactCrudController extends BaseCrudController
             $contactNew->setLang($contact->getLang());
 
             if (empty($contact->getAddedBy())) {
-                $contactNew->setAddedBy($this->getUser());
+                /** @var ?User $user */
+                $user = $this->getUser();
+                $contactNew->setAddedBy($user);
             } else {
                 $contactNew->setAddedBy($contact->getAddedBy());
             }
