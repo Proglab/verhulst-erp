@@ -307,6 +307,12 @@ class TempCompanyContactCrudController extends BaseCrudController
             $contactNew->setPhone($contact->getPhone());
             $contactNew->setLang($contact->getLang());
 
+            if (empty($contact->getAddedBy())) {
+                $contactNew->setAddedBy($this->getUser());
+            } else {
+                $contactNew->setAddedBy($contact->getAddedBy());
+            }
+
             $repoCompanyContact->save($contactNew, true);
 
             /** @var TempCompanyContactRepository $repo */
