@@ -91,8 +91,13 @@ class CompanyContactCrudController extends BaseCrudController
         $billingcity = TextField::new('company.billing_city')->setRequired(true)->setColumns(12)->setLabel('Ville');
         $billingcountry = CountryField::new('company.billing_country')->setRequired(true)->setLabel('Pays');
 
+
+
         $user = TextField::new('added_by')->setColumns(12)->setRequired(false)
             ->setLabel('Commercial')->setDisabled(true);
+
+
+
 
         $userName = TextField::new('added_by.fullName')->setLabel('Commercial');
         $userNameListing = TextField::new('added_by.fullNameMinified')->setLabel('Sales');
@@ -123,7 +128,11 @@ class CompanyContactCrudController extends BaseCrudController
         $transfert = Action::new('transfert', 'Transférer le contact')
             ->linkToCrudAction('transfertContact')
             ->displayIf(function (CompanyContact $entity) {
-                if (!empty($entity->getAddedBy() && $entity->getAddedBy()->getUserIdentifier() === $this->getUser()->getUserIdentifier() && $this->isGranted('ROLE_ADMIN'))) {
+                if (!empty($entity->getAddedBy()) && $entity->getAddedBy()->getUserIdentifier() === $this->getUser()->getUserIdentifier()) {
+                    return true;
+                }
+
+                if ($this->isGranted('ROLE_ADMIN')) {
                     return true;
                 }
 
