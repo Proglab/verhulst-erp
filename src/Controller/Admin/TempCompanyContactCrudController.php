@@ -240,25 +240,41 @@ class TempCompanyContactCrudController extends BaseCrudController
         // valider la société
         /** @var CompanyRepository $repoCompany */
         $repoCompany = $this->entityManager->getRepository(Company::class);
-        $count1 = $repoCompany->count(['vat_number' => $contact->getCompany()->getVatNumber()]);
-        $count2 = $repoCompany->count(['name' => $contact->getCompany()->getName()]);
 
-        if (0 === $count1 && 0 === $count2) {
-            $company = new Company();
-            $company->setName($contact->getCompany()->getName());
-            $company->setStreet($contact->getCompany()->getStreet());
-            $company->setPc($contact->getCompany()->getPc());
-            $company->setCity($contact->getCompany()->getCity());
-            $company->setCountry($contact->getCompany()->getCountry());
-            $company->setVatNumber($contact->getCompany()->getVatNumber());
-            $repoCompany->save($company, true);
-            $this->addFlash('success', $contact->getCompany()->getName() . ' importé');
-        } else {
-            $company = $repoCompany->findOneBy(['vat_number' => $contact->getCompany()->getVatNumber()]);
+        if (empty($contact->getCompany()->getVatNumber())) {
+            $company = $repoCompany->findOneBy(['name' => $contact->getCompany()->getName()]);
             if (empty($company)) {
-                $company = $repoCompany->findOneBy(['name' => $contact->getCompany()->getName()]);
+                $company = new Company();
+                $company->setName($contact->getCompany()->getName());
+                $company->setStreet($contact->getCompany()->getStreet());
+                $company->setPc($contact->getCompany()->getPc());
+                $company->setCity($contact->getCompany()->getCity());
+                $company->setCountry($contact->getCompany()->getCountry());
+                $company->setVatNumber($contact->getCompany()->getVatNumber());
+                $repoCompany->save($company, true);
+                $this->addFlash('success', $contact->getCompany()->getName() . ' importé');
+            }
+        } else {
+            $count1 = $repoCompany->count(['vat_number' => $contact->getCompany()->getVatNumber()]);
+            $count2 = $repoCompany->count(['name' => $contact->getCompany()->getName()]);
+            if (0 === $count1 && 0 === $count2) {
+                $company = new Company();
+                $company->setName($contact->getCompany()->getName());
+                $company->setStreet($contact->getCompany()->getStreet());
+                $company->setPc($contact->getCompany()->getPc());
+                $company->setCity($contact->getCompany()->getCity());
+                $company->setCountry($contact->getCompany()->getCountry());
+                $company->setVatNumber($contact->getCompany()->getVatNumber());
+                $repoCompany->save($company, true);
+                $this->addFlash('success', $contact->getCompany()->getName() . ' importé');
+            } else {
+                $company = $repoCompany->findOneBy(['vat_number' => $contact->getCompany()->getVatNumber()]);
+                if (empty($company)) {
+                    $company = $repoCompany->findOneBy(['name' => $contact->getCompany()->getName()]);
+                }
             }
         }
+
 
         /** @var CompanyContactRepository $repoCompanyContact */
         $repoCompanyContact = $this->entityManager->getRepository(CompanyContact::class);
