@@ -151,6 +151,10 @@ class TempCompanyContact
 
     public function getPhone(): ?string
     {
+        if (empty($this->phone)) {
+            return null;
+        }
+
         $phone = str_replace(' ', '', $this->phone);
         $phone = str_replace('/', '', $phone);
         $phone = str_replace('.', '', $phone);
@@ -179,6 +183,10 @@ class TempCompanyContact
 
     public function getGsm(): ?string
     {
+        if (empty($this->gsm)) {
+            return null;
+        }
+
         $phone = str_replace(' ', '', $this->gsm);
         $phone = str_replace('/', '', $phone);
         $phone = str_replace('.', '', $phone);
