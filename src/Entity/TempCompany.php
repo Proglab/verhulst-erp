@@ -20,27 +20,27 @@ class TempCompany
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: false)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255, nullable: false)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
     private ?string $street = null;
 
-    #[ORM\Column(length: 20, nullable: false)]
+    #[ORM\Column(length: 20, nullable: true)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 20)]
     private ?string $pc = null;
 
-    #[ORM\Column(length: 255, nullable: false)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
     private ?string $city = null;
 
-    #[ORM\Column(length: 2, nullable: false)]
+    #[ORM\Column(length: 2, nullable: true)]
     #[Assert\NotBlank]
     #[Assert\Country()]
     private ?string $country = null;
@@ -90,7 +90,7 @@ class TempCompany
         return $this->street;
     }
 
-    public function setStreet(string $street): self
+    public function setStreet(?string $street): self
     {
         $this->street = $street;
 
@@ -102,7 +102,7 @@ class TempCompany
         return $this->pc;
     }
 
-    public function setPc(string $pc): self
+    public function setPc(?string $pc): self
     {
         $this->pc = $pc;
 
@@ -114,7 +114,7 @@ class TempCompany
         return $this->city;
     }
 
-    public function setCity(string $city): self
+    public function setCity(?string $city): self
     {
         $this->city = $city;
 
@@ -180,7 +180,7 @@ class TempCompany
         return $this->address;
     }
 
-    public function setAddress(string $address): self
+    public function setAddress(?string $address): self
     {
         $this->address = $address;
 

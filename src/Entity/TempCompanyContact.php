@@ -159,6 +159,8 @@ class TempCompanyContact
         $phone = str_replace('/', '', $phone);
         $phone = str_replace('.', '', $phone);
 
+        $this->phone = $phone;
+
         return $phone;
     }
 
@@ -190,6 +192,8 @@ class TempCompanyContact
         $phone = str_replace(' ', '', $this->gsm);
         $phone = str_replace('/', '', $phone);
         $phone = str_replace('.', '', $phone);
+
+        $this->gsm = $phone;
 
         return $phone;
     }
