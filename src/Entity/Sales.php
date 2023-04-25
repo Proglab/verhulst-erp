@@ -31,8 +31,8 @@ class Sales
     #[Assert\PositiveOrZero]
     private ?float $pa = 0;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 4, scale: 2, nullable: true)]
-    #[Assert\Length(max: 5)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
+    #[Assert\Length(max: 6)]
     #[Assert\PositiveOrZero]
     private ?float $percent_vr = null;
 
