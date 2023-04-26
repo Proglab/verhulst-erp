@@ -280,18 +280,13 @@ class TempCompanyContactCrudController extends BaseCrudController
         $repoCompanyContact = $this->entityManager->getRepository(CompanyContact::class);
 
         $count3 = $repoCompanyContact->count(['email' => $contact->getEmail()]);
-        if (empty($contact->getPhone())) {
-            $count4 = 0;
-        } else {
-            $count4 = $repoCompanyContact->count(['phone' => $contact->getPhone()]);
-        }
         if (empty($contact->getGsm())) {
             $count5 = 0;
         } else {
             $count5 = $repoCompanyContact->count(['gsm' => $contact->getGsm()]);
         }
 
-        if (0 === $count3 && 0 === $count4 && 0 === $count5) {
+        if (0 === $count3 && 0 === $count5) {
             $contactNew = new CompanyContact();
             $contactNew->setCompany($company);
             $contactNew->setStreet($contact->getStreet());
@@ -319,11 +314,7 @@ class TempCompanyContactCrudController extends BaseCrudController
 
             /** @var TempCompanyContactRepository $repo */
             $repo = $this->entityManager->getRepository(TempCompanyContact::class);
-            $contacts = $repo->findBy(['email' => $contact->getEmail()]);
-
-            foreach ($contacts as $c) {
-                $repo->remove($c, true);
-            }
+            $repo->remove($contact, true);
 
             $this->addFlash('success', 'Le contact ' . $contactNew->getFullName() . ' a bien été importé');
 
@@ -335,9 +326,6 @@ class TempCompanyContactCrudController extends BaseCrudController
         }
         if ($count3 > 0) {
             $this->addFlash('danger', 'Le mail <b>' . $contact->getEmail() . '</b> existe déjà');
-        }
-        if ($count4 > 0) {
-            $this->addFlash('danger', 'Le téléphone <b>' . $contact->getPhone() . '</b> existe déjà');
         }
         if ($count5 > 0) {
             $this->addFlash('danger', 'Le gsm <b>' . $contact->getGsm() . '</b> existe déjà');
