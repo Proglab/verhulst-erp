@@ -100,7 +100,7 @@ class CompanyCrudController extends BaseCrudController
         $companyVatNa = BooleanField::new('vat_na')->setLabel('Non assujetti')->setRequired(false);
         $vat = TextField::new('vat_number', 'Numéro de TVA')->setRequired(false)->setLabel('Numéro de TVA');
         $panel2 = FormField::addPanel('Contact')->addCssClass('col-5')->setCustomOption('cols', 2);
-        $contacts = CollectionField::new('contact')->setLabel(false)->allowAdd(true)->allowDelete(true)->useEntryCrudForm(CompanyContactCrudController::class)->setColumns(12)->setRequired(true);
+        $contacts = CollectionField::new('contact')->setLabel(false)->allowAdd(true)->allowDelete(true)->useEntryCrudForm(CompanyContactCrudController::class)->setColumns(12)->setRequired(true)->setEntryIsComplex(true);
         $note = TextEditorField::new('note')->setLabel('Note')->setColumns(12);
         $panel3 = FormField::addPanel('Facturation')->addCssClass('col-5')->renderCollapsed()->setCustomOption('cols', 1);
 

@@ -66,7 +66,7 @@ class CompanyContactCrudController extends BaseCrudController
         $firstname = TextField::new('firstname')->setLabel('Prénom')->setRequired(true)->setColumns(12);
         $lastname = TextField::new('lastname')->setLabel('Nom')->setRequired(true)->setColumns(12);
         $fullname = TextField::new('fullName')->setLabel('Nom');
-        $lang = LanguageField::new('lang')->setLabel('Langue')->setRequired(true)->setColumns(12)->includeOnly(['fr', 'nl', 'en', 'it', 'es', 'de']);
+        $lang = LanguageField::new('lang')->setLabel('Langue')->setRequired(true)->setColumns(12)->includeOnly(['fr', 'nl', 'en', 'it', 'es', 'de'])->setFormTypeOption('preferred_choices', ['fr']);
         $langListing = LanguageField::new('lang')->setLabel('Lang')->showCode()->showName(false)->setRequired(true)->setColumns(12);
         $email = EmailField::new('email')->setLabel('E-mail')->setColumns(12)->setRequired(true);
         $phone = TelephoneField::new('phone')->setLabel('Téléphone')->setColumns(12);
@@ -117,7 +117,7 @@ class CompanyContactCrudController extends BaseCrudController
                 $response = [$firstname, $lastname, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $fonction, $interest, $note, $user];
                 break;
             case Crud::PAGE_NEW:
-                $response = [$firstname, $lastname, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $fonction, $interest, $note, $userAdd];
+                $response = [$firstname, $lastname, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry->setFormTypeOption('preferred_choices', ['BE']), $fonction, $interest, $note, $userAdd];
                 break;
             case Crud::PAGE_DETAIL:
                 $response = [$panel1, $company, $companyVat, $companyVatNa, $companyStreet, $companyPc, $companyCity, $companyCountry, $panel2, $fullname, $fonction, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $interest, $userName, $noteView, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $panel4, $items];

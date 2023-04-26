@@ -44,7 +44,7 @@ class Company
     #[ORM\Column(length: 2, nullable: false)]
     #[Assert\NotBlank]
     #[Assert\Country()]
-    private ?string $country = null;
+    private ?string $country = 'BE';
 
     #[ORM\Column(length: 30, nullable: true)]
     #[Assert\Length(max: 30)]
@@ -69,7 +69,7 @@ class Company
     #[ORM\Column(length: 2, nullable: true)]
     #[Assert\Country()]
     #[Assert\Length(max: 2)]
-    private ?string $billing_country = null;
+    private ?string $billing_country = 'BE';
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Email(message: 'Veuillez renseigner un email valide')]

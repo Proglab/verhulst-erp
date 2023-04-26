@@ -33,7 +33,7 @@ class CompanyContact
     #[Assert\NotBlank]
     #[Assert\Language]
     #[Assert\Length(max: 2)]
-    private ?string $lang = null;
+    private ?string $lang = 'fr';
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
@@ -65,7 +65,7 @@ class CompanyContact
 
     #[ORM\Column(length: 2, nullable: true)]
     #[Assert\Country()]
-    private ?string $country = null;
+    private ?string $country = 'BE';
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
