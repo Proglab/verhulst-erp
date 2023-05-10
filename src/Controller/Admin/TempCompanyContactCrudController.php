@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Controller\Admin\Filter\AddedByFilter;
 use App\Entity\Company;
 use App\Entity\CompanyContact;
 use App\Entity\TempCompanyContact;
@@ -27,6 +28,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\LanguageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\NullFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,7 +44,7 @@ class TempCompanyContactCrudController extends BaseCrudController
     public function configureFilters(Filters $filters): Filters
     {
         return $filters
-            ->add(EntityFilter::new('added_by')->setLabel('Commercial'))
+            ->add(AddedByFilter::new('added_by')->setLabel('Commercial'))
         ;
     }
 
