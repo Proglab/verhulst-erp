@@ -137,7 +137,11 @@ class CompanyContactCrudController extends BaseCrudController
         $transfert = Action::new('transfert', 'Transférer le contact')
             ->linkToCrudAction('transfertContact')
             ->displayIf(function (CompanyContact $entity) {
-                if (!empty($entity->getAddedBy()) && $entity->getAddedBy()->getUserIdentifier() === $this->getUser()->getUserIdentifier()) {
+                if (empty($entity->getAddedBy())) {
+                    return true;
+                }
+
+                if ($entity->getAddedBy()->getUserIdentifier() === $this->getUser()->getUserIdentifier()) {
                     return true;
                 }
 
