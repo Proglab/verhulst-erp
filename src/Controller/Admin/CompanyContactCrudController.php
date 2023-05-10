@@ -14,6 +14,7 @@ use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -50,6 +51,13 @@ class CompanyContactCrudController extends BaseCrudController
             ->overrideTemplate('crud/detail', 'admin/crud/detail_2cols.html.twig');
 
         return parent::configureCrud($crud);
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add('added_by')
+            ;
     }
 
     public function configureFields(string $pageName): iterable
