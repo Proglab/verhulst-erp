@@ -115,7 +115,7 @@ class UserCrudController extends BaseCrudController
         $email = EmailField::new('email');
         $firstname = TextField::new('firstName')->setLabel('Prénom');
         $lastname = TextField::new('lastName')->setLabel('Nom');
-        $locale = ChoiceField::new('locale')->allowMultipleChoices(false)->renderExpanded(true)->setChoices(['Français' => 'fr', 'English' => 'en'])->setLabel('Langue');
+        $locale = ChoiceField::new('locale')->allowMultipleChoices(false)->renderExpanded(true)->setChoices(['Français' => 'fr', 'English' => 'en', 'Nederland' => 'nl'])->setLabel('Langue');
         $twoFa = BooleanField::new('isTotpEnabled')->setLabel('Double authentification');
         $role = ChoiceField::new('roles')->allowMultipleChoices(true)->renderExpanded(true)->setChoices(['Admin' => 'ROLE_ADMIN', 'Commercial' => 'ROLE_COMMERCIAL', 'Encodeur' => 'ROLE_ENCODE', 'Compta' => 'ROLE_COMPTA'])->setLabel('Rôle');
         $enabled = BooleanField::new('enabled')->setLabel('Validé');
