@@ -217,9 +217,20 @@ class TempCompanyContactCrudController extends BaseCrudController
             return $this->redirect($context->getReferrer());
         }
 
+        if ($form->isSubmitted() && !$form->isValid()) {
+            /** @var TempCompanyContact $client */
+            $client = $form->getData();
+            if (!empty($client->getAddedBy())) {
+                $this->companyContactRepository->save($form->getData(), true);
+                return $this->redirect($context->getReferrer());
+            }
+        }
+
+
         return $this->render('admin/contact/action_transfert.html.twig', [
             'contact' => $context->getEntity()->getInstance(),
             'form' => $form,
+            'errors' => $form->getErrors(),
             'referrer' => $context->getReferrer(),
         ]);
     }
