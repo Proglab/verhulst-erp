@@ -18,6 +18,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class TodoCrudController extends BaseCrudController
 {
@@ -86,6 +87,7 @@ class TodoCrudController extends BaseCrudController
         $dateDone = DateTimeField::new('date_done')->setLabel('Date de réalisation');
         $projet = AssociationField::new('project')->setLabel('Projet')->setRequired(false);
         $type = AssociationField::new('type')->setLabel('Type de To do')->setRequired(true);
+        $societe = TextField::new('client.company')->setLabel('Sociéte')->setRequired(false);
 
         if ($this->isGranted('ROLE_ADMIN')) {
             switch ($pageName) {
@@ -99,7 +101,7 @@ class TodoCrudController extends BaseCrudController
                     $response = [$type, $dateReminder, $user, $projet, $contact, $todo, $done, $dateDone];
                     break;
                 default:
-                    $response = [$type, $dateReminder, $user, $projet, $contact, $todo, $done];
+                    $response = [$type, $dateReminder, $user, $projet, $contact, $societe, $todo, $done];
             }
         } else {
             switch ($pageName) {
@@ -107,6 +109,8 @@ class TodoCrudController extends BaseCrudController
                     $response = [$type, $dateReminder, $projet, $contact, $todo];
                     break;
                 case Crud::PAGE_INDEX:
+                    $response = [$type, $dateReminder, $projet, $contact, $societe, $todo, $done];
+                    break;
                 case Crud::PAGE_EDIT:
                     $response = [$type, $dateReminder, $projet, $contact, $todo, $done];
                     break;
