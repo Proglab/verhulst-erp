@@ -27,8 +27,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\LanguageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
-use EasyCorp\Bundle\EasyAdminBundle\Filter\NullFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -224,10 +222,10 @@ class TempCompanyContactCrudController extends BaseCrudController
             $client = $form->getData();
             if (!empty($client->getAddedBy())) {
                 $this->companyContactRepository->save($form->getData(), true);
+
                 return $this->redirect($context->getReferrer());
             }
         }
-
 
         return $this->render('admin/contact/action_transfert.html.twig', [
             'contact' => $context->getEntity()->getInstance(),

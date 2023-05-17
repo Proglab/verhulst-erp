@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Filter;
 
-
 use App\Form\Type\AddedByFilterType;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Filter\FilterInterface;
@@ -17,7 +16,7 @@ class AddedByFilter implements FilterInterface
 {
     use FilterTrait;
 
-    public static function new(string $propertyName, $label = null): self
+    public static function new(string $propertyName, ?string $label = null): self
     {
         return (new self())
             ->setFilterFqcn(__CLASS__)
@@ -33,7 +32,5 @@ class AddedByFilter implements FilterInterface
         } else {
             $queryBuilder->andWhere('entity.added_by = :added_by')->setParameter('added_by', $filterDataDto->getValue()->getAddedBy());
         }
-
-
     }
 }

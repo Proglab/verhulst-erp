@@ -190,7 +190,6 @@ class SalesCrudController extends BaseCrudController
             $pa = HiddenField::new('pa');
         }
 
-
         $priceMarge = MoneyField::new('marge')
             ->setStoredAsCents(false)
             ->setNumDecimals(2)
