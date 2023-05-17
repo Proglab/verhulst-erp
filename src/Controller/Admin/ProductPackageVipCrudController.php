@@ -69,8 +69,8 @@ class ProductPackageVipCrudController extends BaseCrudController
         $imageDwonload = TextField::new('download_url')->renderAsHtml()->setLabel('Doc (PDF)');
         $dateBegin = DateField::new('date_begin')->setRequired(true)->setFormat('dd/MM/yy')->setLabel('Date');
 
-        $pa = MoneyField::new('pa')->setCurrency('EUR')->setStoredAsCents(false)->setNumDecimals(2)->setLabel('Prix d\'achat')->setRequired(false);
-        $paListing = MoneyField::new('pa')->setCurrency('EUR')->setStoredAsCents(false)->setNumDecimals(2)->setLabel('PA')->setRequired(false);
+        $pa = MoneyField::new('pa')->setCurrency('EUR')->setStoredAsCents(false)->setNumDecimals(2)->setLabel('Prix d\'achat')->setRequired(false)->setPermission('ROLE_ENCODE');
+        $paListing = MoneyField::new('pa')->setCurrency('EUR')->setStoredAsCents(false)->setNumDecimals(2)->setLabel('PA')->setRequired(false)->setPermission('ROLE_ENCODE');
 
         $percentTv = PercentField::new('percent_tv')
             ->setLabel('Commission Tv')

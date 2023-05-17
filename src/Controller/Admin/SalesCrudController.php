@@ -179,11 +179,18 @@ class SalesCrudController extends BaseCrudController
             ->setNumDecimals(2)
             ->setRequired(true)
             ->setCurrency('EUR')->setLabel('Prix Total');
-        $pa = MoneyField::new('pa')
-            ->setStoredAsCents(false)
-            ->setNumDecimals(2)
-            ->setRequired(true)
-            ->setCurrency('EUR')->setLabel('Prix d\'achat');
+
+        if ($this->isGranted('ROLE_ENCODE')) {
+            $pa = MoneyField::new('pa')
+                ->setStoredAsCents(false)
+                ->setNumDecimals(2)
+                ->setRequired(true)
+                ->setCurrency('EUR')->setLabel('Prix d\'achat');
+        } else {
+            $pa = HiddenField::new('pa');
+        }
+
+
         $priceMarge = MoneyField::new('marge')
             ->setStoredAsCents(false)
             ->setNumDecimals(2)

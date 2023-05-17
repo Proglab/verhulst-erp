@@ -69,8 +69,8 @@ class ProductSponsoringCrudController extends BaseCrudController
         $dateBegin = DateField::new('date_begin')->setRequired(true)->setFormat('dd/MM/yy')->setLabel('Date début');
         $dateEnd = DateField::new('date_end')->setRequired(true)->setFormat('dd/MM/yy')->setLabel('Date fin');
 
-        $pa = MoneyField::new('pa')->setCurrency('EUR')->setStoredAsCents(false)->setNumDecimals(2)->setLabel('Prix d\'achat')->setRequired(false);
-        $paListing = MoneyField::new('pa')->setCurrency('EUR')->setStoredAsCents(false)->setNumDecimals(2)->setLabel('PA')->setRequired(false);
+        $pa = MoneyField::new('pa')->setCurrency('EUR')->setStoredAsCents(false)->setNumDecimals(2)->setLabel('Prix d\'achat')->setRequired(false)->setPermission('ROLE_ENCODE');
+        $paListing = MoneyField::new('pa')->setCurrency('EUR')->setStoredAsCents(false)->setNumDecimals(2)->setLabel('PA')->setRequired(false)->setPermission('ROLE_ENCODE');
 
         $percentTv = PercentField::new('percent_tv')
             ->setLabel('Commission Tv')
