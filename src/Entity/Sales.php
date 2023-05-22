@@ -246,7 +246,7 @@ class Sales
 
     public function getMarge(): float
     {
-        return $this->getTotalPrice() - ($this->getPa() * $this->getQuantity()) - $this->getDiscount();
+        return $this->getTotalPrice() - $this->getDiscount();
     }
 
     public function isInvoiced(): ?bool
