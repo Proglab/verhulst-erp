@@ -236,6 +236,9 @@ class Sales
 
     public function getEuroVr(): float
     {
+        if (empty($this->getPercentVr())) {
+            return 0.0;
+        }
         return $this->getMarge() * ($this->getPercentVr() - $this->getPercentCom()) / 100;
     }
 
