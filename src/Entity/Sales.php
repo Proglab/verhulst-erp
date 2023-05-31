@@ -222,7 +222,7 @@ class Sales
 
     public function getDiffCa(): float
     {
-        return $this->getMarge() - $this->getEuroCom() - $this->getEuroVr();
+        return $this->getMarge() - $this->getEuroCom() - $this->getEuroVr() - ($this->getPa() * $this->getQuantity());
     }
 
     public function getTotalPrice(): ?float
