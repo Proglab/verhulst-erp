@@ -161,9 +161,13 @@ class CompanyContactCrudController extends BaseCrudController
                 return false;
             });
 
+        $createTodo = Action::new('todo', 'Créer une Todo')
+            ->linkToCrudAction('createTodo');
+
         $actions = parent::configureActions($actions);
         $actions
             ->add(Crud::PAGE_DETAIL, $transfert)
+            ->add(Crud::PAGE_DETAIL, $createTodo)
             ->setPermission(Action::NEW, 'ROLE_COMMERCIAL')
             ->setPermission(Action::EDIT, 'ROLE_COMMERCIAL')
             ->setPermission(Action::DELETE, 'ROLE_ADMIN')
@@ -227,5 +231,10 @@ class CompanyContactCrudController extends BaseCrudController
             'form' => $form,
             'referrer' => $context->getReferrer(),
         ]);
+    }
+
+    public function createTodo(AdminContext $context): RedirectResponse|Response
+    {
+        return $this->redirect($this->adminUrlGenerator->setController(TodoCrudController::class)->setAction(Crud::PAGE_NEW)->setEntityId(null)->set('client_id', $context->getEntity()->getInstance()->getId())->generateUrl());
     }
 }
