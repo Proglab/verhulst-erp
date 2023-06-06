@@ -82,7 +82,9 @@ class TodoCrudController extends BaseCrudController
             $form->get('client')->setData($client);
         }
 
-        $form->get('user')->setData($this->getUser());
+        if ($form->has('user')) {
+            $form->get('user')->setData($this->getUser());
+        }
 
         return $form;
     }
