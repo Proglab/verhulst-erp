@@ -51,6 +51,23 @@ class Todo
         return $this->id;
     }
 
+    public function getHourReminder(): ?\DateTimeInterface
+    {
+        return $this->date_reminder;
+    }
+
+    public function setHourReminder(?\DateTimeInterface $date_reminder): self
+    {
+        $hour = '00:00:00';
+        if ($date_reminder !== null) {
+            $hour = $date_reminder->format('H:i:s');
+        }
+
+        $date = $this->date_reminder->format('Y-m-d');
+        $this->date_reminder = New \DateTime($date.' '.$hour);
+        return $this;
+    }
+
     public function getDateReminder(): ?\DateTimeInterface
     {
         return $this->date_reminder;

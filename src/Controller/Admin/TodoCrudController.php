@@ -20,9 +20,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField;
 use Symfony\Component\Form\FormInterface;
 
 class TodoCrudController extends BaseCrudController
@@ -105,7 +107,8 @@ class TodoCrudController extends BaseCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $dateReminder = DateTimeField::new('date_reminder')->setLabel('Date rappel')->setRequired(true)->setFormat('dd/MM/yy hh:mm');
+        $dateReminder = DateField::new('date_reminder')->setLabel('Date rappel')->setRequired(true)->setFormat('dd/MM/yy');
+        $hourReminder = TimeField::new('hour_reminder')->setLabel('Heure de rappel')->setRequired(false)->setFormat('hh:mm');
         $contact = AssociationField::new('client')->setLabel('Client')->setRequired(false);
         $todo = TextEditorField::new('todo')->setLabel('Todo')->setRequired(true);
         $done = BooleanField::new('done')->setLabel('Fait ?');
@@ -118,10 +121,10 @@ class TodoCrudController extends BaseCrudController
         if ($this->isGranted('ROLE_ADMIN')) {
             switch ($pageName) {
                 case Crud::PAGE_NEW:
-                    $response = [$type, $dateReminder, $user, $projet, $contact, $todo];
+                    $response = [$type, $dateReminder, $hourReminder, $user, $projet, $contact, $todo];
                     break;
                 case Crud::PAGE_EDIT:
-                    $response = [$type, $dateReminder, $user, $projet, $contact, $todo, $done];
+                    $response = [$type, $dateReminder, $hourReminder, $user, $projet, $contact, $todo, $done];
                     break;
                 case Crud::PAGE_DETAIL:
                     $response = [$type, $dateReminder, $user, $projet, $contact, $todo, $done, $dateDone];
@@ -132,13 +135,13 @@ class TodoCrudController extends BaseCrudController
         } else {
             switch ($pageName) {
                 case Crud::PAGE_NEW:
-                    $response = [$type, $dateReminder, $projet, $contact, $todo];
+                    $response = [$type, $dateReminder, $hourReminder, $projet, $contact, $todo];
                     break;
                 case Crud::PAGE_INDEX:
                     $response = [$type, $dateReminder, $projet, $contact, $societe, $todo, $done];
                     break;
                 case Crud::PAGE_EDIT:
-                    $response = [$type, $dateReminder, $projet, $contact, $todo, $done];
+                    $response = [$type, $dateReminder, $hourReminder, $projet, $contact, $todo, $done];
                     break;
                 case Crud::PAGE_DETAIL:
                     $response = [$type, $dateReminder, $projet, $contact, $todo, $done, $dateDone];
