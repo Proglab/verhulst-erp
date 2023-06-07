@@ -59,12 +59,13 @@ class Todo
     public function setHourReminder(?\DateTimeInterface $date_reminder): self
     {
         $hour = '00:00:00';
-        if ($date_reminder !== null) {
+        if (null !== $date_reminder) {
             $hour = $date_reminder->format('H:i:s');
         }
 
         $date = $this->date_reminder->format('Y-m-d');
-        $this->date_reminder = New \DateTime($date.' '.$hour);
+        $this->date_reminder = new \DateTime($date . ' ' . $hour);
+
         return $this;
     }
 
