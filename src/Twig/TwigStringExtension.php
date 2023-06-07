@@ -30,7 +30,7 @@ class TwigStringExtension extends AbstractExtension
      * This method allow nullable value. It will be removed when the official
      * bundle supports the nullable value.
      */
-    public function sanitize(?string $html = null): ?string
+    public function sanitize(string $html = null): ?string
     {
         return $html ? $this->sanitizer->sanitize($html) : null;
     }

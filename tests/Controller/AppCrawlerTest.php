@@ -96,16 +96,16 @@ class AppCrawlerTest extends AbstractControllerTest
             $params = explode('&', $url);
             $i = 0;
             foreach ($params as $param) {
-                if (0 === strpos($param, 'referrer') || 0 === strpos($param, 'page') || 0 === strpos($param, 'sort')) {
+                if (str_starts_with($param, 'referrer') || str_starts_with($param, 'page') || str_starts_with($param, 'sort')) {
                     unset($params[$i]);
                 }
-                if (0 === strpos($param, 'entityId')) {
+                if (str_starts_with($param, 'entityId')) {
                     $params[$i] = 'entityId=0';
                 }
-                if (0 === strpos($param, 'year')) {
+                if (str_starts_with($param, 'year')) {
                     $params[$i] = 'year=0';
                 }
-                if (0 === strpos($param, 'month')) {
+                if (str_starts_with($param, 'month')) {
                     $params[$i] = 'month=0';
                 }
                 ++$i;
@@ -113,14 +113,14 @@ class AppCrawlerTest extends AbstractControllerTest
             $urlGeneric = implode('&', $params);
             if (!\in_array($urlGeneric, $urls, true)) {
                 if (
-                    (0 === strpos($url, 'http') &&
-                    false === strpos($url, 'localhost')) ||
-                    false !== strpos($url, '.pdf') ||
-                    false !== strpos($url, 'javascript:') ||
-                    false !== strpos($url, 'tel:') ||
-                    false !== strpos($url, 'batchDelete') ||
-                    false !== strpos($url, 'resetPassword') ||
-                    false !== strpos($url, 'mailto:')) {
+                    (str_starts_with($url, 'http')
+                      && !str_contains($url, 'localhost'))
+                      || str_contains($url, '.pdf')
+                      || str_contains($url, 'javascript:')
+                      || str_contains($url, 'tel:')
+                      || str_contains($url, 'batchDelete')
+                      || str_contains($url, 'resetPassword')
+                      || str_contains($url, 'mailto:')) {
                     continue;
                 }
                 $urls[] = $urlGeneric;

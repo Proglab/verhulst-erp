@@ -65,7 +65,7 @@ class SecurityController extends BaseController
      * Permet à l'utilisateur de modifier la langue du site.
      */
     #[Route(path: '/switch-locale/{locale}', name: 'switch_locale', methods: ['GET'])]
-    public function switchLocale(Request $request, ?string $locale = null): Response
+    public function switchLocale(Request $request, string $locale = null): Response
     {
         if (!\in_array($locale, $this->enabledLocales, true)) {
             throw new BadRequestHttpException();

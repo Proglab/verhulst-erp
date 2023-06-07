@@ -112,19 +112,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         return $this->getFirstName() . ' ' . $this->getLastName();
     }
 
-    /**
-    #[ORM\PrePersist]
-    #[ORM\PreUpdate]
-    public function setFullNameCharacteristics(): void
-    {
-        if ($this->lastName !== ucfirst(strtolower($this->lastName))) {
-            $this->lastName = ucfirst(strtolower($this->lastName));
-        }
-        if ($this->firstName !== ucfirst(strtolower($this->firstName))) {
-            $this->firstName = ucfirst(strtolower($this->firstName));
-        }
-    }
-     **/
     public function getEmail(): ?string
     {
         return $this->email;

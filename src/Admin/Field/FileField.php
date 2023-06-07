@@ -12,7 +12,7 @@ final class FileField implements FieldInterface
 {
     use FieldTrait;
 
-    public static function new(string $propertyName, ?string $label = null, array $fieldsConfig = []): self
+    public static function new(string $propertyName, string $label = null, array $fieldsConfig = []): self
     {
         return (new self())
             ->setProperty($propertyName)
