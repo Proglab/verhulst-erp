@@ -19,6 +19,7 @@ use App\Repository\UserRepository;
 use App\Service\SecurityChecker;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
+use Dompdf\Dompdf;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -85,6 +86,9 @@ class SalesCrudController extends BaseCrudController
         $searchClient = Action::new('sales_by_users_list', false)
             ->linkToCrudAction('sales_by_users_list');
 
+        $generateBdc = Action::new('generate_bdc', false)
+            ->linkToCrudAction('generateBdc');
+
         $actions = parent::configureActions($actions);
         $actions
             ->setPermission('listProduct', 'ROLE_COMMERCIAL')
@@ -104,6 +108,11 @@ class SalesCrudController extends BaseCrudController
                 return $action->setIcon('fa fa-eye');
             })
             ->add(Crud::PAGE_EDIT, Action::DELETE)
+            ->setPermission('generateBdc', 'ROLE_COMMERCIAL')
+            ->add(Crud::PAGE_INDEX, $generateBdc)
+            ->update(Crud::PAGE_INDEX, 'generate_bdc', function (Action $action) {
+                return $action->setIcon('fa fa-eye');
+            })
         ;
 
         return $actions;
@@ -433,5 +442,18 @@ class SalesCrudController extends BaseCrudController
         }
 
         return $this->render('admin/sales/final.html.twig', $return);
+    }
+
+    public function generateBdc(AdminContext $context):void {
+
+        $html = $this->render('admin/pdf/bdc_fr.html.twig', ['logo' => 'app-logo.png']);
+        $dompdf = new Dompdf(array('enable_remote' => true));
+        $dompdf->getOptions()->setChroot(realpath(__DIR__.'/../../../public/'));
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->loadHtml($html);
+        $dompdf->render();
+        $dompdf->stream("codexworld", ["Attachment" => 0]);
+
+        exit();
     }
 }

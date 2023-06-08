@@ -1,0 +1,786 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!-- saved from url=(0053)file:///Users/gianlucatiengo/Downloads/bdc_fr.html.twig -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      
+      <meta name="generator" content="PhpSpreadsheet, https://github.com/PHPOffice/PhpSpreadsheet">
+      <meta name="author" content="Mathilde Pinto">
+      <link rel="preconnect" href="https://fonts.googleapis.com/">
+      <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+      <link href="./email_pdf_files/css2" rel="stylesheet">
+    <style type="text/css">
+      html { font-family:Calibri, Arial, Helvetica, sans-serif; font-size:11pt; background-color:white }
+      a.comment-indicator:hover + div.comment { background:#ffd; position:absolute; display:block; border:1px solid black; padding:0.5em }
+      a.comment-indicator { background:red; display:inline-block; border:1px solid black; width:0.5em; height:0.5em }
+      div.comment { display:none }
+      table { border-collapse:collapse }
+      .gridlines td { border:1px dotted black }
+      .gridlines th { border:1px dotted black }
+      .b { text-align:center }
+      .e { text-align:center }
+      .f { text-align:right }
+      .inlineStr { text-align:left }
+      .n { text-align:right }
+      .s { text-align:left }
+      td.style0 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style0 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style1 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style1 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style2 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style2 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style3 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:2px solid #000000 !important; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:14pt; background-color:white }
+      th.style3 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:2px solid #000000 !important; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:14pt; background-color:white }
+      td.style4 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:14pt; background-color:white }
+      th.style4 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:14pt; background-color:white }
+      td.style5 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:2px solid #000000 !important; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:14pt; background-color:white }
+      th.style5 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:2px solid #000000 !important; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:14pt; background-color:white }
+      td.style6 { vertical-align:bottom; text-align:left; padding-left:10px; border-bottom:none #000000; border-top:none #000000; border-left:2px solid #000000 !important; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style6 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:2px solid #000000 !important; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:14pt; background-color:white }
+      td.style7 { vertical-align:bottom; text-align:center; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:12pt; background-color:white }
+      th.style7 { vertical-align:bottom; text-align:center; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:14pt; background-color:white }
+      td.style8 { vertical-align:bottom; text-align:right; padding-right:9px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:2px solid #000000 !important; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style8 { vertical-align:bottom; text-align:right; padding-right:9px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:2px solid #000000 !important; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:14pt; background-color:white }
+      td.style9 { vertical-align:bottom; text-align:left; padding-left:9px; border-bottom:none #000000; border-top:none #000000; border-left:2px solid #000000 !important; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:14pt; background-color:white }
+      th.style9 { vertical-align:bottom; text-align:left; padding-left:9px; border-bottom:none #000000; border-top:none #000000; border-left:2px solid #000000 !important; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:14pt; background-color:white }
+      td.style10 { vertical-align:bottom; text-align:left; padding-left:9px; border-bottom:none #000000; border-top:none #000000; border-left:2px solid #000000 !important; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:14pt; background-color:white }
+      th.style10 { vertical-align:bottom; text-align:left; padding-left:9px; border-bottom:none #000000; border-top:none #000000; border-left:2px solid #000000 !important; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:14pt; background-color:white }
+      td.style11 { vertical-align:middle; text-align:left; padding-left:10px; border-bottom:none #000000; border-top:none #000000; border-left:2px solid #000000 !important; border-right:none #000000; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style11 { vertical-align:middle; text-align:left; padding-left:10px; border-bottom:none #000000; border-top:none #000000; border-left:2px solid #000000 !important; border-right:none #000000; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style11 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:2px solid #000000 !important; border-right:none #000000; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style12 { vertical-align:middle; text-align:right; padding-right:9px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style12 { vertical-align:bottom; text-align:right; padding-right:9px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style13 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:2px solid #000000 !important; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style13 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:2px solid #000000 !important; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style14 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:2px solid #000000 !important; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style14 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:2px solid #000000 !important; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style15 { vertical-align:bottom; text-align:left; padding-left:10px; border-bottom:none #000000; border-top:none #000000; border-left:2px solid #000000 !important; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style15 { vertical-align:bottom; text-align:left; padding-left:81px; border-bottom:none #000000; border-top:none #000000; border-left:2px solid #000000 !important; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style16 { vertical-align:bottom; text-align:left; padding-left:10px; border-bottom:none #000000; border-top:none #000000; border-left:2px solid #000000 !important; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style16 { vertical-align:bottom; text-align:left; padding-left:81px; border-bottom:none #000000; border-top:none #000000; border-left:2px solid #000000 !important; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style17 { vertical-align:middle; text-align:center; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style17 { vertical-align:bottom; text-align:center; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style18 { vertical-align:middle; text-align:right; padding-right:9px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:2px solid #000000 !important; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif;font-size:11pt; background-color:white }
+      th.style18 { vertical-align:bottom; text-align:right; padding-right:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:2px solid #000000 !important; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style19 { vertical-align:middle; text-align:left; padding-left:10px; border-bottom:none #000000; border-top:none #000000; border-left:2px solid #000000 !important; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style19 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:2px solid #000000 !important; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style20 { vertical-align:bottom; text-align:center; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style20 { vertical-align:bottom; text-align:center; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif;; font-size:11pt; background-color:white }
+      td.style21 { vertical-align:middle; text-align:right; padding-right:9px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:2px solid #000000 !important; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif;; font-size:11pt; background-color:white }
+      th.style21 { vertical-align:bottom; text-align:right; padding-right:9px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:2px solid #000000 !important; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style22 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:10pt; background-color:white }
+      th.style22 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:10pt; background-color:white }
+      td.style23 { vertical-align:middle; text-align:left; padding-left:10px; border-bottom:none #000000; border-top:2px solid #7F7F7F !important; border-left:2px solid #000000 !important; border-right:none #000000; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style23 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:2px solid #7F7F7F !important; border-left:2px solid #000000 !important; border-right:none #000000; font-weight:bold; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style24 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:2px solid #7F7F7F !important; border-left:none #000000; border-right:none #000000; font-weight:bold; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style24 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:2px solid #7F7F7F !important; border-left:none #000000; border-right:none #000000; font-weight:bold; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style25 { vertical-align:middle; text-align:right; padding-right:9px; border-bottom:none #000000; border-top:2px solid #7F7F7F !important; border-left:none #000000; border-right:2px solid #000000 !important; font-weight:bold; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style25 { vertical-align:bottom; text-align:right; padding-right:9px; border-bottom:none #000000; border-top:2px solid #7F7F7F !important; border-left:none #000000; border-right:2px solid #000000 !important; font-weight:bold; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style26 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style26 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style27 { vertical-align:middle; text-align:left; padding-left:10px; border-bottom:1px solid #25766F !important; border-top:none #000000; border-left:2px solid #000000 !important; border-right:none #000000; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style27 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:1px solid #25766F !important; border-top:none #000000; border-left:2px solid #000000 !important; border-right:none #000000; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style28 { vertical-align:middle; text-align:left; padding-left:10px; border-bottom:none #000000; border-top:none #000000; border-left:2px solid #000000 !important; border-right:none #000000; font-weight:bold; text-decoration:underline; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style28 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:2px solid #000000 !important; border-right:none #000000; font-weight:bold; text-decoration:underline; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style29 { vertical-align:middle; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; font-weight:bold; text-decoration:underline; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style29 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; font-weight:bold; text-decoration:underline; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style30 { vertical-align:middle; text-align:left; padding-left:10px; border-bottom:1px solid #25766F !important; border-top:none #000000; border-left:2px solid #000000 !important; border-right:none #000000; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style30 { vertical-align:bottom; text-align:left; padding-left:10px; border-bottom:1px solid #25766F !important; border-top:none #000000; border-left:2px solid #000000 !important; border-right:2px solid #000000; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style31 { vertical-align:middle; text-align:right; padding-right:0px; border-bottom:none #000000; border-top:2px solid #000000 !important; border-left:2px solid #000000 !important; border-right:2px solid #000000; font-weight:bold; color:#FFFFFF; font-family: 'Plus Jakarta Sans', sans-serif; font-size:16pt; background-color:#BFBFBF }
+      th.style31 { vertical-align:middle; text-align:right; padding-right:0px; border-bottom:none #000000; border-top:2px solid #000000 !important; border-left:2px solid #000000 !important; border-right:none #000000; font-weight:bold; color:#FFFFFF; font-family: 'Plus Jakarta Sans', sans-serif; font-size:16pt; background-color:#BFBFBF }
+      td.style32 { vertical-align:middle; text-align:right; padding-right:0px; border-bottom:none #000000; border-top:2px solid #000000 !important; border-left:none #000000; border-right:none #000000; font-weight:bold; color:#FFFFFF; font-family: 'Plus Jakarta Sans', sans-serif; font-size:16pt; background-color:#BFBFBF }
+      th.style32 { vertical-align:middle; text-align:right; padding-right:0px; border-bottom:none #000000; border-top:2px solid #000000 !important; border-left:none #000000; border-right:none #000000; font-weight:bold; color:#FFFFFF; font-family: 'Plus Jakarta Sans', sans-serif; font-size:16pt; background-color:#BFBFBF }
+      td.style33 { vertical-align:middle; text-align:right; border-bottom:none #000000; border-top:2px solid #000000 !important; border-left:none #000000; border-right:2px solid #000000 !important; font-weight:bold; color:#FFFFFF; font-family: 'Plus Jakarta Sans', sans-serif; font-size:13pt; background-color:#BFBFBF }
+      th.style33 { vertical-align:middle; text-align:right; padding-right:23px; border-bottom:none #000000; border-top:2px solid #000000 !important; border-left:none #000000; border-right:2px solid #000000 !important; font-weight:bold; color:#FFFFFF; font-family: 'Plus Jakarta Sans', sans-serif; font-size:15pt; background-color:#BFBFBF }
+      td.style34 { vertical-align:middle; text-align:center; border-bottom:2px solid #000000 !important; border-top:none #000000; border-left:2px solid #000000 !important; border-right:none #000000; font-style:italic; color:#FFFFFF; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:#BFBFBF }
+      th.style34 { vertical-align:middle; text-align:center; border-bottom:2px solid #000000 !important; border-top:none #000000; border-left:2px solid #000000 !important; border-right:none #000000; font-style:italic; color:#FFFFFF; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:#BFBFBF }
+      td.style35 { vertical-align:middle; text-align:center; border-bottom:2px solid #000000 !important; border-top:none #000000; border-left:none #000000; border-right:none #000000; font-style:italic; color:#FFFFFF; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:#BFBFBF }
+      th.style35 { vertical-align:middle; text-align:center; border-bottom:2px solid #000000 !important; border-top:none #000000; border-left:none #000000; border-right:none #000000; font-style:italic; color:#FFFFFF; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:#BFBFBF }
+      td.style36 { vertical-align:middle; text-align:center; border-bottom:2px solid #000000 !important; border-top:none #000000; border-left:none #000000; border-right:2px solid #000000 !important; font-style:italic; color:#FFFFFF; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:#BFBFBF }
+      th.style36 { vertical-align:middle; text-align:center; border-bottom:2px solid #000000 !important; border-top:none #000000; border-left:none #000000; border-right:2px solid #000000 !important; font-style:italic; color:#FFFFFF; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:#BFBFBF }
+      td.style37 { vertical-align:bottom; text-align:right; padding-right:9px; border-bottom:1px solid #25766F !important; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family: 'Plus Jakarta Sans', sans-serif; font-size:12pt; background-color:white }
+      th.style37 { vertical-align:bottom; text-align:right; padding-right:9px; border-bottom:1px solid #25766F !important; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family: 'Plus Jakarta Sans', sans-serif; font-size:12pt; background-color:white }
+      td.style38 { vertical-align:bottom; text-align:right; padding-right:9px; border-bottom:1px solid #25766F !important; border-top:none #000000; border-left:none #000000; border-right:2px solid #000000 !important; color:#000000; font-family: 'Plus Jakarta Sans', sans-serif;; font-size:12pt; background-color:white }
+      th.style38 { vertical-align:bottom; text-align:right; padding-right:9px; border-bottom:1px solid #25766F !important; border-top:none #000000; border-left:none #000000; border-right:2px solid #000000 !important; color:#000000; font-family: 'Plus Jakarta Sans', sans-serif; font-size:12pt; background-color:white }
+      td.style39 { vertical-align:top; text-align:left; padding-left:9px; border-bottom:none #000000; border-top:none #000000; border-left:2px solid #000000 !important; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:12pt; background-color:white }
+      th.style39 { vertical-align:top; text-align:left; padding-left:9px; border-bottom:none #000000; border-top:none #000000; border-left:2px solid #000000 !important; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:12pt; background-color:white }
+      td.style40 { vertical-align:bottom; text-align:right; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family: 'Plus Jakarta Sans', sans-serif; font-size:12pt; background-color:white }
+      th.style40 { vertical-align:bottom; text-align:right; padding-right:9px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family: 'Plus Jakarta Sans', sans-serif; font-size:12pt; background-color:white }
+      td.style41 { vertical-align:middle; border-bottom: 2px solid #000000; text-align:left; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:2px solid #000000 !important; color:#000000; font-family: 'Plus Jakarta Sans', sans-serif; font-size:12pt; background-color:white }
+      th.style41 { vertical-align:bottom; text-align:right; padding-right:9px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:2px solid #000000 !important; color:#000000; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style42 { vertical-align:bottom; text-align:right; padding-right:9px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:12pt; background-color:white }
+      th.style42 { vertical-align:bottom; text-align:left; padding-left:54px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif;; font-size:11pt; background-color:white }
+      td.style43 { vertical-align:middle; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:2px solid #000000 !important; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style43 { vertical-align:bottom; text-align:left; padding-left:54px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:2px solid #000000 !important; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style44 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:1px solid #25766F !important; border-top:1px solid #000000 !important; border-left:2px solid #000000 !important; border-right:none #000000; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style44 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:1px solid #25766F !important; border-top:1px solid #000000 !important; border-left:2px solid #000000 !important; border-right:none #000000; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style45 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:1px solid #25766F !important; border-top:1px solid #000000 !important; border-left:none #000000; border-right:none #000000; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style45 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:1px solid #25766F !important; border-top:1px solid #000000 !important; border-left:none #000000; border-right:none #000000; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style46 { vertical-align:middle; text-align:left; padding-left:10px; border-bottom:1px solid #25766F !important; border-top:1px solid #000000 !important; border-left:none #000000; border-right:2px solid #000000 !important; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style46 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:1px solid #25766F !important; border-top:1px solid #000000 !important; border-left:none #000000; border-right:2px solid #000000 !important; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style47 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:1px solid #25766F !important; border-top:1px solid #25766F !important; border-left:2px solid #000000 !important; border-right:none #000000; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style47 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:1px solid #25766F !important; border-top:1px solid #25766F !important; border-left:2px solid #000000 !important; border-right:none #000000; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style48 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:1px solid #25766F !important; border-top:1px solid #25766F !important; border-left:none #000000; border-right:none #000000; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:12pt; background-color:white }
+      th.style48 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:1px solid #25766F !important; border-top:1px solid #25766F !important; border-left:none #000000; border-right:none #000000; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:12pt; background-color:white }
+      td.style49 { vertical-align:middle; text-align:left; padding-left:10px; border-bottom:1px solid #25766F !important; border-top:1px solid #25766F !important; border-left:none #000000; border-right:2px solid #000000 !important; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style49 { vertical-align:bottom; text-align:left; padding-left:0px; border-bottom:1px solid #25766F !important; border-top:1px solid #25766F !important; border-left:none #000000; border-right:2px solid #000000 !important; color:#194F4A; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      td.style50 { vertical-align:middle; text-align:center; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; font-weight:bold; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:10pt; background-color:white }
+      th.style50 { vertical-align:middle; text-align:center; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; font-weight:bold; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:10pt; background-color:white }
+      td.style51 { vertical-align:middle; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; font-weight:bold; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:10pt; background-color:white }
+      th.style51 { vertical-align:middle; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; font-weight:bold; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:10pt; background-color:white }
+      td.style52 { vertical-align:middle; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:10pt; background-color:white }
+      th.style52 { vertical-align:middle; text-align:left; padding-left:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:10pt; background-color:white }
+      td.style53 { vertical-align:bottom; text-align:left; padding-left:10px; border-bottom:none #000000; border-top:none #000000; border-left:2px solid #000000 !important; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      th.style53 { vertical-align:bottom; text-align:left; padding-left:10px; border-bottom:none #000000; border-top:none #000000; border-left:2px solid #000000 !important; border-right:none #000000; color:#3F3F3F; font-family: 'Plus Jakarta Sans', sans-serif; font-size:11pt; background-color:white }
+      table.sheet0 col.col0 { width:328.72221845pt }
+      table.sheet0 col.col1 { width:98.27777665pt }
+      table.sheet0 col.col2 { width:123.35555414pt }
+      table.sheet0 col.col3 { width:12.87777763pt }
+      table.sheet0 col.col4 { width:42.69999951pt }
+      table.sheet0 col.col5 { width:42pt }
+      table.sheet0 tr { height:30pt }
+      table.sheet0 tr.row0 { height:120px }
+      table.sheet0 tr.row1 { height:30px }
+      table.sheet0 tr.row2 { height:18pt }
+      table.sheet0 tr.row3 { height:18pt }
+      table.sheet0 tr.row4 { height:15pt }
+      table.sheet0 tr.row5 { height:15pt }
+      table.sheet0 tr.row6 { height:15pt }
+      table.sheet0 tr.row7 { height:15pt }
+      table.sheet0 tr.row8 { height:15pt }
+      table.sheet0 tr.row9 { height:20pt }
+      table.sheet0 tr.row10 { height:18pt }
+      table.sheet0 tr.row11 { height:18pt }
+      table.sheet0 tr.row12 { height:18pt }
+      table.sheet0 tr.row13 { height:18pt }
+      table.sheet0 tr.row14 { height:18pt }
+      table.sheet0 tr.row15 { height:18pt }
+      table.sheet0 tr.row16 { height:18pt }
+      table.sheet0 tr.row17 { height:18pt }
+      table.sheet0 tr.row18 { height:18pt }
+      table.sheet0 tr.row19 { height:20pt }
+      table.sheet0 tr.row20 { height:20pt }
+      table.sheet0 tr.row21 { height:20pt }
+      table.sheet0 tr.row22 { height:20pt }
+      table.sheet0 tr.row23 { height:20pt }
+      table.sheet0 tr.row24 { height:20pt }
+      table.sheet0 tr.row25 { height:20pt }
+      table.sheet0 tr.row26 { height:18pt }
+      table.sheet0 tr.row27 { height:18pt }
+      table.sheet0 tr.row28 { height:35.55pt }
+      table.sheet0 tr.row29 { height:15pt }
+      table.sheet0 tr.row30 { height:15pt }
+      table.sheet0 tr.row31 { height:15pt }
+      table.sheet0 tr.row32 { height:15pt }
+      table.sheet0 tr.row33 { height:15pt }
+      table.sheet0 tr.row34 { height:15pt }
+      table.sheet0 tr.row35 { height:35.55pt }
+      table.sheet0 tr.row36 { height:15pt }
+      table.sheet0 tr.row37 { height:15pt }
+      table.sheet0 tr.row38 { height:15pt }
+      table.sheet0 tr.row39 { height:15pt }
+      table.sheet0 tr.row40 { height:30pt }
+      table.sheet0 tr.row41 { height:20pt }
+      table.sheet0 tr.row42 { height:20pt }
+      table.sheet0 tr.row43 { height:20pt }
+      table.sheet0 tr.row44 { height:100px }
+      table.sheet0 tr.row46 { height:30pt }
+      table.sheet0 tr.row47 { height:30pt }
+      table.sheet0 tr.row48 { height:69pt }
+      table.sheet0 tr.row49 { height:41.55pt }
+      table.sheet0 tr.row50 { height:30pt }
+      table.sheet0 tr.row51 { height:114.45pt }
+      table.sheet0 tr.row52 { height:102pt }
+      table.sheet0 tr.row53 { height:30pt }
+      table.sheet0 tr.row54 { height:30pt }
+      table.sheet0 tr.row55 { height:30pt }
+      table.sheet0 tr.row56 { height:30pt }
+      table.sheet0 tr.row57 { height:101.55pt }
+      table.sheet0 tr.row58 { height:87.45pt }
+      table.sheet0 tr.row59 { height:54.45pt }
+      table.sheet0 tr.row60 { height:30pt }
+      table.sheet0 tr.row61 { height:117pt }
+      table.sheet0 tr.row62 { height:30pt }
+      table.sheet0 tr.row63 { height:30pt }
+      table.sheet0 tr.row64 { height:30pt }
+      table.sheet0 tr.row65 { height:87pt }
+      table.sheet0 tr.row66 { height:55.2pt }
+      table.sheet0 tr.row67 { height:58.95pt }
+      table.sheet0 tr.row68 { height:52.2pt }
+      table.sheet0 tr.row69 { height:43.95pt }
+      table.sheet0 tr.row70 { height:54.45pt }
+      table.sheet0 tr.row71 { height:30pt }
+      table.sheet0 tr.row72 { height:30pt }
+      table.sheet0 tr.row73 { height:30pt }
+      table.sheet0 tr.row74 { height:40.95pt }
+      table.sheet0 tr.row75 { height:30pt }
+      table.sheet0 tr.row76 { height:79.2pt }
+      table.sheet0 tr.row77 { height:30pt }
+      table.sheet0 tr.row78 { height:39.45pt }
+      table.sheet0 tr.row79 { height:87pt }
+      table.sheet0 tr.row80 { height:178.95pt }
+      table.sheet0 tr.row81 { height:75.45pt }
+      table.sheet0 tr.row82 { height:30pt }
+      table.sheet0 tr.row83 { height:30pt }
+      table.sheet0 tr.row84 { height:73.95pt }
+      table.sheet0 tr.row85 { height:84pt }
+      table.sheet0 tr.row86 { height:65.55pt }
+      table.sheet0 tr.row87 { height:30pt }
+      table.sheet0 tr.row88 { height:30pt }
+      table.sheet0 tr.row89 { height:30pt }
+      table.sheet0 tr.row90 { height:30pt }
+      table.sheet0 tr.row91 { height:69.45pt }
+      table.sheet0 tr.row92 { height:30pt }
+      table.sheet0 tr.row93 { height:30pt }
+      table.sheet0 tr.row94 { height:100.95pt }
+      table.sheet0 tr.row95 { height:103.95pt }
+      table.sheet0 tr.row96 { height:30pt }
+      table.sheet0 tr.row97 { height:30pt }
+      table.sheet0 tr.row98 { height:30pt }
+      table.sheet0 tr.row99 { height:97.2pt }
+      table.sheet0 tr.row100 { height:88.2pt }
+      table.sheet0 tr.row101 { height:63.45pt }
+      table.sheet0 tr.row102 { height:101.55pt }
+      table.sheet0 tr.row103 { height:30pt }
+      table.sheet0 tr.row104 { height:30pt }
+      table.sheet0 tr.row105 { height:30pt }
+      table.sheet0 tr.row106 { height:30pt }
+      table.sheet0 tr.row107 { height:30pt }
+      table.sheet0 tr.row108 { height:52.95pt }
+      table.sheet0 tr.row109 { height:52.2pt }
+      table.sheet0 tr.row110 { height:52.95pt }
+      table.sheet0 tr.row111 { height:30pt }
+      table.sheet0 tr.row112 { height:30pt }
+      table.sheet0 tr.row113 { height:50.55pt }
+      table.sheet0 tr.row114 { height:30pt }
+      table.sheet0 tr.row115 { height:30pt }
+      table.sheet0 tr.row116 { height:30pt }
+      table.sheet0 tr.row117 { height:30pt }
+      table.sheet0 tr.row118 { height:30pt }
+      table.sheet0 tr.row119 { height:68.55pt }
+      table.sheet0 tr.row120 { height:30pt }
+      table.sheet0 tr.row121 { height:35.55pt }
+      table.sheet0 tr.row122 { height:86.55pt }
+      table.sheet0 tr.row123 { height:160.95pt }
+      table.sheet0 tr.row124 { height:71.55pt }
+      table.sheet0 tr.row125 { height:30pt }
+      table.sheet0 tr.row126 { height:160.2pt }
+      table.sheet0 tr.row127 { height:55.2pt }
+      table.sheet0 tr.row128 { height:30pt }
+      table.sheet0 tr.row129 { height:30pt }
+      table.sheet0 tr.row130 { height:30pt }
+      .bb{ border-bottom: 2px solid #000000 !important}
+      .grren{ border-bottom: 2px solid #194F4A !important}
+
+      @page { margin-left: 0.39370078740157in; margin-right: 0.39370078740157in; margin-top: 0.39370078740157in; margin-bottom: 0.39370078740157in; }
+      body { margin-left: 0.39370078740157in; margin-right: 0.39370078740157in; margin-top: 0.39370078740157in; margin-bottom: 0.39370078740157in; }
+    </style>
+  </head>
+
+  <body>
+    <table border="0" cellpadding="0" cellspacing="0" id="sheet0" class="sheet0" style="page-break-after: always; width: 650px;">
+        <tbody>
+          <tr class="row0">
+              <td class="column0 style31 s style33" colspan="3" style="height: 100px; border-right: 2px solid black!important;">
+                <div style="position: relative;">
+                    <img style="position: absolute; z-index: 1; left: 22px; top: -22px; width: 170px; height: 40px;" src="https://www.thefriends.be/layout/uploads/2023/04/Logo_Home.png" border="0">
+                    <span style="position: absolute; z-index: 1; right: 50px; top: -12px; height: 40px;">BON DE COMMANDE</span>
+                </div>
+              </td>
+              <td class="column3">&nbsp;</td>
+              <td class="column4">&nbsp;</td>
+              <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row1">
+              <td class="column0 style11 s">EVENEMENT:</td>
+              <td class="column1 style42 s">DATE:</td>
+              <td class="column3 style43">&nbsp;</td>
+              <td class="column4">&nbsp;</td>
+              <td class="column5">&nbsp;</td>
+              <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row2">
+            <td class="column0 style39 s style39" rowspan="2">Place Poelaert</td>
+            <td class="column1 style12 s">BDC N°:</td>
+            <td class="column2 style14 null"></td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row3">
+            <td class="column1 style12 s">JOB:</td>
+            <td class="column2 style14 null"></td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row4">
+            <td class="column0 style11 s">SOCIETE</td>
+            <td class="column1 style42 s">VE&amp;P SELLER:</td>
+            <td class="column3 style43">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row5">
+            <td class="column0 style15 s">Company Name</td>
+            <td class="column1 style4 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row6">
+            <td class="column0 style15 s">Adress</td>
+            <td class="column1 style4 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row7">
+            <td class="column0 style15 s">PC + City</td>
+            <td class="column1 style4 null"></td>
+            <td class="column2 style3 null"></td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row8">
+            <td class="column0 style16 s">Phone</td>
+            <td class="column1 style4 null"></td>
+            <td class="column2 style5 null"></td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row9">
+              <td class="column0 style6 null bb" style="color: #194F4A">SIGNATAIRE:</td>
+              <td class="column2 style8 n bb" colspan="2">Name, First Name</td>
+              <td class="column3">&nbsp;</td>
+              <td class="column4">&nbsp;</td>
+              <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row10">
+              <td colspan="3" class="style6" style="border-style: solid; border-right: solid 2px; height: 200px; vertical-align: top">
+                  <table style="width: 100%;">
+                      <tr>
+                          <td><b>COMMANDE</b></td>
+                          <td><b>NB</b></td>
+                          <td><b>AMOUNT</b></td>
+                      </tr>
+                      <tr>
+                          <td>Lundi 11/09/03 Formule gold Nacelle 4 personnes</td>
+                          <td>1</td>
+                          <td>1,000.00 €</td>
+                      </tr>
+                      <tr>
+                          <td><b>TOTAL</b></td>
+                          <td></td>
+                          <td><b>1.280,00 €</b></td>
+                      </tr>
+                      <tr>
+                          <td>Administration costs</td>
+                          <td></td>
+                          <td>15.00 €</td>
+                      </tr>
+                      <tr>
+                          <td><b>TOTAL (VAT incl.)</b></td>
+                          <td></td>
+                          <td><b>1.295,00 €</b></td>
+                      </tr>
+                      <tr>
+                          <td colspan="3">The amount is calculated with a VAT rate distributed over 21%, 12% and 6%.</td>
+                      </tr>
+                  </table>
+              </td>
+              <td class="column3">&nbsp;</td>
+              <td class="column4">&nbsp;</td>
+              <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row26">
+              <td class="style23">PAYABLE:</td>
+              <td class="column1 style24 null"></td>
+              <td class="column2 style25 f"></td>
+              <td class="column3">&nbsp;</td>
+              <td class="column4">&nbsp;</td>
+              <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row27">
+              <td class="column0 style11 s">100 % after receiving the invoice</td>
+              <td class="column1 style37 null style38" colspan="2"></td>
+              <td class="column3">&nbsp;</td>
+              <td class="column4">&nbsp;</td>
+              <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row28">
+            <td class="column0 style44 s style46" colspan="3">FACTURATION : Facturation (si différent de la Société)</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row30">
+            <td class="column0 style53 s">Company Name</td>
+            <td class="column1 style26 null"></td>
+            <td class="column2 style14 null"></td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row31">
+            <td class="column0 style53 s">Adresse</td>
+            <td class="column1 style26 null"></td>
+            <td class="column2 style14 null"></td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row32">
+            <td class="column0 style53 s">PC + City</td>
+            <td class="column1 style26 null"></td>
+            <td class="column2 style14 null"></td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row32">
+              <td class="column0 style53 s">Phone</td>
+              <td class="column1 style26 null"></td>
+              <td class="column2 style14 null"></td>
+              <td class="column3">&nbsp;</td>
+              <td class="column4">&nbsp;</td>
+              <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row34">
+            <td class="column0 style30 s">TVA :</td>
+            <td class="column1 style37 null style38" colspan="2"></td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row37">
+            <td class="column0 style15 s"></td>
+            <td class="column1 style26 null"></td>
+            <td class="column2 style14 null"></td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row38">
+            <td class="column0 style15 s"></td>
+            <td class="column1 style26 null"></td>
+            <td class="column2 style14 null"></td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row39">
+            <td class="column0 style16 s"></td>
+            <td class="column1 style26 null"></td>
+            <td class="column2 style14 null"></td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row39">
+              <td class="column0 style16 s"></td>
+              <td class="column1 style26 null"></td>
+              <td class="column2 style14 null"></td>
+              <td class="column3">&nbsp;</td>
+              <td class="column4">&nbsp;</td>
+              <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row40">
+            <td class="style27 s">PERSONNE DE CONTACT :</td>
+            <td class="column1 style37 null style38" colspan="2"></td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row41">
+            <td class="column0 style27 s">TELEPHONE :</td>
+            <td class="column1 style37 null style38" colspan="2"></td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row42">
+            <td class="column0 style27 s">E-MAIL :</td>
+            <td class="column1 style37 null style38" colspan="2"></td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row43">
+            <td class="column0 style28 s">DATE :</td>
+            <td class="column1 style29 s">Signature :</td>
+            <td class="column2 style14 null"></td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row43">
+              <td class="column0 style28 s" style="height: 100px;"></td>
+              <td class="column1 style29 s"></td>
+              <td class="column2 style14 null"></td>
+              <td class="column3">&nbsp;</td>
+              <td class="column4">&nbsp;</td>
+              <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row44">
+            <td class="column0 style34 s style36" style="height: 70px" colspan="3"><span style="font-weight:bold; font-style:italic; color:#FFFFFF; font-size:11pt;">Verhulst and Friends </span><span style="font-style:italic; color:#FFFFFF; font-size:11pt">s.a./n.v. I Avenue Albert 1er, 146 I 1332 Genval I Belgium<br>
+Tel: 02/657.90.70 I info@verhulst.be I tva/btw : be 427 256 492 I Bank : BE 20 230 0413256 56</span></td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+        </tbody>
+    </table>
+<table>
+    <tbody>
+          <tr class="row89">
+            <td class="column0 style50 s style50" colspan="3">CONDITIONS GENERALES DE VENTE</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row90">
+            <td class="column0 style52 s style52" colspan="3">1. APPLICATION</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row91">
+            <td class="column0 style52 s style52" colspan="3">Les présentes conditions générales de vente (ci- après les «&nbsp;CGV&nbsp;») sont applicables à tous les produits livrés et services prestés par VERHULST EVENTS &amp; PARTNERS, ci-après dénommée «l’Agence», à tous les devis, commandes, conventions et factures,  sauf dérogation écrite et sans préjudices des conditions éventuelles particulières convenues par convention séparée. Elles priment les conditions d'achat du client.  Le client ne peut céder ses droits et obligations  résultant de la présente convention.</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row92">
+            <td class="column0 style51 s style51" colspan="3">2. COMMANDES – OFFRES - ANNULATIONS</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row93">
+            <td class="column0 style52 s style52" colspan="3">Le contrat n'est formé qu'après acceptation par l’Agence&nbsp;de la commande du client. </td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row94">
+            <td class="column0 style52 s style52" colspan="3">L’Agence n’est liée que par les dispositions des commandes qu’elle a acceptées, par les conventions qu’elle a signées et par les présentes CGV. Toute autre disposition est exclue, notamment toute communication ou élément écrit ou verbal discuté en dehors de la commande. Les offres et devis faits par l’Agence sont révocables tant que le client ne les aura pas acceptés.  Leur durée et leur validité est de 30 jours maximum.  Les offres et devis sont établis sur la base des indications du client et pourront être modifiés si ces indications sont inexactes.Toute commande pour des prestations, des quantités ou des qualités complémentaires non prévues aux budgets initialement convenus fera l’objet d’un décompte distinct et sera payable  séparément.</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row95">
+            <td class="column0 style51 s style51" colspan="3">L’annulation ou la modification, totale ou partielle, par le client de sa commande après la conclusion de la convention ne sont possibles qu’avec l’autorisation expresse et écrite de l’Agence. Si le client annule totalement ou partiellement la commande, il s’oblige, outre le paiement des éventuelles prestations déjà effectuées, à indemniser l’Agence pour toutes les dépenses et pour tous les travaux déjà engagés, y compris les frais exposés par les fournisseurs, ainsi que pour la perte de bénéfice sur la partie non exécutée. Ce bénéfice est établi forfaitairement à 30 % du prix convenu (hors TVA). Si un acompte a déjà été payé conformément à l’article 5, celui-ci reste acquis à l’Agence et sera déduit des indemnités dues.</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row96">
+            <td class="column0 style52 s style52" colspan="3">3. REPRESENTATION</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row97">
+            <td class="column0 style52 s style52" colspan="3">L'agence est valablement représentée par un administrateur.  Le client est valablement représenté par le signataire du bon de commande.</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row98">
+            <td class="column0 style51 s style51" colspan="3">4. ORGANISATION - SECURITE</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row99">
+            <td class="column0 style52 s style52" colspan="3">Le client reconnaît qu’une manifestation sportive ou culturelle  attirant une grande foule n’est pas dénuée de risques importants pour la sécurité des personnes et des biens.  Il accepte de prendre en charge ce risque tant pour lui-même que pour ses invités et il avertira ces derniers  de la portée des risques à participer à une telle manifestation.  Les personnes présentes seront considérées comme volontaires . Il renonce à tous recours contre l’Agence pour tous dommages directs ou indirects, volontaires ou involontaires,  susceptibles d’intervenir à l’occasion de l’évènement commandé  et tiendra l’ gence indemne de tous recours entamés par ses invités ou par des tiers dont il répond.</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row100">
+            <td class="column0 style52 s style52" colspan="3">Le client s’engage et veillera à ce que lui et ses invités se comportent en bon père de famille durant toute la manifestation ou l’évènement commandé.  A cet égard, le client décharge l’Agence de toute responsabilité pour tous dommages directs ou indirects, volontaires ou involontaires, de quelque nature que ce soit, causés par lui ou ses invités.  Il tiendra indemne l’Agence des conséquences du comportement des personnes dont il répond et de ses invités.  En cas de trouble(s) observé(s), le client accepte que le service d’ordre présent reconduise les personnes à l’origine du(des) trouble(s) à la sortie de la manifestation ou de l’évènement commandé.</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row101">
+            <td class="column0 style51 s style51" colspan="3">Selon l’évènement commandé, notamment en raison des règles de sécurité en vigueur,  le client reconnaît qu’il devra communiquer les identités de ses invités au plus tard à la date limite qui lui sera communiquée par l’Agence.  En  cas de changement d’invité après cette date, dans la mesure où un changement est encore possible, le client accepte de payer les pénalités en vigueur pour cet évènement. </td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row102">
+            <td class="column0 style52 s style52" colspan="3">Le client s’engage par la signature du présent contrat à faire respecter la législation , notamment la loi du 21 décembre 1998 relative à la sécurité lors des matches de football telle qu’elle a été modifiée depuis, le(s) Règlement(s) des spectateurs en vigueur, notamment ceux de police ou émanant de fédérations nationales ou internationales de football, et notamment en ce qui concerne les photographies, l’indiscipline, la tenue vestimentaire, le port d’objets interdits, etc. De plus, le client veillera à ce que ses invités s’abstiennent de porter les couleurs de l’équipe adverse.  Le client pourra être tenu responsable des dommages ou pertes résultant du non respect de la loi, de ce(s) Règlement(s) ou des dispositions reprises dans les présentes conditions générales.</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row103">
+            <td class="column0 style52 s style52" colspan="3">L’Agence&nbsp;ne peut garantir l’exact emplacement des places aux sites des événements (stades, salles de concerts, etc.) telles qu’elles  sont  mentionnées sur les invitations ou tickets d’accès.</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row104">
+            <td class="column0 style51 s style51" colspan="3">En aucune circonstance, les billets/tickets volés ou perdus ne pourront être remplacés ou remboursés.</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row105">
+            <td class="column0 style52 s style52" colspan="3">5. PAIEMENT</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row106">
+            <td class="column0 style52 s style52" colspan="3">Les prix facturés par l’Agence&nbsp;s’entendent hors TVA et en euros.  Ils sont payables au comptant. </td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row107">
+            <td class="column0 style51 s style51" colspan="3">Les frais de livraison de documents par coursier sont à charge du client.</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row108">
+            <td class="column0 style52 s style52" colspan="3">L’Agence&nbsp; se réserve le droit de répercuter sur le client les suppléments résultant d’augmentations de prix après la commande, ainsi, à titre d’ exemple, le coût des mesures de sécurité rendues nécessaires ou de nouvelles conditions imposées ou rendues nécessaires et, en cas de voyages, les nouvelles taxes d’aéroports, les suppléments carburants des transporteurs etc.</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row109">
+            <td class="column0 style52 s style52" colspan="3">Sauf disposition contraire expresse, un acompte de 30 % du montant convenu lors de la signature sera payé lors de l’acceptation de la commande, et un acompte de 60 % sera payé avant le début de l’événement, et ce dans les 14 jours suivant l’envoi de la facture par l’Agence. Le solde de 10 % sera facturé après l’évènement et sera payable dans un délai de 30 jours suivant la date de la facture.</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row110">
+            <td class="column0 style51 s style51" colspan="3">Toutefois en cas de vente de packages VIP, sauf disposition contraire expresse, un acompte de 50 % du montant convenu lors de la signature sera payé au moment de l’acceptation de la commande et le solde devra être payé avant la tenue de l’évènement et ce dans les 14 jours suivant l’envoi de la facture par l’Agence.</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row111">
+            <td class="column0 style52 s style52" colspan="3">En cas de non paiement aux échéances prévues ci-dessus, l’Agence pourra suspendre l’exécution de ses obligations sans que cela ne consiste en une résiliation du contrat.  En ce cas, l’Agence pourra refuser l’accès du client à l’évènement.</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row112">
+            <td class="column0 style52 s style52" colspan="3">6. RETARD DE PAIEMENT</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row113">
+            <td class="column0 style52 s style52" colspan="3">A défaut de paiement à l'échéance, le montant de chacune des factures émises par l’Agence&nbsp; est, de plein droit et sans mise en demeure préalable, majorée d'une indemnité conventionnelle forfaitaire irréductible de 15 % et l'intérêt moratoire conventionnel au taux de 1 % par mois de retard entamé.</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row114">
+            <td class="column0 style51 s style51" colspan="3">7. SOLIDARITE</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row115">
+            <td class="column0 style52 s style52" colspan="3">En cas de pluralité de clients, ils seront tenus solidairement responsables de leurs diverses obligations et sont présumés avoir renoncé au bénéfice des divisions et de discussion.</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row116">
+            <td class="column0 style52 s style52" colspan="3">8. RECLAMATIONS</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row117">
+            <td class="column0 style51 s style51" colspan="3">Aucune réclamation ne sera admise si elle n'est adressée à l’Agence, par lettre recommandée, dans un délai de 8 jours après la fourniture des services ou livraison des produits.</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row118">
+            <td class="column0 style52 s style52" colspan="3">9.  INTERDICTION DE COMMERCIALISER  ET DROITS D’AUTEUR</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row119">
+            <td class="column0 style52 s style52" colspan="3">Le client s’interdit (i) de commercialiser directement ou indirectement, (ii) de revendre, (iii) d’offrir sous forme de lots gagnants à des concours, tombolas, les produits ou services faisant l’objet des commandes. Le client s’interdit également de promouvoir ses activités commerciales en affichant des images, photos, logos, textes ou dessins, ayant trait à l’évènement commandé et dont les droits d’auteur ne lui appartiennent pas.</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row120">
+            <td class="column0 style51 s style51" colspan="3">10.<span style="color:#3F3F3F; font-family:&#39;Calibri&#39;; font-size:10pt">  </span><span style="font-weight:bold; color:#3F3F3F; font-family:&#39;Calibri&#39;; font-size:10pt">OBLIGATIONS</span></td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row121">
+            <td class="column0 style52 s style52" colspan="3">L’ Agence&nbsp;n’encourt strictement aucune responsabilité autre que celle du “mandataire”.  Les obligations de l’Agence&nbsp; sont des obligations de moyens et non de résultats.</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row122">
+            <td class="column0 style52 s style52" colspan="3">&nbsp;L’Agence&nbsp; se réserve la faculté de faire exécuter tout ou partie de ses obligations par un tiers.  L’Agence&nbsp; s’exonère néanmoins de toute responsabilité dans le choix de ce tiers, à chaque fois qu’il lui est matériellement impossible de constater par lui-même la valeur technique et/ou la solvabilité  de ce tiers, comme par exemple&nbsp;: le choix d’un car fourni dans une ville étrangère. Tous les renseignements repris dans le programme de l’Agence&nbsp;ont été recueillis de bonne foi et présentés en toute honnêté.  Les fautes et erreurs dans les dépliants ne lient point l’Agence&nbsp;.</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row123">
+            <td class="column0 style51 s style51" colspan="3">L’Agence&nbsp; ne répond pas des modifications et/ou annulations qui pourraient être apportées au programme par des cas de force majeure ou autres, indépendants de sa volonté. Elle ne pourra être tenue, par suite de modifications et/ou annulations du programme, d’effectuer des services supplémentaires ou de payer des frais supplémentaires tels des transferts, restaurants, logements etc…qui seront à charge du client. Sont généralement considérées comme force majeure toutes les circonstances empêchant, restreignant ou retardant l’exécution de la convention, ou encore celles emportant un surcroît démesuré des obligations de l’Agence. Ces évènements exonèrent l’Agence de toute responsabilité et lui donnent la possibilité, selon le cas, de restreindre ses obligations, de rompre la convention ou d’en différer l’exécution, sans que cela ne puisse entraîner une quelconque indemnité. La partie qui invoque la force majeure doit en prévenir l’autre partie et prendre toutes les mesures raisonnables pour surmonter la situation temporaire de force majeure. En cas de survenance de force majeure dans le chef de l’Agence, cette dernière pourra prendre toutes les dispositions raisonnables pour assurer au moindre coût le report de l’évènement ou la dissolution de la convention.</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row124">
+            <td class="column0 style52 s style52" colspan="3">Les documents, biens, projets, etc., du client se trouvant en possession de l’Agence le sont au risque du client.  Ce dernier exonère expressément l’Agence de toute responsabilité, et plus particulièrement dans le cas d’un dommage ou perte totale ou partielle, pour quelque raison que ce soit.  L’Agence s’engage à prendre toutes les mesures raisonnables afin d’éviter la survenance d’un dommage pour le client lors de la livraison et/ou de la garde des documents, biens, projets, etc.</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row125">
+            <td class="column0 style52 s style52" colspan="3">11. LES DEPLACEMENTS</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row126">
+            <td class="column0 style51 s style51" colspan="3">Les dispositions légales en matière de contrats de voyage ne sont pas applicables aux relations contractuelles entre l’Agence et le client. Pour l’exécution des voyages, l’Agence&nbsp; fait appel, pour compte du client, à différents prestataires des services, tels que transporteurs, restaurateurs, etc.   L’Agence&nbsp;ne saurait être confondue avec ces prestataires qui conserveront en tout état de cause à l’égard de tout voyageur la responsabilité propre à leurs activités aux termes des statuts qui les régissent, selon leur législation ou des conventions internationales instituant une limitation de responsabilité.  En toute hypothèse, la responsabilité de l’Agence&nbsp; ne saurait s’étendre au-delà des sommes prévues par la loi régissant le contrat d'organisation de voyages et le contrat d'intermédiaire de voyages qui pourrait être exigées à l’encontre de l’agence de voyage avec laquelle l’Agence&nbsp;traite. L’Agence&nbsp; ne pourra  en aucun cas être tenue pour responsable des blessures et/ou dommages causés au client ou aux personnes dont il a la charge dans la mesure où ces blessures ou dommages ne sont pas provoqués par un manquement de la part de l’Agence.</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row127">
+            <td class="column0 style52 s style52" colspan="3">L’Agence&nbsp;n’assume aucune responsabilité en cas de vol, perte ou détérioration des bagages et effets personnels du client ou des personnes dont elle a la charge. Ceux-ci ont la faculté de souscrire une police garantissant la valeur de ces objets. Les suppléments de bagages, lorsque leur poids dépasse celui qui est autorisé par les règlements du transporteur, sont à charge du client.</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row128">
+            <td class="column0 style51 s style51" colspan="3">12. JURIDICTION ET LOI APPLICABLE</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+          <tr class="row129">
+            <td class="column0 style52 s style52" colspan="3">Les tribunaux de Bruxelles sont seuls compétents. Le droit belge est applicable.</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+          </tr>
+        </tbody>
+    </table>
+</body></html>

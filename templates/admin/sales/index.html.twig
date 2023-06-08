@@ -84,6 +84,13 @@
                                 .setEntityId(sale.id)
                             %}
                             <a class=" action-edit" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i></a>
+                            {% set url_bdc = ea_url()
+                                .setAction('generateBdc')
+                                .setController('App\\Controller\\Admin\\SalesCrudController')
+                                .setEntityId(sale.id)
+                            %}
+                            <a class=" action-bdc" href="{{ url_bdc }}" title="Bon de commande" data-action-name="bdc"><i class="action-icon fa fa-store"></i></a>
+
                         </td>
                     </tr>
                 {% endif %}
@@ -157,6 +164,12 @@
                                 .setEntityId(sale.id)
                             %}
                             <a class=" action-edit" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i></a>
+                            {% set url_bdc = ea_url()
+                                .setAction('generateBdc')
+                                .setController('App\\Controller\\Admin\\SalesCrudController')
+                                .setEntityId(sale.id)
+                            %}
+                            <a class=" action-bdc" href="{{ url_bdc }}" title="Bon de commande" data-action-name="bdc"><i class="action-icon fa fa-store"></i></a>
                         </td>
                     </tr>
                 {% endif %}
@@ -230,6 +243,12 @@
                                 .setEntityId(sale.id)
                             %}
                             <a class=" action-edit" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i></a>
+                            {% set url_bdc = ea_url()
+                                .setAction('generateBdc')
+                                .setController('App\\Controller\\Admin\\SalesCrudController')
+                                .setEntityId(sale.id)
+                            %}
+                            <a class=" action-bdc" href="{{ url_bdc }}" title="Bon de commande" data-action-name="bdc"><i class="action-icon fa fa-store"></i></a>
                         </td>
                     </tr>
                 {% endif %}
@@ -299,6 +318,12 @@
                                 .setEntityId(sale.id)
                             %}
                             <a class=" action-edit" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i></a>
+                            {% set url_bdc = ea_url()
+                                .setAction('generateBdc')
+                                .setController('App\\Controller\\Admin\\SalesCrudController')
+                                .setEntityId(sale.id)
+                            %}
+                            <a class=" action-bdc" href="{{ url_bdc }}" title="Bon de commande" data-action-name="bdc"><i class="action-icon fa fa-store"></i></a>
                         </td>
                     </tr>
                 {% endif %}
