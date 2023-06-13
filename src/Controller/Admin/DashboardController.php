@@ -95,7 +95,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('admin.menu.todo', 'fas fa-clipboard-check', Todo::class)->setPermission('ROLE_COMMERCIAL'),
             MenuItem::section('Admin')->setPermission('ROLE_ADMIN'),
             MenuItem::linkToDashboard('admin.menu.dashboard', 'fa fa-chart-line')->setPermission('ROLE_ADMIN'),
-            MenuItem::linkToCrud('admin.menu.recap', 'fa fa-sliders', Sales::class)->setAction('sales_by_users_list')->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToCrud('admin.menu.recap', 'fa fa-sliders', Sales::class)->setAction('sales_by_users_list')->setController(SalesCrudController::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('admin.menu.users', 'fas fa-users', User::class)->setPermission('ROLE_ADMIN'),
 
             MenuItem::section('Gestion')->setPermission('ROLE_ENCODE'),

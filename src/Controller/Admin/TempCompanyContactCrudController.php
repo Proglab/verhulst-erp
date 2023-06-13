@@ -240,6 +240,20 @@ class TempCompanyContactCrudController extends BaseCrudController
         /** @var TempCompanyContact $contact */
         $contact = $context->getEntity()->getInstance();
 
+        if (!empty($contact->getGsm())) {
+            $gsm = str_replace(' ', '', $contact->getGsm());
+            $gsm = str_replace('/', '', $gsm);
+            $gsm = str_replace('.', '', $gsm);
+            $contact->setGsm($gsm);
+        }
+
+        if (!empty($contact->getPhone())) {
+            $phone = str_replace(' ', '', $contact->getPhone());
+            $phone = str_replace('/', '', $phone);
+            $phone = str_replace('.', '', $phone);
+            $contact->setPhone($phone);
+        }
+
         $errors = $this->validator->validate($contact);
         if (\count($errors) > 0) {
             foreach ($errors as $error) {
@@ -286,10 +300,8 @@ class TempCompanyContactCrudController extends BaseCrudController
                 }
             }
         }
-
         /** @var CompanyContactRepository $repoCompanyContact */
         $repoCompanyContact = $this->entityManager->getRepository(CompanyContact::class);
-
         $count3 = $repoCompanyContact->count(['email' => $contact->getEmail()]);
         if (empty($contact->getGsm())) {
             $count5 = 0;
