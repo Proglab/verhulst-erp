@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Controller\Admin\Filter\ProjectFilter;
 use App\Entity\Sales;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -51,12 +52,12 @@ class SalesRecapCrudController extends BaseCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $project = TextField::new('product.project')->setLabel('Projets');
+        $project = TextField::new('product.project')->setLabel('Projets')->setSortable(true);
         $product = AssociationField::new('product')->setLabel('Produits');
-        $company = TextField::new('contact.company')->setLabel('Client');
+        $company = TextField::new('contact.company')->setLabel('Client')->setSortable(true);
         $contact = TextField::new('contact.fullname')->setLabel('Contact');
         $sales = TextField::new('user')->setLabel('Commercial');
-        $quantity = IntegerField::new('quantity')->setLabel('Q');
+        $quantity = IntegerField::new('quantity')->setLabel('Q')->setSortable(false);
         $date = DateField::new('date')->setLabel('Date de la vente')->setFormat('dd/MM/yyyy');
 
         $price = MoneyField::new('getTotalPrice')
@@ -89,6 +90,7 @@ class SalesRecapCrudController extends BaseCrudController
             ->add('user')
             ->add(EntityFilter::new('contact'))
             ->add('date')
+            ->add(ProjectFilter::new('project'))
         ;
     }
 }
