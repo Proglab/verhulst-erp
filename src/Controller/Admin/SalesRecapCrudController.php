@@ -10,6 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -49,12 +50,13 @@ class SalesRecapCrudController extends BaseCrudController
 
     public function configureFields(string $pageName): iterable
     {
-
-        $project = TextField::new('product.project');
-        $product = AssociationField::new('product');
-        $company = TextField::new('contact.company');
-        $sales = TextField::new('user');
-        $quantity = IntegerField::new('quantity');
+        $project = TextField::new('product.project')->setLabel('Projets');
+        $product = AssociationField::new('product')->setLabel('Produits');
+        $company = TextField::new('contact.company')->setLabel('Client');
+        $contact = TextField::new('contact.fullname')->setLabel('Contact');
+        $sales = TextField::new('user')->setLabel('Commercial');
+        $quantity = IntegerField::new('quantity')->setLabel('Q');
+        $date = DateField::new('date')->setLabel('Date de la vente')->setFormat('dd/MM/yyyy');
 
         $price = MoneyField::new('getTotalPrice')
             ->setStoredAsCents(false)
@@ -67,6 +69,7 @@ class SalesRecapCrudController extends BaseCrudController
             ->setNumDecimals(2)
             ->setRequired(true)
             ->setCurrency('EUR')->setLabel('Com sales');
+
         $margeVr = MoneyField::new('getDiffCa')
             ->setStoredAsCents(false)
             ->setNumDecimals(2)
@@ -75,7 +78,7 @@ class SalesRecapCrudController extends BaseCrudController
 
         $invoiced = BooleanField::new('isInvoiced')->setLabel('Facturé')->setDisabled(true);
 
-        return [$project, $product, $company, $sales, $quantity, $price, $comSales, $margeVr, $invoiced];
+        return [$date, $project, $product, $company, $contact, $sales, $quantity, $price, $comSales, $margeVr, $invoiced];
     }
 
     public function configureFilters(Filters $filters): Filters
@@ -84,6 +87,7 @@ class SalesRecapCrudController extends BaseCrudController
             ->add('product')
             ->add('user')
             ->add(EntityFilter::new('contact'))
+            ->add('date')
             ;
     }
 }
