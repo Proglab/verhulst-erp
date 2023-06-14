@@ -163,7 +163,7 @@ class TodoRepository extends ServiceEntityRepository
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
-            ;
+        ;
     }
 
     public function findNext10ByUser(UserInterface $user): array
@@ -177,6 +177,6 @@ class TodoRepository extends ServiceEntityRepository
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
-            ;
+        ;
     }
 }
