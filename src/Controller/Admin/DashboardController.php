@@ -21,6 +21,7 @@ use App\Repository\TodoRepository;
 use App\Repository\UserRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
@@ -96,6 +97,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::section('Admin')->setPermission('ROLE_ADMIN'),
             MenuItem::linkToDashboard('admin.menu.dashboard', 'fa fa-chart-line')->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud('admin.menu.recap', 'fa fa-sliders', Sales::class)->setAction('sales_by_users_list')->setController(SalesCrudController::class)->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToCrud('admin.menu.recap_sales', 'fa fa-sliders', Sales::class)->setAction('sales_by_users_list')->setController(SalesRecapCrudController::class)->setPermission('ROLE_ADMIN')->setAction(Crud::PAGE_INDEX),
             MenuItem::linkToCrud('admin.menu.users', 'fas fa-users', User::class)->setPermission('ROLE_ADMIN'),
 
             MenuItem::section('Gestion')->setPermission('ROLE_ENCODE'),
