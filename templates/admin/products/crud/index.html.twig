@@ -5,12 +5,12 @@
     {% for entity in entities %}
         {% if entity.isAccessible %}
             {% if entity.instance.project.id != project %}
-                <th data-id="{{ entity.primaryKeyValueAsString }}" colspan="8">
+                <th data-id="{{ entity.primaryKeyValueAsString }}" colspan="12" class="projectsales">
                     {{ entity.instance.project.name }}
                 </th>
                 {% set project = entity.instance.project.id %}
             {% endif %}
-            <tr data-id="{{ entity.primaryKeyValueAsString }}">
+            <tr data-id="{{ entity.primaryKeyValueAsString }}" class="productsales">
                 {% if has_batch_actions %}
                     <td class="batch-actions-selector">
                         <div class="form-check">
