@@ -184,7 +184,7 @@ class DashboardController extends AbstractDashboardController
         $me = $this->getUser();
         $sales = $this->salesRepository->get10LastSalesByUser($me);
 
-        $todos = $this->todoRepository->findAllTodayByUser($this->getUser());
+        $todos = $this->todoRepository->findNext10ByUser($this->getUser());
 
         return $this->render('admin/dashboard/com.html.twig', [
             'year' => $year,
@@ -330,7 +330,7 @@ class DashboardController extends AbstractDashboardController
         $users_data = [];
         $sales_data = [];
         foreach ($sales as $sale) {
-            $users_data[] = $sale['first_name'] . ' ' . $sale['last_name'];
+            $users_data[] = $sale['first_name'][0] . $sale['last_name'][0];
             $sales_data[] = empty($sale['total']) ? 0 : $sale['total'];
         }
 

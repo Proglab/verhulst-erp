@@ -153,4 +153,30 @@ class TodoRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findNext10(): array
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.date_reminder >= :date')
+            ->setParameter('date', (new \DateTime('now'))->format('Y-m-d') . ' 00:00:00')
+            ->orderBy('t.date_reminder', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findNext10ByUser(UserInterface $user): array
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.date_reminder >= :date')
+            ->setParameter('date', (new \DateTime('now'))->format('Y-m-d') . ' 00:00:00')
+            ->andWhere('t.user = :user')
+            ->setParameter('user', $user)
+            ->orderBy('t.date_reminder', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }
