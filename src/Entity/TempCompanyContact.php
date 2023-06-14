@@ -39,12 +39,10 @@ class TempCompanyContact
 
     #[ORM\Column(length: 30, nullable: true)]
     #[Assert\Length(max: 30)]
-    #[Assert\Regex('/^\+[1-9]\d{9,14}$/', 'Mettre le numéro sous format international (+32499163111)')]
     private ?string $phone = null;
 
     #[ORM\Column(length: 30, nullable: true)]
     #[Assert\Length(max: 30)]
-    #[Assert\Regex('/^\+[1-9]\d{9,14}$/', 'Mettre le numéro sous format international (+32499163111)')]
     private ?string $gsm = null;
 
     #[ORM\Column(length: 255, nullable: true)]
