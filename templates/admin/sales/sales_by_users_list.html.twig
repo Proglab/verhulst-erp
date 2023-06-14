@@ -5,7 +5,7 @@
 
 {% block main %}
 
-    <div class="accordion accordion-flush" id="accordionExample">
+    <div class="accordion" id="accordionExample">
         {% for user in users %}
             <div class="accordion-item">
                 <h2 class="accordion-header" id="heading{{ user.id }}">
@@ -13,7 +13,7 @@
                         {{ user.firstname }} {{ user.lastname }}
                     </button>
                 </h2>
-                <div id="collapse{{ user.id }}" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div id="collapse{{ user.id }}" class="accordion-collapse collapse" aria-labelledby="headingOne">
                     <div class="accordion-body">
 
                         <nav>
