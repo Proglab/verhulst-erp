@@ -28,7 +28,7 @@ class ProductPackageVip extends Product
 
     public function __toString()
     {
-        return $this->getProject()->getName() . ' - ' . $this->getName() . ' ' . $this->getCa() . ' EUR';
+        return $this->getName();
     }
 
     public function getCa(): ?float

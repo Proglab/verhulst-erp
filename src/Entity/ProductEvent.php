@@ -12,7 +12,7 @@ class ProductEvent extends Product
 {
     public function __toString()
     {
-        return $this->getProject()->getName() . ' - ' . $this->getName();
+        return $this->getName();
     }
 
     public function getDate(): ?\DateTimeInterface
