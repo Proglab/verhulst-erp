@@ -118,37 +118,18 @@ class TodoCrudController extends BaseCrudController
         $type = AssociationField::new('type')->setLabel('Type de To do')->setRequired(true);
         $societe = TextField::new('client.company')->setLabel('Sociéte')->setRequired(false);
 
-        if ($this->isGranted('ROLE_ADMIN')) {
-            switch ($pageName) {
-                case Crud::PAGE_NEW:
-                    $response = [$type, $dateReminder, $hourReminder, $user, $projet, $contact, $todo];
-                    break;
-                case Crud::PAGE_EDIT:
-                    $response = [$type, $dateReminder, $hourReminder, $user, $projet, $contact, $todo, $done];
-                    break;
-                case Crud::PAGE_DETAIL:
-                    $response = [$type, $dateReminder, $user, $projet, $contact, $todo, $done, $dateDone];
-                    break;
-                default:
-                    $response = [$type, $dateReminder, $user, $projet, $contact, $societe, $todo, $done];
-            }
-        } else {
-            switch ($pageName) {
-                case Crud::PAGE_NEW:
-                    $response = [$type, $dateReminder, $hourReminder, $projet, $contact, $todo];
-                    break;
-                case Crud::PAGE_INDEX:
-                    $response = [$type, $dateReminder, $projet, $contact, $societe, $todo, $done];
-                    break;
-                case Crud::PAGE_EDIT:
-                    $response = [$type, $dateReminder, $hourReminder, $projet, $contact, $todo, $done];
-                    break;
-                case Crud::PAGE_DETAIL:
-                    $response = [$type, $dateReminder, $projet, $contact, $todo, $done, $dateDone];
-                    break;
-                default:
-                    $response = [$type, $dateReminder, $projet, $contact, $todo, $done];
-            }
+        switch ($pageName) {
+            case Crud::PAGE_NEW:
+                $response = [$type, $dateReminder, $hourReminder, $user, $projet, $contact, $todo];
+                break;
+            case Crud::PAGE_EDIT:
+                $response = [$type, $dateReminder, $hourReminder, $user, $projet, $contact, $todo, $done];
+                break;
+            case Crud::PAGE_DETAIL:
+                $response = [$type, $dateReminder, $user, $projet, $contact, $todo, $done, $dateDone];
+                break;
+            default:
+                $response = [$type, $dateReminder, $user, $projet, $contact, $societe, $todo, $done];
         }
 
         return $response;
