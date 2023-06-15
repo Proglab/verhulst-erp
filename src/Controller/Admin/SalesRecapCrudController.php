@@ -30,7 +30,8 @@ class SalesRecapCrudController extends BaseCrudController
         $crud->setEntityLabelInPlural('Récapitulatif des Ventes')
             ->setEntityLabelInSingular('Vente')
             ->showEntityActionsInlined(true)
-            ->setEntityPermission('ROLE_ADMIN');
+            ->setEntityPermission('ROLE_ADMIN')
+            ->overrideTemplate('crud/index', 'admin/sales/recap.html.twig');
 
         return parent::configureCrud($crud);
     }

@@ -1,0 +1,33 @@
+{% extends '@EasyAdmin/crud/index.html.twig' %}
+
+{% block table_body %}
+    {% set final_price = 0 %}
+    {% set com_sales = 0 %}
+    {% set marge_vr = 0 %}
+    {% set data = 0 %}
+    {% for entity in entities %}
+        {%  set final_price = final_price + entity.instance.TotalPrice() %}
+        {%  set com_sales = com_sales + entity.instance.EuroCom() %}
+        {%  set marge_vr = marge_vr + entity.instance.DiffCa() %}
+        {% set data = 1 %}
+    {% endfor %}
+    {% if data == 1 %}
+    <tr class="recaptotal">
+        <th colspan="7">TOTAL</td>
+        <th class="text-right field-money">{{ final_price|number_format(2, ',', ' ') }} &euro;</th>
+        <th class="text-right field-money">{{ com_sales|number_format(2, ',', ' ') }} &euro;</th>
+        <th class="text-right field-money">{{ marge_vr|number_format(2, ',', ' ') }} &euro;</th>
+        <th></th>
+    </tr>
+    {% endif %}
+    {{ parent() }}
+    {% if data == 1 %}
+        <tr class="recaptotal">
+            <th colspan="7">TOTAL</td>
+            <th class="text-right field-money">{{ final_price|number_format(2, ',', ' ') }} &euro;</th>
+            <th class="text-right field-money">{{ com_sales|number_format(2, ',', ' ') }} &euro;</th>
+            <th class="text-right field-money">{{ marge_vr|number_format(2, ',', ' ') }} &euro;</th>
+            <th></th>
+        </tr>
+    {% endif %}
+{% endblock table_body %}
