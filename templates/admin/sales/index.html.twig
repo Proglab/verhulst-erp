@@ -72,11 +72,11 @@
                             {% endif %}
                         </th>
                         <td>{{ sale.date|date('d/m/y') }}</td>
-                        <td class="text-right">{{ (sale.price)|number_format(2, ',', '') }}€</td>
-                        <td class="text-right">{{ (sale.discount)|number_format(2, ',', '') }}€</td>
-                        <td class="text-right">{{ sale.marge|number_format(2, ',', '') }}€</td>
+                        <td class="text-right">{{ (sale.price)|number_format(2, ',', '.') }}€</td>
+                        <td class="text-right">{{ (sale.discount)|number_format(2, ',', '.') }}€</td>
+                        <td class="text-right">{{ sale.marge|number_format(2, ',', '.') }}€</td>
                         <td class="text-center">{{ sale.percentCom }}%</td>
-                        <td class="text-right">{{ sale.euroCom|number_format(2, ',', '') }}€</td>
+                        <td class="text-right">{{ sale.euroCom|number_format(2, ',', '.') }}€</td>
                         <td class="action">
                             {% set url_edit = ea_url()
                                 .setAction('edit')
@@ -92,11 +92,11 @@
                 <th scope="row" colspan="4">
                     Totaux
                 </th>
-                <th class="text-right">{{ total_price|number_format(2, ',', '') }}€</th>
+                <th class="text-right">{{ total_price|number_format(2, ',', '.') }}€</th>
                 <th></th>
-                <th class="text-right">{{ total_marge|number_format(2, ',', '') }}€</th>
+                <th class="text-right">{{ total_marge|number_format(2, ',', '.') }}€</th>
                 <th></th>
-                <th class="text-right">{{ total_euroCom|number_format(2, ',', '') }}€</th>
+                <th class="text-right">{{ total_euroCom|number_format(2, ',', '.') }}€</th>
                 <th></th>
             </tr>
             </tbody>
@@ -143,13 +143,13 @@
                         </th>
                         <th scope="row">{{ sale.product.name }}</th>
                         <td>{{ sale.date|date('d/m/y') }}</td>
-                        <td class="text-right">{{ (sale.price)|number_format(2, ',', '') }}€</td>
+                        <td class="text-right">{{ (sale.price)|number_format(2, ',', '.') }}€</td>
                         <td class="text-right">{{ sale.quantity }}</td>
-                        <td class="text-right">{{ (sale.totalPrice)|number_format(2, ',', '') }}€</td>
-                        <td class="text-right">{{ (sale.discount)|number_format(2, ',', '') }}€</td>
-                        <td class="text-right">{{ (sale.marge)|number_format(2, ',', '') }}€</td>
+                        <td class="text-right">{{ (sale.totalPrice)|number_format(2, ',', '.') }}€</td>
+                        <td class="text-right">{{ (sale.discount)|number_format(2, ',', '.') }}€</td>
+                        <td class="text-right">{{ (sale.marge)|number_format(2, ',', '.') }}€</td>
                         <td class="text-center">{{ sale.percentCom }}%</td>
-                        <td class="text-right">{{ sale.euroCom|number_format(2, ',', '') }}€</td>
+                        <td class="text-right">{{ sale.euroCom|number_format(2, ',', '.') }}€</td>
                         <td class="action">
                             {% set url_edit = ea_url()
                                 .setAction('edit')
@@ -167,11 +167,11 @@
                 </th>
                 <th></th>
                 <th></th>
-                <th class="text-right">{{ total_price|number_format(2, ',', '') }}€</th>
+                <th class="text-right">{{ total_price|number_format(2, ',', '.') }}€</th>
                 <th></th>
-                <th class="text-right">{{ total_marge|number_format(2, ',', '') }}€</th>
+                <th class="text-right">{{ total_marge|number_format(2, ',', '.') }}€</th>
                 <th></th>
-                <th class="text-right">{{ total_euroCom|number_format(2, ',', '') }}€</th>
+                <th class="text-right">{{ total_euroCom|number_format(2, ',', '.') }}€</th>
                 <th></th>
             </tr>
             </tbody>
@@ -216,13 +216,13 @@
                         </th>
                         <th scope="row">{{ sale.product.name }}</th>
                         <td>{{ sale.date|date('d/m/y') }}</td>
-                        <td class="text-right">{{ (sale.price)|number_format(2, ',', '') }}€</td>
+                        <td class="text-right">{{ (sale.price)|number_format(2, ',', '.') }}€</td>
                         <td class="text-right">{{ (sale.quantity) }}</td>
-                        <td class="text-right">{{ (sale.totalPrice)|number_format(2, ',', '') }}€</td>
-                        <td class="text-right">{{ (sale.discount)|number_format(2, ',', '') }}€</td>
-                        <td class="text-right">{{ (sale.marge)|number_format(2, ',', '') }}€</td>
+                        <td class="text-right">{{ (sale.totalPrice)|number_format(2, ',', '.') }}€</td>
+                        <td class="text-right">{{ (sale.discount)|number_format(2, ',', '.') }}€</td>
+                        <td class="text-right">{{ (sale.marge)|number_format(2, ',', '.') }}€</td>
                         <td class="text-center">{{ sale.percentCom }}%</td>
-                        <td class="text-right">{{ sale.euroCom|number_format(2, ',', '') }}€</td>
+                        <td class="text-right">{{ sale.euroCom|number_format(2, ',', '.') }}€</td>
                         <td class="action">
                             {% set url_edit = ea_url()
                                 .setAction('edit')
@@ -240,11 +240,11 @@
                 </th>
                 <th></th>
                 <th></th>
-                <th class="text-right">{{ total_price|number_format(2, ',', '') }}€</th>
+                <th class="text-right">{{ total_price|number_format(2, ',', '.') }}€</th>
                 <th></th>
-                <th class="text-right">{{ total_marge|number_format(2, ',', '') }}€</th>
+                <th class="text-right">{{ total_marge|number_format(2, ',', '.') }}€</th>
                 <th></th>
-                <th class="text-right">{{ total_euroCom|number_format(2, ',', '') }}€</th>
+                <th class="text-right">{{ total_euroCom|number_format(2, ',', '.') }}€</th>
                 <th></th>
             </tr>
             </tbody>
@@ -287,11 +287,11 @@
                         </th>
                         <th scope="row">{{ sale.product.name }}</th>
                         <td>{{ sale.date|date('d/m/y') }}</td>
-                        <td class="text-right">{{ (sale.price)|number_format(2, ',', '') }}€</td>
-                        <td class="text-right">{{ (sale.discount)|number_format(2, ',', '') }}€</td>
-                        <td class="text-right">{{ (sale.marge)|number_format(2, ',', '') }}€</td>
+                        <td class="text-right">{{ (sale.price)|number_format(2, ',', '.') }}€</td>
+                        <td class="text-right">{{ (sale.discount)|number_format(2, ',', '.') }}€</td>
+                        <td class="text-right">{{ (sale.marge)|number_format(2, ',', '.') }}€</td>
                         <td class="text-center">{{ sale.percentCom }}%</td>
-                        <td class="text-right">{{ sale.euroCom|number_format(2, ',', '') }}€</td>
+                        <td class="text-right">{{ sale.euroCom|number_format(2, ',', '.') }}€</td>
                         <td class="action">
                             {% set url_edit = ea_url()
                                 .setAction('edit')
@@ -307,11 +307,11 @@
                 <th scope="row" colspan="4">
                     Totaux
                 </th>
-                <th class="text-right">{{ total_price|number_format(2, ',', '') }}€</th>
+                <th class="text-right">{{ total_price|number_format(2, ',', '.') }}€</th>
                 <th></th>
-                <th class="text-right">{{ total_marge|number_format(2, ',', '') }}€</th>
+                <th class="text-right">{{ total_marge|number_format(2, ',', '.') }}€</th>
                 <th></th>
-                <th class="text-right">{{ total_euroCom|number_format(2, ',', '') }}€</th>
+                <th class="text-right">{{ total_euroCom|number_format(2, ',', '.') }}€</th>
                 <th></th>
             </tr>
             </tbody>

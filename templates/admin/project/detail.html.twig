@@ -60,7 +60,7 @@ Projet : {{ project.name }}
                         </div>
                         <div class="card-body">
                             <div class=" text-right">
-                                {% if product.ca is defined and product.ca > 0 %}<span class="btn-sm btn-primary">Prix de vente : {{ product.ca|number_format(2, ',', ' ') }} €</span>{% endif %}
+                                {% if product.ca is defined and product.ca > 0 %}<span class="btn-sm btn-primary">Prix de vente : {{ product.ca|number_format(2, ',', '.') }} €</span>{% endif %}
                             </div>
                             <p><b>Date : </b> {% if product.dateBegin is not null %}{{ product.dateBegin|date('d/m/Y') }}{% else %}-{% endif %}</p>
                             <p>{{ product.description|raw }}</p>
@@ -92,7 +92,7 @@ Projet : {{ project.name }}
                     </div>
                     <div class="card-body">
                         <div class=" text-right">
-                            {% if product.ca is defined and product.ca > 0 %}<span class="btn-sm btn-primary">Prix de vente : {{ product.ca|number_format(2, ',', ' ') }} €</span>{% endif %}
+                            {% if product.ca is defined and product.ca > 0 %}<span class="btn-sm btn-primary">Prix de vente : {{ product.ca|number_format(2, ',', '.') }} €</span>{% endif %}
                         </div>
                         <p><b>Du : </b> {% if product.dateBegin is not null %}{{ product.dateBegin|date('d/m/Y') }}{% else %}-{% endif %}</p>
                         <p><b>Au : </b> {% if product.dateEnd is not null %}{{ product.dateEnd|date('d/m/Y') }}{% else %}-{% endif %}</p>

@@ -42,7 +42,7 @@
                 <td>{% if product.dateBegin is not null %}{{ product.dateBegin|date('d/m/y') }}{% else %}-{% endif %}</td>
                 <td>{% if product.dateEnd is not null %}{{ product.dateEnd|date('d/m/Y') }}{% else %}-{% endif %}</td>
                 <td>{{ product.quantityAvailable }}</td>
-                <td>{% if product.ca is defined and product.ca > 0 %}{{ product.ca|number_format(2, ',', ' ') }}  €{% else %} - {% endif %}</td>
+                <td>{% if product.ca is defined and product.ca > 0 %}{{ product.ca|number_format(2, ',', '.') }}  €{% else %} - {% endif %}</td>
             </tr>
         {% endfor %}
         {% for product in project.productSponsoring %}
@@ -58,7 +58,7 @@
                 <td>{% if product.dateBegin is not null %}{{ product.dateBegin|date('d/m/y') }}{% else %}-{% endif %}</td>
                 <td>{% if product.dateEnd is not null %}{{ product.dateEnd|date('d/m/Y') }}{% else %}-{% endif %}</td>
                 <td>{{ product.quantityAvailable }}</td>
-                <td>{% if product.ca is defined and product.ca > 0 %}{{ product.ca|number_format(2, ',', ' ') }}  €{% else %} - {% endif %}</td>
+                <td>{% if product.ca is defined and product.ca > 0 %}{{ product.ca|number_format(2, ',', '.') }}  €{% else %} - {% endif %}</td>
             </tr>
         {% endfor %}
         {% for product in project.productDivers %}

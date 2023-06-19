@@ -27,7 +27,7 @@
   {{ form_row(form.discount_percent) }}
 
   <p class="mt-4"><b>Réduction :</b> <span id="result_reduc">0,00</span> €</p>
-  <p><b>Prix total :</b> <span id="result">{{ (form.vars.value.price * form.vars.value.quantity)|number_format(2, ',', ' ') }}</span> €</p>
+  <p><b>Prix total :</b> <span id="result">{{ (form.vars.value.price * form.vars.value.quantity)|number_format(2, ',', '.') }}</span> €</p>
 
   <script>
    function calcul(event) {

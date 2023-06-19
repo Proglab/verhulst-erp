@@ -109,17 +109,17 @@
                         </th>
                         <th scope="row">{{ sale.product.name }}</th>
                         <td>{{ sale.date|date('d/m/y') }}</td>
-                        <td class="text-right">{{ (sale.pa)|number_format(2, ',', '') }}€</td>
-                        <td class="text-right">{{ (sale.price)|number_format(2, ',', '') }}€</td>
+                        <td class="text-right">{{ (sale.pa)|number_format(2, ',', '.') }}€</td>
+                        <td class="text-right">{{ (sale.price)|number_format(2, ',', '.') }}€</td>
                         <td class="text-right">{{ (sale.quantity) }}</td>
-                        <td class="text-right">{{ (sale.totalPrice)|number_format(2, ',', '') }}€</td>
-                        <td class="text-right">{{ (sale.discount)|number_format(2, ',', '') }}€</td>
-                        <td class="text-right">{{ (sale.marge)|number_format(2, ',', '') }}€</td>
+                        <td class="text-right">{{ (sale.totalPrice)|number_format(2, ',', '.') }}€</td>
+                        <td class="text-right">{{ (sale.discount)|number_format(2, ',', '.') }}€</td>
+                        <td class="text-right">{{ (sale.marge)|number_format(2, ',', '.') }}€</td>
                         <td class="text-center">{{ sale.percentCom }}%</td>
-                        <td class="text-right">{{ sale.euroCom|number_format(2, ',', '') }}€</td>
+                        <td class="text-right">{{ sale.euroCom|number_format(2, ',', '.') }}€</td>
                         <td class="text-center">{{ sale.percentVr }}%</td>
-                        <td class="text-right">{{ sale.euroVr|number_format(2, ',', '') }}€</td>
-                        <td class="text-right">{{ sale.diffCa|number_format(2, ',', '') }}€</td>
+                        <td class="text-right">{{ sale.euroVr|number_format(2, ',', '.') }}€</td>
+                        <td class="text-right">{{ sale.diffCa|number_format(2, ',', '.') }}€</td>
                         <td class="action">
                             {% set url_edit = ea_url()
                                 .setAction('edit')

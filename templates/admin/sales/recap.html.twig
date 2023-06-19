@@ -14,9 +14,9 @@
     {% if data == 1 %}
     <tr class="recaptotal">
         <th colspan="7">TOTAL</td>
-        <th class="text-right field-money">{{ final_price|number_format(2, ',', ' ') }} &euro;</th>
-        <th class="text-right field-money">{{ com_sales|number_format(2, ',', ' ') }} &euro;</th>
-        <th class="text-right field-money">{{ marge_vr|number_format(2, ',', ' ') }} &euro;</th>
+        <th class="text-right field-money">{{ final_price|number_format(2, ',', '.') }} &euro;</th>
+        <th class="text-right field-money">{{ com_sales|number_format(2, ',', '.') }} &euro;</th>
+        <th class="text-right field-money">{{ marge_vr|number_format(2, ',', '.') }} &euro;</th>
         <th></th>
     </tr>
     {% endif %}
@@ -24,9 +24,9 @@
     {% if data == 1 %}
         <tr class="recaptotal">
             <th colspan="7">TOTAL</td>
-            <th class="text-right field-money">{{ final_price|number_format(2, ',', ' ') }} &euro;</th>
-            <th class="text-right field-money">{{ com_sales|number_format(2, ',', ' ') }} &euro;</th>
-            <th class="text-right field-money">{{ marge_vr|number_format(2, ',', ' ') }} &euro;</th>
+            <th class="text-right field-money">{{ final_price|number_format(2, ',', '.') }} &euro;</th>
+            <th class="text-right field-money">{{ com_sales|number_format(2, ',', '.') }} &euro;</th>
+            <th class="text-right field-money">{{ marge_vr|number_format(2, ',', '.') }} &euro;</th>
             <th></th>
         </tr>
     {% endif %}
