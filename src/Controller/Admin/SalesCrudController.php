@@ -248,6 +248,10 @@ class SalesCrudController extends BaseCrudController
         $entityInstance->setUser($user);
         $entityInstance->setPercentVr($entityInstance->getProduct()->getPercentVr());
 
+        if ($entityInstance->getProduct()->getPercentVr() > 0) {
+            $entityInstance->setPa($entityInstance->getDiffCa());
+        }
+
         /** @var Commission $com */
         $com = $entityManager->getRepository(Commission::class)->findOneBy(['product' => $entityInstance->getProduct(), 'user' => $this->getUser()]);
 

@@ -119,7 +119,7 @@
                         <td class="text-right">{{ sale.euroCom|number_format(2, ',', '.') }}€</td>
                         <td class="text-center">{{ sale.percentVr }}%</td>
                         <td class="text-right">{{ sale.euroVr|number_format(2, ',', '.') }}€</td>
-                        <td class="text-right">{{ sale.diffCa|number_format(2, ',', '.') }}€</td>
+                        <td class="text-right">{{ sale.net|number_format(2, ',', '.') }}€</td>
                         <td class="action">
                             {% set url_edit = ea_url()
                                 .setAction('edit')

@@ -288,4 +288,9 @@ class Sales
 
         return $this;
     }
+
+    public function getNet(): float
+    {
+        return $this->getDiffCa() + $this->getEuroVr();
+    }
 }
