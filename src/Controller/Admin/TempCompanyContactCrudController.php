@@ -56,7 +56,8 @@ class TempCompanyContactCrudController extends BaseCrudController
         $crud->setEntityLabelInPlural('Clients')
             ->setEntityLabelInSingular('Client')
             ->showEntityActionsInlined(true)
-            ->overrideTemplate('crud/detail', 'admin/crud/detail_2cols.html.twig');
+            ->overrideTemplate('crud/detail', 'admin/crud/detail_2cols.html.twig')
+            ->setPaginatorPageSize(50);
 
         return parent::configureCrud($crud);
     }
