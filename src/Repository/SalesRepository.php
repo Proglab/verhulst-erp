@@ -167,7 +167,7 @@ class SalesRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('s')
             ->addSelect('p')
             ->join('s.product', 'p')
-            ->setMaxResults(10)
+            ->setMaxResults(100)
             ->orderBy('s.date', 'DESC')
             ->getQuery()
             ->getResult();

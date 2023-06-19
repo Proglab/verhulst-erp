@@ -98,7 +98,7 @@ class Sales
 
     public function getPa(): ?float
     {
-        return (int) $this->pa;
+        return (float) $this->pa;
     }
 
     public function setPa(string|float|null $pa): self
