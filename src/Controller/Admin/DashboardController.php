@@ -111,7 +111,10 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('admin.menu.sales', 'fas fa-comments-dollar', Sales::class)->setController(ComptaCrudController::class)->setPermission('ROLE_COMPTA'),
 
             MenuItem::section('Import')->setPermission('ROLE_COMMERCIAL'),
-            MenuItem::linkToCrud('admin.menu.import', 'fas fa-comments-dollar', Sales::class)->setController(TempCompanyContactCrudController::class)->setPermission('ROLE_COMMERCIAL'),
+            MenuItem::linkToCrud('admin.menu.import', 'fas fa-comments-dollar', Sales::class)
+                ->setController(TempCompanyContactCrudController::class)
+                ->setQueryParameter('filters[added_by][added_by]', $this->getUser()->getId())
+                ->setPermission('ROLE_COMMERCIAL'),
 
             MenuItem::section('Techniciens uniquements')->setPermission('ROLE_TECH'),
             MenuItem::linkToCrud('Css', 'fas fa-brush', Css::class)->setPermission('ROLE_TECH'),
