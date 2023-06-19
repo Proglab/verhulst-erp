@@ -79,6 +79,9 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
+        /** @var User $user */
+        $user = $this->getUser();
+
         return [
             MenuItem::section('Commercial')->setPermission('ROLE_COMMERCIAL'),
             MenuItem::linkToRoute('admin.menu.dashboard_com', 'fa fa-gauge-high', 'dashboard_com')->setPermission('ROLE_COMMERCIAL'),
@@ -113,7 +116,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::section('Import')->setPermission('ROLE_COMMERCIAL'),
             MenuItem::linkToCrud('admin.menu.import', 'fas fa-comments-dollar', Sales::class)
                 ->setController(TempCompanyContactCrudController::class)
-                ->setQueryParameter('filters[added_by][added_by]', $this->getUser()->getId())
+                ->setQueryParameter('filters[added_by][added_by]', $user->getId())
                 ->setPermission('ROLE_COMMERCIAL'),
 
             MenuItem::section('Techniciens uniquements')->setPermission('ROLE_TECH'),
