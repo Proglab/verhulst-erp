@@ -73,11 +73,11 @@ class SalesRecapCrudController extends BaseCrudController
             ->setRequired(true)
             ->setCurrency('EUR')->setLabel('Com sales');
 
-        $margeVr = MoneyField::new('getDiffCa')
+        $margeVr = MoneyField::new('getNet')
             ->setStoredAsCents(false)
             ->setNumDecimals(2)
             ->setRequired(true)
-            ->setCurrency('EUR')->setLabel('Marge Vr');
+            ->setCurrency('EUR')->setLabel('Net');
 
         $invoiced = BooleanField::new('isInvoiced')->setLabel('Facturé')->setDisabled(true);
 
