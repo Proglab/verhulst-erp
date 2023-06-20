@@ -249,7 +249,7 @@ class SalesCrudController extends BaseCrudController
         $entityInstance->setPercentVr($entityInstance->getProduct()->getPercentVr());
 
         if ($entityInstance->getProduct()->getPercentVr() > 0) {
-            $entityInstance->setPa($entityInstance->getDiffCa());
+            $entityInstance->setPa($entityInstance->getDiffCa()/$entityInstance->getQuantity());
         }
 
         /** @var Commission $com */
