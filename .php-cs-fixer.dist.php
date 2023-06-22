@@ -20,7 +20,7 @@ return (new PhpCsFixer\Config())
         'no_whitespace_in_blank_line' => true,
         'return_type_declaration' => true,
         'short_scalar_cast' => true,
-        'single_blank_line_before_namespace' => true,
+        'blank_lines_before_namespace' => true,
         'ternary_operator_spaces' => true,
         'no_useless_else' => true,
         'no_useless_return' => true,
@@ -37,4 +37,4 @@ return (new PhpCsFixer\Config())
     ])
     ->setFinder($finder)
     ->setCacheFile(__DIR__ . '/var/.php_cs.cache')
-;
+    ;

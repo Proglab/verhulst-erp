@@ -342,6 +342,11 @@ class TempCompanyContactCrudController extends BaseCrudController
 
             $this->addFlash('success', 'Le contact ' . $contactNew->getFullName() . ' a bien été importé');
 
+            return new RedirectResponse(
+                $this->adminUrlGenerator->setController(CompanyContactCrudController::class)
+                    ->setAction(Crud::PAGE_DETAIL)
+                    ->setEntityId($contactNew->getId())
+                    ->generateUrl());
         }
         if ($count3 > 0) {
             $this->addFlash('danger', 'Le mail <b>' . $contact->getEmail() . '</b> existe déjà');
@@ -350,8 +355,6 @@ class TempCompanyContactCrudController extends BaseCrudController
             $this->addFlash('danger', 'Le gsm <b>' . $contact->getGsm() . '</b> existe déjà');
         }
 
-        $url = $this->adminUrlGenerator->setController(TempCompanyContactCrudController::class)->setAction(Crud::PAGE_INDEX)->set('page', $context->getRequest()->get('page'))->setEntityId(null)->generateUrl();
-
-        return new RedirectResponse($url);
+        return new RedirectResponse($context->getReferrer());
     }
 }
