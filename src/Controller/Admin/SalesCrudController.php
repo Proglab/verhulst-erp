@@ -15,6 +15,7 @@ use App\Entity\Sales;
 use App\Entity\User;
 use App\Repository\CompanyRepository;
 use App\Repository\ProjectRepository;
+use App\Repository\SalesRepository;
 use App\Repository\UserRepository;
 use App\Service\SecurityChecker;
 use Doctrine\ORM\EntityManagerInterface;
@@ -57,7 +58,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SalesCrudController extends BaseCrudController
 {
-    public function __construct(private EntityManagerInterface $entityManager, private AdminUrlGenerator $adminUrlGenerator, private UserRepository $userRepository, protected SecurityChecker $securityChecker)
+    public function __construct(private EntityManagerInterface $entityManager, private AdminUrlGenerator $adminUrlGenerator, private UserRepository $userRepository, protected SecurityChecker $securityChecker, private SalesRepository $salesRepository)
     {
         parent::__construct($securityChecker);
     }
@@ -445,8 +446,22 @@ class SalesCrudController extends BaseCrudController
     }
 
     public function generateBdc(AdminContext $context):void {
+        $sales = [];
 
-        $html = $this->render('admin/pdf/bdc_fr.html.twig', ['logo' => 'app-logo.png']);
+        foreach($context->getRequest()->request->all()['bdc'] as $id => $value) {
+            $sale = $this->salesRepository->find($id);
+            $sales[] = $sale;
+            $client = $sale->getContact();
+        }
+
+        $user = $this->getUser();
+
+        $html = $this->render('admin/pdf/bdc_fr.html.twig', [
+            'logo' => 'app-logo.png',
+            'sales' => $sales,
+            'user' => $user,
+            'client' => $client
+        ]);
         $dompdf = new Dompdf(array('enable_remote' => true));
         $dompdf->getOptions()->setChroot(realpath(__DIR__.'/../../../public/'));
         $dompdf->setPaper('A4', 'portrait');

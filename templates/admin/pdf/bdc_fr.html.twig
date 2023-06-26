@@ -292,7 +292,7 @@
           <tr class="row1">
               <td class="column0 style11 s">EVENEMENT:</td>
               <td class="column1 style42 s">DATE:</td>
-              <td class="column3 style43">&nbsp;</td>
+              <td class="column3 style43">{{ 'now'|date('d/m/Y') }}</td>
               <td class="column4">&nbsp;</td>
               <td class="column5">&nbsp;</td>
               <td class="column5">&nbsp;</td>
@@ -314,15 +314,15 @@
           </tr>
           <tr class="row4">
             <td class="column0 style11 s">SOCIETE</td>
-            <td class="column1 style42 s">VE&amp;P SELLER:</td>
-            <td class="column3 style43">&nbsp;</td>
+            <td class="column1 style42 s"></td>
+            <td class="column3 style43"></td>
             <td class="column4">&nbsp;</td>
             <td class="column5">&nbsp;</td>
           </tr>
           <tr class="row5">
             <td class="column0 style15 s">Company Name</td>
             <td class="column1 style4 null"></td>
-            <td class="column2 style3 null"></td>
+            <td class="column2 style3 null">{{ client.company.name }}</td>
             <td class="column3">&nbsp;</td>
             <td class="column4">&nbsp;</td>
             <td class="column5">&nbsp;</td>
@@ -330,7 +330,7 @@
           <tr class="row6">
             <td class="column0 style15 s">Adress</td>
             <td class="column1 style4 null"></td>
-            <td class="column2 style3 null"></td>
+            <td class="column2 style3 null">{{ client.company.street }}</td>
             <td class="column3">&nbsp;</td>
             <td class="column4">&nbsp;</td>
             <td class="column5">&nbsp;</td>
@@ -338,7 +338,7 @@
           <tr class="row7">
             <td class="column0 style15 s">PC + City</td>
             <td class="column1 style4 null"></td>
-            <td class="column2 style3 null"></td>
+            <td class="column2 style3 null">{{ client.company.pc }} {{ client.company.city }}</td>
             <td class="column3">&nbsp;</td>
             <td class="column4">&nbsp;</td>
             <td class="column5">&nbsp;</td>
@@ -346,14 +346,14 @@
           <tr class="row8">
             <td class="column0 style16 s">Phone</td>
             <td class="column1 style4 null"></td>
-            <td class="column2 style5 null"></td>
+            <td class="column2 style5 null">{{ client.phone }}</td>
             <td class="column3">&nbsp;</td>
             <td class="column4">&nbsp;</td>
             <td class="column5">&nbsp;</td>
           </tr>
           <tr class="row9">
               <td class="column0 style6 null bb" style="color: #194F4A">SIGNATAIRE:</td>
-              <td class="column2 style8 n bb" colspan="2">Name, First Name</td>
+              <td class="column2 style8 n bb" colspan="2">{{ client.fullname }}</td>
               <td class="column3">&nbsp;</td>
               <td class="column4">&nbsp;</td>
               <td class="column5">&nbsp;</td>
@@ -362,32 +362,26 @@
               <td colspan="3" class="style6" style="border-style: solid; border-right: solid 2px; height: 200px; vertical-align: top">
                   <table style="width: 100%;">
                       <tr>
-                          <td><b>COMMANDE</b></td>
-                          <td><b>NB</b></td>
-                          <td><b>AMOUNT</b></td>
+                          <td><b>Projet</b></td>
+                          <td><b>Produit</b></td>
+                          <td><b>Nb</b></td>
+                          <td><b>Total</b></td>
                       </tr>
+                      {% set total = 0 %}
+                      {% for sale in sales %}
+                          {% set total = total + sale.marge %}
                       <tr>
-                          <td>Lundi 11/09/03 Formule gold Nacelle 4 personnes</td>
-                          <td>1</td>
-                          <td>1,000.00 €</td>
+                          <td>{{ sale.product.project.name }}</td>
+                          <td>{{ sale.product.name }}</td>
+                          <td>{{ sale.quantity }}</td>
+                          <td>{{ sale.marge|number_format(2, ',', '.') }} €</td>
                       </tr>
+                      {% endfor %}
                       <tr>
                           <td><b>TOTAL</b></td>
                           <td></td>
-                          <td><b>1.280,00 €</b></td>
-                      </tr>
-                      <tr>
-                          <td>Administration costs</td>
                           <td></td>
-                          <td>15.00 €</td>
-                      </tr>
-                      <tr>
-                          <td><b>TOTAL (VAT incl.)</b></td>
-                          <td></td>
-                          <td><b>1.295,00 €</b></td>
-                      </tr>
-                      <tr>
-                          <td colspan="3">The amount is calculated with a VAT rate distributed over 21%, 12% and 6%.</td>
+                          <td><b>{{ total|number_format(2, ',', '.') }} €</b></td>
                       </tr>
                   </table>
               </td>
@@ -489,21 +483,14 @@
           </tr>
           <tr class="row40">
             <td class="style27 s">PERSONNE DE CONTACT :</td>
-            <td class="column1 style37 null style38" colspan="2"></td>
-            <td class="column3">&nbsp;</td>
-            <td class="column4">&nbsp;</td>
-            <td class="column5">&nbsp;</td>
-          </tr>
-          <tr class="row41">
-            <td class="column0 style27 s">TELEPHONE :</td>
-            <td class="column1 style37 null style38" colspan="2"></td>
+            <td class="column1 style37 null style38" colspan="2">{{ user.fullname }}</td>
             <td class="column3">&nbsp;</td>
             <td class="column4">&nbsp;</td>
             <td class="column5">&nbsp;</td>
           </tr>
           <tr class="row42">
             <td class="column0 style27 s">E-MAIL :</td>
-            <td class="column1 style37 null style38" colspan="2"></td>
+            <td class="column1 style37 null style38" colspan="2">{{ user.email }}</td>
             <td class="column3">&nbsp;</td>
             <td class="column4">&nbsp;</td>
             <td class="column5">&nbsp;</td>
@@ -517,7 +504,7 @@
             <td class="column5">&nbsp;</td>
           </tr>
           <tr class="row43">
-              <td class="column0 style28 s" style="height: 100px;"></td>
+              <td class="column0 style28 s" style="height: 120px;"></td>
               <td class="column1 style29 s"></td>
               <td class="column2 style14 null"></td>
               <td class="column3">&nbsp;</td>
