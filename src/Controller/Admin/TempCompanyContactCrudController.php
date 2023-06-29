@@ -145,6 +145,7 @@ class TempCompanyContactCrudController extends BaseCrudController
         $actions
             ->add(Crud::PAGE_DETAIL, $transfert)
             ->add(Crud::PAGE_DETAIL, $validation)
+            ->add(Crud::PAGE_INDEX, $validation)
             ->setPermission(Action::EDIT, 'ROLE_COMMERCIAL')
             ->setPermission(Action::DELETE, 'ROLE_COMMERCIAL')
             ->setPermission(Action::DETAIL, 'ROLE_COMMERCIAL')
@@ -152,6 +153,7 @@ class TempCompanyContactCrudController extends BaseCrudController
             ->setPermission(Action::SAVE_AND_RETURN, 'ROLE_COMMERCIAL')
             ->setPermission(Action::SAVE_AND_ADD_ANOTHER, 'ROLE_COMMERCIAL')
             ->setPermission(Action::SAVE_AND_CONTINUE, 'ROLE_COMMERCIAL')
+            ->setPermission('validate', 'ROLE_COMMERCIAL')
             ->update(Crud::PAGE_DETAIL, Action::DELETE,
                 function (Action $action) {
                     return $action->displayIf(function (TempCompanyContact $entity) {
@@ -188,6 +190,9 @@ class TempCompanyContactCrudController extends BaseCrudController
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->update(Crud::PAGE_INDEX, Action::DETAIL, function (Action $action) {
                 return $action->setIcon('fa fa-eye')->setLabel(false)->setHtmlAttributes(['title' => 'Consulter']);
+            })
+            ->update(Crud::PAGE_INDEX, 'validate', function (Action $action) {
+                return $action->setIcon('fa fa-user-check')->setLabel(false)->setHtmlAttributes(['title' => 'Valider']);
             })
         ;
 
@@ -343,9 +348,9 @@ class TempCompanyContactCrudController extends BaseCrudController
             $this->addFlash('success', 'Le contact ' . $contactNew->getFullName() . ' a bien été importé');
 
             return new RedirectResponse(
-                $this->adminUrlGenerator->setController(CompanyContactCrudController::class)
-                    ->setAction(Crud::PAGE_DETAIL)
-                    ->setEntityId($contactNew->getId())
+                $this->adminUrlGenerator->setController(TempCompanyContactCrudController::class)
+                    ->setAction(Crud::PAGE_INDEX)
+                    ->setEntityId(null)
                     ->generateUrl());
         }
         if ($count3 > 0) {
