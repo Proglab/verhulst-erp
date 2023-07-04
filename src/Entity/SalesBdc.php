@@ -29,6 +29,12 @@ class SalesBdc
     #[ORM\Column]
     private ?bool $validate = false;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $validationDate = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $sendDate = null;
+
     public function __construct()
     {
         $this->sales = new ArrayCollection();
@@ -96,6 +102,30 @@ class SalesBdc
     public function setValidate(bool $validate): static
     {
         $this->validate = $validate;
+
+        return $this;
+    }
+
+    public function getValidationDate(): ?\DateTimeInterface
+    {
+        return $this->validationDate;
+    }
+
+    public function setValidationDate(?\DateTimeInterface $validationDate): static
+    {
+        $this->validationDate = $validationDate;
+
+        return $this;
+    }
+
+    public function getSendDate(): ?\DateTimeInterface
+    {
+        return $this->sendDate;
+    }
+
+    public function setSendDate(?\DateTimeInterface $sendDate): static
+    {
+        $this->sendDate = $sendDate;
 
         return $this;
     }

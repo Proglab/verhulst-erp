@@ -7,18 +7,30 @@ use Dompdf\Dompdf;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\DateTimeFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
 
 class SalesBdcCrudController extends BaseCrudController
 {
     public static function getEntityFqcn(): string
     {
         return SalesBdc::class;
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add(EntityFilter::new('user')->setLabel('Commercial'))
+            ->add(DateTimeFilter::new('creationDate')->setLabel('Date de création'))
+            ->add(DateTimeFilter::new('validationDate')->setLabel('Date de validation'))
+            ->add(DateTimeFilter::new('sendDate')->setLabel('Date d\'envois'))
+            ;
     }
 
     public function configureCrud(Crud $crud): Crud
@@ -32,19 +44,21 @@ class SalesBdcCrudController extends BaseCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $date = DateField::new('creationDate')->setLabel('Date de création');
+        $date = DateField::new('creationDate')->setLabel('Date de création')->setFormat('dd/MM/yyyy');
         $validate = BooleanField::new('validate')->setLabel('Validation du client');
-        $sales = AssociationField::new('sales')->setRequired(true)->setLabel('Ventes');
+        $sales = AssociationField::new('sales')->setRequired(true)->setLabel('Produits');
         $company = TextField::new('sales[0].contact.company')->setRequired(true)->setLabel('Société');
         $project = TextField::new('sales[0].product.project')->setRequired(true)->setLabel('Projet');
         $commercial = TextField::new('user')->setRequired(true)->setLabel('Commercial');
+        $validationDate = DateField::new('validationDate')->setLabel('Date de validation')->setFormat('dd/mm/yyyy');
+        $sendDate = DateField::new('sendDate')->setLabel('Date d\'envois')->setFormat('dd/mm/yyyy');
 
         switch ($pageName) {
             case Crud::PAGE_DETAIL:
-                $response = [$date, $commercial, $company, $project, $sales, $validate];
+                $response = [$date, $commercial, $company, $project, $sales, $sendDate, $validationDate, $validate];
                 break;
             default:
-                $response = [$date, $commercial, $company, $project, $sales, $validate];
+                $response = [$date, $commercial, $company, $project, $sales, $sendDate, $validationDate, $validate];
         }
 
         return $response;
@@ -74,13 +88,13 @@ class SalesBdcCrudController extends BaseCrudController
             ->update(Crud::PAGE_INDEX, 'generatePdf', function (Action $action) {
                 return $action->setIcon('fa fa-file-pdf')->setLabel(false)->setHtmlAttributes(['title' => 'Générer le Bdc']);
             })
+            ->update(Crud::PAGE_DETAIL, 'generatePdf', function (Action $action) {
+                return $action->setIcon('fa fa-file-pdf')->setHtmlAttributes(['title' => 'Générer le Bdc']);
+            })
         ;
 
         return $actions;
     }
-
-
-
 
     public function generatePdf(AdminContext $context):void {
 
