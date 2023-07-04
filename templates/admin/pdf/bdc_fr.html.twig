@@ -74,6 +74,12 @@
     </table>
 </header>
 
+
+<footer>
+    <a href="https://www.thefriends.be/" title="The Friends by Verhulst"><b><i>Verhulst and Friends</i></b> s.a./n.v.</a> | Avenue Albert 1er, 146 | 1332 Genval | {{ 'BE'|countryFullName }}<br>
+    Tel: <a href="tel:+3226579070" title="Phone us">02/657.90.70</a> | <a href="mailto:info@verhulst.be" title="E-mail us">info@verhulst.be</a> | tva/btw : BE0427 256 492 | Bank : BE20230 0413256 56
+</footer>
+
 <main>
     <table width="100%">
         <tr>
@@ -90,7 +96,7 @@
                 {{ bdc.sales[0].contact.company.name }}<br>
                 {{ bdc.sales[0].contact.company.street }}<br>
                 {{ bdc.sales[0].contact.company.pc }} {{ bdc.sales[0].contact.company.city }}<br>
-                {{ bdc.sales[0].contact.company.country }}<br>
+                {{ bdc.sales[0].contact.company.country|countryFullName }}<br>
                 TVA : {{ bdc.sales[0].contact.company.vatNumber }}
             </td>
             <td width="50%" valign="top">
@@ -146,11 +152,11 @@
     <h2 style="clear: both;">FACTURATION :</h2>
 
     <table width="100%">
-        <tr><td width="30%">Nom</td><td></td></tr>
+        <tr><td width="30%">&nbsp;</td><td></td></tr>
         <tr><td>Nom de l’entreprise</td><td>{{ bdc.sales[0].contact.company.name }}</td></tr>
         <tr><td>Adresse</td><td>{{ bdc.sales[0].contact.company.billingStreet }}</td></tr>
         <tr><td>Code postal, Ville</td><td>{{ bdc.sales[0].contact.company.billingPc }} {{ bdc.sales[0].contact.company.billingCity }}</td></tr>
-        <tr><td>Téléphone</td><td></td></tr>
+        <tr><td>Pays</td><td>{{ bdc.sales[0].contact.company.billingCountry|countryFullName }}</td></tr>
         <tr><td>TVA :</td><td>{{ bdc.sales[0].contact.company.vatNumber }}</td></tr>
         <tr><td>PERSONNE DE CONTACT :</td><td>{{ bdc.sales[0].contact.fullname }}</td></tr>
         <tr><td>PHONE :</td><td>{{ bdc.sales[0].contact.phone }}</td></tr>
@@ -237,10 +243,5 @@
         </ol>
     </div>
 </main>
-
-<footer>
-    <a href="https://www.thefriends.be/" title="The Friends by Verhulst"><b><i>Verhulst and Friends</i></b> s.a./n.v.</a> | Avenue Albert 1er, 146 | 1332 Genval | Belgium<br>
-    Tel: <a href="tel:003226579070" title="Phone us">02/657.90.70</a> | <a href="mailto:info@verhulst.be" title="E-mail us">info@verhulst.be</a> | tva/btw : be 427 256 492 | Bank : BE 20 230 0413256 56
-</footer>
 </body>
 </html>
