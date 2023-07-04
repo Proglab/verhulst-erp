@@ -6,6 +6,8 @@ namespace App\Entity;
 
 use App\Repository\SalesRepository;
 use App\Validator as MyAssert;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -78,6 +80,14 @@ class Sales
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank]
     private ?CompanyContact $contact = null;
+
+    #[ORM\ManyToMany(targetEntity: SalesBdc::class, mappedBy: 'sales')]
+    private Collection $salesBdcs;
+
+    public function __construct()
+    {
+        $this->salesBdcs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -292,5 +302,32 @@ class Sales
     public function getNet(): float
     {
         return $this->getDiffCa() + $this->getEuroVr();
+    }
+
+    /**
+     * @return Collection<int, SalesBdc>
+     */
+    public function getSalesBdcs(): Collection
+    {
+        return $this->salesBdcs;
+    }
+
+    public function addSalesBdc(SalesBdc $salesBdc): static
+    {
+        if (!$this->salesBdcs->contains($salesBdc)) {
+            $this->salesBdcs->add($salesBdc);
+            $salesBdc->addSale($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSalesBdc(SalesBdc $salesBdc): static
+    {
+        if ($this->salesBdcs->removeElement($salesBdc)) {
+            $salesBdc->removeSale($this);
+        }
+
+        return $this;
     }
 }

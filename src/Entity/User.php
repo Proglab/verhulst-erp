@@ -96,6 +96,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Todo::class, orphanRemoval: true)]
     private Collection $todos;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: SalesBdc::class, orphanRemoval: true)]
+    private Collection $salesBdcs;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -105,6 +108,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         $this->commissions = new ArrayCollection();
         $this->companyContacts = new ArrayCollection();
         $this->todos = new ArrayCollection();
+        $this->salesBdcs = new ArrayCollection();
     }
 
     public function __toString()
@@ -457,6 +461,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
             // set the owning side to null (unless already changed)
             if ($todo->getUser() === $this) {
                 $todo->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SalesBdc>
+     */
+    public function getSalesBdcs(): Collection
+    {
+        return $this->salesBdcs;
+    }
+
+    public function addSalesBdc(SalesBdc $salesBdc): static
+    {
+        if (!$this->salesBdcs->contains($salesBdc)) {
+            $this->salesBdcs->add($salesBdc);
+            $salesBdc->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSalesBdc(SalesBdc $salesBdc): static
+    {
+        if ($this->salesBdcs->removeElement($salesBdc)) {
+            // set the owning side to null (unless already changed)
+            if ($salesBdc->getUser() === $this) {
+                $salesBdc->setUser(null);
             }
         }
 

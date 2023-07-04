@@ -12,9 +12,11 @@ use App\Entity\ProductPackageVip;
 use App\Entity\ProductSponsoring;
 use App\Entity\Project;
 use App\Entity\Sales;
+use App\Entity\SalesBdc;
 use App\Entity\User;
 use App\Repository\CompanyRepository;
 use App\Repository\ProjectRepository;
+use App\Repository\SalesBdcRepository;
 use App\Repository\SalesRepository;
 use App\Repository\UserRepository;
 use App\Service\SecurityChecker;
@@ -58,7 +60,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SalesCrudController extends BaseCrudController
 {
-    public function __construct(private EntityManagerInterface $entityManager, private AdminUrlGenerator $adminUrlGenerator, private UserRepository $userRepository, protected SecurityChecker $securityChecker, private SalesRepository $salesRepository)
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private AdminUrlGenerator $adminUrlGenerator,
+        private UserRepository $userRepository,
+        protected SecurityChecker $securityChecker,
+        private SalesRepository $salesRepository,
+        private SalesBdcRepository $bdcRepository
+    )
     {
         parent::__construct($securityChecker);
     }
@@ -87,8 +96,8 @@ class SalesCrudController extends BaseCrudController
         $searchClient = Action::new('sales_by_users_list', false)
             ->linkToCrudAction('sales_by_users_list');
 
-        $generateBdc = Action::new('generate_bdc', false)
-            ->linkToCrudAction('generateBdc');
+        $createBdc = Action::new('create_bdc', false)
+            ->linkToCrudAction('createBdc');
 
         $actions = parent::configureActions($actions);
         $actions
@@ -109,9 +118,9 @@ class SalesCrudController extends BaseCrudController
                 return $action->setIcon('fa fa-eye');
             })
             ->add(Crud::PAGE_EDIT, Action::DELETE)
-            ->setPermission('generateBdc', 'ROLE_COMMERCIAL')
-            ->add(Crud::PAGE_INDEX, $generateBdc)
-            ->update(Crud::PAGE_INDEX, 'generate_bdc', function (Action $action) {
+            ->setPermission('createBdc', 'ROLE_COMMERCIAL')
+            ->add(Crud::PAGE_INDEX, $createBdc)
+            ->update(Crud::PAGE_INDEX, 'create_bdc', function (Action $action) {
                 return $action->setIcon('fa fa-eye');
             })
         ;
@@ -445,30 +454,38 @@ class SalesCrudController extends BaseCrudController
         return $this->render('admin/sales/final.html.twig', $return);
     }
 
-    public function generateBdc(AdminContext $context):void {
-        $sales = [];
+    public function createBdc(AdminContext $context):RedirectResponse {
+        $bdc = new SalesBdc();
+        $bdc->setUser($this->getUser());
+
+        $company = null;
+        $project = null;
 
         foreach($context->getRequest()->request->all()['bdc'] as $id => $value) {
             $sale = $this->salesRepository->find($id);
-            $sales[] = $sale;
-            $client = $sale->getContact();
+
+            if ($company === null) {
+                $company = $sale->getContact()->getCompany();
+            } else {
+                if ($company !== $sale->getContact()->getCompany()) {
+                    $this->addFlash('danger', 'Un bon de commande doit être pour la même société');
+                    return $this->redirect($this->adminUrlGenerator->setAction(Action::INDEX)->generateUrl());
+                }
+            }
+
+            if ($project === null) {
+                $project = $sale->getProduct()->getProject();
+            } else {
+                if ($project !== $sale->getProduct()->getProject()) {
+                    $this->addFlash('danger', 'Un bon de commande doit être pour la même projet');
+                    return $this->redirect($this->adminUrlGenerator->setAction(Action::INDEX)->generateUrl());
+                }
+            }
+
+            $bdc->addSale($sale);
         }
 
-        $user = $this->getUser();
-
-        $html = $this->render('admin/pdf/bdc_fr.html.twig', [
-            'logo' => 'app-logo.png',
-            'sales' => $sales,
-            'user' => $user,
-            'client' => $client
-        ]);
-        $dompdf = new Dompdf(array('enable_remote' => true));
-        $dompdf->getOptions()->setChroot(realpath(__DIR__.'/../../../public/'));
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->loadHtml($html);
-        $dompdf->render();
-        $dompdf->stream("codexworld", ["Attachment" => 0]);
-
-        exit();
+        $this->bdcRepository->save($bdc, true);
+        return $this->redirect($this->adminUrlGenerator->setController(SalesBdcCrudController::class)->setAction(Action::DETAIL)->setEntityId($bdc->getId())->generateUrl());
     }
 }
