@@ -29,8 +29,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class CompanyContactCrudController extends BaseCrudController
 {
@@ -164,6 +169,9 @@ class CompanyContactCrudController extends BaseCrudController
         $createTodo = Action::new('todo', 'Créer une Todo')
             ->linkToCrudAction('createTodo');
 
+        $export = Action::new('export', 'Exporter les contacts')
+            ->linkToCrudAction('export')->createAsGlobalAction();
+
         $actions = parent::configureActions($actions);
         $actions
             ->add(Crud::PAGE_DETAIL, $transfert)
@@ -180,6 +188,10 @@ class CompanyContactCrudController extends BaseCrudController
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->update(Crud::PAGE_INDEX, Action::DETAIL, function (Action $action) {
                 return $action->setIcon('fa fa-eye')->setLabel(false)->setHtmlAttributes(['title' => 'Consulter']);
+            })
+            ->add(Crud::PAGE_INDEX, $export)
+            ->update(Crud::PAGE_INDEX, 'export', function (Action $action) {
+                return $action->setIcon('fa fa-file-export')->setHtmlAttributes(['title' => 'Exporter']);
             })
         ;
 
@@ -236,5 +248,50 @@ class CompanyContactCrudController extends BaseCrudController
     public function createTodo(AdminContext $context): RedirectResponse|Response
     {
         return $this->redirect($this->adminUrlGenerator->setController(TodoCrudController::class)->setAction(Crud::PAGE_NEW)->setEntityId(null)->set('client_id', $context->getEntity()->getInstance()->getId())->generateUrl());
+    }
+
+    public function export(AdminContext $context): StreamedResponse
+    {
+        $contacts = $this->companyContactRepository->findBy(['added_by' => $this->getUser()]);
+
+        $spreadsheet = new Spreadsheet();
+        $spreadsheet->getDefaultStyle()->getNumberFormat()->setFormatCode('#');
+        $activeWorksheet = $spreadsheet->getActiveSheet();
+
+        $activeWorksheet->setCellValue('A1', 'Société');
+        $activeWorksheet->setCellValue('B1', 'Nom');
+        $activeWorksheet->setCellValue('C1', 'Prénom');
+        $activeWorksheet->setCellValue('D1', 'Email');
+        $activeWorksheet->setCellValue('E1', 'Téléphone');
+        $activeWorksheet->setCellValue('F1', 'Gsm');
+        $activeWorksheet->setCellValue('G1', 'Langue');
+
+        $row = '2';
+
+        foreach ($contacts as $contact) {
+            $activeWorksheet->setCellValue('A' . $row, $contact->getCompany()->getName());
+            $activeWorksheet->setCellValue('B' . $row, $contact->getLastname());
+            $activeWorksheet->setCellValue('C' . $row, $contact->getFirstname());
+            $activeWorksheet->setCellValue('D' . $row, $contact->getEmail());
+            $activeWorksheet->setCellValueExplicit('E' . $row, $contact->getPhone(), DataType::TYPE_STRING);
+            $activeWorksheet->setCellValueExplicit('F' . $row, $contact->getGsm(), DataType::TYPE_STRING);
+            $activeWorksheet->setCellValue('G' . $row, $contact->getLang());
+
+            ++$row;
+        }
+
+        $xlsxWriter = new Xlsx($spreadsheet);
+
+        $response = new StreamedResponse();
+        $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        $response->headers->set('Content-Disposition', 'attachment;filename_' . time() . '.xlsx"');
+        $response->setPrivate();
+        $response->headers->addCacheControlDirective('no-cache', true);
+        $response->headers->addCacheControlDirective('must-revalidate', true);
+        $response->setCallback(function() use ($xlsxWriter) {
+            $xlsxWriter->save('php://output');
+        });
+
+        return $response;
     }
 }

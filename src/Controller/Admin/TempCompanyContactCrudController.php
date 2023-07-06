@@ -348,7 +348,7 @@ class TempCompanyContactCrudController extends BaseCrudController
             $this->addFlash('success', 'Le contact ' . $contactNew->getFullName() . ' a bien été importé');
 
             return new RedirectResponse(
-                $this->adminUrlGenerator->setController(TempCompanyContactCrudController::class)
+                $this->adminUrlGenerator->setController(self::class)
                     ->setAction(Crud::PAGE_INDEX)
                     ->setEntityId(null)
                     ->generateUrl());
