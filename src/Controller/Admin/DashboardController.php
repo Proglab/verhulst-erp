@@ -13,6 +13,7 @@ use App\Entity\ProductPackageVip;
 use App\Entity\ProductSponsoring;
 use App\Entity\Project;
 use App\Entity\Sales;
+use App\Entity\SalesBdc;
 use App\Entity\Todo;
 use App\Entity\TodoType;
 use App\Entity\User;
@@ -95,7 +96,7 @@ class DashboardController extends AbstractDashboardController
 
             MenuItem::linkToCrud('admin.menu.client', 'fas fa-address-book', CompanyContact::class)->setPermission('ROLE_COMMERCIAL'),
             MenuItem::linkToCrud('admin.menu.sales', 'fas fa-comments-dollar', Sales::class)->setController(SalesCrudController::class)->setPermission('ROLE_COMMERCIAL'),
-
+            MenuItem::linkToCrud('admin.menu.bdc', 'fas fa-receipt', SalesBdc::class)->setPermission('ROLE_COMMERCIAL'),
             MenuItem::linkToCrud('admin.menu.todo', 'fas fa-clipboard-check', Todo::class)->setPermission('ROLE_COMMERCIAL'),
             MenuItem::section('Admin')->setPermission('ROLE_ADMIN'),
             MenuItem::linkToDashboard('admin.menu.dashboard', 'fa fa-chart-line')->setPermission('ROLE_ADMIN'),

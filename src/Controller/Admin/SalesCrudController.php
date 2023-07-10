@@ -461,27 +461,33 @@ class SalesCrudController extends BaseCrudController
         $company = null;
         $project = null;
 
-        foreach($context->getRequest()->request->all()['bdc'] as $id => $value) {
-            $sale = $this->salesRepository->find($id);
+        if (isset($context->getRequest()->request->all()['bdc'])) {
+            foreach($context->getRequest()->request->all()['bdc'] as $id => $value) {
+                $sale = $this->salesRepository->find($id);
 
-            if ($company === null) {
-                $company = $sale->getContact()->getCompany();
-            } else {
-                if ($company !== $sale->getContact()->getCompany()) {
-                    $this->addFlash('danger', 'Un bon de commande doit être pour la même société');
-                    return $this->redirect($this->adminUrlGenerator->setAction(Action::INDEX)->generateUrl());
+                if ($company === null) {
+                    $company = $sale->getContact()->getCompany();
+                } else {
+                    if ($company !== $sale->getContact()->getCompany()) {
+                        $this->addFlash('danger', 'Un bon de commande doit être pour la même société');
+                        return $this->redirect($this->adminUrlGenerator->setAction(Action::INDEX)->generateUrl());
+                    }
                 }
-            }
 
-            if ($project === null) {
-                $project = $sale->getProduct()->getProject();
-            } else {
-                if ($project !== $sale->getProduct()->getProject()) {
-                    $this->addFlash('danger', 'Un bon de commande doit être pour la même projet');
-                    return $this->redirect($this->adminUrlGenerator->setAction(Action::INDEX)->generateUrl());
+                if ($project === null) {
+                    $project = $sale->getProduct()->getProject();
+                } else {
+                    if ($project !== $sale->getProduct()->getProject()) {
+                        $this->addFlash('danger', 'Un bon de commande doit être pour la même projet');
+                        return $this->redirect($this->adminUrlGenerator->setAction(Action::INDEX)->generateUrl());
+                    }
                 }
-            }
 
+                $bdc->addSale($sale);
+            }
+        } else {
+
+            $sale = $this->salesRepository->find($context->getRequest()->get('entityId'));
             $bdc->addSale($sale);
         }
 
