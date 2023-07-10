@@ -92,10 +92,10 @@ class CompanyCrudController extends BaseCrudController
     {
         $panel1 = FormField::addPanel('Société')->addCssClass('col-5')->setCustomOption('cols', 1);
         $name = TextField::new('name')->setRequired(true)->setColumns(12)->setLabel('Nom de la société');
-        $street = TextField::new('street')->setRequired(true)->setColumns(12)->setLabel('Rue');
-        $pc = TextField::new('pc')->setRequired(true)->setLabel('Code postal');
-        $city = TextField::new('city')->setRequired(true)->setColumns(12)->setLabel('Ville');
-        $country = CountryField::new('country')->setRequired(true)->setLabel('Pays');
+        $street = TextField::new('street')->setRequired(false)->setColumns(12)->setLabel('Rue');
+        $pc = TextField::new('pc')->setRequired(false)->setLabel('Code postal');
+        $city = TextField::new('city')->setRequired(false)->setColumns(12)->setLabel('Ville');
+        $country = CountryField::new('country')->setRequired(false)->setLabel('Pays');
         $vatNew = TextField::new('vat_number', 'Numéro de TVA')->setRequired(false)->setLabel('Numéro de TVA')->addWebpackEncoreEntries('company');
         $companyVatNa = BooleanField::new('vat_na')->setLabel('Non assujetti')->setRequired(false);
         $vat = TextField::new('vat_number', 'Numéro de TVA')->setRequired(false)->setLabel('Numéro de TVA');

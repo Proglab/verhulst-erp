@@ -71,10 +71,10 @@ class CompanyContactCrudController extends BaseCrudController
         $panel1 = FormField::addPanel('Société')->setCustomOption('cols', 1);
         $panel2 = FormField::addPanel('Contact')->setCustomOption('cols', 2);
         $company = TextField::new('company')->setRequired(true)->setLabel('Société');
-        $companyStreet = TextField::new('company.street')->setLabel('Rue')->setColumns(12);
-        $companyPc = TextField::new('company.pc')->setLabel('Code postal');
-        $companyCity = TextField::new('company.city')->setLabel('Ville')->setColumns(12);
-        $companyCountry = CountryField::new('company.country')->setLabel('Pays');
+        $companyStreet = TextField::new('company.street')->setLabel('Rue')->setColumns(12)->setRequired(false);
+        $companyPc = TextField::new('company.pc')->setLabel('Code postal')->setRequired(false);
+        $companyCity = TextField::new('company.city')->setLabel('Ville')->setColumns(12)->setRequired(false);
+        $companyCountry = CountryField::new('company.country')->setLabel('Pays')->setRequired(false);
         $companyVat = TextField::new('company.vat_number')->setLabel('Numéro de TVA')->setRequired(false);
         $companyVatNa = BooleanField::new('company.vat_na')->setLabel('Non assujetti')->setRequired(false);
         $firstname = TextField::new('firstname')->setLabel('Prénom')->setRequired(true)->setColumns(12);

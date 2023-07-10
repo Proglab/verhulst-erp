@@ -26,23 +26,19 @@ class Company
     #[Assert\Length(max: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255, nullable: false)]
-    #[Assert\NotBlank]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
     private ?string $street = null;
 
-    #[ORM\Column(length: 20, nullable: false)]
-    #[Assert\NotBlank]
+    #[ORM\Column(length: 20, nullable: true)]
     #[Assert\Length(max: 20)]
     private ?string $pc = null;
 
-    #[ORM\Column(length: 255, nullable: false)]
-    #[Assert\NotBlank]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
     private ?string $city = null;
 
-    #[ORM\Column(length: 2, nullable: false)]
-    #[Assert\NotBlank]
+    #[ORM\Column(length: 2, nullable: true)]
     #[Assert\Country()]
     private ?string $country = 'BE';
 
@@ -116,7 +112,7 @@ class Company
         return $this->street;
     }
 
-    public function setStreet(string $street): self
+    public function setStreet(?string $street): self
     {
         $this->street = $street;
 
@@ -128,7 +124,7 @@ class Company
         return $this->pc;
     }
 
-    public function setPc(string $pc): self
+    public function setPc(?string $pc): self
     {
         $this->pc = $pc;
 
@@ -140,7 +136,7 @@ class Company
         return $this->city;
     }
 
-    public function setCity(string $city): self
+    public function setCity(?string $city): self
     {
         $this->city = $city;
 
@@ -152,7 +148,7 @@ class Company
         return $this->country;
     }
 
-    public function setCountry(string $country): self
+    public function setCountry(?string $country): self
     {
         $this->country = $country;
 

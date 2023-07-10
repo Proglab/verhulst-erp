@@ -26,22 +26,18 @@ class TempCompany
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
     private ?string $street = null;
 
     #[ORM\Column(length: 20, nullable: true)]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 20)]
     private ?string $pc = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
     private ?string $city = null;
 
     #[ORM\Column(length: 2, nullable: true)]
-    #[Assert\NotBlank]
     #[Assert\Country()]
     private ?string $country = null;
 

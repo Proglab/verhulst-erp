@@ -37,12 +37,12 @@ class TempCompanyContact
     #[Assert\NotBlank]
     private ?string $email = null;
 
-    #[ORM\Column(length: 30, nullable: true)]
-    #[Assert\Length(max: 30)]
+    #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\Length(max: 100)]
     private ?string $phone = null;
 
-    #[ORM\Column(length: 30, nullable: true)]
-    #[Assert\Length(max: 30)]
+    #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\Length(max: 100)]
     private ?string $gsm = null;
 
     #[ORM\Column(length: 255, nullable: true)]
