@@ -9,6 +9,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AppCrawlerTest extends AbstractControllerTest
 {
+
+    private $urls = ['#', '', '/deconnexion', 'http://localhost/admin/fr?crudAction=index&crudControllerFqcn=App%5CController%5CAdmin%5CCommissionCrudController', 'http://localhost/admin/fr?crudAction=generatePdf&crudControllerFqcn=App%5CController%5CAdmin%5CSalesBdcCrudController'];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -22,7 +25,7 @@ class AppCrawlerTest extends AbstractControllerTest
         $urls = ['#', ''];
 
         $this->url = '/';
-        $this->checkUrl($urls, $client, $this->url);
+        $this->checkUrl($this->urls, $client, $this->url);
     }
 
     public function testCrawlLinksConnectedAsAdmin()
@@ -32,11 +35,9 @@ class AppCrawlerTest extends AbstractControllerTest
 
         $client = $this->client;
 
-        $urls = ['#', '', '/deconnexion', 'http://localhost/admin/fr?crudAction=index&crudControllerFqcn=App%5CController%5CAdmin%5CCommissionCrudController'];
-
         $this->url = '/admin/fr';
         self::bootKernel();
-        $this->checkUrl($urls, $client, $this->url);
+        $this->checkUrl($this->urls, $client, $this->url);
     }
 
     public function testCrawlLinksConnectedAsCommercial()
@@ -45,12 +46,9 @@ class AppCrawlerTest extends AbstractControllerTest
         $this->client->loginUser($user);
 
         $client = $this->client;
-
-        $urls = ['#', '', '/deconnexion', 'http://localhost/admin/fr?crudAction=index&crudControllerFqcn=App%5CController%5CAdmin%5CCommissionCrudController'];
-
         $this->url = '/admin/fr';
         self::bootKernel();
-        $this->checkUrl($urls, $client, $this->url);
+        $this->checkUrl($this->urls, $client, $this->url);
     }
 
     public function testCrawlLinksConnectedAsCompta()
@@ -60,11 +58,9 @@ class AppCrawlerTest extends AbstractControllerTest
 
         $client = $this->client;
 
-        $urls = ['#', '', '/deconnexion', 'http://localhost/admin/fr?crudAction=index&crudControllerFqcn=App%5CController%5CAdmin%5CCommissionCrudController'];
-
         $this->url = '/admin/fr';
         self::bootKernel();
-        $this->checkUrl($urls, $client, $this->url);
+        $this->checkUrl($this->urls, $client, $this->url);
     }
 
     public function testCrawlLinksConnectedAsEncodeur()
@@ -74,11 +70,9 @@ class AppCrawlerTest extends AbstractControllerTest
 
         $client = $this->client;
 
-        $urls = ['#', '', '/deconnexion', 'http://localhost/admin/fr?crudAction=index&crudControllerFqcn=App%5CController%5CAdmin%5CCommissionCrudController'];
-
         $this->url = '/admin/fr';
         self::bootKernel();
-        $this->checkUrl($urls, $client, $this->url);
+        $this->checkUrl($this->urls, $client, $this->url);
     }
 
     protected function checkUrl(&$urls, $client, $url)
