@@ -22,6 +22,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField;
@@ -118,6 +119,8 @@ class TodoCrudController extends BaseCrudController
         $type = AssociationField::new('type')->setLabel('Type de To do')->setRequired(true);
         $societe = TextField::new('client.company')->setLabel('Sociéte')->setRequired(false);
 
+        $todoTxt = TextareaField::new('todo')->setLabel('Todo')->setRequired(true)->renderAsHtml();
+
         switch ($pageName) {
             case Crud::PAGE_NEW:
                 $response = [$type, $dateReminder, $hourReminder, $user, $projet, $contact, $todo];
@@ -126,7 +129,7 @@ class TodoCrudController extends BaseCrudController
                 $response = [$type, $dateReminder, $hourReminder, $user, $projet, $contact, $todo, $done];
                 break;
             case Crud::PAGE_DETAIL:
-                $response = [$type, $dateReminder, $user, $projet, $contact, $todo, $done, $dateDone];
+                $response = [$type, $dateReminder, $user, $projet, $contact, $todoTxt, $done, $dateDone];
                 break;
             default:
                 $response = [$type, $dateReminder, $user, $projet, $contact, $societe, $todo, $done];
