@@ -120,7 +120,7 @@ class TodoRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('t')
             ->select('COUNT(t.id) as count')
             ->andWhere('t.done = :done')
-            ->setParameter('done', true)
+            ->setParameter('done', false)
             ->andWhere('t.date_reminder <= :date')
             ->setParameter('date', (new \DateTime('now'))->format('Y-m-d'))
             ->andWhere('t.user = :user')
