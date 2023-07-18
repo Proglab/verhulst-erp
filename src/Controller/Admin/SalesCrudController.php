@@ -22,7 +22,6 @@ use App\Repository\UserRepository;
 use App\Service\SecurityChecker;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
-use Dompdf\Dompdf;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -67,8 +66,7 @@ class SalesCrudController extends BaseCrudController
         protected SecurityChecker $securityChecker,
         private SalesRepository $salesRepository,
         private SalesBdcRepository $bdcRepository
-    )
-    {
+    ) {
         parent::__construct($securityChecker);
     }
 
@@ -454,31 +452,36 @@ class SalesCrudController extends BaseCrudController
         return $this->render('admin/sales/final.html.twig', $return);
     }
 
-    public function createBdc(AdminContext $context):RedirectResponse {
+    public function createBdc(AdminContext $context): RedirectResponse
+    {
+        /** @var User $user */
+        $user = $this->getUser();
         $bdc = new SalesBdc();
-        $bdc->setUser($this->getUser());
+        $bdc->setUser($user);
 
         $company = null;
         $project = null;
 
         if (isset($context->getRequest()->request->all()['bdc'])) {
-            foreach($context->getRequest()->request->all()['bdc'] as $id => $value) {
+            foreach ($context->getRequest()->request->all()['bdc'] as $id => $value) {
                 $sale = $this->salesRepository->find($id);
 
-                if ($company === null) {
+                if (null === $company) {
                     $company = $sale->getContact()->getCompany();
                 } else {
                     if ($company !== $sale->getContact()->getCompany()) {
                         $this->addFlash('danger', 'Un bon de commande doit être pour la même société');
+
                         return $this->redirect($this->adminUrlGenerator->setAction(Action::INDEX)->generateUrl());
                     }
                 }
 
-                if ($project === null) {
+                if (null === $project) {
                     $project = $sale->getProduct()->getProject();
                 } else {
                     if ($project !== $sale->getProduct()->getProject()) {
                         $this->addFlash('danger', 'Un bon de commande doit être pour la même projet');
+
                         return $this->redirect($this->adminUrlGenerator->setAction(Action::INDEX)->generateUrl());
                     }
                 }
@@ -486,12 +489,12 @@ class SalesCrudController extends BaseCrudController
                 $bdc->addSale($sale);
             }
         } else {
-
             $sale = $this->salesRepository->find($context->getRequest()->get('entityId'));
             $bdc->addSale($sale);
         }
 
         $this->bdcRepository->save($bdc, true);
+
         return $this->redirect($this->adminUrlGenerator->setController(SalesBdcCrudController::class)->setAction(Action::DETAIL)->setEntityId($bdc->getId())->generateUrl());
     }
 }

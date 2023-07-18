@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Entity\SalesBdc;
@@ -30,7 +32,7 @@ class SalesBdcCrudController extends BaseCrudController
             ->add(DateTimeFilter::new('creationDate')->setLabel('Date de création'))
             ->add(DateTimeFilter::new('validationDate')->setLabel('Date de validation'))
             ->add(DateTimeFilter::new('sendDate')->setLabel('Date d\'envois'))
-            ;
+        ;
     }
 
     public function configureCrud(Crud $crud): Crud
@@ -96,20 +98,20 @@ class SalesBdcCrudController extends BaseCrudController
         return $actions;
     }
 
-    public function generatePdf(AdminContext $context):void {
-
+    public function generatePdf(AdminContext $context): void
+    {
         $bdc = $context->getEntity()->getInstance();
         $html = $this->render('admin/pdf/bdc_fr.html.twig', [
             'logo' => 'app-logo.png',
-            'bdc' => $bdc
+            'bdc' => $bdc,
         ]);
-        $dompdf = new Dompdf(array('enable_remote' => true));
-        $dompdf->getOptions()->setChroot(realpath(__DIR__.'/../../../public/'));
+        $dompdf = new Dompdf(['enable_remote' => true]);
+        $dompdf->getOptions()->setChroot(realpath(__DIR__ . '/../../../public/'));
         $dompdf->setPaper('A4', 'portrait');
-        $dompdf->loadHtml($html);
+        $dompdf->loadHtml($html->getContent());
         $dompdf->render();
-        $dompdf->stream("codexworld", ["Attachment" => 0]);
+        $dompdf->stream('codexworld', ['Attachment' => 0]);
 
-        exit();
+        exit;
     }
 }

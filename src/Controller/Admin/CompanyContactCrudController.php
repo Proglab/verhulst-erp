@@ -30,7 +30,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
-use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -288,7 +287,7 @@ class CompanyContactCrudController extends BaseCrudController
         $response->setPrivate();
         $response->headers->addCacheControlDirective('no-cache', true);
         $response->headers->addCacheControlDirective('must-revalidate', true);
-        $response->setCallback(function() use ($xlsxWriter) {
+        $response->setCallback(function () use ($xlsxWriter) {
             $xlsxWriter->save('php://output');
         });
 

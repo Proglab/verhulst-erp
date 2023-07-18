@@ -27,5 +27,5 @@ final class Version20230704081732 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE sales_bdc DROP validate');
-   }
+    }
 }

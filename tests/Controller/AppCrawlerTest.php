@@ -9,12 +9,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AppCrawlerTest extends AbstractControllerTest
 {
-
     private $urls = [
         '#',
         '',
         '/deconnexion',
-        'http://localhost/admin/fr?crudAction=index&crudControllerFqcn=App%5CController%5CAdmin%5CCommissionCrudController'
+        'http://localhost/admin/fr?crudAction=index&crudControllerFqcn=App%5CController%5CAdmin%5CCommissionCrudController',
     ];
 
     protected function setUp(): void

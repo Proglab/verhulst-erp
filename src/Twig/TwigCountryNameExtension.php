@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Twig;
 
 use Symfony\Component\Intl\Countries;
@@ -8,7 +10,6 @@ use Twig\TwigFilter;
 
 class TwigCountryNameExtension extends AbstractExtension
 {
-
     public function getFilters(): array
     {
         return [
@@ -16,10 +17,8 @@ class TwigCountryNameExtension extends AbstractExtension
         ];
     }
 
-
-    public function countryFullName(string $countryIso)
+    public function countryFullName(string $countryIso): string
     {
         return Countries::getName($countryIso);
     }
-
 }

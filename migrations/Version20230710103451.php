@@ -21,7 +21,7 @@ final class Version20230710103451 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE company CHANGE street street VARCHAR(255) DEFAULT NULL, CHANGE pc pc VARCHAR(20) DEFAULT NULL, CHANGE city city VARCHAR(255) DEFAULT NULL, CHANGE country country VARCHAR(2) DEFAULT NULL');
-        }
+    }
 
     public function down(Schema $schema): void
     {
