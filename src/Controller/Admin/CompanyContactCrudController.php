@@ -125,22 +125,13 @@ class CompanyContactCrudController extends BaseCrudController
         $panel4 = FormField::addPanel('To do')->setCustomOption('cols', 1);
         $items = AssociationField::new('todos')->setTemplatePath('admin/contact/crud.detail.html.twig')->setLabel(false);
 
-        switch ($pageName) {
-            case Crud::PAGE_EDIT:
-                $response = [$firstname, $lastname, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $fonction, $interest, $note, $user];
-                break;
-            case Crud::PAGE_NEW:
-                $response = [$firstname, $lastname, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry->setFormTypeOption('preferred_choices', ['BE']), $fonction, $interest, $note, $userAdd];
-                break;
-            case Crud::PAGE_DETAIL:
-                $response = [$panel1, $company, $companyVat, $companyVatNa, $companyStreet, $companyPc, $companyCity, $companyCountry, $panel2, $fullname, $fonction, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $interest, $userName, $noteView, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $panel4, $items];
-                break;
-            case Crud::PAGE_INDEX:
-                $response = [$company, $companyVat, $fullname, $langListing, $email, $phone, $gsm, $userNameListing, $note];
-                break;
-            default:
-                $response = [$company, $firstname, $lastname, $lang, $email, $phone, $note];
-        }
+        $response = match ($pageName) {
+            Crud::PAGE_EDIT => [$firstname, $lastname, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $fonction, $interest, $note, $user],
+            Crud::PAGE_NEW => [$firstname, $lastname, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry->setFormTypeOption('preferred_choices', ['BE']), $fonction, $interest, $note, $userAdd],
+            Crud::PAGE_DETAIL => [$panel1, $company, $companyVat, $companyVatNa, $companyStreet, $companyPc, $companyCity, $companyCountry, $panel2, $fullname, $fonction, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $interest, $userName, $noteView, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $panel4, $items],
+            Crud::PAGE_INDEX => [$company, $companyVat, $fullname, $langListing, $email, $phone, $gsm, $userNameListing, $note],
+            default => [$company, $firstname, $lastname, $lang, $email, $phone, $note],
+        };
 
         return $response;
     }

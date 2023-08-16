@@ -55,13 +55,7 @@ class SalesBdcCrudController extends BaseCrudController
         $validationDate = DateField::new('validationDate')->setLabel('Date de validation')->setFormat('dd/mm/yyyy');
         $sendDate = DateField::new('sendDate')->setLabel('Date d\'envois')->setFormat('dd/mm/yyyy');
 
-        switch ($pageName) {
-            case Crud::PAGE_DETAIL:
-                $response = [$date, $commercial, $company, $project, $sales, $sendDate, $validationDate, $validate];
-                break;
-            default:
-                $response = [$date, $commercial, $company, $project, $sales, $sendDate, $validationDate, $validate];
-        }
+        $response = [$date, $commercial, $company, $project, $sales, $sendDate, $validationDate, $validate];
 
         return $response;
     }

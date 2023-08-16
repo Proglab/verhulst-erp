@@ -93,13 +93,10 @@ class ProjectCrudController extends BaseCrudController
             $projectDiversIndex = AssociationField::new('product_divers')->setLabel('Divers')->setRequired(true);
         }
 
-        switch ($pageName) {
-            case Crud::PAGE_INDEX:
-                $response = [$name, $dateBegin, $dateEnd, $projectEventIndex, $projectSponsorIndex, $projectPackageIndex, $projectDiversIndex];
-                break;
-            default:
-                $response = [$name, $dateBegin, $dateEnd, $projectEvent, $projectSponsor, $projectPackage, $projectDivers];
-        }
+        $response = match ($pageName) {
+            Crud::PAGE_INDEX => [$name, $dateBegin, $dateEnd, $projectEventIndex, $projectSponsorIndex, $projectPackageIndex, $projectDiversIndex],
+            default => [$name, $dateBegin, $dateEnd, $projectEvent, $projectSponsor, $projectPackage, $projectDivers],
+        };
 
         return $response;
     }

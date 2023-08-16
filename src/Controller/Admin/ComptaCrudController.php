@@ -125,27 +125,19 @@ class ComptaCrudController extends BaseCrudController
         }
         $dateValidation = DateField::new('invoicedDt')->setLabel('Date de validation')->setFormat('dd/MM/yy HH:MM');
 
-        switch ($pageName) {
-            case Crud::PAGE_INDEX:
-                $response = [$company, $project, $product, $pa, $price, $quantity, $discount, $total, $date, $invoiced, $dateValidation];
-                break;
-
-            case Crud::PAGE_DETAIL:
-                $response = [$panelProduct,
-                    $project, $product, $dateBegin, $dateEnd, $user, $userMail, $description,
-                    $panelClient,
-                    $company, $companyVat, $companyStreet, $companyPc, $companyCity, $companyCountry,
-                    $panelVente,
-                    $pa, $price, $quantity, $priceTotal, $discount, $priceMarge, $date, $invoiced, $dateValidation,
-                    $panelContact,
-                    $contact, $contactTel, $contactGsm, $contactEmail];
-                break;
-            case Crud::PAGE_EDIT:
-                $response = [$invoiced];
-                break;
-            default:
-                $response = [$project, $product, $quantity, $pa, $price, $date, $discount];
-        }
+        $response = match ($pageName) {
+            Crud::PAGE_INDEX => [$company, $project, $product, $pa, $price, $quantity, $discount, $total, $date, $invoiced, $dateValidation],
+            Crud::PAGE_DETAIL => [$panelProduct,
+                $project, $product, $dateBegin, $dateEnd, $user, $userMail, $description,
+                $panelClient,
+                $company, $companyVat, $companyStreet, $companyPc, $companyCity, $companyCountry,
+                $panelVente,
+                $pa, $price, $quantity, $priceTotal, $discount, $priceMarge, $date, $invoiced, $dateValidation,
+                $panelContact,
+                $contact, $contactTel, $contactGsm, $contactEmail],
+            Crud::PAGE_EDIT => [$invoiced],
+            default => [$project, $product, $quantity, $pa, $price, $date, $discount],
+        };
 
         return $response;
     }

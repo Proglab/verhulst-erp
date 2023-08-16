@@ -103,20 +103,12 @@ class ProductSponsoringCrudController extends BaseCrudController
             ->setRequired(false)
             ->setCssClass('d-none');
 
-        switch ($pageName) {
-            case Crud::PAGE_DETAIL:
-            case Crud::PAGE_INDEX:
-                $response = [$name, $dateBegin, $dateEnd, $percentVrListing, $paListing, $caListing, $description, $quantityMax, $quantitySales, $quantityAvailable, $imageDwonload];
-                break;
-            case Crud::PAGE_NEW:
-                $response = [$name, $dateBegin, $dateEnd, $percentVr, $percentDefaultFreelance, $percentDefaultSalarie, $percentTv, $pa, $ca, $description, $quantityMax, $image];
-                break;
-            case Crud::PAGE_EDIT:
-                $response = [$name, $dateBegin, $dateEnd, $percentVr, $pa, $ca, $description, $quantityMax, $image, $percentFreelanceHidden, $percentSalarieHidden, $percentTvHidden];
-                break;
-            default:
-                $response = [$name, $dateBegin, $dateEnd, $percentVr, $pa, $ca, $description, $quantityMax];
-        }
+        $response = match ($pageName) {
+            Crud::PAGE_DETAIL, Crud::PAGE_INDEX => [$name, $dateBegin, $dateEnd, $percentVrListing, $paListing, $caListing, $description, $quantityMax, $quantitySales, $quantityAvailable, $imageDwonload],
+            Crud::PAGE_NEW => [$name, $dateBegin, $dateEnd, $percentVr, $percentDefaultFreelance, $percentDefaultSalarie, $percentTv, $pa, $ca, $description, $quantityMax, $image],
+            Crud::PAGE_EDIT => [$name, $dateBegin, $dateEnd, $percentVr, $pa, $ca, $description, $quantityMax, $image, $percentFreelanceHidden, $percentSalarieHidden, $percentTvHidden],
+            default => [$name, $dateBegin, $dateEnd, $percentVr, $pa, $ca, $description, $quantityMax],
+        };
 
         return $response;
     }

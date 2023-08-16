@@ -121,19 +121,12 @@ class TodoCrudController extends BaseCrudController
 
         $todoTxt = TextareaField::new('todo')->setLabel('Todo')->setRequired(true)->renderAsHtml();
 
-        switch ($pageName) {
-            case Crud::PAGE_NEW:
-                $response = [$type, $dateReminder, $hourReminder, $user, $projet, $contact, $todo];
-                break;
-            case Crud::PAGE_EDIT:
-                $response = [$type, $dateReminder, $hourReminder, $user, $projet, $contact, $todo, $done];
-                break;
-            case Crud::PAGE_DETAIL:
-                $response = [$type, $dateReminder, $user, $projet, $contact, $todoTxt, $done, $dateDone];
-                break;
-            default:
-                $response = [$type, $dateReminder, $user, $projet, $contact, $societe, $todo, $done];
-        }
+        $response = match ($pageName) {
+            Crud::PAGE_NEW => [$type, $dateReminder, $hourReminder, $user, $projet, $contact, $todo],
+            Crud::PAGE_EDIT => [$type, $dateReminder, $hourReminder, $user, $projet, $contact, $todo, $done],
+            Crud::PAGE_DETAIL => [$type, $dateReminder, $user, $projet, $contact, $todoTxt, $done, $dateDone],
+            default => [$type, $dateReminder, $user, $projet, $contact, $societe, $todo, $done],
+        };
 
         return $response;
     }

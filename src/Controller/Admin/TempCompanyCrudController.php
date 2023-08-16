@@ -111,20 +111,12 @@ class TempCompanyCrudController extends BaseCrudController
 
         $oldDB = EmailField::new('company.address')->setRequired(true)->setLabel('Ancienne DB - Adresse')->setDisabled(true)->setColumns(12);
 
-        switch ($pageName) {
-            case Crud::PAGE_EDIT:
-                $response = [$panel1, $vat, $name, $street, $pc, $city, $country, $panel2, $contacts, $note, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $billingmail];
-                break;
-            case Crud::PAGE_NEW:
-                $response = [$panel1, $vatNew, $name, $street, $pc, $city, $country, $panel2, $contacts, $note, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $billingmail];
-                break;
-            case Crud::PAGE_DETAIL:
-            case Crud::PAGE_INDEX:
-                $response = [$panel1, $vat, $name, $street, $pc, $city, $country, $note, $panel2, $contacts];
-                break;
-            default:
-                $response = [$panel1, $vat, $name, $street, $pc, $city, $country, $note, $panel2, $contacts];
-        }
+        $response = match ($pageName) {
+            Crud::PAGE_EDIT => [$panel1, $vat, $name, $street, $pc, $city, $country, $panel2, $contacts, $note, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $billingmail],
+            Crud::PAGE_NEW => [$panel1, $vatNew, $name, $street, $pc, $city, $country, $panel2, $contacts, $note, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $billingmail],
+            Crud::PAGE_DETAIL, Crud::PAGE_INDEX => [$panel1, $vat, $name, $street, $pc, $city, $country, $note, $panel2, $contacts],
+            default => [$panel1, $vat, $name, $street, $pc, $city, $country, $note, $panel2, $contacts],
+        };
 
         return $response;
     }

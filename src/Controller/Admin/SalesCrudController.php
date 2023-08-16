@@ -220,27 +220,19 @@ class SalesCrudController extends BaseCrudController
         $contactGsm = TelephoneField::new('contact.gsm')->setLabel('Gsm');
         $contactEmail = EmailField::new('contact.email')->setLabel('Mail');
 
-        switch ($pageName) {
-            case Crud::PAGE_NEW:
-                $response = [$product, $contacts, $quantity, $pa, $price, $discount_eur, $discount_percent, $date, $discount];
-                break;
-
-            case Crud::PAGE_EDIT:
-                $response = [$product, $contacts, $quantity, $pa, $price, $discount_edit, $percent_com, $percent_vr, $date];
-                break;
-            case Crud::PAGE_DETAIL:
-                $response = [$panelProduct,
-                    $project, $product, $dateBegin, $dateEnd, $user, $userMail, $description,
-                    $panelClient,
-                    $company, $companyVat, $companyStreet, $companyPc, $companyCity, $companyCountry,
-                    $panelVente,
-                    $pa, $price, $quantity, $priceTotal, $discount, $priceMarge, $date, $invoiced, $dateValidation,
-                    $panelContact,
-                    $contact, $contactTel, $contactGsm, $contactEmail];
-                break;
-            default:
-                $response = [$product, $contacts, $quantity, $pa, $price, $discount_eur, $discount_percent, $date, $discount];
-        }
+        $response = match ($pageName) {
+            Crud::PAGE_NEW => [$product, $contacts, $quantity, $pa, $price, $discount_eur, $discount_percent, $date, $discount],
+            Crud::PAGE_EDIT => [$product, $contacts, $quantity, $pa, $price, $discount_edit, $percent_com, $percent_vr, $date],
+            Crud::PAGE_DETAIL => [$panelProduct,
+                $project, $product, $dateBegin, $dateEnd, $user, $userMail, $description,
+                $panelClient,
+                $company, $companyVat, $companyStreet, $companyPc, $companyCity, $companyCountry,
+                $panelVente,
+                $pa, $price, $quantity, $priceTotal, $discount, $priceMarge, $date, $invoiced, $dateValidation,
+                $panelContact,
+                $contact, $contactTel, $contactGsm, $contactEmail],
+            default => [$product, $contacts, $quantity, $pa, $price, $discount_eur, $discount_percent, $date, $discount],
+        };
 
         return $response;
     }

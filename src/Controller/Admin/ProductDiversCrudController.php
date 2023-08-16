@@ -88,33 +88,18 @@ class ProductDiversCrudController extends BaseCrudController
             ->setCssClass('d-none');
 
         if ($this->isGranted('ROLE_ENCODE')) {
-            switch ($pageName) {
-                case Crud::PAGE_DETAIL:
-                case Crud::PAGE_INDEX:
-                    $response = [$name, $dateBegin, $dateEnd, $percentVrListing, $imageDwonload];
-                    break;
-                case Crud::PAGE_NEW:
-                    $response = [$name, $dateBegin, $dateEnd, $percentVr, $percentDefaultFreelance, $percentDefaultSalarie, $percentDefaultTv, $image];
-                    break;
-                case Crud::PAGE_EDIT:
-                    $response = [$name, $dateBegin, $dateEnd, $percentVr, $image, $percentFreelanceHidden, $percentSalarieHidden, $percentTvHidden];
-                    break;
-                default:
-                    $response = [$name, $dateBegin, $dateEnd, $percentVr];
-            }
+            $response = match ($pageName) {
+                Crud::PAGE_DETAIL, Crud::PAGE_INDEX => [$name, $dateBegin, $dateEnd, $percentVrListing, $imageDwonload],
+                Crud::PAGE_NEW => [$name, $dateBegin, $dateEnd, $percentVr, $percentDefaultFreelance, $percentDefaultSalarie, $percentDefaultTv, $image],
+                Crud::PAGE_EDIT => [$name, $dateBegin, $dateEnd, $percentVr, $image, $percentFreelanceHidden, $percentSalarieHidden, $percentTvHidden],
+                default => [$name, $dateBegin, $dateEnd, $percentVr],
+            };
         } else {
-            switch ($pageName) {
-                case Crud::PAGE_DETAIL:
-                case Crud::PAGE_INDEX:
-                    $response = [$projectName, $name, $dateBegin, $dateEnd, $percentVr];
-                    break;
-                case Crud::PAGE_NEW:
-                case Crud::PAGE_EDIT:
-                    $response = [$project, $name, $dateBegin, $dateEnd, $percentVr, $image];
-                    break;
-                default:
-                    $response = [$name, $dateBegin, $dateEnd, $percentVr];
-            }
+            $response = match ($pageName) {
+                Crud::PAGE_DETAIL, Crud::PAGE_INDEX => [$projectName, $name, $dateBegin, $dateEnd, $percentVr],
+                Crud::PAGE_NEW, Crud::PAGE_EDIT => [$project, $name, $dateBegin, $dateEnd, $percentVr, $image],
+                default => [$name, $dateBegin, $dateEnd, $percentVr],
+            };
         }
 
         return $response;

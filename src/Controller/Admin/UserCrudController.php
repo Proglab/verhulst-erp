@@ -125,18 +125,11 @@ class UserCrudController extends BaseCrudController
             'TV' => 'tv',
         ]);
 
-        switch ($pageName) {
-            case Crud::PAGE_DETAIL:
-            case Crud::PAGE_INDEX:
-                $response = [$firstname, $lastname, $email, $locale, $twoFa, $role, $freelance, $enabled];
-                break;
-            case Crud::PAGE_NEW:
-            case Crud::PAGE_EDIT:
-                $response = [$firstname, $lastname, $email, $locale, $role, $freelance, $enabled];
-                break;
-            default:
-                $response = [$firstname, $lastname, $email, $locale, $twoFa, $role, $freelance, $enabled];
-        }
+        $response = match ($pageName) {
+            Crud::PAGE_DETAIL, Crud::PAGE_INDEX => [$firstname, $lastname, $email, $locale, $twoFa, $role, $freelance, $enabled],
+            Crud::PAGE_NEW, Crud::PAGE_EDIT => [$firstname, $lastname, $email, $locale, $role, $freelance, $enabled],
+            default => [$firstname, $lastname, $email, $locale, $twoFa, $role, $freelance, $enabled],
+        };
 
         return $response;
     }

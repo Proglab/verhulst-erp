@@ -96,17 +96,11 @@ class TempCompanyContactCrudController extends BaseCrudController
         $userName = TextField::new('added_by.fullName')->setLabel('Commercial');
         $userNameListing = TextField::new('added_by.fullNameMinified')->setLabel('Sales');
 
-        switch ($pageName) {
-            case Crud::PAGE_EDIT:
-            case Crud::PAGE_DETAIL:
-                $response = [$panel1, $company, $companyVat, $companyStreet, $companyPc, $companyCity, $companyCountry, $oldDB, $panel2, $firstname, $lastname, $fonction, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $user];
-                break;
-            case Crud::PAGE_INDEX:
-                $response = [$company, $companyVat, $fullname, $langListing, $email, $phone, $gsm, $userNameListing];
-                break;
-            default:
-                $response = [$company, $firstname, $lastname, $lang, $email, $phone];
-        }
+        $response = match ($pageName) {
+            Crud::PAGE_EDIT, Crud::PAGE_DETAIL => [$panel1, $company, $companyVat, $companyStreet, $companyPc, $companyCity, $companyCountry, $oldDB, $panel2, $firstname, $lastname, $fonction, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $user],
+            Crud::PAGE_INDEX => [$company, $companyVat, $fullname, $langListing, $email, $phone, $gsm, $userNameListing],
+            default => [$company, $firstname, $lastname, $lang, $email, $phone],
+        };
 
         return $response;
     }
