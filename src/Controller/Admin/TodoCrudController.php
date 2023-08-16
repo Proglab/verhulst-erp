@@ -139,5 +139,4 @@ class TodoCrudController extends BaseCrudController
         }
         parent::persistEntity($entityManager, $entityInstance);
     }
-
 }
