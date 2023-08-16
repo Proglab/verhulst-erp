@@ -45,7 +45,8 @@ class TodoCrudController extends BaseCrudController
         $crud->setEntityLabelInPlural('To do')
             ->setEntityLabelInSingular('To do')
             ->showEntityActionsInlined(true)
-        ->setDefaultSort(['date_reminder' => 'ASC']);
+        ->setDefaultSort(['date_reminder' => 'ASC'])
+        ->setSearchFields(['user.firstName', 'user.lastName', 'todo', 'client.firstname', 'client.lastname', 'project.name', 'client.company.name']);
 
         return parent::configureCrud($crud);
     }
@@ -138,4 +139,5 @@ class TodoCrudController extends BaseCrudController
         }
         parent::persistEntity($entityManager, $entityInstance);
     }
+
 }
