@@ -53,7 +53,8 @@ class CompanyContactCrudController extends BaseCrudController
         $crud->setEntityLabelInPlural('Clients')
             ->setEntityLabelInSingular('Client')
             ->showEntityActionsInlined(true)
-            ->overrideTemplate('crud/detail', 'admin/crud/detail_2cols.html.twig');
+            ->overrideTemplate('crud/detail', 'admin/crud/detail_2cols.html.twig')
+        ->setSearchFields(['firstname', 'lastname', 'company.name', 'email', 'phone', 'gsm', 'note', 'lang', 'company.vat_number']);
 
         return parent::configureCrud($crud);
     }
