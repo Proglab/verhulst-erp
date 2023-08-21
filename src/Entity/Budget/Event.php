@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Table(name: 'budget_event')]
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 class Event
 {

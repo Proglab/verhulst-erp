@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Table(name: 'budget_category_reference')]
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
 {
@@ -18,7 +19,7 @@ class Category
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: SubCategory::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: SubCategory::class, cascade: ["persist"], orphanRemoval: true)]
     private Collection $sub_categories;
 
     public function __construct()

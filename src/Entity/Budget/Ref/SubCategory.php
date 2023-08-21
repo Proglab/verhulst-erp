@@ -5,6 +5,7 @@ namespace App\Entity\Budget\Ref;
 use App\Repository\Budget\Ref\SubCategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Table(name: 'budget_subcategory_reference')]
 #[ORM\Entity(repositoryClass: SubCategoryRepository::class)]
 class SubCategory
 {
@@ -47,5 +48,10 @@ class SubCategory
         $this->category = $category;
 
         return $this;
+    }
+
+    public function __ToString()
+    {
+        return $this->getName();
     }
 }

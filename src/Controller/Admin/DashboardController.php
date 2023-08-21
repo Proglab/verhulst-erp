@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Controller\Admin\Budget\EventCrudController;
+use App\Controller\Admin\Budget\Ref\CategoryCrudController;
+use App\Entity\Budget\Event;
+use App\Entity\Budget\Ref\Category;
 use App\Entity\Commission;
 use App\Entity\CompanyContact;
 use App\Entity\Css;
@@ -110,6 +114,10 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('admin.menu.commission', 'fas fa-hand-holding-dollar', Commission::class)->setPermission('ROLE_ENCODE'),
             MenuItem::linkToCrud('admin.menu.todo', 'fas fa-clipboard-check', Todo::class)->setPermission('ROLE_ENCODE'),
             MenuItem::linkToCrud('admin.menu.todo.category', 'fas fa-list', TodoType::class)->setCssClass('mx-2')->setPermission('ROLE_ENCODE'),
+
+            MenuItem::section('Budgets')->setPermission('ROLE_BUDGET'),
+            MenuItem::linkToCrud('admin.menu.category_ref', 'fas fa-tags', Category::class)->setController(CategoryCrudController::class)->setPermission('ROLE_ADMIN_BUDGET'),
+            MenuItem::linkToCrud('admin.menu.event', 'fas fa-calendar-days', Event::class)->setController(EventCrudController::class)->setPermission('ROLE_BUDGET'),
 
             MenuItem::section('Compta')->setPermission('ROLE_COMPTA'),
             MenuItem::linkToCrud('admin.menu.sales', 'fas fa-comments-dollar', Sales::class)->setController(ComptaCrudController::class)->setPermission('ROLE_COMPTA'),
