@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Admin;
+namespace App\Controller\Admin\Budget;
 
+use App\Controller\Admin\Budget\BaseCrudController;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Service\SecurityChecker;
@@ -102,7 +103,7 @@ class UserCrudController extends BaseCrudController
 
         $user = $this->userRepository->find($userId);
 
-        return $this->redirect($this->generateUrl('admin') . '?_switch_user=' . $user->getEmail());
+        return $this->redirect($this->generateUrl('dashboard_budget') . '?_switch_user=' . $user->getEmail());
     }
 
     public static function getEntityFqcn(): string
@@ -117,18 +118,13 @@ class UserCrudController extends BaseCrudController
         $lastname = TextField::new('lastName')->setLabel('Nom');
         $locale = ChoiceField::new('locale')->allowMultipleChoices(false)->renderExpanded(true)->setChoices(['Français' => 'fr', 'English' => 'en', 'Nederland' => 'nl'])->setLabel('Langue');
         $twoFa = BooleanField::new('isTotpEnabled')->setLabel('Double authentification');
-        $role = ChoiceField::new('roles')->allowMultipleChoices(true)->renderExpanded(true)->setChoices(['Admin' => 'ROLE_ADMIN', 'Commercial' => 'ROLE_COMMERCIAL', 'Encodeur' => 'ROLE_ENCODE', 'Compta' => 'ROLE_COMPTA'])->setLabel('Rôle');
+        $role = ChoiceField::new('roles')->allowMultipleChoices(true)->renderExpanded(true)->setChoices(['Admin budget' => 'ROLE_ADMIN_BUDGET', 'Assistant budget' => 'ROLE_BUDGET'])->setLabel('Rôle');
         $enabled = BooleanField::new('enabled')->setLabel('Validé');
-        $freelance = ChoiceField::new('com')->setLabel('Type de Commisssion')->setChoices([
-            'Salarié' => 'salarie',
-            'Freelance' => 'freelance',
-            'TV' => 'tv',
-        ]);
 
         $response = match ($pageName) {
-            Crud::PAGE_DETAIL, Crud::PAGE_INDEX => [$firstname, $lastname, $email, $locale, $twoFa, $role, $freelance, $enabled],
-            Crud::PAGE_NEW, Crud::PAGE_EDIT => [$firstname, $lastname, $email, $locale, $role, $freelance, $enabled],
-            default => [$firstname, $lastname, $email, $locale, $twoFa, $role, $freelance, $enabled],
+            Crud::PAGE_DETAIL, Crud::PAGE_INDEX => [$firstname, $lastname, $email, $locale, $twoFa, $role, $enabled],
+            Crud::PAGE_NEW, Crud::PAGE_EDIT => [$firstname, $lastname, $email, $locale, $role, $enabled],
+            default => [$firstname, $lastname, $email, $locale, $twoFa, $role, $enabled],
         };
 
         return $response;
@@ -159,9 +155,9 @@ class UserCrudController extends BaseCrudController
     {
         /** @var QueryBuilder $qb */
         $qb = $this->container->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
-        $qb->andWhere('entity.roles NOT LIKE :searchTerm')
-            ->setParameter('searchTerm', '%ROLE_BOSS%');
-
+        $qb->andWhere('entity.roles LIKE :searchTerm OR entity.roles LIKE :searchTerm2')
+            ->setParameter('searchTerm', '%ROLE_BUDGET%')
+            ->setParameter('searchTerm2', '%ROLE_ADMIN_BUDGET%');
         return $qb;
     }
 }

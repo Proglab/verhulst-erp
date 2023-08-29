@@ -115,10 +115,6 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('admin.menu.todo', 'fas fa-clipboard-check', Todo::class)->setPermission('ROLE_ENCODE'),
             MenuItem::linkToCrud('admin.menu.todo.category', 'fas fa-list', TodoType::class)->setCssClass('mx-2')->setPermission('ROLE_ENCODE'),
 
-            MenuItem::section('Budgets')->setPermission('ROLE_BUDGET'),
-            MenuItem::linkToCrud('admin.menu.category_ref', 'fas fa-tags', Category::class)->setController(CategoryCrudController::class)->setPermission('ROLE_ADMIN_BUDGET'),
-            MenuItem::linkToCrud('admin.menu.event', 'fas fa-calendar-days', Event::class)->setController(EventCrudController::class)->setPermission('ROLE_BUDGET'),
-
             MenuItem::section('Compta')->setPermission('ROLE_COMPTA'),
             MenuItem::linkToCrud('admin.menu.sales', 'fas fa-comments-dollar', Sales::class)->setController(ComptaCrudController::class)->setPermission('ROLE_COMPTA'),
 
@@ -134,6 +130,8 @@ class DashboardController extends AbstractDashboardController
                 ->setPermission('ROLE_TECH'),
 
             MenuItem::section(),
+            MenuItem::linkToRoute('Budget', 'fa-solid fa-door-open text-danger', 'dashboard_budget_redirect')
+                ->setPermission('ROLE_BUDGET'),
             MenuItem::linkToLogout('admin.menu.logout', 'fa-solid fa-door-open text-danger')->setCssClass('text-danger'),
         ];
     }
@@ -160,13 +158,19 @@ class DashboardController extends AbstractDashboardController
     #[Route('/admin/{_locale}', name: 'dashboard_admin')]
     public function index(): Response
     {
-        if (!$this->isGranted('ROLE_COMMERCIAL')) {
+        if (!$this->isGranted('ROLE_APP')) {
+            return $this->redirectToRoute('dashboard_budget');
+        }
+
+        if ($this->isGranted('ROLE_COMPTA')) {
             return $this->redirect($this->adminUrlGenerator->setController(ComptaCrudController::class)->setAction(Action::INDEX)->set('filters[invoiced]', '0')->generateUrl());
         }
 
         if (!$this->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('dashboard_com');
         }
+
+
         $months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
         $default_year = (new \DateTime())->format('Y');
         $year = $this->requestStack->getCurrentRequest()->get('year', $default_year);

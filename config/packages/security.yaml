@@ -45,18 +45,19 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/admin, roles: [ROLE_ADMIN, ROLE_COMMERCIAL, ROLE_COMPTA] }
+        - { path: ^/admin, roles: [ROLE_ADMIN, ROLE_COMMERCIAL, ROLE_COMPTA, ROLE_BUDGET] }
         # - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/connexion/authentification-a-double-facteur, role: IS_AUTHENTICATED_2FA_IN_PROGRESS }
         - { path: ^/switch-local, role: [PUBLIC_ACCESS] }
     role_hierarchy:
-        ROLE_COMMERCIAL: [IS_AUTHENTICATED_REMEMBERED, IS_AUTHENTICATED_FULLY]
-        ROLE_COMPTA: [IS_AUTHENTICATED_REMEMBERED, IS_AUTHENTICATED_FULLY]
-        ROLE_TECH: [IS_AUTHENTICATED_REMEMBERED, IS_AUTHENTICATED_FULLY]
+        ROLE_APP: [IS_AUTHENTICATED_REMEMBERED, IS_AUTHENTICATED_FULLY]
+        ROLE_COMMERCIAL: ROLE_APP
+        ROLE_COMPTA: ROLE_APP
+        ROLE_TECH: ROLE_APP
+        ROLE_ENCODE: ROLE_APP
+        ROLE_ADMIN: [ROLE_ENCODE, ROLE_COMPTA, ROLE_ALLOWED_TO_SWITCH, ROLE_ADMIN_BUDGET]
         ROLE_BUDGET: [IS_AUTHENTICATED_REMEMBERED, IS_AUTHENTICATED_FULLY]
         ROLE_ADMIN_BUDGET: [ROLE_ALLOWED_TO_SWITCH, ROLE_BUDGET]
-        ROLE_ENCODE: ROLE_COMMERCIAL
-        ROLE_ADMIN: [ROLE_ENCODE, ROLE_COMPTA, ROLE_ALLOWED_TO_SWITCH, ROLE_ADMIN_BUDGET]
         ROLE_BOSS: [ROLE_ADMIN, ROLE_TECH]
 
 when@test:
