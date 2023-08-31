@@ -58,6 +58,8 @@ class CategoryCrudController extends BaseCrudController
         return $actions
             ->disable(Action::INDEX)
             ->disable(Action::DETAIL)
+            ->remove(Crud::PAGE_EDIT, Action::SAVE_AND_CONTINUE)
+            ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
             ;
     }
 
@@ -69,12 +71,14 @@ class CategoryCrudController extends BaseCrudController
 
     protected function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
     {
+        $id = $context->getEntity()->getInstance()->getId();
+
         $url = $this->adminUrlGenerator
             ->setAction(Action::DETAIL)
             ->setEntityId($this->request->get('budget_id'))
             ->setController(BudgetCrudController::class)
             ->setDashboard(DashboardController::class)
-            ->generateUrl();
+            ->generateUrl().'#category-'.$id;
 
         return $this->redirect($url);
     }

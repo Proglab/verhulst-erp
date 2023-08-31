@@ -62,16 +62,6 @@ class BudgetCrudController extends BaseCrudController
                     ->generateUrl()
                 );
             })
-            ->update(Crud::PAGE_DETAIL, Action::EDIT, function ($action) {
-                return $action->linkToUrl($this->adminUrlGenerator
-                    ->setDashboard(DashboardController::class)
-                    ->setController(self::class)
-                    ->setAction(Action::EDIT)
-                    ->setEntityId($this->request->get('entityId'))
-                    ->set('event_id', $this->request->get('event_id'))
-                    ->generateUrl()
-                );
-            })
             ->update(Crud::PAGE_DETAIL, Action::INDEX, function ($action) {
                 return $action->linkToUrl($this->adminUrlGenerator
                     ->setController(EventCrudController::class)
@@ -82,6 +72,8 @@ class BudgetCrudController extends BaseCrudController
                 );
             })
             ->remove(Crud::PAGE_DETAIL, Action::EDIT)
+            ->remove(Crud::PAGE_EDIT, Action::SAVE_AND_CONTINUE)
+            ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
             ;
     }
 

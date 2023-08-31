@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Repository\Budget\EventRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'budget_event')]
@@ -29,6 +30,9 @@ class Event
 
     #[ORM\ManyToMany(targetEntity: User::class)]
     private Collection $users;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $date = null;
 
     public function __construct()
     {
@@ -115,6 +119,18 @@ class Event
     public function removeUser(User $user): static
     {
         $this->users->removeElement($user);
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(?\DateTimeInterface $date): static
+    {
+        $this->date = $date;
 
         return $this;
     }

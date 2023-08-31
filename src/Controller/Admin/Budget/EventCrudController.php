@@ -12,6 +12,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -55,7 +56,7 @@ class EventCrudController extends BaseCrudController
         $actions->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) use ($user) {
             return $action->displayIf(function ($entity) use ($user) {
                 /** @var Event $entity */
-                if ($entity->getAdmin() === $user || $entity->getUsers()->contains($user) || $this->isGranted('ROLE_ADMIN_BUDGET')) {
+                if ($entity->getAdmin() === $user || $this->isGranted('ROLE_ADMIN_BUDGET')) {
                     return true;
                 }
 
@@ -84,8 +85,6 @@ class EventCrudController extends BaseCrudController
                 return false;
             });
         });
-
-
         $actions->disable(Action::SAVE_AND_ADD_ANOTHER);
         return $actions;
     }
@@ -108,10 +107,11 @@ class EventCrudController extends BaseCrudController
         )->setLabel('Assistants');
 
         $assistantsList = CollectionField::new('users')->setLabel('Assistants');
+        $date = DateField::new('date')->setFormat('dd/MM/yyyy');
 
         return match ($pageName) {
-            Crud::PAGE_INDEX, Crud::PAGE_DETAIL => [$name, $admin, $assistantsList],
-            default => [$name, $admin, $assistants],
+            Crud::PAGE_INDEX, Crud::PAGE_DETAIL => [$name, $date, $admin, $assistantsList],
+            default => [$name, $date, $admin, $assistants],
         };
     }
 

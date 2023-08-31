@@ -38,11 +38,9 @@ abstract class BaseCrudController extends AbstractCrudController
             ->setPermission(Action::DETAIL, 'ROLE_ADMIN_BUDGET')
             ->setPermission(Action::INDEX, 'ROLE_ADMIN_BUDGET')
             ->setPermission(Action::SAVE_AND_RETURN, 'ROLE_ADMIN_BUDGET')
-            ->setPermission(Action::SAVE_AND_ADD_ANOTHER, 'ROLE_ADMIN_BUDGET')
-            ->setPermission(Action::SAVE_AND_CONTINUE, 'ROLE_ADMIN_BUDGET')
             ->disable(Action::BATCH_DELETE)
-            ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
             ->disable(Action::SAVE_AND_CONTINUE)
+            ->disable(Action::SAVE_AND_ADD_ANOTHER)
         ;
     }
 }
