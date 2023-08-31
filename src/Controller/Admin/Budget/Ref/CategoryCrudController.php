@@ -8,12 +8,21 @@ use App\Controller\Admin\BaseCrudController;
 use App\Entity\Budget\Ref\Category;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class CategoryCrudController extends BaseCrudController
 {
+    public function configureAssets(Assets $assets): Assets
+    {
+        return $assets
+            ->addHtmlContentToHead('<style>table > thead > tr > th {
+    background: #000080   !important;
+}</style>');
+    }
+
     public static function getEntityFqcn(): string
     {
         return Category::class;

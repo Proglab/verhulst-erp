@@ -6,11 +6,20 @@ namespace App\Controller\Admin\Budget;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 abstract class BaseCrudController extends AbstractCrudController
 {
+    public function configureAssets(Assets $assets): Assets
+    {
+        return $assets
+            ->addHtmlContentToHead('<style>table > thead > tr > th {
+    background: #000080   !important;
+}</style>');
+    }
+
     public function configureActions(Actions $actions): Actions
     {
         return $actions
