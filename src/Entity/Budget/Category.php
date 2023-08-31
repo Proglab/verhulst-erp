@@ -19,7 +19,7 @@ class Category
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: SubCategory::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: SubCategory::class, cascade: ["persist"], orphanRemoval: true)]
     private Collection $sub_categories;
 
     #[ORM\ManyToOne(inversedBy: 'categories')]

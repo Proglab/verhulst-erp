@@ -52,7 +52,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('admin.menu.event', 'fas fa-calendar-days', Event::class)->setController(EventCrudController::class)->setPermission('ROLE_BUDGET'),
             MenuItem::linkToCrud('admin.menu.users', 'fas fa-users', User::class)->setController(UserCrudController::class)->setPermission('ROLE_ADMIN_BUDGET'),
             MenuItem::section(),
-            MenuItem::linkToUrl('admin.menu.app', 'fas fa-users', '/admin/fr/')->setPermission('ROLE_APP'),
+            MenuItem::linkToUrl('admin.menu.app', 'fas fa-mobile-screen', '/admin/fr/')->setPermission('ROLE_APP'),
             MenuItem::linkToLogout('admin.menu.logout', 'fa-solid fa-door-open text-danger')->setCssClass('text-danger'),
         ];
 

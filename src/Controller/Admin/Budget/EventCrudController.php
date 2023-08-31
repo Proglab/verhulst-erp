@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -29,9 +30,10 @@ class EventCrudController extends BaseCrudController
     public function configureCrud(Crud $crud): Crud
     {
         $crud = parent::configureCrud($crud);
-        $crud->setEntityLabelInPlural('Events')
-            ->setEntityLabelInSingular('Event')
-            ->showEntityActionsInlined(true);
+        $crud->setEntityLabelInPlural('Evènements')
+            ->setEntityLabelInSingular('Evènement')
+            ->showEntityActionsInlined(true)
+            ->overrideTemplate('crud/detail', 'admin/budget/events/details.html.twig');
 
         return $crud;
     }
@@ -97,14 +99,20 @@ class EventCrudController extends BaseCrudController
                 return $qb->andWhere('entity.roles LIKE :role')
                     ->setParameter('role', '%ROLE_ADMIN_BUDGET%');
             }
-        );
+        )->setLabel('Responsable');
         $assistants = AssociationField::new('users')->setQueryBuilder(
             function($qb) {
                 return $qb->andWhere('entity.roles LIKE :role')
                     ->setParameter('role', '%ROLE_BUDGET%');
             }
-        );
-        return [$name, $admin, $assistants];
+        )->setLabel('Assistants');
+
+        $assistantsList = CollectionField::new('users')->setLabel('Assistants');
+
+        return match ($pageName) {
+            Crud::PAGE_INDEX, Crud::PAGE_DETAIL => [$name, $admin, $assistantsList],
+            default => [$name, $admin, $assistants],
+        };
     }
 
     /**
@@ -123,7 +131,7 @@ class EventCrudController extends BaseCrudController
         $user = $this->getUser();
         $entity = $context->getEntity()->getInstance();
         if ($entity->getAdmin() === $user || $entity->getUsers()->contains($user) || $this->isGranted('ROLE_ADMIN_BUDGET')) {
-            return parent::detail($context); 
+            return parent::detail($context);
         }
         throw new AccessDeniedHttpException('Vous n\'avez pas le droit d\'accéder à cet event');
     }

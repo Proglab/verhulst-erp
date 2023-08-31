@@ -80,4 +80,9 @@ class Product
 
         return $this;
     }
+
+    public function getTotalPrice(): ?string
+    {
+        return $this->getQuantity() * $this->getPrice();
+    }
 }

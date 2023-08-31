@@ -130,7 +130,7 @@ class DashboardController extends AbstractDashboardController
                 ->setPermission('ROLE_TECH'),
 
             MenuItem::section(),
-            MenuItem::linkToRoute('Budget', 'fa-solid fa-door-open text-danger', 'dashboard_budget_redirect')
+            MenuItem::linkToRoute('admin.menu.budget', 'fa-solid fa-sack-dollar', 'dashboard_budget_redirect')
                 ->setPermission('ROLE_BUDGET'),
             MenuItem::linkToLogout('admin.menu.logout', 'fa-solid fa-door-open text-danger')->setCssClass('text-danger'),
         ];

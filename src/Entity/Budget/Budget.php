@@ -23,7 +23,7 @@ class Budget
     #[ORM\JoinColumn(nullable: false)]
     private ?Event $event = null;
 
-    #[ORM\OneToMany(mappedBy: 'budget', targetEntity: Category::class)]
+    #[ORM\OneToMany(mappedBy: 'budget', targetEntity: Category::class, cascade: ["persist", "remove"])]
     private Collection $categories;
 
     public function __construct()
