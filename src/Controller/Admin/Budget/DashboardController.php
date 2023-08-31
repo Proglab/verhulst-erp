@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Budget;
 
 use App\Controller\Admin\Budget\Ref\CategoryCrudController;
@@ -18,9 +20,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class DashboardController extends AbstractDashboardController
 {
-    public function __construct(private AdminUrlGenerator $adminUrlGenerator) {
-
+    public function __construct(private AdminUrlGenerator $adminUrlGenerator)
+    {
     }
+
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
@@ -34,8 +37,6 @@ class DashboardController extends AbstractDashboardController
             ->renderContentMaximized()
             ->renderSidebarMinimized();
     }
-
-
 
     public function configureAssets(): Assets
     {
@@ -55,7 +56,6 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToUrl('admin.menu.app', 'fas fa-mobile-screen', '/admin/fr/')->setPermission('ROLE_APP'),
             MenuItem::linkToLogout('admin.menu.logout', 'fa-solid fa-door-open text-danger')->setCssClass('text-danger'),
         ];
-
     }
 
     public function configureUserMenu(UserInterface $user): UserMenu
@@ -86,6 +86,6 @@ class DashboardController extends AbstractDashboardController
     #[Route('/admin/{_locale}/budget/redirect', name: 'dashboard_budget_redirect')]
     public function redirection(): Response
     {
-        return $this->redirect($this->adminUrlGenerator->setDashboard(DashboardController::class)->setRoute('dashboard_budget'));
+        return $this->redirect($this->adminUrlGenerator->setDashboard(self::class)->setRoute('dashboard_budget')->generateUrl());
     }
 }

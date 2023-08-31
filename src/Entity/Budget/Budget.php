@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Budget;
 
 use App\Repository\Budget\BudgetRepository;
@@ -23,7 +25,7 @@ class Budget
     #[ORM\JoinColumn(nullable: false)]
     private ?Event $event = null;
 
-    #[ORM\OneToMany(mappedBy: 'budget', targetEntity: Category::class, cascade: ["persist", "remove"])]
+    #[ORM\OneToMany(mappedBy: 'budget', targetEntity: Category::class, cascade: ['persist', 'remove'])]
     private Collection $categories;
 
     public function __construct()
@@ -88,5 +90,15 @@ class Budget
         }
 
         return $this;
+    }
+
+    public function getTotalPrice(): float
+    {
+        $price = 0.0;
+        foreach ($this->getCategories() as $category) {
+            $price += $category->getTotalPrice();
+        }
+
+        return $price;
     }
 }

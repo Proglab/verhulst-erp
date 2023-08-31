@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Budget\Ref;
 
 use App\Entity\Budget\Ref\SubCategory;
@@ -26,6 +28,7 @@ class SubCategoryCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         $name = TextField::new('name')->setLabel('Nom');
+
         return [$name];
     }
 }

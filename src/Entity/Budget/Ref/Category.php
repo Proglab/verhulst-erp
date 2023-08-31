@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Budget\Ref;
 
 use App\Repository\Budget\Ref\CategoryRepository;
@@ -19,7 +21,7 @@ class Category
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: SubCategory::class, cascade: ["persist"], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: SubCategory::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $sub_categories;
 
     public function __construct()

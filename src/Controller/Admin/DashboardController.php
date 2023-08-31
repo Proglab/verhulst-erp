@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use App\Controller\Admin\Budget\EventCrudController;
-use App\Controller\Admin\Budget\Ref\CategoryCrudController;
-use App\Entity\Budget\Event;
-use App\Entity\Budget\Ref\Category;
 use App\Entity\Commission;
 use App\Entity\CompanyContact;
 use App\Entity\Css;
@@ -169,7 +165,6 @@ class DashboardController extends AbstractDashboardController
         if (!$this->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('dashboard_com');
         }
-
 
         $months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
         $default_year = (new \DateTime())->format('Y');

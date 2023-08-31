@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Entity\Budget\Event;
 use App\Entity\Trait\CreatedAtTrait;
 use App\Entity\Trait\EnabledTrait;
 use App\Entity\Trait\PrimaryKeyTrait;

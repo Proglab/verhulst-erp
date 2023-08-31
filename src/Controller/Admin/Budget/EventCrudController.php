@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Budget;
 
 use App\Entity\Budget\Event;
 use App\Entity\User;
-use App\Service\SecurityChecker;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -18,9 +19,8 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class EventCrudController extends BaseCrudController
 {
-    public function __construct(SecurityChecker $securityChecker, private EntityManagerInterface $entityManager)
+    public function __construct(private readonly EntityManagerInterface $entityManager)
     {
-        parent::__construct($securityChecker);
     }
 
     public static function getEntityFqcn(): string
@@ -43,7 +43,7 @@ class EventCrudController extends BaseCrudController
     {
         $user = $this->getUser();
 
-        $actions = parent::configureActions($actions); 
+        $actions = parent::configureActions($actions);
         $actions->add(Crud::PAGE_INDEX, Action::DETAIL);
         $actions->update(Crud::PAGE_INDEX, Action::DETAIL, function ($action) {
             return $action->setIcon('fa fa-eye')->setLabel(false)->setHtmlAttributes(['title' => 'Voir']);
@@ -86,6 +86,7 @@ class EventCrudController extends BaseCrudController
             });
         });
         $actions->disable(Action::SAVE_AND_ADD_ANOTHER);
+
         return $actions;
     }
 
@@ -94,13 +95,13 @@ class EventCrudController extends BaseCrudController
         $name = TextField::new('name')->setLabel('Nom de l\'event');
         $userRepository = $this->entityManager->getRepository(User::class);
         $admin = AssociationField::new('admin')->setQueryBuilder(
-            function($qb) {
+            function ($qb) {
                 return $qb->andWhere('entity.roles LIKE :role')
                     ->setParameter('role', '%ROLE_ADMIN_BUDGET%');
             }
         )->setLabel('Responsable');
         $assistants = AssociationField::new('users')->setQueryBuilder(
-            function($qb) {
+            function ($qb) {
                 return $qb->andWhere('entity.roles LIKE :role')
                     ->setParameter('role', '%ROLE_BUDGET%');
             }
@@ -116,14 +117,14 @@ class EventCrudController extends BaseCrudController
     }
 
     /**
-     * @param EntityManagerInterface $entityManager
      * @param Event $entityInstance
-     * @return void
      */
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
-        $entityInstance->setAdmin($this->getUser());
-        parent::persistEntity($entityManager, $entityInstance); 
+        /** @var User $user */
+        $user = $this->getUser();
+        $entityInstance->setAdmin($user);
+        parent::persistEntity($entityManager, $entityInstance);
     }
 
     public function detail(AdminContext $context)
@@ -141,7 +142,7 @@ class EventCrudController extends BaseCrudController
         $user = $this->getUser();
         $entity = $context->getEntity()->getInstance();
         if ($entity->getAdmin() === $user || $entity->getUsers()->contains($user) || $this->isGranted('ROLE_ADMIN_BUDGET')) {
-            return parent::edit($context); 
+            return parent::edit($context);
         }
         throw new AccessDeniedHttpException('Vous n\'avez pas le droit de modifier cet event');
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Budget;
 
 use App\Repository\Budget\SubCategoryRepository;
@@ -88,5 +90,15 @@ class SubCategory
         }
 
         return $this;
+    }
+
+    public function getTotalPrice(): float
+    {
+        $price = 0.0;
+        foreach ($this->getProducts() as $product) {
+            $price += $product->getTotalPrice();
+        }
+
+        return $price;
     }
 }

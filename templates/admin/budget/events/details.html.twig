@@ -47,7 +47,11 @@
                               .setAction('edit')
                               .setEntityId(budget.id)
                               .set('event_id', entity.instance.id)}}" class="btn btn-secondary ms-3"><i class="action-icon fa fa-pencil-alt"></i></a>
-                        </h5><div>
+                        </h5>
+                        <div>
+                           <strong>Prix total :</strong> {{ budget.totalPrice }}€
+                        </div>
+                        <div>
                         <a href="{{ ea_url()
                            .setController('App\\Controller\\Admin\\Budget\\BudgetCrudController')
                            .setAction('detail')

@@ -55,13 +55,12 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         ;
     }
 
-
-    public function getUserAdminBudget()
+    public function getUserAdminBudget(): QueryBuilder
     {
         return $this->createQueryBuilder('u')
             ->andWhere('u.roles = :role')
             ->setParameter('role', 'ROLE_ADMIN_BUDGET')
-            ;
+        ;
     }
 
     public function getStatsByUser(\DateTime $startDate, \DateTime $endDate): array

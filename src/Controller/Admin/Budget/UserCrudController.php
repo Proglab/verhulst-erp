@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Budget;
 
-use App\Controller\Admin\Budget\BaseCrudController;
 use App\Entity\User;
 use App\Repository\UserRepository;
-use App\Service\SecurityChecker;
 use App\Service\UserService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -30,9 +28,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserCrudController extends BaseCrudController
 {
-    public function __construct(private UserService $userService, private UserRepository $userRepository, protected SecurityChecker $securityChecker)
+    public function __construct(private readonly UserService $userService, private readonly UserRepository $userRepository)
     {
-        parent::__construct($securityChecker);
     }
 
     #[Route(path: '/admin/{_locale}/modifier-mon-mot-de-passe', name: 'admin_password_update')]
@@ -158,6 +155,7 @@ class UserCrudController extends BaseCrudController
         $qb->andWhere('entity.roles LIKE :searchTerm OR entity.roles LIKE :searchTerm2')
             ->setParameter('searchTerm', '%ROLE_BUDGET%')
             ->setParameter('searchTerm2', '%ROLE_ADMIN_BUDGET%');
+
         return $qb;
     }
 }

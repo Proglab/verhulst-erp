@@ -1,15 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Budget\Ref;
 
 use App\Controller\Admin\BaseCrudController;
 use App\Entity\Budget\Ref\Category;
-use App\Entity\Budget\Ref\SubCategory;
-use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
-use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
@@ -35,6 +34,7 @@ class CategoryCrudController extends BaseCrudController
     {
         $name = TextField::new('name')->setLabel('Catégorie');
         $subCategories = CollectionField::new('sub_categories', 'Sous catégories')->useEntryCrudForm(SubCategoryCrudController::class);
+
         return [$name, $subCategories];
     }
 
@@ -50,6 +50,7 @@ class CategoryCrudController extends BaseCrudController
         $actions->disable(Action::SAVE_AND_ADD_ANOTHER);
         $actions->disable(Action::SAVE_AND_CONTINUE);
         $actions->disable(Action::BATCH_DELETE);
+
         return $actions;
     }
 }

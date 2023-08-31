@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Budget;
 
 use App\Repository\Budget\CategoryRepository;
@@ -19,7 +21,7 @@ class Category
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: SubCategory::class, cascade: ["persist"], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: SubCategory::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $sub_categories;
 
     #[ORM\ManyToOne(inversedBy: 'categories')]
@@ -87,5 +89,15 @@ class Category
         $this->budget = $budget;
 
         return $this;
+    }
+
+    public function getTotalPrice(): float
+    {
+        $price = 0.0;
+        foreach ($this->getSubCategories() as $subCategory) {
+            $price += $subCategory->getTotalPrice();
+        }
+
+        return $price;
     }
 }

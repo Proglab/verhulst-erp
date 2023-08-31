@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Budget\Ref;
 
 use App\Repository\Budget\Ref\SubCategoryRepository;
@@ -20,6 +22,11 @@ class SubCategory
     #[ORM\ManyToOne(inversedBy: 'sub_categories')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
 
     public function getId(): ?int
     {
@@ -48,10 +55,5 @@ class SubCategory
         $this->category = $category;
 
         return $this;
-    }
-
-    public function __ToString()
-    {
-        return $this->getName();
     }
 }
