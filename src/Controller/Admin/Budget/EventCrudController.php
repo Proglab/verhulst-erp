@@ -99,7 +99,7 @@ class EventCrudController extends BaseCrudController
                 return $qb->andWhere('entity.roles LIKE :role')
                     ->setParameter('role', '%ROLE_ADMIN_BUDGET%');
             }
-        )->setLabel('Responsable');
+        )->setLabel('Chef de projet');
         $assistants = AssociationField::new('users')->setQueryBuilder(
             function ($qb) {
                 return $qb->andWhere('entity.roles LIKE :role')

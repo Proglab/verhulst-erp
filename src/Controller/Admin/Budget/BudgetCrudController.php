@@ -14,6 +14,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
+use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,6 +48,13 @@ class BudgetCrudController extends BaseCrudController
     public static function getEntityFqcn(): string
     {
         return Budget::class;
+    }
+
+    public function configureFields(string $pageName): iterable
+    {
+        $name = TextField::new('name')->setLabel('Nom');
+        $percent = PercentField::new('percent')->setLabel('Pourcentage de commission')->setNumDecimals(2)->setStoredAsFractional(false);
+        return [$name, $percent];
     }
 
     public function configureActions(Actions $actions): Actions

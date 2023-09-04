@@ -7,6 +7,7 @@ namespace App\Entity\Budget;
 use App\Repository\Budget\BudgetRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'budget_budget')]
@@ -27,6 +28,9 @@ class Budget
 
     #[ORM\OneToMany(mappedBy: 'budget', targetEntity: Category::class, cascade: ['persist', 'remove'])]
     private Collection $categories;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
+    private ?string $percent = null;
 
     public function __construct()
     {
@@ -100,5 +104,17 @@ class Budget
         }
 
         return $price;
+    }
+
+    public function getPercent(): ?string
+    {
+        return $this->percent;
+    }
+
+    public function setPercent(string $percent): static
+    {
+        $this->percent = $percent;
+
+        return $this;
     }
 }
