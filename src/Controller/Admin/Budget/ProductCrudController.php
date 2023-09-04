@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -67,8 +68,10 @@ class ProductCrudController extends BaseCrudController
             ->setRequired(true)
             ->setCurrency('EUR')
             ->setLabel('Prix');
+        $tva = AssociationField::new('vat', 'Tva')
+            ->setRequired(true);
 
-        return [$name, $quantity, $price];
+        return [$name, $quantity, $price, $tva];
     }
 
     /**

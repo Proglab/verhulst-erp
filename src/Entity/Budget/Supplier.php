@@ -1,17 +1,14 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Entity\Budget;
 
-use App\Repository\Budget\SubCategoryRepository;
+use App\Repository\Budget\SupplierRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
-#[ORM\Table(name: 'budget_subcategory')]
-#[ORM\Entity(repositoryClass: SubCategoryRepository::class)]
-class SubCategory
+#[ORM\Table(name: 'budget_supplier')]
+#[ORM\Entity(repositoryClass: SupplierRepository::class)]
+class Supplier
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -21,11 +18,7 @@ class SubCategory
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\ManyToOne(inversedBy: 'sub_categories')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Category $category = null;
-
-    #[ORM\OneToMany(mappedBy: 'sub_category', targetEntity: Product::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: Product::class, orphanRemoval: true)]
     private Collection $products;
 
     public function __construct()
@@ -50,18 +43,6 @@ class SubCategory
         return $this;
     }
 
-    public function getCategory(): ?Category
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?Category $category): static
-    {
-        $this->category = $category;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Product>
      */
@@ -74,7 +55,7 @@ class SubCategory
     {
         if (!$this->products->contains($product)) {
             $this->products->add($product);
-            $product->setSubCategory($this);
+            $product->setSupplier($this);
         }
 
         return $this;
@@ -84,31 +65,11 @@ class SubCategory
     {
         if ($this->products->removeElement($product)) {
             // set the owning side to null (unless already changed)
-            if ($product->getSubCategory() === $this) {
-                $product->setSubCategory(null);
+            if ($product->getSupplier() === $this) {
+                $product->setSupplier(null);
             }
         }
 
         return $this;
-    }
-
-    public function getTotalPrice(): float
-    {
-        $price = 0.0;
-        foreach ($this->getProducts() as $product) {
-            $price += $product->getTotalPrice();
-        }
-
-        return $price;
-    }
-
-    public function getTotalPriceVat(): float
-    {
-        $price = 0.0;
-        foreach ($this->getProducts() as $product) {
-            $price += $product->getTotalPriceVat();
-        }
-
-        return $price;
     }
 }

@@ -7,6 +7,8 @@ namespace App\Controller\Admin\Budget;
 use App\Controller\Admin\Budget\Ref\CategoryCrudController;
 use App\Entity\Budget\Event;
 use App\Entity\Budget\Ref\Category;
+use App\Entity\Budget\Supplier;
+use App\Entity\Budget\Vat;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -52,6 +54,8 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('admin.menu.category_ref', 'fas fa-tags', Category::class)->setController(CategoryCrudController::class)->setPermission('ROLE_ADMIN_BUDGET'),
             MenuItem::linkToCrud('admin.menu.event', 'fas fa-calendar-days', Event::class)->setController(EventCrudController::class)->setPermission('ROLE_BUDGET'),
             MenuItem::linkToCrud('admin.menu.users', 'fas fa-users', User::class)->setController(UserCrudController::class)->setPermission('ROLE_ADMIN_BUDGET'),
+            MenuItem::linkToCrud('admin.menu.tva', 'fas fa-building-columns', Vat::class)->setController(VatCrudController::class)->setPermission('ROLE_ADMIN_BUDGET'),
+            MenuItem::linkToCrud('admin.menu.supplier', 'fas fa-truck-field', Supplier::class)->setController(SupplierCrudController::class)->setPermission('ROLE_BUDGET'),
             MenuItem::section(),
             MenuItem::linkToUrl('admin.menu.app', 'fas fa-mobile-screen', '/admin/fr/')->setPermission('ROLE_APP'),
             MenuItem::linkToLogout('admin.menu.logout', 'fa-solid fa-door-open text-danger')->setCssClass('text-danger'),

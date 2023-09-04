@@ -170,3 +170,5 @@ admin:
         event: Evènements
         app: Appli. Commerciale
         budget: Appli. Budget
+        tva: '% de TVA'
+        supplier: Fournisseurs

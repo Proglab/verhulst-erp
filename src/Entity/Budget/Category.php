@@ -100,4 +100,14 @@ class Category
 
         return $price;
     }
+
+    public function getTotalPriceVat(): float
+    {
+        $price = 0.0;
+        foreach ($this->getSubCategories() as $subCategory) {
+            $price += $subCategory->getTotalPriceVat();
+        }
+
+        return $price;
+    }
 }

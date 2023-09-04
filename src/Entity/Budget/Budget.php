@@ -103,6 +103,16 @@ class Budget
         return $price;
     }
 
+    public function getTotalPriceVat(): float
+    {
+        $price = 0.0;
+        foreach ($this->getCategories() as $category) {
+            $price += $category->getTotalPriceVat();
+        }
+
+        return $price;
+    }
+
     public function getPercent(): float
     {
         return $this->event->getPercent();
@@ -111,5 +121,15 @@ class Budget
     public function getFee(): float
     {
         return $this->event->getPercent() * $this->getTotalPrice() / 100;
+    }
+
+    public function getFeeVat(): float
+    {
+        return $this->getFee() * 21 / 100;
+    }
+
+    public function getTotalFeeVat(): float
+    {
+        return $this->getFee() + $this->getFeeVat();
     }
 }

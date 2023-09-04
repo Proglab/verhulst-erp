@@ -30,6 +30,15 @@ class Product
     #[ORM\JoinColumn(nullable: false)]
     private ?SubCategory $sub_category = null;
 
+    #[ORM\ManyToOne(inversedBy: 'product')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Vat $vat = null;
+
+    #[ORM\ManyToOne(inversedBy: 'products')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Supplier $supplier = null;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,5 +95,39 @@ class Product
     public function getTotalPrice(): ?float
     {
         return $this->getQuantity() * $this->getPrice();
+    }
+
+    public function getVat(): ?Vat
+    {
+        return $this->vat;
+    }
+
+    public function setVat(?Vat $vat): static
+    {
+        $this->vat = $vat;
+
+        return $this;
+    }
+
+    public function getVatPrice(): float
+    {
+        return $this->getTotalPrice() * $this->getVat()->getPercent() / 100;
+    }
+
+    public function getTotalPriceVat(): float
+    {
+        return $this->getTotalPrice() + $this->getVatPrice();
+    }
+
+    public function getSupplier(): ?Supplier
+    {
+        return $this->supplier;
+    }
+
+    public function setSupplier(?Supplier $supplier): static
+    {
+        $this->supplier = $supplier;
+
+        return $this;
     }
 }
