@@ -53,8 +53,7 @@ class BudgetCrudController extends BaseCrudController
     public function configureFields(string $pageName): iterable
     {
         $name = TextField::new('name')->setLabel('Nom');
-        $percent = PercentField::new('percent')->setLabel('Pourcentage de commission')->setNumDecimals(2)->setStoredAsFractional(false);
-        return [$name, $percent];
+        return [$name];
     }
 
     public function configureActions(Actions $actions): Actions

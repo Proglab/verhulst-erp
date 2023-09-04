@@ -14,6 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -93,7 +94,6 @@ class EventCrudController extends BaseCrudController
     public function configureFields(string $pageName): iterable
     {
         $name = TextField::new('name')->setLabel('Nom de l\'event');
-        $userRepository = $this->entityManager->getRepository(User::class);
         $admin = AssociationField::new('admin')->setQueryBuilder(
             function ($qb) {
                 return $qb->andWhere('entity.roles LIKE :role')
@@ -109,10 +109,11 @@ class EventCrudController extends BaseCrudController
 
         $assistantsList = CollectionField::new('users')->setLabel('Assistants');
         $date = DateField::new('date')->setFormat('dd/MM/yyyy');
+        $percent = PercentField::new('percent')->setLabel('Pourcentage de commission')->setNumDecimals(2)->setStoredAsFractional(false);
 
         return match ($pageName) {
-            Crud::PAGE_INDEX, Crud::PAGE_DETAIL => [$name, $date, $admin, $assistantsList],
-            default => [$name, $date, $admin, $assistants],
+            Crud::PAGE_INDEX, Crud::PAGE_DETAIL => [$name, $date, $percent, $admin, $assistantsList],
+            default => [$name, $date, $percent, $admin, $assistants],
         };
     }
 

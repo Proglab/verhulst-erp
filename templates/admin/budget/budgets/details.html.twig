@@ -21,6 +21,13 @@
 
 {% block page_content %}
    <div class="col-12">
+      <div class="card col-12 shadow-lg mb-5 bg-body rounded" style="background: #000080  !important ; color: #FFFFFF !important; font-weight: 900;">
+         <div class="card-body d-flex justify-content-between align-items-center">
+            <strong>Prix total : </strong>  {{ (entity.instance.totalPrice + entity.instance.fee)|number_format(2, ',', ' ') }}€
+         </div>
+      </div>
+   </div>
+   <div class="col-12">
    <ul class="list-unstyled">
       {% for category in entity.instance.categories %}
          <li id="category-{{ category.id }}">
@@ -54,7 +61,7 @@
                      </a>
                   </h5>
                   <div>
-                     <strong>Prix total :</strong> {{ category.totalPrice }}€
+                     <strong>Prix total :</strong> {{ category.totalPrice|number_format(2, ',', ' ') }}€
                   </div>
                   <div>
                      <a href="{{ ea_url()
@@ -103,7 +110,7 @@
                               </h5>
 
                               <div>
-                                 <strong>Prix total :</strong> {{ subcategory.totalPrice }}€
+                                 <strong>Prix total :</strong> {{ subcategory.totalPrice|number_format(2, ',', ' ') }}€
                               </div>
                               <a href="{{ ea_url()
                                  .setDashBoard('App\\Controller\\Admin\\Budget\\DashboardController')
@@ -179,6 +186,50 @@
          </li>
       {% endfor %}
    </ul>
+   </div>
+
+   <div class="col-12">
+      <div class="card col-12 shadow-lg mb-5 bg-body rounded">
+         <div class="card-body">
+            <ul class="list-unstyled">
+               <li class="mb-3" id="subcategory-5">
+                  <div class="card shadow mb-3 rounded">
+                     <div class="card-body d-flex justify-content-between align-items-center">
+                        <h5 class="card-title col-5">Frais d'agence</h5>
+                     </div>
+                     <div class="card-body">
+                        <table class="table datagrid shadow-sm rounded">
+                           <thead>
+                           <tr>
+                              <th scope="col" class="col-4" style="background: #000080  !important ;"><span>Nom</span></th>
+                              <th scope="col" class="col-2" style="background: #000080 !important ;"><span>Quantité</span></th>
+                              <th scope="col" class="col-2" style="background: #000080 !important ;"><span>Prix</span></th>
+                              <th scope="col" class="col-2" style="background: #000080 !important ;"><span>Prix total</span></th>
+                              <th scope="col" class="col-2" style="background: #000080 !important ;" dir="ltr"></th>
+                           </tr>
+                           </thead>
+                           <tbody>
+                              <th style="font-size:medium;">Frais d'agence</th>
+                              <td style="font-size:medium;">1</td>
+                              <td style="font-size:medium;">{{ entity.instance.event.percent }}%</td>
+                              <td style="font-size:medium;">{{ entity.instance.fee|number_format(2, ',', ' ') }}€</td>
+                              <td style="font-size:medium;"></td>
+                           </tbody>
+                        </table>
+                     </div>
+                  </div>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </div>
+
+   <div class="col-12">
+      <div class="card col-12 shadow-lg mb-5 bg-body rounded" style="background: #000080  !important ; color: #FFFFFF !important; font-weight: 900;">
+         <div class="card-body d-flex justify-content-between align-items-center">
+            <strong>Prix total : </strong>  {{ (entity.instance.totalPrice + entity.instance.fee)|number_format(2, ',', ' ') }}€
+         </div>
+      </div>
    </div>
 
    <form class="d-none" method="post" id="delete-form">

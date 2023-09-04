@@ -29,9 +29,6 @@ class Budget
     #[ORM\OneToMany(mappedBy: 'budget', targetEntity: Category::class, cascade: ['persist', 'remove'])]
     private Collection $categories;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
-    private ?string $percent = null;
-
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -106,15 +103,13 @@ class Budget
         return $price;
     }
 
-    public function getPercent(): ?string
+    public function getPercent(): float
     {
-        return $this->percent;
+        return $this->event->getPercent();
     }
 
-    public function setPercent(string $percent): static
+    public function getFee(): float
     {
-        $this->percent = $percent;
-
-        return $this;
+        return $this->event->getPercent() * $this->getTotalPrice() / 100;
     }
 }

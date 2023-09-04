@@ -36,6 +36,9 @@ class Event
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date = null;
 
+    #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
+    private ?float $percent = null;
+
     public function __construct()
     {
         $this->budgets = new ArrayCollection();
@@ -133,6 +136,18 @@ class Event
     public function setDate(?\DateTimeInterface $date): static
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getPercent(): ?float
+    {
+        return $this->percent;
+    }
+
+    public function setPercent(float $percent): static
+    {
+        $this->percent = $percent;
 
         return $this;
     }
