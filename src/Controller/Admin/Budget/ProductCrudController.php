@@ -70,8 +70,10 @@ class ProductCrudController extends BaseCrudController
             ->setLabel('Prix');
         $tva = AssociationField::new('vat', 'Tva')
             ->setRequired(true);
+        $supplier = AssociationField::new('supplier', 'Fournisseur')
+            ->setRequired(true);
 
-        return [$name, $quantity, $price, $tva];
+        return [$name, $quantity, $price, $tva, $supplier];
     }
 
     /**

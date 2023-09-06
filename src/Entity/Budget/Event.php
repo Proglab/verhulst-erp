@@ -39,6 +39,9 @@ class Event
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
     private ?float $percent = null;
 
+    #[ORM\Column]
+    private ?bool $archived = null;
+
     public function __construct()
     {
         $this->budgets = new ArrayCollection();
@@ -148,6 +151,18 @@ class Event
     public function setPercent(float $percent): static
     {
         $this->percent = $percent;
+
+        return $this;
+    }
+
+    public function isArchived(): ?bool
+    {
+        return $this->archived;
+    }
+
+    public function setArchived(bool $archived): static
+    {
+        $this->archived = $archived;
 
         return $this;
     }

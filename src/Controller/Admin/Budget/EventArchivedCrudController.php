@@ -1,11 +1,8 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Controller\Admin\Budget;
 
 use App\Entity\Budget\Event;
-use App\Entity\User;
 use App\Repository\Budget\EventRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -15,6 +12,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
+use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -23,9 +21,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
-class EventCrudController extends BaseCrudController
+class EventArchivedCrudController extends BaseCrudController
 {
     public function __construct(private readonly EntityManagerInterface $entityManager, private AdminUrlGenerator $adminUrlGenerator)
     {
@@ -39,10 +36,10 @@ class EventCrudController extends BaseCrudController
     public function configureCrud(Crud $crud): Crud
     {
         $crud = parent::configureCrud($crud);
-        $crud->setEntityLabelInPlural('Evènements')
-            ->setEntityLabelInSingular('Evènement')
+        $crud->setEntityLabelInPlural('Archives : Evènements')
+            ->setEntityLabelInSingular('Archive : Evènement')
             ->showEntityActionsInlined(true)
-            ->overrideTemplate('crud/detail', 'admin/budget/events/details.html.twig');
+            ->overrideTemplate('crud/detail', 'admin/budget/events/archived.html.twig');
 
         return $crud;
     }
@@ -51,7 +48,7 @@ class EventCrudController extends BaseCrudController
     {
         $user = $this->getUser();
 
-        $archiveEvent = Action::new('archiveEvent', false, 'fas fa-box-archive')->linkToCrudAction('archive');
+        $archiveEvent = Action::new('archiveEvent', false, 'fas fa-box-open')->linkToCrudAction('archive')->setHtmlAttributes(['title' => 'Désarchiver']);
 
         $actions = parent::configureActions($actions);
         $actions->add(Crud::PAGE_INDEX, Action::DETAIL);
@@ -62,28 +59,6 @@ class EventCrudController extends BaseCrudController
         $actions->setPermission(Action::INDEX, 'ROLE_BUDGET');
         $actions->setPermission(Action::EDIT, 'ROLE_BUDGET');
         $actions->setPermission(Action::DETAIL, 'ROLE_BUDGET');
-
-        $actions->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) use ($user) {
-            return $action->displayIf(function ($entity) use ($user) {
-                /** @var Event $entity */
-                if ($entity->getAdmin() === $user || $this->isGranted('ROLE_ADMIN_BUDGET')) {
-                    return true;
-                }
-
-                return false;
-            });
-        });
-
-        $actions->update(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) use ($user) {
-            return $action->displayIf(function ($entity) use ($user) {
-                /** @var Event $entity */
-                if ($entity->getAdmin() === $user || $this->isGranted('ROLE_ADMIN_BUDGET')) {
-                    return true;
-                }
-
-                return false;
-            });
-        });
 
         $actions->update(Crud::PAGE_INDEX, Action::DETAIL, function (Action $action) use ($user) {
             return $action->displayIf(function ($entity) use ($user) {
@@ -96,8 +71,18 @@ class EventCrudController extends BaseCrudController
             });
         });
         $actions->disable(Action::SAVE_AND_ADD_ANOTHER);
+        $actions->disable(Action::DELETE);
+        $actions->disable(Action::EDIT);
+        $actions->disable(Action::NEW);
 
         $actions->add(Crud::PAGE_INDEX, $archiveEvent);
+        $actions->add(Crud::PAGE_DETAIL, $archiveEvent);
+
+        $actions->update(Crud::PAGE_DETAIL, 'archiveEvent',  function ($action) {
+            return $action->setLabel('Désarchiver')->setHtmlAttributes(['title' => 'Désarchiver']);
+        });
+
+
         return $actions;
     }
 
@@ -127,52 +112,10 @@ class EventCrudController extends BaseCrudController
         };
     }
 
-    /**
-     * @param Event $entityInstance
-     */
-    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
-    {
-        /** @var User $user */
-        $user = $this->getUser();
-        $entityInstance->setAdmin($user);
-        parent::persistEntity($entityManager, $entityInstance);
-    }
-
-    public function detail(AdminContext $context)
-    {
-        $user = $this->getUser();
-        $entity = $context->getEntity()->getInstance();
-        if ($entity->getAdmin() === $user || $entity->getUsers()->contains($user) || $this->isGranted('ROLE_ADMIN_BUDGET')) {
-            return parent::detail($context);
-        }
-        throw new AccessDeniedHttpException('Vous n\'avez pas le droit d\'accéder à cet event');
-    }
-
-    public function edit(AdminContext $context)
-    {
-        $user = $this->getUser();
-        $entity = $context->getEntity()->getInstance();
-        if ($entity->getAdmin() === $user || $entity->getUsers()->contains($user) || $this->isGranted('ROLE_ADMIN_BUDGET')) {
-            return parent::edit($context);
-        }
-        throw new AccessDeniedHttpException('Vous n\'avez pas le droit de modifier cet event');
-    }
-
-    public function delete(AdminContext $context)
-    {
-        $user = $this->getUser();
-        $entity = $context->getEntity()->getInstance();
-        if ($entity->getAdmin() === $user || $this->isGranted('ROLE_ADMIN_BUDGET')) {
-            return parent::delete($context);
-        }
-        throw new AccessDeniedHttpException('Vous n\'avez pas le droit de supprimer cet event');
-    }
-
-
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
     {
         $qb = parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters); // TODO: Change the autogenerated stub
-        $qb->andWhere('entity.archived = 0');
+        $qb->andWhere('entity.archived = 1');
         return $qb;
     }
 
@@ -180,12 +123,12 @@ class EventCrudController extends BaseCrudController
     {
         /** @var Event $order */
         $order = $context->getEntity()->getInstance();
-        $order->setArchived(true);
+        $order->setArchived(false);
         /** @var EventRepository $repo */
         $repo = $this->entityManager->getRepository(Event::class);
         $repo->save($order, true);
 
-        $url = $this->adminUrlGenerator->setController(EventCrudController::class)->setAction(Action::INDEX)->setEntityId(null)->generateUrl();
+        $url = $this->adminUrlGenerator->setController(EventArchivedCrudController::class)->setAction(Action::INDEX)->setEntityId(null)->generateUrl();
         return $this->redirect($url);
 
     }

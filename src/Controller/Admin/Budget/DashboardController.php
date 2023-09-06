@@ -10,6 +10,7 @@ use App\Entity\Budget\Ref\Category;
 use App\Entity\Budget\Supplier;
 use App\Entity\Budget\Vat;
 use App\Entity\User;
+use App\Repository\Budget\EventRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -22,7 +23,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class DashboardController extends AbstractDashboardController
 {
-    public function __construct(private AdminUrlGenerator $adminUrlGenerator)
+    public function __construct(private AdminUrlGenerator $adminUrlGenerator, private EventRepository $eventRepository)
     {
     }
 
@@ -51,9 +52,13 @@ class DashboardController extends AbstractDashboardController
     {
         return [
             MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
-            MenuItem::linkToCrud('admin.menu.category_ref', 'fas fa-tags', Category::class)->setController(CategoryCrudController::class)->setPermission('ROLE_ADMIN_BUDGET'),
+            MenuItem::section("Budget"),
             MenuItem::linkToCrud('admin.menu.event', 'fas fa-calendar-days', Event::class)->setController(EventCrudController::class)->setPermission('ROLE_BUDGET'),
+            MenuItem::linkToCrud('admin.menu.archived', 'fas fa-box-archive', Event::class)->setController(EventArchivedCrudController::class)->setPermission('ROLE_BUDGET'),
+            MenuItem::section("Droits"),
             MenuItem::linkToCrud('admin.menu.users', 'fas fa-users', User::class)->setController(UserCrudController::class)->setPermission('ROLE_ADMIN_BUDGET'),
+            MenuItem::section("Configurations"),
+            MenuItem::linkToCrud('admin.menu.category_ref', 'fas fa-tags', Category::class)->setController(CategoryCrudController::class)->setPermission('ROLE_ADMIN_BUDGET'),
             MenuItem::linkToCrud('admin.menu.tva', 'fas fa-building-columns', Vat::class)->setController(VatCrudController::class)->setPermission('ROLE_ADMIN_BUDGET'),
             MenuItem::linkToCrud('admin.menu.supplier', 'fas fa-truck-field', Supplier::class)->setController(SupplierCrudController::class)->setPermission('ROLE_BUDGET'),
             MenuItem::section(),
@@ -84,7 +89,8 @@ class DashboardController extends AbstractDashboardController
     #[Route('/admin/{_locale}/budget', name: 'dashboard_budget')]
     public function index(): Response
     {
-        return $this->render('admin/dashboard/budget.html.twig', []);
+        $events = $this->eventRepository->getNonArchivedEvents();
+        return $this->render('admin/budget/dashboard.html.twig', ['events' => $events]);
     }
 
     #[Route('/admin/{_locale}/budget/redirect', name: 'dashboard_budget_redirect')]

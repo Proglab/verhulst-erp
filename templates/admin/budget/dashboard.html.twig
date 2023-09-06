@@ -1,0 +1,169 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{% block content_title %}Tableau de bord{% endblock %}
+{% block page_title %}Verhulst & Friends - ERP - {{ block('content_title') }}{% endblock %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-lg-6 col-xl-4 mb-4">
+            <div class="card bg-success text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="me-3">
+                            <div class="text-white-75">Prix total TVAC des évènements en cours (Hors Com)</div>
+                            <div class="text-lg fw-bold">
+                                {% set price = 0 %}
+                                {% for event in events %}
+                                    {% for budget in event.budgets %}
+                                        {% set price = price + budget.totalPriceVat %}
+                                    {% endfor %}
+                                {% endfor %}
+                                {{ price|number_format(2, ',', ' ') }}€
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-euro-sign fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-xl-4 mb-4">
+            <div class="card bg-success text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="me-3">
+                            <div class="text-white-75">Prix total HT des évènements en cours (Hors Com)</div>
+                            <div class="text-lg fw-bold">
+                                {% set price = 0 %}
+                                {% for event in events %}
+                                    {% for budget in event.budgets %}
+                                        {% set price = price + budget.totalPrice %}
+                                    {% endfor %}
+                                {% endfor %}
+                                {{ price|number_format(2, ',', ' ') }}€
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-euro-sign fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-xl-4 mb-4">
+            <div class="card bg-primary text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="me-3">
+                            <div class="text-white-75">Nombre d'event en cours</div>
+                            <div class="text-lg fw-bold">{{ events|length }}</div>
+                        </div>
+                        <i class="fa-solid fa-hashtag fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-xl-4 mb-4">
+            <div class="card bg-warning text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="me-3">
+                            <div class="text-white-75">Commission totale TVAC des évènements en cours</div>
+                            <div class="text-lg fw-bold">
+                                {% set price = 0 %}
+                                {% for event in events %}
+                                    {% for budget in event.budgets %}
+                                        {% set price = price + budget.totalFeeVat %}
+                                    {% endfor %}
+                                {% endfor %}
+                                {{ price|number_format(2, ',', ' ') }}€
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-euro-sign fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-xl-4 mb-4">
+            <div class="card bg-warning text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="me-3">
+                            <div class="text-white-75">Commission totale HT des évènements en cours</div>
+                            <div class="text-lg fw-bold">
+                                {% set price = 0 %}
+                                {% for event in events %}
+                                    {% for budget in event.budgets %}
+                                        {% set price = price + budget.fee %}
+                                    {% endfor %}
+                                {% endfor %}
+                                {{ price|number_format(2, ',', ' ') }}€
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-euro-sign fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-xl-4 mb-4">
+            <div class="card bg-primary text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="me-3">
+                            <div class="text-white-75">Nombre de budget en cours</div>
+                            <div class="text-lg fw-bold">
+                                {% set nbr = 0 %}
+                                {% for event in events %}
+                                    {% for budget in event.budgets %}
+                                        {% set nbr = nbr + 1 %}
+                                    {% endfor %}
+                                {% endfor %}
+                                {{ nbr }}
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-hashtag fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-xl-4 mb-4">
+            <div class="card bg-info text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="me-3">
+                            <div class="text-white-75">Prix total TVAC des évènements en cours (Com comprise)</div>
+                            <div class="text-lg fw-bold">
+                                {% set price = 0 %}
+                                {% for event in events %}
+                                    {% for budget in event.budgets %}
+                                        {% set price = price + budget.totalPriceVat + budget.totalFeeVat %}
+                                    {% endfor %}
+                                {% endfor %}
+                                {{ price|number_format(2, ',', ' ') }}€
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-euro-sign fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-xl-4 mb-4">
+            <div class="card bg-info text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="me-3">
+                            <div class="text-white-75">Prix total HT des évènements en cours (Com comprise)</div>
+                            <div class="text-lg fw-bold">
+                                {% set price = 0 %}
+                                {% for event in events %}
+                                    {% for budget in event.budgets %}
+                                        {% set price = price + budget.totalPrice + budget.fee %}
+                                    {% endfor %}
+                                {% endfor %}
+                                {{ price|number_format(2, ',', ' ') }}€
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-euro-sign fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
