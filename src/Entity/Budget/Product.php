@@ -38,6 +38,12 @@ class Product
     #[ORM\JoinColumn(nullable: false)]
     private ?Supplier $supplier = null;
 
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $real_price = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $filename = null;
+
 
     public function getId(): ?int
     {
@@ -129,5 +135,54 @@ class Product
         $this->supplier = $supplier;
 
         return $this;
+    }
+
+    public function getRealPrice(): ?string
+    {
+        return $this->real_price;
+    }
+
+    public function setRealPrice(?string $real_price): static
+    {
+        $this->real_price = $real_price;
+
+        return $this;
+    }
+
+    public function getFilename(): ?string
+    {
+        return $this->filename;
+    }
+
+    public function setFilename(?string $filename): static
+    {
+        $this->filename = $filename;
+
+        return $this;
+    }
+
+    public function getRealPriceVat(): ?float
+    {
+        return $this->getRealPrice() + $this->getVatRealPrice();
+    }
+
+    public function getVatRealPrice(): float
+    {
+        return $this->getRealPrice() * $this->getVat()->getPercent() / 100;
+    }
+
+    public function getTotalRealPrice(): ?float
+    {
+        return $this->getRealPrice() * $this->getQuantity();
+    }
+
+    public function getTotalRealPriceVat(): ?float
+    {
+        return $this->getRealPriceVat() * $this->getQuantity();
+    }
+
+    public function getVatTotalRealPrice(): float
+    {
+        return $this->getTotalRealPriceVat() - $this->getTotalRealPrice();
     }
 }

@@ -80,6 +80,8 @@ class BudgetCrudController extends BaseCrudController
             ->remove(Crud::PAGE_DETAIL, Action::EDIT)
             ->remove(Crud::PAGE_EDIT, Action::SAVE_AND_CONTINUE)
             ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
+            ->setPermission(Action::DELETE, 'budget-edit')
+            ->setPermission(Action::EDIT, 'budget-edit')
         ;
     }
 

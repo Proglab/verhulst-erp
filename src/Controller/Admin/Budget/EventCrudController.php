@@ -60,8 +60,10 @@ class EventCrudController extends BaseCrudController
         });
 
         $actions->setPermission(Action::INDEX, 'ROLE_BUDGET');
-        $actions->setPermission(Action::EDIT, 'ROLE_BUDGET');
+        $actions->setPermission(Action::EDIT, 'event-edit');
         $actions->setPermission(Action::DETAIL, 'ROLE_BUDGET');
+        $actions->setPermission(Action::DELETE, 'event-edit');
+        $actions->setPermission('archiveEvent', 'event-edit');
 
         $actions->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) use ($user) {
             return $action->displayIf(function ($entity) use ($user) {

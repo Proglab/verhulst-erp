@@ -78,9 +78,11 @@ class EventArchivedCrudController extends BaseCrudController
         $actions->add(Crud::PAGE_INDEX, $archiveEvent);
         $actions->add(Crud::PAGE_DETAIL, $archiveEvent);
 
+
         $actions->update(Crud::PAGE_DETAIL, 'archiveEvent',  function ($action) {
             return $action->setLabel('Désarchiver')->setHtmlAttributes(['title' => 'Désarchiver']);
         });
+        $actions->setPermission('archiveEvent', 'event-unarchive');
 
 
         return $actions;
