@@ -3,9 +3,9 @@
 namespace App\Controller\Admin\Budget;
 
 use App\Entity\Budget\Supplier;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class SupplierCrudController extends BaseCrudController
@@ -33,5 +33,18 @@ class SupplierCrudController extends BaseCrudController
         return match ($pageName) {
             default => [$percent],
         };
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        $actions = parent::configureActions($actions);
+        $actions
+            ->setPermission(Action::INDEX, 'ROLE_BUDGET')
+            ->setPermission(Action::EDIT, 'ROLE_BUDGET')
+            ->setPermission(Action::DELETE, 'ROLE_ADMIN_BUDGET')
+            ->setPermission(Action::NEW, 'ROLE_BUDGET')
+
+        ;
+        return $actions;
     }
 }
