@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Security\Voter;
 
 use App\Entity\Budget\Budget;
@@ -22,7 +24,7 @@ class CanUpdateBudgetVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, [self::EDIT])
+        return \in_array($attribute, [self::EDIT], true)
             && $subject instanceof Budget;
     }
 
@@ -38,7 +40,7 @@ class CanUpdateBudgetVoter extends Voter
             return false;
         }
 
-        if ($attribute != self::UNARCHIVE) {
+        if (self::UNARCHIVE !== $attribute) {
             if ($subject->getEvent()->isArchived()) {
                 return false;
             }
@@ -47,7 +49,6 @@ class CanUpdateBudgetVoter extends Voter
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case self::EDIT:
-
                 if ($this->security->isGranted('ROLE_ADMIN')) {
                     return true;
                 }
@@ -59,8 +60,9 @@ class CanUpdateBudgetVoter extends Voter
                 if ($subject->getEvent()->getUsers()->contains($user)) {
                     return true;
                 }
-            break;
+                break;
         }
+
         return false;
     }
 }

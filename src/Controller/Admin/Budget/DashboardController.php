@@ -52,12 +52,12 @@ class DashboardController extends AbstractDashboardController
     {
         return [
             MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
-            MenuItem::section("Budget"),
+            MenuItem::section('Budget'),
             MenuItem::linkToCrud('admin.menu.event', 'fas fa-calendar-days', Event::class)->setController(EventCrudController::class)->setPermission('ROLE_BUDGET'),
             MenuItem::linkToCrud('admin.menu.archived', 'fas fa-box-archive', Event::class)->setController(EventArchivedCrudController::class)->setPermission('ROLE_BUDGET'),
-            MenuItem::section("Droits"),
+            MenuItem::section('Droits'),
             MenuItem::linkToCrud('admin.menu.users', 'fas fa-users', User::class)->setController(UserCrudController::class)->setPermission('ROLE_ADMIN_BUDGET'),
-            MenuItem::section("Configurations"),
+            MenuItem::section('Configurations'),
             MenuItem::linkToCrud('admin.menu.category_ref', 'fas fa-tags', Category::class)->setController(CategoryCrudController::class)->setPermission('ROLE_ADMIN_BUDGET'),
             MenuItem::linkToCrud('admin.menu.tva', 'fas fa-building-columns', Vat::class)->setController(VatCrudController::class)->setPermission('ROLE_ADMIN_BUDGET'),
             MenuItem::linkToCrud('admin.menu.supplier', 'fas fa-truck-field', Supplier::class)->setController(SupplierCrudController::class)->setPermission('ROLE_BUDGET'),
@@ -90,6 +90,7 @@ class DashboardController extends AbstractDashboardController
     public function index(): Response
     {
         $events = $this->eventRepository->getNonArchivedEvents();
+
         return $this->render('admin/budget/dashboard.html.twig', ['events' => $events]);
     }
 

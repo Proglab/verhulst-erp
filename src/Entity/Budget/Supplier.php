@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Budget;
 
 use App\Repository\Budget\SupplierRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+
 #[ORM\Table(name: 'budget_supplier')]
 #[ORM\Entity(repositoryClass: SupplierRepository::class)]
 class Supplier
@@ -24,6 +27,11 @@ class Supplier
     public function __construct()
     {
         $this->products = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName();
     }
 
     public function getId(): ?int
@@ -71,10 +79,5 @@ class Supplier
         }
 
         return $this;
-    }
-
-    public function __toString(): string
-    {
-        return $this->getName();
     }
 }

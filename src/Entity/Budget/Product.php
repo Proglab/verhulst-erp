@@ -44,7 +44,6 @@ class Product
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $filename = null;
 
-
     public function getId(): ?int
     {
         return $this->id;

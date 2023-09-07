@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Budget;
 
 use App\Entity\Budget\Supplier;
@@ -10,7 +12,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class SupplierCrudController extends BaseCrudController
 {
-
     public function configureCrud(Crud $crud): Crud
     {
         $crud = parent::configureCrud($crud);
@@ -45,6 +46,7 @@ class SupplierCrudController extends BaseCrudController
             ->setPermission(Action::NEW, 'ROLE_BUDGET')
 
         ;
+
         return $actions;
     }
 }

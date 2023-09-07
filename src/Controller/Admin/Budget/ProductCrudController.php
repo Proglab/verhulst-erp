@@ -17,11 +17,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
-use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ProductCrudController extends BaseCrudController
 {
@@ -53,7 +51,6 @@ class ProductCrudController extends BaseCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-
         Action::new('filename', false, 'fas fa-download')->linkToCrudAction('download');
         $actions->setPermission('filename', 'ROLE_BUDGET');
 
@@ -87,7 +84,7 @@ class ProductCrudController extends BaseCrudController
             ->setCurrency('EUR')
             ->setLabel('Prix réel unitaire (HTVA)');
 
-        $file = ImageField::new('filename')->setUploadDir('public/files/products/')->setLabel('Facture')->setUploadedFileNamePattern('[slug]-[contenthash].[extension]');;
+        $file = ImageField::new('filename')->setUploadDir('public/files/products/')->setLabel('Facture')->setUploadedFileNamePattern('[slug]-[contenthash].[extension]');
 
         return [$name, $quantity, $price, $tva, $supplier, $realPrice, $file];
     }
@@ -115,6 +112,14 @@ class ProductCrudController extends BaseCrudController
             ->generateUrl() . '#subcategory-' . $id);
     }
 
+    public function download(AdminContext $context)
+    {
+        /** @var Product $entity */
+        $entity = $context->getEntity()->getInstance();
+
+        return $this->redirect('/files/products/' . $entity->getFilename());
+    }
+
     protected function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
     {
         $id = $this->request->get('subcategory_id');
@@ -126,12 +131,5 @@ class ProductCrudController extends BaseCrudController
             ->generateUrl() . '#subcategory-' . $id;
 
         return $this->redirect($url);
-    }
-
-    public function download(AdminContext $context)
-    {
-        /** @var Product $entity */
-        $entity = $context->getEntity()->getInstance();
-        return $this->redirect('/files/products/'.$entity->getFilename());
     }
 }

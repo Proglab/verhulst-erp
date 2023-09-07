@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Security\Voter;
 
-use App\Entity\Budget\Budget;
 use App\Entity\Budget\Event;
 use App\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -24,7 +25,7 @@ class CanUpdateEventVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, [self::EDIT, self::UNARCHIVE])
+        return \in_array($attribute, [self::EDIT, self::UNARCHIVE], true)
             && $subject instanceof Event;
     }
 
@@ -40,7 +41,7 @@ class CanUpdateEventVoter extends Voter
             return false;
         }
 
-        if ($attribute !== self::UNARCHIVE) {
+        if (self::UNARCHIVE !== $attribute) {
             if ($subject->isArchived()) {
                 return false;
             }

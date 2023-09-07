@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Budget;
 
 use App\Repository\Budget\VatRepository;
@@ -7,7 +9,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
 
 #[ORM\Table(name: 'budget_vat')]
 #[ORM\Entity(repositoryClass: VatRepository::class)]
@@ -27,6 +28,11 @@ class Vat
     public function __construct()
     {
         $this->product = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->percent . '%';
     }
 
     public function getId(): ?int
@@ -74,9 +80,5 @@ class Vat
         }
 
         return $this;
-    }
-
-    public function __toString() {
-        return $this->percent.'%';
     }
 }
