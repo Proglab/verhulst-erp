@@ -12,12 +12,16 @@ use App\Repository\CompanyContactRepository;
 use App\Repository\UserRepository;
 use App\Service\SecurityChecker;
 use Doctrine\ORM\QueryBuilder;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
@@ -54,7 +58,7 @@ class CompanyContactCrudController extends BaseCrudController
             ->setEntityLabelInSingular('Client')
             ->showEntityActionsInlined(true)
             ->overrideTemplate('crud/detail', 'admin/crud/detail_2cols.html.twig')
-        ->setSearchFields(['firstname', 'lastname', 'company.name', 'email', 'phone', 'gsm', 'note', 'lang', 'company.vat_number']);
+            ->setSearchFields(['firstname', 'lastname', 'company.name', 'email', 'phone', 'gsm', 'note', 'lang', 'company.vat_number']);
 
         return parent::configureCrud($crud);
     }
@@ -64,6 +68,16 @@ class CompanyContactCrudController extends BaseCrudController
         return $filters
             ->add(AddedByFilter::new('added_by')->setLabel('Commercial'))
         ;
+    }
+
+    public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
+    {
+        $searchDto = new SearchDto($searchDto->getRequest(), $searchDto->getSearchableProperties(), '"'.$searchDto->getQuery().'"', $searchDto->getSort(), $searchDto->getSort(), $searchDto->getAppliedFilters());
+
+        $queryBuilder = parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters);
+
+        $queryBuilder->orWhere('CONCAT(entity.firstname, \' \', entity.lastname) LIKE :query_for_text_1');
+        return $queryBuilder;
     }
 
     public function configureFields(string $pageName): iterable
