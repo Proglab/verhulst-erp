@@ -23,6 +23,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class EventCrudController extends BaseCrudController
@@ -179,7 +180,7 @@ class EventCrudController extends BaseCrudController
         return $qb;
     }
 
-    public function archive(AdminContext $context)
+    public function archive(AdminContext $context): RedirectResponse
     {
         /** @var Event $order */
         $order = $context->getEntity()->getInstance();

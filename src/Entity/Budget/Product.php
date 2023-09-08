@@ -39,7 +39,7 @@ class Product
     private ?Supplier $supplier = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    private ?string $real_price = null;
+    private ?float $real_price = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $filename = null;
@@ -136,12 +136,12 @@ class Product
         return $this;
     }
 
-    public function getRealPrice(): ?string
+    public function getRealPrice(): ?float
     {
         return $this->real_price;
     }
 
-    public function setRealPrice(?string $real_price): static
+    public function setRealPrice(?float $real_price): static
     {
         $this->real_price = $real_price;
 

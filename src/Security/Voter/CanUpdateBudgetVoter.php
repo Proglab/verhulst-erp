@@ -40,12 +40,6 @@ class CanUpdateBudgetVoter extends Voter
             return false;
         }
 
-        if (self::UNARCHIVE !== $attribute) {
-            if ($subject->getEvent()->isArchived()) {
-                return false;
-            }
-        }
-
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case self::EDIT:
