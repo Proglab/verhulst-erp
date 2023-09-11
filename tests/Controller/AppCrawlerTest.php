@@ -13,7 +13,7 @@ class AppCrawlerTest extends AbstractControllerTest
         '#',
         '',
         '/deconnexion',
-        '/admin/fr/'
+        '/admin/fr/',
     ];
 
     protected function setUp(): void
@@ -63,19 +63,20 @@ class AppCrawlerTest extends AbstractControllerTest
         self::bootKernel();
         $this->checkUrl($this->urls, $client, $this->url);
     }
-/**
-    public function testCrawlLinksConnectedAsEncodeur()
-    {
-        $user = $this->userRepository->findOneBy(['email' => 'encodeur@verhulst.be']);
-        $this->client->loginUser($user);
 
-        $client = $this->client;
-
-        $this->url = '/admin/fr';
-        self::bootKernel();
-        $this->checkUrl($this->urls, $client, $this->url);
-    }
-**/
+    /**
+     * public function testCrawlLinksConnectedAsEncodeur()
+     * {
+     * $user = $this->userRepository->findOneBy(['email' => 'encodeur@verhulst.be']);
+     * $this->client->loginUser($user);.
+     *
+     * $client = $this->client;
+     *
+     * $this->url = '/admin/fr';
+     * self::bootKernel();
+     * $this->checkUrl($this->urls, $client, $this->url);
+     * }
+     **/
     public function testCrawlLinksConnectedAsBudget()
     {
         $user = $this->userRepository->findOneBy(['email' => 'budget@verhulst.be']);
