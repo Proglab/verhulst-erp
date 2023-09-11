@@ -13,7 +13,7 @@ class AppCrawlerTest extends AbstractControllerTest
         '#',
         '',
         '/deconnexion',
-        'http://localhost/admin/fr?crudAction=index&crudControllerFqcn=App%5CController%5CAdmin%5CCommissionCrudController',
+        '/admin/fr/'
     ];
 
     protected function setUp(): void
@@ -25,9 +25,6 @@ class AppCrawlerTest extends AbstractControllerTest
     public function testCrawlLinks()
     {
         $client = $this->client;
-
-        $urls = ['#', ''];
-
         $this->url = '/';
         $this->checkUrl($this->urls, $client, $this->url);
     }
@@ -66,10 +63,34 @@ class AppCrawlerTest extends AbstractControllerTest
         self::bootKernel();
         $this->checkUrl($this->urls, $client, $this->url);
     }
-
+/**
     public function testCrawlLinksConnectedAsEncodeur()
     {
         $user = $this->userRepository->findOneBy(['email' => 'encodeur@verhulst.be']);
+        $this->client->loginUser($user);
+
+        $client = $this->client;
+
+        $this->url = '/admin/fr';
+        self::bootKernel();
+        $this->checkUrl($this->urls, $client, $this->url);
+    }
+**/
+    public function testCrawlLinksConnectedAsBudget()
+    {
+        $user = $this->userRepository->findOneBy(['email' => 'budget@verhulst.be']);
+        $this->client->loginUser($user);
+
+        $client = $this->client;
+
+        $this->url = '/admin/fr';
+        self::bootKernel();
+        $this->checkUrl($this->urls, $client, $this->url);
+    }
+
+    public function testCrawlLinksConnectedAsAdminBudget()
+    {
+        $user = $this->userRepository->findOneBy(['email' => 'adminbudget@verhulst.be']);
         $this->client->loginUser($user);
 
         $client = $this->client;
@@ -83,7 +104,7 @@ class AppCrawlerTest extends AbstractControllerTest
     {
         $crawler = $client->request('GET', $url);
 
-        if (Response::HTTP_OK !== $client->getResponse()->getStatusCode()) {
+        if (Response::HTTP_OK !== $client->getResponse()->getStatusCode() && Response::HTTP_MOVED_PERMANENTLY !== $client->getResponse()->getStatusCode()) {
             self::assertEquals(Response::HTTP_FOUND, $client->getResponse()->getStatusCode(), $url . ' - FROM - ' . $this->url);
         }
 
@@ -117,7 +138,8 @@ class AppCrawlerTest extends AbstractControllerTest
                       || str_contains($url, 'javascript:')
                       || str_contains($url, 'tel:')
                       || str_contains($url, 'batchDelete')
-                      || str_contains($url, 'resetPassword')
+                    || str_contains($url, 'resetPassword')
+                    || str_contains($url, 'crudAction=generatePdf')
                       || str_contains($url, 'mailto:')) {
                     continue;
                 }

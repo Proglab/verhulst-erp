@@ -113,5 +113,27 @@ class UserFixtures extends Fixture
             ]);
         ++$i;
         $this->addReference('user_' . $i, $user->object());
+        $user = UserFactory::new()
+            ->enabled()
+            ->verified()
+            ->create([
+                'firstname' => 'Admin', // 1
+                'lastname' => 'Budget',
+                'email' => 'adminbudget@verhulst.be',
+                'roles' => ['ROLE_ADMIN_BUDGET'],
+            ]);
+        ++$i;
+        $this->addReference('user_' . $i, $user->object());
+        $user = UserFactory::new()
+            ->enabled()
+            ->verified()
+            ->create([
+                'firstname' => 'User', // 1
+                'lastname' => 'Budget',
+                'email' => 'budget@verhulst.be',
+                'roles' => ['ROLE_BUDGET'],
+            ]);
+        ++$i;
+        $this->addReference('user_' . $i, $user->object());
     }
 }

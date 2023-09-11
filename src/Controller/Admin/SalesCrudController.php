@@ -472,7 +472,7 @@ class SalesCrudController extends BaseCrudController
                     $project = $sale->getProduct()->getProject();
                 } else {
                     if ($project !== $sale->getProduct()->getProject()) {
-                        $this->addFlash('danger', 'Un bon de commande doit être pour la même projet');
+                        $this->addFlash('danger', 'Un bon de commande doit être pour le même projet');
 
                         return $this->redirect($this->adminUrlGenerator->setAction(Action::INDEX)->generateUrl());
                     }
@@ -481,8 +481,14 @@ class SalesCrudController extends BaseCrudController
                 $bdc->addSale($sale);
             }
         } else {
-            $sale = $this->salesRepository->find($context->getRequest()->get('entityId'));
-            $bdc->addSale($sale);
+            if (null !== $context->getRequest()->get('entityId')) {
+                $sale = $this->salesRepository->find($context->getRequest()->get('entityId'));
+                $bdc->addSale($sale);
+            } else {
+                $this->addFlash('danger', 'Aucune vente sélectionnée');
+
+                return $this->redirect($this->adminUrlGenerator->setController(self::class)->setAction(Action::INDEX)->generateUrl());
+            }
         }
 
         $this->bdcRepository->save($bdc, true);

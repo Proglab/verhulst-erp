@@ -14,6 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
@@ -24,6 +25,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class EventCrudController extends BaseCrudController
@@ -142,7 +144,7 @@ class EventCrudController extends BaseCrudController
         parent::persistEntity($entityManager, $entityInstance);
     }
 
-    public function detail(AdminContext $context)
+    public function detail(AdminContext $context): KeyValueStore|Response
     {
         $user = $this->getUser();
         $entity = $context->getEntity()->getInstance();
@@ -152,7 +154,7 @@ class EventCrudController extends BaseCrudController
         throw new AccessDeniedHttpException('Vous n\'avez pas le droit d\'accéder à cet event');
     }
 
-    public function edit(AdminContext $context)
+    public function edit(AdminContext $context): KeyValueStore|Response
     {
         $user = $this->getUser();
         $entity = $context->getEntity()->getInstance();
@@ -162,7 +164,7 @@ class EventCrudController extends BaseCrudController
         throw new AccessDeniedHttpException('Vous n\'avez pas le droit de modifier cet event');
     }
 
-    public function delete(AdminContext $context)
+    public function delete(AdminContext $context): KeyValueStore|Response
     {
         $user = $this->getUser();
         $entity = $context->getEntity()->getInstance();
