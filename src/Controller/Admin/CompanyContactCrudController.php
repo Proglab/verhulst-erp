@@ -75,8 +75,9 @@ class CompanyContactCrudController extends BaseCrudController
         $searchDto = new SearchDto($searchDto->getRequest(), $searchDto->getSearchableProperties(), '"' . $searchDto->getQuery() . '"', $searchDto->getSort(), $searchDto->getSort(), $searchDto->getAppliedFilters());
 
         $queryBuilder = parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters);
-
-        $queryBuilder->orWhere('CONCAT(entity.firstname, \' \', entity.lastname) LIKE :query_for_text_1');
+        if ($queryBuilder->getParameter('added_by') === null) {
+            $queryBuilder->andWhere('CONCAT(entity.firstname, \' \', entity.lastname) LIKE :query_for_text_1');
+        }
 
         return $queryBuilder;
     }
