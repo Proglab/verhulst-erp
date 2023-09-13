@@ -139,13 +139,14 @@
                               <table class="table datagrid shadow-sm rounded">
                                  <thead>
                                  <tr>
-                                    <th scope="col" class="col-3" style="background: #000080  !important ;"><span>Nom</span></th>
+                                    <th scope="col" class="col-2" style="background: #000080  !important ;"><span>Nom</span></th>
                                     <th scope="col" class="col-3" style="background: #000080  !important ;"><span>Description</span></th>
                                     <th scope="col" class="col-1" style="background: #000080 !important ;"><span>PU</span></th>
                                     <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Quantité</span></th>
                                     <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Total HT</span></th>
                                     <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Offre HT</span></th>
                                     <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Facture HT</span></th>
+                                    <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Fournisseur</span></th>
                                     <th scope="col" class="col-1" style="background: #000080 !important ;" dir="ltr"></th>
                                  </tr>
                                  </thead>
@@ -159,6 +160,7 @@
                                     <td style="font-size:medium;">{{ product.totalPrice|number_format(2, ',', ' ') }}€</td>
                                     <td style="font-size:medium;">{{ product.offerPrice|number_format(2, ',', ' ') }}€</td>
                                     <td style="font-size:medium;">{{ product.totalRealPrice|number_format(2, ',', ' ') }}€</td>
+                                    <td style="font-size:medium;">{{ product.supplier }}</td>
                                     <td class="actions">
                                        {% if is_granted('budget-edit', entity.instance) %}
                                           {% if product.filename is not null %}
