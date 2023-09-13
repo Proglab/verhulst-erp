@@ -35,7 +35,7 @@ class Product
     private ?Vat $vat = null;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Supplier $supplier = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
@@ -43,6 +43,12 @@ class Product
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $filename = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $description = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $offer_price = null;
 
     public function getId(): ?int
     {
@@ -183,5 +189,29 @@ class Product
     public function getVatTotalRealPrice(): float
     {
         return $this->getTotalRealPriceVat() - $this->getTotalRealPrice();
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getOfferPrice(): ?string
+    {
+        return $this->offer_price;
+    }
+
+    public function setOfferPrice(?string $offer_price): static
+    {
+        $this->offer_price = $offer_price;
+
+        return $this;
     }
 }

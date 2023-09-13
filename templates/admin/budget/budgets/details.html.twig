@@ -140,14 +140,12 @@
                                  <thead>
                                  <tr>
                                     <th scope="col" class="col-3" style="background: #000080  !important ;"><span>Nom</span></th>
+                                    <th scope="col" class="col-3" style="background: #000080  !important ;"><span>Description</span></th>
+                                    <th scope="col" class="col-1" style="background: #000080 !important ;"><span>PU</span></th>
                                     <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Quantité</span></th>
-                                    <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Prix</span></th>
-                                    <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Prix total HT</span></th>
-                                    <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Prix total Réel HT</span></th>
-                                    <th scope="col" class="col-1" style="background: #000080 !important ;"><span>% TVA</span></th>
-                                    <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Prix TVA</span></th>
-                                    <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Prix total Tvac</span></th>
-                                    <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Prix total Réel TVAC</span></th>
+                                    <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Total HT</span></th>
+                                    <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Offre HT</span></th>
+                                    <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Facture HT</span></th>
                                     <th scope="col" class="col-1" style="background: #000080 !important ;" dir="ltr"></th>
                                  </tr>
                                  </thead>
@@ -155,14 +153,12 @@
                                  {% for product in subcategory.products %}
                                  <tr>
                                     <th scope="row" style="font-size:medium;">{{ product.title }}</th>
-                                    <td style="font-size:medium;">{{ product.quantity|number_format(0, ',', ' ') }}</td>
+                                    <th scope="row" style="font-size:medium;">{{ product.description }}</th>
                                     <td style="font-size:medium;">{{ product.price|number_format(2, ',', ' ') }}€</td>
+                                    <td style="font-size:medium;">{{ product.quantity|number_format(0, ',', ' ') }}</td>
                                     <td style="font-size:medium;">{{ product.totalPrice|number_format(2, ',', ' ') }}€</td>
+                                    <td style="font-size:medium;">{{ product.offerPrice|number_format(2, ',', ' ') }}€</td>
                                     <td style="font-size:medium;">{{ product.totalRealPrice|number_format(2, ',', ' ') }}€</td>
-                                    <td style="font-size:medium;">{{ product.vat.percent|number_format(2, ',', ' ') }}%</td>
-                                    <td style="font-size:medium;">{{ product.vatPrice|number_format(2, ',', ' ') }}€</td>
-                                    <td style="font-size:medium;">{{ product.totalPriceVat|number_format(2, ',', ' ') }}€</td>
-                                    <td style="font-size:medium;">{{ product.totalRealPriceVat|number_format(2, ',', ' ') }}€</td>
                                     <td class="actions">
                                        {% if is_granted('budget-edit', entity.instance) %}
                                           {% if product.filename is not null %}

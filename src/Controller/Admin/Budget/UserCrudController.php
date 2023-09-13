@@ -115,7 +115,14 @@ class UserCrudController extends BaseCrudController
         $lastname = TextField::new('lastName')->setLabel('Nom');
         $locale = ChoiceField::new('locale')->allowMultipleChoices(false)->renderExpanded(true)->setChoices(['Français' => 'fr', 'English' => 'en', 'Nederland' => 'nl'])->setLabel('Langue');
         $twoFa = BooleanField::new('isTotpEnabled')->setLabel('Double authentification');
-        $role = ChoiceField::new('roles')->allowMultipleChoices(true)->renderExpanded(true)->setChoices(['Admin budget' => 'ROLE_ADMIN_BUDGET', 'Assistant budget' => 'ROLE_BUDGET'])->setLabel('Rôle');
+        $role = ChoiceField::new('roles')->allowMultipleChoices(true)->renderExpanded(true)->setChoices([
+            'Admin' => 'ROLE_ADMIN',
+            'Commercial' => 'ROLE_COMMERCIAL',
+            'Encodeur' => 'ROLE_ENCODE',
+            'Compta' => 'ROLE_COMPTA',
+            'Budget' => 'ROLE_BUDGET',
+            'Budget admin' => 'ROLE_ADMIN_BUDGET',
+        ])->setLabel('Rôle');
         $enabled = BooleanField::new('enabled')->setLabel('Validé');
 
         $response = match ($pageName) {
@@ -152,9 +159,8 @@ class UserCrudController extends BaseCrudController
     {
         /** @var QueryBuilder $qb */
         $qb = $this->container->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
-        $qb->andWhere('entity.roles LIKE :searchTerm OR entity.roles LIKE :searchTerm2')
-            ->setParameter('searchTerm', '%ROLE_BUDGET%')
-            ->setParameter('searchTerm2', '%ROLE_ADMIN_BUDGET%');
+        $qb->andWhere('entity.roles NOT LIKE :searchTerm')
+            ->setParameter('searchTerm', '%ROLE_BOSS%');
 
         return $qb;
     }

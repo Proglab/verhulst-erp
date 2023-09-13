@@ -31,8 +31,23 @@
                      <li>{{ assistant.fullname }}</li>
                   {% endfor %}
                </ul></li>
-            <li class="list-group-item"><strong>Commission :</strong> {{ entity.instance.percent }}%</li>
+            <li class="list-group-item"><strong>Frais d'agence :</strong> {{ entity.instance.percent }}%</li>
+            {% set total = 0 %}
+            {% for budget in entity.instance.budgets %}
+               {% set total = total + budget.totalPrice + budget.fee %}
+            {% endfor %}
+            <li class="list-group-item"><strong>Prix total HT :</strong> {{ total|number_format(2, ',', ' ') }}€</li>
+            {% set total = 0 %}
+            {% for budget in entity.instance.budgets %}
+               {% set total = total + budget.totalPriceVat + budget.totalFeeVat %}
+            {% endfor %}
+            <li class="list-group-item"><strong>Prix total TVAC :</strong> {{ total|number_format(2, ',', ' ') }}€</li>
          </ul>
+
+
+
+
+
          <div class="card-body">
             <div class="mb-3 d-flex justify-content-between align-items-center"><strong>Budgets :</strong>
                {% if is_granted('event-edit', entity.instance) %}

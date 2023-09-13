@@ -66,27 +66,35 @@ class ProductCrudController extends BaseCrudController
     {
         $name = TextField::new('title')->setLabel('Nom du produit')
             ->setRequired(true);
+        $description = TextField::new('description')->setLabel('Description du produit')
+            ->setRequired(false);
         $quantity = NumberField::new('quantity')->setLabel('Quantité')
             ->setRequired(true);
         $price = MoneyField::new('price')->setStoredAsCents(false)
             ->setNumDecimals(2)
             ->setRequired(true)
             ->setCurrency('EUR')
-            ->setLabel('Prix');
+            ->setLabel('PU');
         $tva = AssociationField::new('vat', 'Tva')
             ->setRequired(true);
         $supplier = AssociationField::new('supplier', 'Fournisseur')
-            ->setRequired(true);
+            ->setRequired(false);
 
         $realPrice = MoneyField::new('real_price')->setStoredAsCents(false)
             ->setNumDecimals(2)
             ->setRequired(false)
             ->setCurrency('EUR')
-            ->setLabel('Prix réel unitaire (HTVA)');
+            ->setLabel('Prix unitaire facture (HTVA)');
+
+        $offerPrice = MoneyField::new('offer_price')->setStoredAsCents(false)
+            ->setNumDecimals(2)
+            ->setRequired(false)
+            ->setCurrency('EUR')
+            ->setLabel('Prix unitaire offre (HTVA)');
 
         $file = ImageField::new('filename')->setUploadDir('public/files/products/')->setLabel('Facture')->setUploadedFileNamePattern('[slug]-[contenthash].[extension]');
 
-        return [$name, $quantity, $price, $tva, $supplier, $realPrice, $file];
+        return [$name, $description, $price, $quantity, $tva, $supplier, $offerPrice, $realPrice, $file];
     }
 
     /**

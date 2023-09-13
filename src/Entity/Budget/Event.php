@@ -34,13 +34,16 @@ class Event
     private Collection $users;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $date = null;
+    private ?\DateTimeInterface $date_start = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $date_end = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
     private ?float $percent = null;
 
     #[ORM\Column]
-    private ?bool $archived = null;
+    private ?bool $archived = false;
 
     public function __construct()
     {
@@ -131,14 +134,26 @@ class Event
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDateStart(): ?\DateTimeInterface
     {
-        return $this->date;
+        return $this->date_start;
     }
 
-    public function setDate(?\DateTimeInterface $date): static
+    public function setDateStart(?\DateTimeInterface $date): static
     {
-        $this->date = $date;
+        $this->date_start = $date;
+
+        return $this;
+    }
+
+    public function getDateEnd(): ?\DateTimeInterface
+    {
+        return $this->date_end;
+    }
+
+    public function setDateEnd(?\DateTimeInterface $date): static
+    {
+        $this->date_end = $date;
 
         return $this;
     }

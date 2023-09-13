@@ -124,12 +124,13 @@ class EventCrudController extends BaseCrudController
         )->setLabel('Assistants');
 
         $assistantsList = CollectionField::new('users')->setLabel('Assistants');
-        $date = DateField::new('date')->setFormat('dd/MM/yyyy');
+        $dateStart = DateField::new('date_start')->setFormat('dd/MM/yyyy')->setLabel('Date de début');
+        $dateEnd = DateField::new('date_end')->setFormat('dd/MM/yyyy')->setLabel('Date de fin');
         $percent = PercentField::new('percent')->setLabel('Pourcentage de commission')->setNumDecimals(2)->setStoredAsFractional(false);
 
         return match ($pageName) {
-            Crud::PAGE_INDEX, Crud::PAGE_DETAIL => [$name, $date, $percent, $admin, $assistantsList],
-            default => [$name, $date, $percent, $admin, $assistants],
+            Crud::PAGE_INDEX, Crud::PAGE_DETAIL => [$name, $dateStart, $dateEnd, $percent, $admin, $assistantsList],
+            default => [$name, $dateStart, $dateEnd, $percent, $admin, $assistants],
         };
     }
 
