@@ -68,7 +68,7 @@ class Project
     {
         if ($this->id) {
             $this->id = null;
-            $this->name = $this->name . ' (clone)';
+            $this->name .= ' (clone)';
             $this->product_divers = new ArrayCollection();
             $this->product_event = new ArrayCollection();
             $this->product_package = new ArrayCollection();

@@ -124,7 +124,6 @@ class UserCrudController extends BaseCrudController
             'Compta' => 'ROLE_COMPTA',
             'Budget' => 'ROLE_BUDGET',
             'Budget admin' => 'ROLE_ADMIN_BUDGET',
-
         ])->setLabel('Rôle');
         $enabled = BooleanField::new('enabled')->setLabel('Validé');
         $freelance = ChoiceField::new('com')->setLabel('Type de Commisssion')->setChoices([
@@ -169,6 +168,7 @@ class UserCrudController extends BaseCrudController
         $qb = $this->container->get(EntityRepository::class)->createQueryBuilder($searchDto, $entityDto, $fields, $filters);
         $qb->andWhere('entity.roles NOT LIKE :searchTerm')
             ->setParameter('searchTerm', '%ROLE_BOSS%');
+
         return $qb;
     }
 }

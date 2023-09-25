@@ -132,7 +132,7 @@ class SalesBdc
         return $this;
     }
 
-    public function getTotal()
+    public function getTotal(): float
     {
         $total = 0;
         /** @var Sales $sale */
