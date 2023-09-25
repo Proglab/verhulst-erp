@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\SalesBdc;
 use Dompdf\Dompdf;
+use Dompdf\Options;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -99,7 +100,12 @@ class SalesBdcCrudController extends BaseCrudController
             'logo' => 'app-logo.png',
             'bdc' => $bdc,
         ]);
-        $dompdf = new Dompdf(['enable_remote' => true]);
+
+        $options = new Options();
+        $options->set('isPhpEnabled', true);
+        $options->set('enable_remote', true);
+
+        $dompdf = new Dompdf($options);
         $dompdf->getOptions()->setChroot(realpath(__DIR__ . '/../../../public/'));
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->loadHtml($html->getContent());

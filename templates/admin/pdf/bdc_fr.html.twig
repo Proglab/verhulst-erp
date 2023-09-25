@@ -1,247 +1,218 @@
-<!DOCTYPE html>
 <html>
 <head>
     <style>
-        body {
-            font-family: helvetica;
-            font-size: 12px;
-            margin-top: 100px;
-            margin-bottom: 50px;
+        * {
+            font-family: "Helvetica ";
         }
-        h1 { margin: 25px 0 5px 0; }
-        h1, h2, th, .color { color: #ff0000; }
-        a { color: #000000; }
-        .grey { color: #777777; }
-
-        main {
-            margin: 0px 25px;
-        }
-        header,
-        footer {
-            background-color: #BFBFBF;
-            color: #ffffff;
+        @page { margin: 3cm 0 0 0; }
+        img#header {
             position: fixed;
-            left: 0px;
-            right: 0px;
+            top: -3cm;
+            left: 0;
+            width: 33.87%;
+        }
+        img#footer {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 25.4%;
+        }
+        .content {
+            margin-left: 1.2cm;
+            margin-right: 6cm;
+            margin-bottom: 2cm;
+            display: block;
         }
         header {
-            top: 0px;
-            height: 50px;
-            padding: 10px;
+            position: fixed;
+            top: -2cm;
+            left: 10cm;
+            right: 0cm;
+            height: 2cm;
+            text-align: left;
+            font-size: 0.7cm;
         }
         footer {
-            bottom: 0px;
-            height: 30px;
-            padding: 10px;
+            position: fixed;
             text-align: center;
-        }
-        header a,
-        footer a {
-            color: #ffffff;
-        }
-        img.logo-icon {
-            width: 170px;
+            bottom: 1cm;
+            left: 0cm;
+            width: 100%;
+            font-size: 11px;
         }
         th, td {
             padding: 0;
             margin: 0;
+            vertical-align: top;
         }
         td.type {
             font-size: 24px;
             font-weight: bold;
         }
-        td.border {
-            border: solid 1px #BFBFBF;
-            height: 60px;
-            text-align: center;
+        td {
+            border-bottom: solid 1px;
+            padding: 0.5cm 0cm ;
         }
         .page_break {
             page-break-before: always;
         }
+        th {
+            color: #ff0000;
+            padding: 0.5cm 0cm ;
+            border-top: solid 1px;
+            border-bottom: solid 1px;
+            border-color: #000000;
+        }
+        table {
+            padding: 0;
+            margin: 0;
+        }
+
+        .information {
+            margin-left: 1.2cm;
+            margin-right: 1.2cm;
+            margin-bottom: 0.2cm;
+            padding-top: 0.5cm;
+            display: block;
+            vertical-align: top;
+        }
     </style>
 </head>
 <body>
-<header>
-    <table width="100%">
-        <tr>
-            <td width="50%" align="left">
-                <a href="https://www.thefriends.be/" title="The Friends by Verhulst"><img class="logo-icon" src="https://www.thefriends.be/layout/uploads/2023/04/Logo_Home.png" alt="The Friends by Verhulst"></a>
-            </td>
-            <td width="50%" align="right" class="type">
-                Bon de commande
-            </td>
-        </tr>
-    </table>
+<header style="font-size: 16px; margin-top: 15px;">
+    <strong>BON DE COMMANDE</strong><br>
+    N° {{ bdc.id }}
 </header>
 
-
 <footer>
-    <a href="https://www.thefriends.be/" title="The Friends by Verhulst"><b><i>Verhulst and Friends</i></b> s.a./n.v.</a> | Avenue Albert 1er, 146 | 1332 Genval | {{ 'BE'|countryFullName }}<br>
-    Tel: <a href="tel:+3226579070" title="Phone us">02/657.90.70</a> | <a href="mailto:info@verhulst.be" title="E-mail us">info@verhulst.be</a> | tva/btw : BE0427 256 492 | Bank : BE20230 0413256 56
+    <div>
+    <script type="text/php">
+        if ( isset($pdf) ) {
+            $pdf->page_script('
+                    $pdf->text(270, 815, "Page " . $PAGE_NUM . " sur " . $PAGE_COUNT, null, 8);
+            ');
+        }
+    </script>
+    </div>
 </footer>
 
-<main>
-    <table width="100%">
-        <tr>
-            <td width="50%" valign="top">
+<img src="header.png" id="header">
+<img src="footer.png" id="footer">
 
-            </td>
-            <td width="50%">
-                DATE : 	{{ bdc.creationDate|date('d/m/Y') }}<br><br>
-            </td>
-        </tr>
+<div class="information" style="font-size: 14px;">
+    DATE : {{ bdc.creationDate|date('d/m/Y') }}
+    <table width="100%" cellspacing="0" cellpadding="0" style="margin-top: 5px; border: solid 0;">
         <tr>
-            <td width="50%">
-                <b>SOCIETE:</b><br>
-                {{ bdc.sales[0].contact.company.name }}<br>
-                {{ bdc.sales[0].contact.company.street }}<br>
-                {{ bdc.sales[0].contact.company.pc }} {{ bdc.sales[0].contact.company.city }}<br>
-                {{ bdc.sales[0].contact.company.country|countryFullName }}<br>
-                TVA : {{ bdc.sales[0].contact.company.vatNumber }}
+            <td width="75%" style="vertical-align: top; margin-top: 0; padding-top: 0; color: #ff0000; border: solid 0px;">
+                <strong>REF. THE FRIENDS</strong><br>
+                <p style="color: #000000; font-size: 11px;">{{ bdc.user.fullname }}<br>
+                    {{ bdc.user.email }}</p>
             </td>
-            <td width="50%" valign="top">
-                <b>REF CUSTOMER:</b><br>
-                V&F SELLER - {{bdc.user.fullname}}<br>
-                <a href="mailto:{{bdc.user.email}}">{{bdc.user.email}}</a><br>
+            <td  style="border: solid 0; vertical-align: top; margin-top: 0; padding-top: 0; color: #ff0000;">
+                <strong>SOCIETE</strong><br>
+                <p style="color: #000000; font-size: 11px;">{{ bdc.sales.0.contact.fullname }}<br>
+                    {{ bdc.sales.0.contact.company.name }}<br>
+                    {{ bdc.sales.0.contact.company.street }}<br>
+                    {{ bdc.sales.0.contact.company.pc }} {{ bdc.sales.0.contact.company.city }}<br>
+                    {{ bdc.sales.0.contact.company.country }}<br>
+                    {{ bdc.sales.0.contact.company.vatNumber }}
+                </p>
             </td>
         </tr>
     </table>
+</div>
 
-    <h1>Bon de commande N° :	{{ bdc.creationDate|date('y') }}-{{ bdc.id }}<br>
-        {{ bdc.sales[0].product.project }}</h1>
-    SIGNATAIRE : {{ bdc.sales[0].contact.fullname }}
-    <br><br>
+    <div class="content">
+        <table cellpadding="0" cellspacing="0" width="100%">
+            <thead style="font-size: 14px;">
+                <tr><th style="text-align: left; width: 70%;">DESCRIPTION</th><th style="text-align: center; width: 10%;">Qté</th><th style="text-align: right; width: 20%;">AMOUNT</th></tr>
+            </thead>
+            <tbody style="font-size: 12px;">
+            {% for sale in bdc.sales %}
 
-    <table width="100%" style="height:{% if bdc.sales[0].contact.company.billingStreet is not null %}220px{% else %}430px{% endif %}">
-    <tr>
-        <th align="left">COMMANDE</th>
-        <th align="left">NB</th>
-        <th align="right">AMOUNT</th>
-    </tr>
-        {% set total = 0 %}
+                {% if not loop.last %}
+                <tr>
+                    <td>{{ sale.product.name }}<br>
+                        {{ sale.product.description }}
+                    </td>
+                    <td style="text-align: center;">{{ sale.quantity }}</td>
+                    <td style="text-align: right;">{{ sale.totalPrice|number_format(2, ',', '.') }} €</td>
+                </tr>
+                {% else %}
+                    <tr>
+                        <td style="border-color: #FFFFFF;">{{ sale.product.name }}<br>
+                            {{ sale.product.description }}
+                        </td>
+                        <td style="text-align: center;border-color: #FFFFFF;">{{ sale.quantity }}</td>
+                        <td style="text-align: right;border-color: #FFFFFF;">{{ sale.totalPrice|number_format(2, ',', '.') }} €</td>
+                    </tr>
+                    {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+        <table style="border-bottom: solid 1px #000000; width: 100%;" cellpadding="0" cellspacing="0">
+            <tbody>
 
-        {% for sale in bdc.sales %}
-    <tr>
-        <td>{{ sale.product }}</td>
-        <td>{{ sale.quantity }}</td>
-        <td align="right">{{ sale.totalPrice|number_format(2, ',', '.') }} €</td>
-    </tr>
-            {% set total = total + sale.totalPrice %}
-        {% endfor %}
-    </table>
-
-    <br><br>
-
-    {% set tva = total*21/100 %}
-
-    <table align="right" id="total">
-        <tr>
-            <td align="right">TOTAL (HTVA)</td>
-            <td align="right" class="color">{{ total|number_format(2, ',', '.') }} €</td>
-        </tr>
-        <tr>
-            <td align="right" class="grey">TVA 21%</td>
-            <td align="right" class="grey">{{ tva|number_format(2, ',', '.') }} €</td>
-        </tr>
-        <tr>
-            <td align="right">TOTAL TVAC</td>
-            <td align="right">{{ (total+tva)|number_format(2, ',', '.')  }} €</td>
-        </tr>
-    </table>
-    {% if bdc.sales[0].contact.company.billingStreet is not null %}
-    <h2 style="clear: both;">FACTURATION :</h2>
-
-    <table width="100%">
-        <tr><td width="30%">&nbsp;</td><td></td></tr>
-        <tr><td>Nom de l’entreprise</td><td>{{ bdc.sales[0].contact.company.name }}</td></tr>
-        <tr><td>Adresse</td><td>{{ bdc.sales[0].contact.company.billingStreet }}</td></tr>
-        <tr><td>Code postal, Ville</td><td>{{ bdc.sales[0].contact.company.billingPc }} {{ bdc.sales[0].contact.company.billingCity }}</td></tr>
-        <tr><td>Pays</td><td>{{ bdc.sales[0].contact.company.billingCountry|countryFullName }}</td></tr>
-        <tr><td>TVA :</td><td>{{ bdc.sales[0].contact.company.vatNumber }}</td></tr>
-        <tr><td>PERSONNE DE CONTACT :</td><td>{{ bdc.sales[0].contact.fullname }}</td></tr>
-        <tr><td>PHONE :</td><td>{{ bdc.sales[0].contact.phone }}</td></tr>
-        <tr><td>E-MAIL :</td><td>{{ bdc.sales[0].contact.email }}</td></tr>
-    </table>
-    {% endif %}
-    <br><br>
-
-    <table width="100%">
-        <tr><th align="left" width="30%">DATE :</th><th align="left">Signature :</th></tr>
-        <tr><td class="border"></td><td class="border"></td></tr>
-    </table>
-
-    <br><br>
-    <div class="page_break"></div>
-
-    <div>
-        <h2>CONDITIONS GENERALES DE VENTE</h2>
-        <ol>
-            <li>
-                <h3>APPLICATION</h3>
-                Les présentes conditions générales de vente (ci- après les « CGV ») sont applicables à tous les produits livrés et services prestés par VERHULST EVENTS & PARTNERS, ci-après dénommée «l’Agence», à tous les devis, commandes, conventions et factures,  sauf dérogation écrite et sans préjudices des conditions éventuelles particulières convenues par convention séparée. Elles priment les conditions d'achat du client.  Le client ne peut céder ses droits et obligations  résultant de la présente convention.
-            </li>
-            <li>
-                <h3>COMMANDES – OFFRES - ANNULATIONS</h3>
-                Le contrat n'est formé qu'après acceptation par l’Agence de la commande du client.
-                <br>L’Agence n’est liée que par les dispositions des commandes qu’elle a acceptées, par les conventions qu’elle a signées et par les présentes CGV. Toute autre disposition est exclue, notamment toute communication ou élément écrit ou verbal discuté en dehors de la commande. Les offres et devis faits par l’Agence sont révocables tant que le client ne les aura pas acceptés.  Leur durée et leur validité est de 30 jours maximum.  Les offres et devis sont établis sur la base des indications du client et pourront être modifiés si ces indications sont inexactes.Toute commande pour des prestations, des quantités ou des qualités complémentaires non prévues aux budgets initialement convenus fera l’objet d’un décompte distinct et sera payable  séparément.
-                <br>L’annulation ou la modification, totale ou partielle, par le client de sa commande après la conclusion de la convention ne sont possibles qu’avec l’autorisation expresse et écrite de l’Agence. Si le client annule totalement ou partiellement la commande, il s’oblige, outre le paiement des éventuelles prestations déjà effectuées, à indemniser l’Agence pour toutes les dépenses et pour tous les travaux déjà engagés, y compris les frais exposés par les fournisseurs, ainsi que pour la perte de bénéfice sur la partie non exécutée. Ce bénéfice est établi forfaitairement à 30 % du prix convenu (hors TVA). Si un acompte a déjà été payé conformément à l’article 5, celui-ci reste acquis à l’Agence et sera déduit des indemnités dues.
-            </li>
-            <li>
-                <h3>REPRESENTATION</h3>
-                L'agence est valablement représentée par un administrateur.  Le client est valablement représenté par le signataire du bon de commande.
-            </li>
-            <li>
-                <h3>ORGANISATION - SECURITE</h3>
-                Le client reconnaît qu’une manifestation sportive ou culturelle  attirant une grande foule n’est pas dénuée de risques importants pour la sécurité des personnes et des biens.  Il accepte de prendre en charge ce risque tant pour lui-même que pour ses invités et il avertira ces derniers  de la portée des risques à participer à une telle manifestation.  Les personnes présentes seront considérées comme volontaires . Il renonce à tous recours contre l’Agence pour tous dommages directs ou indirects, volontaires ou involontaires,  susceptibles d’intervenir à l’occasion de l’évènement commandé  et tiendra l’ gence indemne de tous recours entamés par ses invités ou par des tiers dont il répond.
-                Le client s’engage et veillera à ce que lui et ses invités se comportent en bon père de famille durant toute la manifestation ou l’évènement commandé.  A cet égard, le client décharge l’Agence de toute responsabilité pour tous dommages directs ou indirects, volontaires ou involontaires, de quelque nature que ce soit, causés par lui ou ses invités.  Il tiendra indemne l’Agence des conséquences du comportement des personnes dont il répond et de ses invités.  En cas de trouble(s) observé(s), le client accepte que le service d’ordre présent reconduise les personnes à l’origine du(des) trouble(s) à la sortie de la manifestation ou de l’évènement commandé.
-                Selon l’évènement commandé, notamment en raison des règles de sécurité en vigueur,  le client reconnaît qu’il devra communiquer les identités de ses invités au plus tard à la date limite qui lui sera communiquée par l’Agence.  En  cas de changement d’invité après cette date, dans la mesure où un changement est encore possible, le client accepte de payer les pénalités en vigueur pour cet évènement. 
-                Le client s’engage par la signature du présent contrat à faire respecter la législation , notamment la loi du 21 décembre 1998 relative à la sécurité lors des matches de football telle qu’elle a été modifiée depuis, le(s) Règlement(s) des spectateurs en vigueur, notamment ceux de police ou émanant de fédérations nationales ou internationales de football, et notamment en ce qui concerne les photographies, l’indiscipline, la tenue vestimentaire, le port d’objets interdits, etc. De plus, le client veillera à ce que ses invités s’abstiennent de porter les couleurs de l’équipe adverse.  Le client pourra être tenu responsable des dommages ou pertes résultant du non respect de la loi, de ce(s) Règlement(s) ou des dispositions reprises dans les présentes conditions générales.
-                L’Agencene peut garantir l’exact emplacement des places aux sites des événements (stades, salles de concerts, etc.) telles qu’elles  sont  mentionnées sur les invitations ou tickets d’accès.
-                En aucune circonstance, les billets/tickets volés ou perdus ne pourront être remplacés ou remboursés.
-            </li>
-            <li>
-                <h3>PAIEMENT</h3>
-                Les prix facturés par l’Agence s’entendent hors TVA et en euros.  Ils sont payables au comptant.
-                Les frais de livraison de documents par coursier sont à charge du client.
-                L’Agence se réserve le droit de répercuter sur le client les suppléments résultant d’augmentations de prix après la commande, ainsi, à titre d’ exemple, le coût des mesures de sécurité rendues nécessaires ou de nouvelles conditions imposées ou rendues nécessaires et, en cas de voyages, les nouvelles taxes d’aéroports, les suppléments carburants des transporteurs etc.
-                Sauf disposition contraire expresse, un acompte de 30 % du montant convenu lors de la signature sera payé lors de l’acceptation de la commande, et un acompte de 60 % sera payé avant le début de l’événement, et ce dans les 14 jours suivant l’envoi de la facture par l’Agence. Le solde de 10 % sera facturé après l’évènement et sera payable dans un délai de 30 jours suivant la date de la facture.
-                Toutefois en cas de vente de packages VIP, sauf disposition contraire expresse, un acompte de 50 % du montant convenu lors de la signature sera payé au moment de l’acceptation de la commande et le solde devra être payé avant la tenue de l’évènement et ce dans les 14 jours suivant l’envoi de la facture par l’Agence.
-                En cas de non paiement aux échéances prévues ci-dessus, l’Agence pourra suspendre l’exécution de ses obligations sans que cela ne consiste en une résiliation du contrat.  En ce cas, l’Agence pourra refuser l’accès du client à l’évènement.
-            </li>
-            <li>
-                <h3>RETARD DE PAIEMENT</h3>
-                A défaut de paiement à l'échéance, le montant de chacune des factures émises par l’Agence est, de plein droit et sans mise en demeure préalable, majorée d'une indemnité conventionnelle forfaitaire irréductible de 15 % et l'intérêt moratoire conventionnel au taux de 1 % par mois de retard entamé.
-            </li>
-            <li>
-                <h3>SOLIDARITE</h3>
-                En cas de pluralité de clients, ils seront tenus solidairement responsables de leurs diverses obligations et sont présumés avoir renoncé au bénéfice des divisions et de discussion.
-            </li>
-            <li>
-                <h3>RECLAMATIONS</h3>
-                Aucune réclamation ne sera admise si elle n'est adressée à l’Agence, par lettre recommandée, dans un délai de 8 jours après la fourniture des services ou livraison des produits.
-            </li>
-            <li>
-                <h3>INTERDICTION DE COMMERCIALISER  ET DROITS D’AUTEUR</h3>
-                Le client s’interdit (i) de commercialiser directement ou indirectement, (ii) de revendre, (iii) d’offrir sous forme de lots gagnants à des concours, tombolas, les produits ou services faisant l’objet des commandes. Le client s’interdit également de promouvoir ses activités commerciales en affichant des images, photos, logos, textes ou dessins, ayant trait à l’évènement commandé et dont les droits d’auteur ne lui appartiennent pas.
-            </li>
-            <li>
-                <h3>OBLIGATIONS</h3>
-                L’ Agence n’encourt strictement aucune responsabilité autre que celle du “mandataire”.  Les obligations de l’Agence sont des obligations de moyens et non de résultats.
-                L’Agence se réserve la faculté de faire exécuter tout ou partie de ses obligations par un tiers.  L’Agence s’exonère néanmoins de toute responsabilité dans le choix de ce tiers, à chaque fois qu’il lui est matériellement impossible de constater par lui-même la valeur technique et/ou la solvabilité  de ce tiers, comme par exemple : le choix d’un car fourni dans une ville étrangère. Tous les renseignements repris dans le programme de l’Agence ont été recueillis de bonne foi et présentés en toute honnêté.  Les fautes et erreurs dans les dépliants ne lient point l’Agence.
-                L’Agence ne répond pas des modifications et/ou annulations qui pourraient être apportées au programme par des cas de force majeure ou autres, indépendants de sa volonté. Elle ne pourra être tenue, par suite de modifications et/ou annulations du programme, d’effectuer des services supplémentaires ou de payer des frais supplémentaires tels des transferts, restaurants, logements etc…qui seront à charge du client. Sont généralement considérées comme force majeure toutes les circonstances empêchant, restreignant ou retardant l’exécution de la convention, ou encore celles emportant un surcroît démesuré des obligations de l’Agence. Ces évènements exonèrent l’Agence de toute responsabilité et lui donnent la possibilité, selon le cas, de restreindre ses obligations, de rompre la convention ou d’en différer l’exécution, sans que cela ne puisse entraîner une quelconque indemnité. La partie qui invoque la force majeure doit en prévenir l’autre partie et prendre toutes les mesures raisonnables pour surmonter la situation temporaire de force majeure. En cas de survenance de force majeure dans le chef de l’Agence, cette dernière pourra prendre toutes les dispositions raisonnables pour assurer au moindre coût le report de l’évènement ou la dissolution de la convention.
-                Les documents, biens, projets, etc., du client se trouvant en possession de l’Agence le sont au risque du client.  Ce dernier exonère expressément l’Agence de toute responsabilité, et plus particulièrement dans le cas d’un dommage ou perte totale ou partielle, pour quelque raison que ce soit.  L’Agence s’engage à prendre toutes les mesures raisonnables afin d’éviter la survenance d’un dommage pour le client lors de la livraison et/ou de la garde des documents, biens, projets, etc.
-            </li>
-            <li>
-                <h3>LES DEPLACEMENTS</h3>
-                Les dispositions légales en matière de contrats de voyage ne sont pas applicables aux relations contractuelles entre l’Agence et le client. Pour l’exécution des voyages, l’Agence fait appel, pour compte du client, à différents prestataires des services, tels que transporteurs, restaurateurs, etc. L’Agence ne saurait être confondue avec ces prestataires qui conserveront en tout état de cause à l’égard de tout voyageur la responsabilité propre à leurs activités aux termes des statuts qui les régissent, selon leur législation ou des conventions internationales instituant une limitation de responsabilité.  En toute hypothèse, la responsabilité de l’Agence ne saurait s’étendre au-delà des sommes prévues par la loi régissant le contrat d'organisation de voyages et le contrat d'intermédiaire de voyages qui pourrait être exigées à l’encontre de l’agence de voyage avec laquelle l’Agence traite. L’Agence ne pourra  en aucun cas être tenue pour responsable des blessures et/ou dommages causés au client ou aux personnes dont il a la charge dans la mesure où ces blessures ou dommages ne sont pas provoqués par un manquement de la part de l’Agence.
-                L’Agence n’assume aucune responsabilité en cas de vol, perte ou détérioration des bagages et effets personnels du client ou des personnes dont elle a la charge. Ceux-ci ont la faculté de souscrire une police garantissant la valeur de ces objets. Les suppléments de bagages, lorsque leur poids dépasse celui qui est autorisé par les règlements du transporteur, sont à charge du client.
-            </li>
-            <li>
-                <h3>JURIDICTION ET LOI APPLICABLE</h3>
-                Les tribunaux de Bruxelles sont seuls compétents. Le droit belge est applicable.
-            </li>
-        </ol>
+            <tr style="border-bottom: solid 0px #000000; font-size: 13px;">
+                <td width="55%"></td>
+                <td style="text-align: right; border-top: solid 1px #000000; font-size: 13px;">
+                    <strong>TOTAL</strong>
+                <td style="text-align: right; border-top: solid 1px #000000; font-size: 13px;">
+                    <strong>{{ bdc.total|number_format(2, ',', '.') }} €</strong>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div style="margin-top: 20px; color: #ff0000; font-size: 14px;">
+            <strong>FACTURATION</strong>
+        </div>
+        <table style="width: 100%; font-size: 12px;" cellpadding="0" cellspacing="0">
+            <tbody>
+            <tr style="border: 0">
+                <td width="40%" style="border: 0">
+                    <strong>Nom de l'entreprise :</strong><br>
+                    <strong>Adresse :</strong><br>
+                    <strong>Code postal, Ville :</strong><br>
+                    <strong>Pays :</strong><br>
+                    <strong>TVA :</strong><br>
+                    <strong>Personne de contact :</strong><br>
+                    <strong>Phone :</strong><br>
+                    <strong>E-Mail :</strong><br>
+                </td>
+                <td style="border: 0">
+                    {{ bdc.sales.0.contact.company.name }}<br>
+                    {{ bdc.sales.0.contact.company.street }}<br>
+                    {{ bdc.sales.0.contact.company.pc }} {{ bdc.sales.0.contact.company.city }}<br>
+                    {{ bdc.sales.0.contact.company.country }}<br>
+                    {{ bdc.sales.0.contact.company.vatNumber }}<br>
+                    {{ bdc.sales.0.contact.fullname }}<br>
+                    {% if bdc.sales.0.contact.gsm is not empty and bdc.sales.0.contact.phone is not empty %}
+                        {{ bdc.sales.0.contact.phone }} | {{ bdc.sales.0.contact.gsm }}
+                    {% endif %}
+                    {% if bdc.sales.0.contact.gsm is empty and bdc.sales.0.contact.phone is not empty %}
+                        {{ bdc.sales.0.contact.phone }}
+                    {% endif %}
+                    {% if bdc.sales.0.contact.gsm is not empty and bdc.sales.0.contact.phone is empty %}
+                        {{ bdc.sales.0.contact.gsm }}
+                    {% endif %}
+                    <br>
+                    {{ bdc.sales.0.contact.email }}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <table style="width: 100%; font-size: 12px; border-top: solid 1px #000000; border-bottom: solid 1px #000000;" cellpadding="0" cellspacing="0">
+            <tbody>
+            <tr style="border: 0">
+                <td width="40%" style="border: 0; height: 1cm; color: #ff0000;">
+                    <strong>DATE</strong>
+                </td>
+                <td style="border: 0; color: #ff0000;">
+                    <strong>SIGNATURE</strong>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
-</main>
 </body>
 </html>

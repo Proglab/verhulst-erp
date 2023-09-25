@@ -131,4 +131,15 @@ class SalesBdc
 
         return $this;
     }
+
+    public function getTotal()
+    {
+        $total = 0;
+        /** @var Sales $sale */
+        foreach ($this->sales as $sale) {
+            $total += $sale->getTotalPrice();
+        }
+
+        return $total;
+    }
 }
