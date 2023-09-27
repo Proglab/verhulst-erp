@@ -166,7 +166,7 @@ admin:
         recap_sales: Récap des ventes
         bdc: Bon de commande
         category: Catégories
-        category_ref: Catégories générales
+        category_ref: Budget Type
         event: Evènements
         app: Appli. Commerciale
         budget: Appli. Budget

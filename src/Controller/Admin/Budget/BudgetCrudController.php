@@ -6,6 +6,7 @@ namespace App\Controller\Admin\Budget;
 
 use App\Entity\Budget\Budget;
 use App\Entity\Budget\Category;
+use App\Entity\Budget\Product;
 use App\Entity\Budget\SubCategory;
 use App\Repository\Budget\EventRepository;
 use App\Repository\Budget\Ref\CategoryRepository as CategoryRepositoryRef;
@@ -102,6 +103,13 @@ class BudgetCrudController extends BaseCrudController
                 $subCategory = new SubCategory();
                 $subCategory->setName($subCategoryRef->getName());
                 $category->addSubCategory($subCategory);
+                foreach ($subCategoryRef->getProducts() as $productRef) {
+                    $product = new Product();
+                    $product->setTitle($productRef->getTitle());
+                    $product->setDescription($productRef->getDescription());
+                    $product->setVat($productRef->getVat());
+                    $subCategory->addProduct($product);
+                }
             }
             $entityInstance->addCategory($category);
         }

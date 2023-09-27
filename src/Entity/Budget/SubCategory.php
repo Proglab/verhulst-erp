@@ -25,7 +25,7 @@ class SubCategory
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 
-    #[ORM\OneToMany(mappedBy: 'sub_category', targetEntity: Product::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'sub_category', targetEntity: Product::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $products;
 
     public function __construct()

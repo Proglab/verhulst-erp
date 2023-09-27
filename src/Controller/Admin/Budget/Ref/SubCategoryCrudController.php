@@ -7,6 +7,7 @@ namespace App\Controller\Admin\Budget\Ref;
 use App\Entity\Budget\Ref\SubCategory;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class SubCategoryCrudController extends AbstractCrudController
@@ -28,7 +29,9 @@ class SubCategoryCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         $name = TextField::new('name')->setLabel('Nom');
+        $products = CollectionField::new('products', 'Produit')->useEntryCrudForm(ProductCrudController::class);
 
-        return [$name];
+
+        return [$name, $products];
     }
 }
