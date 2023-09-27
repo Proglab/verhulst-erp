@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Budget\Ref;
 
 use App\Entity\Budget\Vat;
@@ -28,6 +30,11 @@ class Product
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Vat $vat = null;
+
+    public function __toString()
+    {
+        return $this->getTitle();
+    }
 
     public function getId(): ?int
     {
@@ -80,9 +87,5 @@ class Product
         $this->vat = $vat;
 
         return $this;
-    }
-
-    public function __toString() {
-        return $this->getTitle();
     }
 }

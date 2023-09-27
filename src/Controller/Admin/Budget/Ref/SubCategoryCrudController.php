@@ -31,7 +31,6 @@ class SubCategoryCrudController extends AbstractCrudController
         $name = TextField::new('name')->setLabel('Nom');
         $products = CollectionField::new('products', 'Produit')->useEntryCrudForm(ProductCrudController::class);
 
-
         return [$name, $products];
     }
 }
