@@ -88,6 +88,12 @@ class CompanyContact
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Todo::class, orphanRemoval: true)]
     private Collection $todos;
 
+    #[ORM\Column(length: 1, nullable: true)]
+    private ?string $sex = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $greeting = null;
+
     public function __construct()
     {
         $this->sales = new ArrayCollection();
@@ -335,6 +341,30 @@ class CompanyContact
                 $todo->setClient(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSex(): ?string
+    {
+        return $this->sex;
+    }
+
+    public function setSex(?string $sex): static
+    {
+        $this->sex = $sex;
+
+        return $this;
+    }
+
+    public function getGreeting(): ?string
+    {
+        return $this->greeting;
+    }
+
+    public function setGreeting(?string $greeting): static
+    {
+        $this->greeting = $greeting;
 
         return $this;
     }
