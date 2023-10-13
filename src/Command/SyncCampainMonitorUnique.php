@@ -25,7 +25,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
     name: 'app:sync-campaign-monitor',
     description: 'Synchronisation avec le campaign monitor'
 )]
-class SyncCampainMonitor extends AbstractCommand
+class SyncCampainMonitorUnique extends AbstractCommand
 {
     protected array $contact = [];
     private $apiKey = '90KiwmAmAm9Dvzu0PhknclRWp5ZX3PF7ZI5rxdA3zsETqWepaN9FttPVrU9xn7p2FtOrga6m2KPAyTzs+UEFhfJBA5d7sb5SzrUXr1edgG30QWo8BBg/E2TktFhNrKk2f14v4TehfxoBDAkEI+QpJw==';
@@ -71,18 +71,25 @@ class SyncCampainMonitor extends AbstractCommand
                 if (empty($companyContact->getEmail())) {
                     continue;
                 }
-                if ($this->checkIfSubscriberExist($idList, $companyContact->getEmail())) {
 
-                    $contact = new Subscriber($companyContact->getEmail(), $companyContact->getFullName(), [
-                       new CustomFieldValue('Langue', $companyContact->getLang()),
-                       new CustomFieldValue('Genre', $companyContact->getSex()),
-                       new CustomFieldValue('Formule de politesse', $companyContact->getGreeting()),
-                    ]);
+                $response = $this->client->request('GET', 'https://api.createsend.com/api/v3.3/subscribers/'.$idList.'.json?email='.urldecode($companyContact->getEmail()).'&includetrackingpreference=false', [
+                    'auth_basic' => [$this->apiKey, 'the-password'],
+                ]);
 
-                    $this->createContact($idList, $contact);
+                $r = json_decode($response->getContent(false));
+                if (isset($r->Code)) {
+                    if ($r->Code == 203) {
+                        $contact = new Subscriber($companyContact->getEmail(), $companyContact->getFullName(), [
+                           new CustomFieldValue('Langue', $companyContact->getLang()),
+                           new CustomFieldValue('Genre', $companyContact->getSex()),
+                           new CustomFieldValue('Formule de politesse', $companyContact->getGreeting()),
+                        ]);
+
+                        $this->createContact($idList, $contact);
 
 
-                    //$output->writeln('Création du contact '.$contact->EmailAddress);
+                        //$output->writeln('Création du contact '.$contact->EmailAddress);
+                    }
                 } else {
                     $contact = new Subscriber($r->EmailAddress, $companyContact->getFullName(), [
                         new CustomFieldValue('Langue', $companyContact->getLang()),
@@ -104,23 +111,6 @@ class SyncCampainMonitor extends AbstractCommand
         }
 
         return Command::SUCCESS;
-    }
-
-    protected function checkIfSubscriberExist(string $idList, Subscriber $contact): bool
-    {
-        $response = $this->client->request('GET', 'https://api.createsend.com/api/v3.3/subscribers/'.$idList.'.json?email='.urldecode($contact->EmailAddress).'&includetrackingpreference=false', [
-            'auth_basic' => [$this->apiKey, 'the-password'],
-        ]);
-
-        $r = json_decode($response->getContent(false));
-
-        if (isset($r->Code)) {
-            if ($r->Code == 203) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Command\StreamedOutput;
 use App\Entity\Commission;
 use App\Entity\CompanyContact;
 use App\Entity\Css;
@@ -30,9 +31,15 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use EasyCorp\Bundle\EasyAdminBundle\Exception\ForbiddenActionException;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -122,8 +129,10 @@ class DashboardController extends AbstractDashboardController
 
             MenuItem::section('Techniciens uniquements')->setPermission('ROLE_TECH'),
             MenuItem::linkToCrud('Css', 'fas fa-brush', Css::class)->setPermission('ROLE_TECH'),
+            MenuItem::linkToRoute('Synchronise contacts', 'fa-solid fa-rotate', 'admin_sync_streamed')->setPermission('ROLE_TECH'),
             MenuItem::linkToRoute('Droits', 'fas fa-right-to-bracket', 'dashboard_droits')
                 ->setPermission('ROLE_TECH'),
+
 
             MenuItem::section(),
             MenuItem::linkToRoute('admin.menu.budget', 'fa-solid fa-sack-dollar', 'dashboard_budget_redirect')
@@ -457,4 +466,31 @@ class DashboardController extends AbstractDashboardController
             'controllers' => $params,
         ]);
     }
+
+    #[Route('{_locale}/admin/sync', name: 'admin_sync')]
+    public function sync(KernelInterface $kernel): Response
+    {
+        $response = new StreamedResponse(function() use ($kernel) {
+            $input = new ArrayInput([
+                'command' => 'app:sync-campaign-monitor'
+            ]);
+            $input->setInteractive(false);
+
+            $output = new StreamedOutput(fopen('php://stdout', 'w'));
+
+            $application = new Application($kernel);
+            $application->setAutoExit(false);
+            $application->run($input, $output);
+
+        });
+
+        return $response;
+    }
+
+    #[Route('{_locale}/admin/sync_stream', name: 'admin_sync_streamed')]
+    public function sync_stream(KernelInterface $kernel): Response
+    {
+        return $this->render('admin/sync_streamed.html.twig');
+    }
+
 }
