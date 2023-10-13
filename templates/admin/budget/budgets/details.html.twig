@@ -1,7 +1,7 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
 {% block content_title %}
-   Budget : {{ entity.instance.name }} <small>{{ entity.instance.event.name }}</small>
+   {{ entity.instance.event.name }} <small>{{ entity.instance.name }}</small>
 {% endblock %}
 {% block page_title %}Verhulst & Friends - ERP - {{ entity.instance.name }}{% endblock %}
 
