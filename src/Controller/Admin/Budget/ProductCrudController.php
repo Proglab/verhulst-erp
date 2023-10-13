@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Budget;
 
 use App\Entity\Budget\Product;
+use App\Entity\Budget\Supplier;
+use App\Form\Type\SupplierType;
 use App\Repository\Budget\SubCategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -12,6 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
@@ -83,9 +86,18 @@ class ProductCrudController extends BaseCrudController
             ->setLabel('PU');
         $tva = AssociationField::new('vat', 'Tva')
             ->setRequired(true);
-        $supplier = AssociationField::new('supplier', 'Fournisseur')
-            ->setRequired(false);
 
+        $supplier = CollectionField::new('supplier')
+            ->allowAdd(true)
+            ->setEntryIsComplex()
+            ->setEntryType(SupplierType::class)
+        ;
+
+        /**
+        $supplier = AssociationField::new('supplier', 'Fournisseur')
+            ->setRequired(true)
+            ->setCrudController(SupplierCrudController::class)->autocomplete();
+**/
         $realPrice = MoneyField::new('real_price')->setStoredAsCents(false)
             ->setNumDecimals(2)
             ->setRequired(false)

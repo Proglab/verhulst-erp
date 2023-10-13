@@ -32,198 +32,222 @@
          </div>
       </div>
    </div>
-   <div class="col-12">
-   <ul class="list-unstyled">
+<div class="col-12">
+   <div class="accordion mb-5" id="accordionExample">
       {% for category in entity.instance.categories %}
-         <li id="category-{{ category.id }}">
-            <div class="card col-12 shadow-lg mb-5 bg-body rounded" style="background-color: #f5f5f4">
-               <div class="card-body d-flex justify-content-between align-items-center">
-                  <h5 class="card-title col-5">
-                     {{ category.name }}
-                     {% if is_granted('budget-edit', entity.instance) %}
-                     <a class="btn btn-secondary ms-3" href="{{ ea_url()
-                        .setDashBoard('App\\Controller\\Admin\\Budget\\DashboardController')
-                        .setController('App\\Controller\\Admin\\Budget\\CategoryCrudController')
-                        .setAction('edit')
-                        .setEntityId(category.id)
-                        .set('budget_id', entity.instance.id)
-                     }}" title="Modifier" data-action-name="edit">
-                        <i class="action-icon fa fa-pencil-alt"></i>
-                     </a>
-                     <a class=" btn btn-danger action-delete" href="{{ ea_url()
-                        .setDashBoard('App\\Controller\\Admin\\Budget\\DashboardController')
-                        .setController('App\\Controller\\Admin\\Budget\\CategoryCrudController')
-                        .setAction('delete')
-                        .setEntityId(category.id)
-                        .set('budget_id', entity.instance.id)
-                     }}" data-bs-toggle="modal" data-bs-target="#modal-delete" formaction="{{ ea_url()
-                        .setDashBoard('App\\Controller\\Admin\\Budget\\DashboardController')
-                        .setController('App\\Controller\\Admin\\Budget\\CategoryCrudController')
-                        .setAction('delete')
-                        .setEntityId(category.id)
-                        .set('budget_id', entity.instance.id)
-                     }}" data-action-name="delete">
-                        <i class="action-icon fa fa-trash"></i>
-                     </a>
-                     {% endif %}
-                  </h5>
-                  <div>
-                     <strong>Prix total :</strong> {{ category.totalPrice|number_format(2, ',', ' ') }}€
-                  </div>
-                  <div>
-                     {% if is_granted('budget-edit', entity.instance) %}
-                     <a href="{{ ea_url()
-                        .setDashBoard('App\\Controller\\Admin\\Budget\\DashboardController')
-                        .setController('App\\Controller\\Admin\\Budget\\SubCategoryCrudController')
-                        .setAction('new')
-                        .setEntityId(null)
-                        .set('budget_id', entity.instance.id)
-                        .set('category_id', category.id)
-                     }}" class="btn btn-secondary" title="Ajouter une sous-catégorie" ><i class="action-icon fa fa-plus"></i> Ajouter une sous-catégorie</a>
-                     {% endif %}
-                  </div>
-               </div>
-               <div class="card-body">
-                  <ul class="list-unstyled">
-                     {% for subcategory in category.subcategories %}
-                     <li class="mb-3" id="subcategory-{{ subcategory.id }}">
-                        <div class="card shadow mb-3 rounded">
-                           <div class="card-body d-flex justify-content-between align-items-center">
-                              <h5 class="card-title col-5">
-                                 {{ subcategory.name }}
-                                 {% if is_granted('budget-edit', entity.instance) %}
-                                 <a class="btn btn-secondary ms-3" href="{{ ea_url()
-                                    .setDashBoard('App\\Controller\\Admin\\Budget\\DashboardController')
-                                    .setController('App\\Controller\\Admin\\Budget\\SubCategoryCrudController')
-                                    .setAction('edit')
-                                    .setEntityId(subcategory.id)
-                                    .set('budget_id', entity.instance.id)
-                                    .set('category_id', category.id) }}" title="Modifier" data-action-name="edit">
-                                    <i class="action-icon fa fa-pencil-alt"></i>
-                                 </a>
-                                 <a class=" btn btn-danger action-delete" href="{{ ea_url()
-                                    .setDashBoard('App\\Controller\\Admin\\Budget\\DashboardController')
-                                    .setController('App\\Controller\\Admin\\Budget\\SubCategoryCrudController')
-                                    .setAction('delete')
-                                    .setEntityId(subcategory.id)
-                                    .set('budget_id', entity.instance.id)
-                                    .set('category_id', category.id) }}"
-                                    data-bs-toggle="modal" data-bs-target="#modal-delete" formaction="{{ ea_url()
-                                    .setDashBoard('App\\Controller\\Admin\\Budget\\DashboardController')
-                                    .setController('App\\Controller\\Admin\\Budget\\SubCategoryCrudController')
-                                    .setAction('delete')
-                                    .setEntityId(subcategory.id)
-                                    .set('budget_id', entity.instance.id)
-                                    .set('category_id', category.id) }}" data-action-name="delete">
-                                    <i class="action-icon fa fa-trash"></i>
-                                 </a>
-                                 {% endif %}
-                              </h5>
 
-                              <div>
-                                 <strong>Prix total :</strong> {{ subcategory.totalPrice|number_format(2, ',', ' ') }}€
-                              </div>
-                              {% if is_granted('budget-edit', entity.instance) %}
-                              <a href="{{ ea_url()
-                                 .setDashBoard('App\\Controller\\Admin\\Budget\\DashboardController')
-                                 .setController('App\\Controller\\Admin\\Budget\\ProductCrudController')
-                                 .setAction('new')
-                                 .setEntityId(null)
-                                 .set('budget_id', entity.instance.id)
-                                 .set('category_id', category.id)
-                                 .set('subcategory_id', subcategory.id)
-                              }}" class="btn btn-secondary"><i class="action-icon fa fa-plus"></i> Ajouter un produit</a>
-                              {% endif %}
-                           </div>
-                           <div class="card-body">
-                              <table class="table datagrid shadow-sm table-bordered ">
-                                 <thead>
-                                 <tr>
-                                    <th scope="col" class="col-2" style="background: #000080  !important ;"><span>Nom</span></th>
-                                    <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Quantité</span></th>
-                                    <th scope="col" class="col-1" style="background: #000080 !important ;"><span>PU</span></th>
-                                    <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Tot HT</span></th>
-                                    <th scope="col" class="col-1" style="background: #000080 !important ;"><span>PU Offre HT</span></th>
-                                    <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Tot Offre HT</span></th>
-                                    <th scope="col" class="col-1" style="background: #000080 !important ;"><span>PU Facture HT</span></th>
-                                    <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Tot Facture HT</span></th>
-                                    <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Fournisseur</span></th>
-                                    <th scope="col" class="col-1" style="background: #000080 !important ;" dir="ltr"></th>
-                                 </tr>
-                                 </thead>
-                                 <tbody>
-                                 {% for product in subcategory.products %}
-                                 <tr
-                                         {% if product.totalPrice <  product.totalRealPrice %} style="background-color: #FFC5D7 !important;"{% endif %}
-                                         {% if product.totalPrice >=  product.totalRealPrice and product.totalRealPrice != 0 %} style="background-color: #C5FFD9 !important;"{% endif %}
-                                 >
-                                    <th scope="row" style="font-size:medium;border-right: 1px solid #dee2e6 !important;">{{ product.title }}<br><small>{{ product.description }}</small></th>
-                                    <td style="font-size:medium;border-right: 1px solid #dee2e6 !important;">{{ product.quantity|number_format(0, ',', ' ') }}</td>
-                                    <td style="font-size:medium;border-right: 1px solid #dee2e6 !important; color: #1d4ed8 !important;">{{ product.price|number_format(2, ',', ' ') }}€</td>
-                                    <td style="font-size:medium;border-right: 1px solid #dee2e6 !important; color: #1d4ed8 !important;">{{ product.totalPrice|number_format(2, ',', ' ') }}€</td>
-                                    <td style="font-size:medium;border-right: 1px solid #dee2e6 !important; color: #0da95f !important;">{{ product.offerPrice|number_format(2, ',', ' ') }}€</td>
-                                    <td style="font-size:medium;border-right: 1px solid #dee2e6 !important; color: #0da95f !important;">{{ (product.offerPrice * product.quantity)|number_format(2, ',', ' ') }}€</td>
-                                    <td style="font-size:medium;border-right: 1px solid #dee2e6 !important; color: #854d0e !important;">{{ product.realPrice|number_format(2, ',', ' ') }}€</td>
-                                    <td style="font-size:medium;border-right: 1px solid #dee2e6 !important; color: #854d0e !important;">{{ product.totalRealPrice|number_format(2, ',', ' ') }}€</td>
-                                    <td style="font-size:medium;border-right: 1px solid #dee2e6 !important;">{{ product.supplier }}</td>
-                                    <td class="actions">
-                                       {% if is_granted('budget-edit', entity.instance) %}
-                                          {% if product.filename is not null %}
-                                          <a class=" action-download" href="{{ ea_url()
-                                             .setDashBoard('App\\Controller\\Admin\\Budget\\DashboardController')
-                                             .setController('App\\Controller\\Admin\\Budget\\ProductCrudController')
-                                             .setAction('download')
-                                             .setEntityId(product.id)
-                                             .set('budget_id', entity.instance.id)
-                                             .set('category_id', category.id)
-                                             .set('subcategory_id', subcategory.id) }}" title="Télécharger" data-action-name="edit"><i class="action-icon fa fa-download"></i> </a>
-                                          {% endif %}
-                                          <a class=" action-edit" href="{{ ea_url()
-                                             .setDashBoard('App\\Controller\\Admin\\Budget\\DashboardController')
-                                             .setController('App\\Controller\\Admin\\Budget\\ProductCrudController')
-                                             .setAction('edit')
-                                             .setEntityId(product.id)
-                                             .set('budget_id', entity.instance.id)
-                                             .set('category_id', category.id)
-                                             .set('subcategory_id', subcategory.id) }}" title="Modifier" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i> </a>
-                                          <a class=" text-danger action-delete" href="{{ ea_url()
-                                             .setDashBoard('App\\Controller\\Admin\\Budget\\DashboardController')
-                                             .setController('App\\Controller\\Admin\\Budget\\ProductCrudController')
-                                             .setAction('delete')
-                                             .setEntityId(product.id)
-                                             .set('budget_id', entity.instance.id)
-                                             .set('category_id', category.id)
-                                             .set('subcategory_id', subcategory.id) }}"
-                                             data-bs-toggle="modal" data-bs-target="#modal-delete" formaction="{{ ea_url()
-                                             .setDashBoard('App\\Controller\\Admin\\Budget\\DashboardController')
-                                             .setController('App\\Controller\\Admin\\Budget\\ProductCrudController')
-                                             .setAction('delete')
-                                             .setEntityId(product.id)
-                                             .set('budget_id', entity.instance.id)
-                                             .set('category_id', category.id)
-                                             .set('subcategory_id', subcategory.id) }}" data-action-name="delete">
-                                             <i class="action-icon fa fa-trash"></i>
-                                          </a>
-                                       {% endif %}
-                                    </td>
-                                 </tr>
-                                 {% else %}
-                                 <tr>
-                                    <td colspan="5" style="font-size:medium;">Pas de produit encodé</td>
-                                 </tr>
-                                 {% endfor %}
-                                 </tbody>
-                              </table>
-                           </div>
-                        </div>
-                     </li>
-                     {% endfor %}
-                  </ul>
+         <div class="accordion-item card col-12 shadow-lg mb-4 bg-body rounded">
+            <div class="btn-toolbar m-3 row" role="toolbar" aria-label="Toolbar with button groups">
+               <div class="col-6">
+                  <h5 class="accordion-header card-title" id="headingOne">{{ category.name }}</h5>
+               </div>
+               <div class="col-3">
+                <strong>Prix total :</strong> {{ category.totalPrice|number_format(2, ',', ' ') }}€
+               </div>
+
+               <div class="col-3 text-end" role="group" aria-label="Second group">
+            {% if is_granted('budget-edit', entity.instance) %}
+                  <a class="btn btn-secondary me-2" href="{{ ea_url()
+                     .setDashBoard('App\\Controller\\Admin\\Budget\\DashboardController')
+                     .setController('App\\Controller\\Admin\\Budget\\CategoryCrudController')
+                     .setAction('edit')
+                     .setEntityId(category.id)
+                     .set('budget_id', entity.instance.id)
+                  }}" title="Modifier" data-action-name="edit">
+                     <i class="action-icon fa fa-pencil-alt"></i>
+                  </a>
+                  <a class=" btn btn-danger action-delete me-4" href="{{ ea_url()
+                     .setDashBoard('App\\Controller\\Admin\\Budget\\DashboardController')
+                     .setController('App\\Controller\\Admin\\Budget\\CategoryCrudController')
+                     .setAction('delete')
+                     .setEntityId(category.id)
+                     .set('budget_id', entity.instance.id)
+                  }}" data-bs-toggle="modal" data-bs-target="#modal-delete" formaction="{{ ea_url()
+                     .setDashBoard('App\\Controller\\Admin\\Budget\\DashboardController')
+                     .setController('App\\Controller\\Admin\\Budget\\CategoryCrudController')
+                     .setAction('delete')
+                     .setEntityId(category.id)
+                     .set('budget_id', entity.instance.id)
+                  }}" data-action-name="delete">
+                     <i class="action-icon fa fa-trash"></i>
+                  </a>
+            {% endif %}
+                  <button type="button" class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target="#cat{{ category.id }}" aria-expanded="true" aria-controls="cat{{ category.id }}">
+                     <i class="fa-regular fa-folder-open"></i>
+                  </button>
                </div>
             </div>
-         </li>
+            <div id="cat{{ category.id }}" class="accordion-collapse collapse" aria-labelledby="cat{{ category.id }}" data-bs-parent="#accordionExample">
+               <div class="mb-3 ">
+                  <a href="{{ ea_url()
+                     .setDashBoard('App\\Controller\\Admin\\Budget\\DashboardController')
+                     .setController('App\\Controller\\Admin\\Budget\\SubCategoryCrudController')
+                     .setAction('new')
+                     .setEntityId(null)
+                     .set('budget_id', entity.instance.id)
+                     .set('category_id', category.id)
+                  }}" class="btn btn-secondary me-3 float-end" title="Ajouter une sous-catégorie" ><i class="action-icon fa fa-plus"></i> Ajouter une sous-catégorie </a>
+               </div>
+               <div class="accordion-body">
+                     <div class="card-body">
+                        <ul class="list-unstyled">
+                           {% for subcategory in category.subcategories %}
+                              <li class="mb-3" id="subcategory-{{ subcategory.id }}">
+                                 <div class="card shadow mb-3 rounded">
+                                    <div class="card-body d-flex justify-content-between align-items-center">
+                                       <h5 class="card-title col-5">
+                                          {{ subcategory.name }}
+                                          {% if is_granted('budget-edit', entity.instance) %}
+                                             <a class="btn btn-secondary ms-3" href="{{ ea_url()
+                                                .setDashBoard('App\\Controller\\Admin\\Budget\\DashboardController')
+                                                .setController('App\\Controller\\Admin\\Budget\\SubCategoryCrudController')
+                                                .setAction('edit')
+                                                .setEntityId(subcategory.id)
+                                                .set('budget_id', entity.instance.id)
+                                                .set('category_id', category.id) }}" title="Modifier" data-action-name="edit">
+                                                <i class="action-icon fa fa-pencil-alt"></i>
+                                             </a>
+                                             <a class=" btn btn-danger action-delete" href="{{ ea_url()
+                                                .setDashBoard('App\\Controller\\Admin\\Budget\\DashboardController')
+                                                .setController('App\\Controller\\Admin\\Budget\\SubCategoryCrudController')
+                                                .setAction('delete')
+                                                .setEntityId(subcategory.id)
+                                                .set('budget_id', entity.instance.id)
+                                                .set('category_id', category.id) }}"
+                                                data-bs-toggle="modal" data-bs-target="#modal-delete" formaction="{{ ea_url()
+                                                .setDashBoard('App\\Controller\\Admin\\Budget\\DashboardController')
+                                                .setController('App\\Controller\\Admin\\Budget\\SubCategoryCrudController')
+                                                .setAction('delete')
+                                                .setEntityId(subcategory.id)
+                                                .set('budget_id', entity.instance.id)
+                                                .set('category_id', category.id) }}" data-action-name="delete">
+                                                <i class="action-icon fa fa-trash"></i>
+                                             </a>
+                                          {% endif %}
+                                       </h5>
+
+                                       <div>
+                                          <strong>Prix total :</strong> {{ subcategory.totalPrice|number_format(2, ',', ' ') }}€
+                                       </div>
+                                       {% if is_granted('budget-edit', entity.instance) %}
+                                          <a href="{{ ea_url()
+                                             .setDashBoard('App\\Controller\\Admin\\Budget\\DashboardController')
+                                             .setController('App\\Controller\\Admin\\Budget\\ProductCrudController')
+                                             .setAction('new')
+                                             .setEntityId(null)
+                                             .set('budget_id', entity.instance.id)
+                                             .set('category_id', category.id)
+                                             .set('subcategory_id', subcategory.id)
+                                          }}" class="btn btn-secondary"><i class="action-icon fa fa-plus"></i> Ajouter un produit</a>
+                                       {% endif %}
+                                    </div>
+                                    <div class="card-body">
+                                       <table class="table datagrid shadow-sm table-bordered ">
+                                          <thead>
+                                          <tr>
+                                             <th scope="col" class="col-2" style="background: #000080  !important ;"><span>Nom</span></th>
+                                             <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Quantité</span></th>
+                                             <th scope="col" class="col-1" style="background: #000080 !important ;"><span>PU</span></th>
+                                             <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Tot HT</span></th>
+                                             <th scope="col" class="col-1" style="background: #000080 !important ;"><span>PU Offre HT</span></th>
+                                             <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Tot Offre HT</span></th>
+                                             <th scope="col" class="col-1" style="background: #000080 !important ;"><span>PU Facture HT</span></th>
+                                             <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Tot Facture HT</span></th>
+                                             <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Fournisseur</span></th>
+                                             <th scope="col" class="col-1" style="background: #000080 !important ;" dir="ltr"></th>
+                                          </tr>
+                                          </thead>
+                                          <tbody>
+                                          {% for product in subcategory.products %}
+                                             <tr
+                                                     {% if product.totalPrice <  product.totalRealPrice %} style="background-color: #FFC5D7 !important;"{% endif %}
+                                                     {% if product.totalPrice >=  product.totalRealPrice and product.totalRealPrice != 0 %} style="background-color: #C5FFD9 !important;"{% endif %}
+                                             >
+                                                <th scope="row" style="font-size:medium;border-right: 1px solid #dee2e6 !important;">{{ product.title }}<br><small>{{ product.description }}</small></th>
+                                                <td style="font-size:medium;border-right: 1px solid #dee2e6 !important;">{{ product.quantity|number_format(0, ',', ' ') }}</td>
+                                                <td style="font-size:medium;border-right: 1px solid #dee2e6 !important; color: #1d4ed8 !important;">{{ product.price|number_format(2, ',', ' ') }}€</td>
+                                                <td style="font-size:medium;border-right: 1px solid #dee2e6 !important; color: #1d4ed8 !important;">{{ product.totalPrice|number_format(2, ',', ' ') }}€</td>
+                                                <td style="font-size:medium;border-right: 1px solid #dee2e6 !important; color: #0da95f !important;">{{ product.offerPrice|number_format(2, ',', ' ') }}€</td>
+                                                <td style="font-size:medium;border-right: 1px solid #dee2e6 !important; color: #0da95f !important;">{{ (product.offerPrice * product.quantity)|number_format(2, ',', ' ') }}€</td>
+                                                <td style="font-size:medium;border-right: 1px solid #dee2e6 !important; color: #854d0e !important;">{{ product.realPrice|number_format(2, ',', ' ') }}€</td>
+                                                <td style="font-size:medium;border-right: 1px solid #dee2e6 !important; color: #854d0e !important;">{{ product.totalRealPrice|number_format(2, ',', ' ') }}€</td>
+                                                <td style="font-size:medium;border-right: 1px solid #dee2e6 !important;">{{ product.supplier }}</td>
+                                                <td class="actions">
+                                                   {% if is_granted('budget-edit', entity.instance) %}
+                                                      {% if product.filename is not null %}
+                                                         <a class=" action-download" href="{{ ea_url()
+                                                            .setDashBoard('App\\Controller\\Admin\\Budget\\DashboardController')
+                                                            .setController('App\\Controller\\Admin\\Budget\\ProductCrudController')
+                                                            .setAction('download')
+                                                            .setEntityId(product.id)
+                                                            .set('budget_id', entity.instance.id)
+                                                            .set('category_id', category.id)
+                                                            .set('subcategory_id', subcategory.id) }}" title="Télécharger" data-action-name="edit"><i class="action-icon fa fa-download"></i> </a>
+                                                      {% endif %}
+                                                      <a class=" action-edit" href="{{ ea_url()
+                                                         .setDashBoard('App\\Controller\\Admin\\Budget\\DashboardController')
+                                                         .setController('App\\Controller\\Admin\\Budget\\ProductCrudController')
+                                                         .setAction('edit')
+                                                         .setEntityId(product.id)
+                                                         .set('budget_id', entity.instance.id)
+                                                         .set('category_id', category.id)
+                                                         .set('subcategory_id', subcategory.id) }}" title="Modifier" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i> </a>
+                                                      <a class=" text-danger action-delete" href="{{ ea_url()
+                                                         .setDashBoard('App\\Controller\\Admin\\Budget\\DashboardController')
+                                                         .setController('App\\Controller\\Admin\\Budget\\ProductCrudController')
+                                                         .setAction('delete')
+                                                         .setEntityId(product.id)
+                                                         .set('budget_id', entity.instance.id)
+                                                         .set('category_id', category.id)
+                                                         .set('subcategory_id', subcategory.id) }}"
+                                                         data-bs-toggle="modal" data-bs-target="#modal-delete" formaction="{{ ea_url()
+                                                         .setDashBoard('App\\Controller\\Admin\\Budget\\DashboardController')
+                                                         .setController('App\\Controller\\Admin\\Budget\\ProductCrudController')
+                                                         .setAction('delete')
+                                                         .setEntityId(product.id)
+                                                         .set('budget_id', entity.instance.id)
+                                                         .set('category_id', category.id)
+                                                         .set('subcategory_id', subcategory.id) }}" data-action-name="delete">
+                                                         <i class="action-icon fa fa-trash"></i>
+                                                      </a>
+                                                   {% endif %}
+                                                </td>
+                                             </tr>
+                                          {% else %}
+                                             <tr>
+                                                <td colspan="5" style="font-size:medium;">Pas de produit encodé</td>
+                                             </tr>
+                                          {% endfor %}
+                                          </tbody>
+                                       </table>
+                                    </div>
+                                 </div>
+                              </li>
+                           {% endfor %}
+                        </ul>
+                     </div>
+               </div>
+            </div>
+         </div>
       {% endfor %}
-   </ul>
+   </div>
+</div>
+
+
+
+
+
+
+         {#
+
+         <li id="category-{{ category.id }}">
+
+         </li>
+
+
+
+         #}
+
    </div>
 
    <div class="col-12">

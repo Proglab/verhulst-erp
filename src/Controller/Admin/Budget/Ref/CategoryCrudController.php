@@ -42,7 +42,8 @@ class CategoryCrudController extends BaseCrudController
     public function configureFields(string $pageName): iterable
     {
         $name = TextField::new('name')->setLabel('Catégorie');
-        $subCategories = CollectionField::new('sub_categories', 'Sous catégories')->useEntryCrudForm(SubCategoryCrudController::class);
+        $subCategories = CollectionField::new('sub_categories', 'Sous catégories')
+            ->useEntryCrudForm(SubCategoryCrudController::class);
 
         return [$name, $subCategories];
     }
