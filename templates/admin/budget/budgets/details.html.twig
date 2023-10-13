@@ -136,31 +136,36 @@
                               {% endif %}
                            </div>
                            <div class="card-body">
-                              <table class="table datagrid shadow-sm rounded">
+                              <table class="table datagrid shadow-sm table-bordered ">
                                  <thead>
                                  <tr>
                                     <th scope="col" class="col-2" style="background: #000080  !important ;"><span>Nom</span></th>
-                                    <th scope="col" class="col-3" style="background: #000080  !important ;"><span>Description</span></th>
                                     <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Quantité</span></th>
                                     <th scope="col" class="col-1" style="background: #000080 !important ;"><span>PU</span></th>
-                                    <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Total HT</span></th>
-                                    <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Offre HT</span></th>
-                                    <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Facture HT</span></th>
+                                    <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Tot HT</span></th>
+                                    <th scope="col" class="col-1" style="background: #000080 !important ;"><span>PU Offre HT</span></th>
+                                    <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Tot Offre HT</span></th>
+                                    <th scope="col" class="col-1" style="background: #000080 !important ;"><span>PU Facture HT</span></th>
+                                    <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Tot Facture HT</span></th>
                                     <th scope="col" class="col-1" style="background: #000080 !important ;"><span>Fournisseur</span></th>
                                     <th scope="col" class="col-1" style="background: #000080 !important ;" dir="ltr"></th>
                                  </tr>
                                  </thead>
                                  <tbody>
                                  {% for product in subcategory.products %}
-                                 <tr>
-                                    <th scope="row" style="font-size:medium;">{{ product.title }}</th>
-                                    <th scope="row" style="font-size:medium;">{{ product.description }}</th>
-                                    <td style="font-size:medium;">{{ product.quantity|number_format(0, ',', ' ') }}</td>
-                                    <td style="font-size:medium;">{{ product.price|number_format(2, ',', ' ') }}€</td>
-                                    <td style="font-size:medium;">{{ product.totalPrice|number_format(2, ',', ' ') }}€</td>
-                                    <td style="font-size:medium;">{{ product.offerPrice|number_format(2, ',', ' ') }}€</td>
-                                    <td style="font-size:medium;">{{ product.totalRealPrice|number_format(2, ',', ' ') }}€</td>
-                                    <td style="font-size:medium;">{{ product.supplier }}</td>
+                                 <tr
+                                         {% if product.totalPrice <  product.totalRealPrice %} style="background-color: #FFC5D7 !important;"{% endif %}
+                                         {% if product.totalPrice >=  product.totalRealPrice and product.totalRealPrice != 0 %} style="background-color: #C5FFD9 !important;"{% endif %}
+                                 >
+                                    <th scope="row" style="font-size:medium;border-right: 1px solid #dee2e6 !important;">{{ product.title }}<br><small>{{ product.description }}</small></th>
+                                    <td style="font-size:medium;border-right: 1px solid #dee2e6 !important;">{{ product.quantity|number_format(0, ',', ' ') }}</td>
+                                    <td style="font-size:medium;border-right: 1px solid #dee2e6 !important; color: #1d4ed8 !important;">{{ product.price|number_format(2, ',', ' ') }}€</td>
+                                    <td style="font-size:medium;border-right: 1px solid #dee2e6 !important; color: #1d4ed8 !important;">{{ product.totalPrice|number_format(2, ',', ' ') }}€</td>
+                                    <td style="font-size:medium;border-right: 1px solid #dee2e6 !important; color: #0da95f !important;">{{ product.offerPrice|number_format(2, ',', ' ') }}€</td>
+                                    <td style="font-size:medium;border-right: 1px solid #dee2e6 !important; color: #0da95f !important;">{{ (product.offerPrice * product.quantity)|number_format(2, ',', ' ') }}€</td>
+                                    <td style="font-size:medium;border-right: 1px solid #dee2e6 !important; color: #854d0e !important;">{{ product.realPrice|number_format(2, ',', ' ') }}€</td>
+                                    <td style="font-size:medium;border-right: 1px solid #dee2e6 !important; color: #854d0e !important;">{{ product.totalRealPrice|number_format(2, ',', ' ') }}€</td>
+                                    <td style="font-size:medium;border-right: 1px solid #dee2e6 !important;">{{ product.supplier }}</td>
                                     <td class="actions">
                                        {% if is_granted('budget-edit', entity.instance) %}
                                           {% if product.filename is not null %}
