@@ -5,18 +5,21 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Budget;
 
 use App\Controller\Admin\Budget\Ref\CategoryCrudController;
+use App\Entity\Budget\Budget;
 use App\Entity\Budget\Event;
 use App\Entity\Budget\Ref\Category;
 use App\Entity\Budget\Supplier;
 use App\Entity\Budget\Vat;
 use App\Entity\User;
 use App\Repository\Budget\EventRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -98,5 +101,13 @@ class DashboardController extends AbstractDashboardController
     public function redirection(): Response
     {
         return $this->redirect($this->adminUrlGenerator->setDashboard(self::class)->setRoute('dashboard_budget')->generateUrl());
+    }
+
+
+    #[Route('/admin/{_locale}/budget/{id}/redirect', name: 'budget_redirect')]
+    public function returnToBudget(Budget $budget): RedirectResponse
+    {
+        $url = $this->adminUrlGenerator->setDashboard(self::class)->setController(BudgetCrudController::class)->setAction(Action::DETAIL)->setEntityId($budget->getId())->generateUrl();
+        return $this->redirect($url);
     }
 }

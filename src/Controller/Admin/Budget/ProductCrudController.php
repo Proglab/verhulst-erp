@@ -51,14 +51,20 @@ class ProductCrudController extends BaseCrudController
 
     public function configureActions(Actions $actions): Actions
     {
+        $actions = parent::configureActions($actions);
+        $returnToBudget = Action::new('returnToBudget', 'Retour au budget', 'fa-solid fa-arrow-up')->linkToRoute('budget_redirect', ['id' => $this->request->get('budget_id')])->setHtmlAttributes(['title' => 'Retour']);
+
+        $actions->add(Crud::PAGE_NEW, $returnToBudget);
+        $actions->add(Crud::PAGE_EDIT, $returnToBudget);
+
+        $actions->setPermission('returnToBudget', 'ROLE_USER');
+
         Action::new('filename', false, 'fas fa-download')->linkToCrudAction('download');
         $actions->setPermission('filename', 'ROLE_BUDGET');
 
         return $actions
             ->disable(Action::INDEX)
             ->disable(Action::DETAIL)
-            ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
-            ->remove(Crud::PAGE_EDIT, Action::SAVE_AND_CONTINUE)
         ;
     }
 

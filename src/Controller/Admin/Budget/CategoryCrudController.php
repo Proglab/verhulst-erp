@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Budget;
 
+use App\Entity\Budget\Budget;
 use App\Entity\Budget\Category;
 use App\Repository\Budget\BudgetRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,6 +17,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\Annotation\Route;
 
 class CategoryCrudController extends BaseCrudController
 {
@@ -46,11 +48,18 @@ class CategoryCrudController extends BaseCrudController
 
     public function configureActions(Actions $actions): Actions
     {
+        $actions = parent::configureActions($actions);
+
+        $returnToBudget = Action::new('returnToBudget', 'Retour au budget', 'fa-solid fa-arrow-up')->linkToRoute('budget_redirect', ['id' => $this->request->get('budget_id')])->setHtmlAttributes(['title' => 'Retour']);
+
+        $actions->add(Crud::PAGE_NEW, $returnToBudget);
+        $actions->add(Crud::PAGE_EDIT, $returnToBudget);
+
+        $actions->setPermission('returnToBudget', 'ROLE_USER');
+
         return $actions
             ->disable(Action::INDEX)
             ->disable(Action::DETAIL)
-            ->remove(Crud::PAGE_EDIT, Action::SAVE_AND_CONTINUE)
-            ->remove(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER)
         ;
     }
 
