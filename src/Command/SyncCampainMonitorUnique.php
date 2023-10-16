@@ -22,7 +22,7 @@ use Symfony\Component\HttpClient\CurlHttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[AsCommand(
-    name: 'app:sync-campaign-monitor',
+    name: 'app:sync-campaign-monitor-unique',
     description: 'Synchronisation avec le campaign monitor'
 )]
 class SyncCampainMonitorUnique extends AbstractCommand
@@ -40,6 +40,26 @@ class SyncCampainMonitorUnique extends AbstractCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $output->writeln('<info>Récupération des contacts d\'Anthony</info>');
+
+        if (($fp = fopen("./src/Command/contacts.csv", "r")) !== FALSE) {
+            $fist = true;
+            while (($row = fgetcsv($fp, 1000, ",")) !== FALSE) {
+                if ($fist) {
+                    $fist = false;
+                    continue;
+                }
+                $this->contact[$row[1]] = new Subscriber($row[1], $row[0], [
+                    new CustomFieldValue('Langue', $row[2]),
+                    new CustomFieldValue('Genre', $row[3]),
+                    new CustomFieldValue('Formule de politesse', $row[4]),
+                    new CustomFieldValue('Sale name', "Anthony Delhauteur"),
+                    new CustomFieldValue('Sale email', "anthony@verhulst.be"),
+                ]);
+            }
+            fclose($fp);
+        }
+
         $this->output = $output;
         $this->client = new CurlHttpClient();
 
@@ -48,22 +68,11 @@ class SyncCampainMonitorUnique extends AbstractCommand
             'auth_basic' => [$this->apiKey, 'the-password'],
         ]);
 
-        $list = [];
-        $listsData = json_decode($response->getContent());
+        $idList = "a691756ffce9a4c2fc7a124991f18b5c";
 
-        foreach($listsData as $listData) {
-            $list[$listData->ListID] = $listData->Name;
-        }
-        $output->writeln('<info>Traitement des listes</info>');
         $users = $this->userRepository->getCommercials();
         /** @var User $user */
         foreach($users as $user) {
-            if (!in_array($user->getFullname(), $list)) {
-                $idList = $this->createList($user);
-            } else {
-                $idList = array_search($user->getFullname(), $list);
-                $output->writeln('<info>Liste déjà crée pour '.$user->getFullname().'. Numéro de la liste '.$idList.'</info>');
-            }
             $contacts = $user->getCompanyContacts();
             $progressBar = new ProgressBar($output, $contacts->count());
             $output->writeln('<info>Traitement des contacts</info>');
@@ -83,10 +92,14 @@ class SyncCampainMonitorUnique extends AbstractCommand
                            new CustomFieldValue('Langue', $companyContact->getLang()),
                            new CustomFieldValue('Genre', $companyContact->getSex()),
                            new CustomFieldValue('Formule de politesse', $companyContact->getGreeting()),
+                           new CustomFieldValue('Sale name', $user->getFirstName().' '.$user->getLastName()),
+                           new CustomFieldValue('Sale email', $user->getEmail()),
                         ]);
 
                         $this->createContact($idList, $contact);
 
+
+                        unset($this->contact[$companyContact->getEmail()]);
 
                         //$output->writeln('Création du contact '.$contact->EmailAddress);
                     }
@@ -95,7 +108,11 @@ class SyncCampainMonitorUnique extends AbstractCommand
                         new CustomFieldValue('Langue', $companyContact->getLang()),
                         new CustomFieldValue('Genre', $companyContact->getSex()),
                         new CustomFieldValue('Formule de politesse', $companyContact->getGreeting()),
+                        new CustomFieldValue('Sale name', $user->getFirstName().' '.$user->getLastName()),
+                        new CustomFieldValue('Sale email', $user->getEmail()),
                     ], 'No');
+
+                    unset($this->contact[$r->EmailAddress]);
 
                     $this->updateContact($idList, $contact);
 
@@ -103,12 +120,50 @@ class SyncCampainMonitorUnique extends AbstractCommand
                 }
                 $progressBar->advance();
 
+
+
             }
+
             $output->writeln('');
             $output->writeln('<question>OK</question>');
             $progressBar->finish();
             $this->client = new CurlHttpClient();
         }
+
+        /** @var Subscriber $companyContact */
+        foreach($this->contact as $companyContact) {
+            if (empty($companyContact->EmailAddress)) {
+                continue;
+            }
+
+            $response = $this->client->request('GET', 'https://api.createsend.com/api/v3.3/subscribers/'.$idList.'.json?email='.urldecode($companyContact->EmailAddress).'&includetrackingpreference=false', [
+                'auth_basic' => [$this->apiKey, 'the-password'],
+            ]);
+
+            $r = json_decode($response->getContent(false));
+            if (isset($r->Code)) {
+                if ($r->Code == 203) {
+                    $this->createContact($idList, $companyContact);
+
+
+                    //$output->writeln('Création du contact '.$contact->EmailAddress);
+                }
+            } else {
+                /*
+                $contact = new Subscriber($r->EmailAddress, $companyContact->getFullName(), [
+                    new CustomFieldValue('Langue', $companyContact->getLang()),
+                    new CustomFieldValue('Genre', $companyContact->getSex()),
+                    new CustomFieldValue('Formule de politesse', $companyContact->getGreeting()),
+                    new CustomFieldValue('Sale name', $user->getFirstName().' '.$user->getLastName()),
+                    new CustomFieldValue('Sale email', $user->getEmail()),
+                ], 'No');
+
+                $this->updateContact($idList, $contact);
+                */
+                $output->writeln('Update du contact '.$companyContact->EmailAddress);
+            }
+        }
+
 
         return Command::SUCCESS;
     }
