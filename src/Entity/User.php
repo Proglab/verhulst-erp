@@ -99,6 +99,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: SalesBdc::class, orphanRemoval: true)]
     private Collection $salesBdcs;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $phone = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -493,6 +496,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
                 $salesBdc->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): static
+    {
+        $this->phone = $phone;
 
         return $this;
     }
