@@ -40,6 +40,7 @@ class SyncCampainMonitorUnique extends AbstractCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        /**
         $output->writeln('<info>Récupération des contacts d\'Anthony</info>');
 
         if (($fp = fopen("./src/Command/contacts.csv", "r")) !== FALSE) {
@@ -54,28 +55,23 @@ class SyncCampainMonitorUnique extends AbstractCommand
                     new CustomFieldValue('Genre', $row[3]),
                     new CustomFieldValue('Formule de politesse', $row[4]),
                     new CustomFieldValue('Sale name', "Anthony Delhauteur"),
-                    new CustomFieldValue('Sale email', "anthony@verhulst.be"),
+                    new CustomFieldValue('Sale email', "anthony.delhauteur@thefriends.be"),
+                    new CustomFieldValue('Sale phone', "+32 2 657 90 70"),
                 ]);
             }
             fclose($fp);
         }
 
+         */
         $this->output = $output;
         $this->client = new CurlHttpClient();
-
-        $output->writeln('<info>Récupération des listes</info>');
-        $response = $this->client->request('GET', 'https://api.createsend.com/api/v3.3/clients/7f3135d3d93a3cee8e6931e3c0256c55/lists.json', [
-            'auth_basic' => [$this->apiKey, 'the-password'],
-        ]);
-
         $idList = "a691756ffce9a4c2fc7a124991f18b5c";
-
         $users = $this->userRepository->getCommercials();
         /** @var User $user */
         foreach($users as $user) {
             $contacts = $user->getCompanyContacts();
             $progressBar = new ProgressBar($output, $contacts->count());
-            $output->writeln('<info>Traitement des contacts</info>');
+            $output->writeln('<info>Traitement des contacts de '.$user->getFullname().'</info>');
             foreach ($contacts as $companyContact) {
                 if (empty($companyContact->getEmail())) {
                     continue;
@@ -94,6 +90,7 @@ class SyncCampainMonitorUnique extends AbstractCommand
                            new CustomFieldValue('Formule de politesse', $companyContact->getGreeting()),
                            new CustomFieldValue('Sale name', $user->getFirstName().' '.$user->getLastName()),
                            new CustomFieldValue('Sale email', $user->getEmail()),
+                           new CustomFieldValue('Sale phone', $user->getPhone()),
                         ]);
 
                         $this->createContact($idList, $contact);
@@ -110,6 +107,7 @@ class SyncCampainMonitorUnique extends AbstractCommand
                         new CustomFieldValue('Formule de politesse', $companyContact->getGreeting()),
                         new CustomFieldValue('Sale name', $user->getFirstName().' '.$user->getLastName()),
                         new CustomFieldValue('Sale email', $user->getEmail()),
+                        new CustomFieldValue('Sale phone', $user->getPhone()),
                     ], 'No');
 
                     unset($this->contact[$r->EmailAddress]);
@@ -130,7 +128,9 @@ class SyncCampainMonitorUnique extends AbstractCommand
             $this->client = new CurlHttpClient();
         }
 
-        /** @var Subscriber $companyContact */
+        /*
+        $progressBar = new ProgressBar($output, count($this->contact));
+        /** @var Subscriber $companyContact //
         foreach($this->contact as $companyContact) {
             if (empty($companyContact->EmailAddress)) {
                 continue;
@@ -149,22 +149,36 @@ class SyncCampainMonitorUnique extends AbstractCommand
                     //$output->writeln('Création du contact '.$contact->EmailAddress);
                 }
             } else {
-                /*
-                $contact = new Subscriber($r->EmailAddress, $companyContact->getFullName(), [
-                    new CustomFieldValue('Langue', $companyContact->getLang()),
-                    new CustomFieldValue('Genre', $companyContact->getSex()),
-                    new CustomFieldValue('Formule de politesse', $companyContact->getGreeting()),
-                    new CustomFieldValue('Sale name', $user->getFirstName().' '.$user->getLastName()),
-                    new CustomFieldValue('Sale email', $user->getEmail()),
-                ], 'No');
 
-                $this->updateContact($idList, $contact);
-                */
-                $output->writeln('Update du contact '.$companyContact->EmailAddress);
+
+                $contact = json_decode($response->getContent());
+
+                $i = 0;
+                $update = false;
+                foreach($contact->CustomFields as &$cf) {
+                    if ($cf->Key === 'Sale email') {
+                        switch ($cf->Value) {
+                            case 'anthony@verhulst.be':
+                                $contact->CustomFields[$i]->Value = "anthony.delhauteur@thefriends.be";
+                                $update = true;
+                                break;
+                        }
+                    }
+
+                    $i++;
+                }
+
+                if ($update) {
+                    $this->updateContact($idList, $companyContact);
+                   // $output->writeln('Update du contact '.$companyContact->EmailAddress);
+                }
             }
+
+            $progressBar->advance();
         }
 
-
+        $progressBar->finish();
+        */
         return Command::SUCCESS;
     }
 

@@ -472,7 +472,7 @@ class DashboardController extends AbstractDashboardController
     {
         $response = new StreamedResponse(function() use ($kernel) {
             $input = new ArrayInput([
-                'command' => 'app:sync-campaign-monitor'
+                'command' => 'app:sync-campaign-monitor-unique'
             ]);
             $input->setInteractive(false);
 
