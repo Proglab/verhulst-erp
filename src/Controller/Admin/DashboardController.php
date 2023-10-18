@@ -33,8 +33,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Exception\ForbiddenActionException;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -132,7 +130,6 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToRoute('Synchronise contacts', 'fa-solid fa-rotate', 'admin_sync_streamed')->setPermission('ROLE_TECH'),
             MenuItem::linkToRoute('Droits', 'fas fa-right-to-bracket', 'dashboard_droits')
                 ->setPermission('ROLE_TECH'),
-
 
             MenuItem::section(),
             MenuItem::linkToRoute('admin.menu.budget', 'fa-solid fa-sack-dollar', 'dashboard_budget_redirect')
@@ -470,9 +467,9 @@ class DashboardController extends AbstractDashboardController
     #[Route('{_locale}/admin/sync', name: 'admin_sync')]
     public function sync(KernelInterface $kernel): Response
     {
-        $response = new StreamedResponse(function() use ($kernel) {
+        $response = new StreamedResponse(function () use ($kernel) {
             $input = new ArrayInput([
-                'command' => 'app:sync-campaign-monitor-unique'
+                'command' => 'app:sync-campaign-monitor-unique',
             ]);
             $input->setInteractive(false);
 
@@ -481,7 +478,6 @@ class DashboardController extends AbstractDashboardController
             $application = new Application($kernel);
             $application->setAutoExit(false);
             $application->run($input, $output);
-
         });
 
         return $response;
@@ -492,5 +488,4 @@ class DashboardController extends AbstractDashboardController
     {
         return $this->render('admin/sync_streamed.html.twig');
     }
-
 }

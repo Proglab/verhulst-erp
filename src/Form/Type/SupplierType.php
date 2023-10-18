@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Form\Type;
 
 use App\Entity\Budget\Supplier;
-use App\Entity\Project;
 use App\Repository\Budget\SupplierRepository;
-use App\Repository\ProjectRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

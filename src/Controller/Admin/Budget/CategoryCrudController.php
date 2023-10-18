@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Budget;
 
-use App\Entity\Budget\Budget;
 use App\Entity\Budget\Category;
 use App\Repository\Budget\BudgetRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,7 +16,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Routing\Annotation\Route;
 
 class CategoryCrudController extends BaseCrudController
 {

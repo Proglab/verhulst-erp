@@ -94,10 +94,10 @@ class ProductCrudController extends BaseCrudController
         ;
 
         /**
-        $supplier = AssociationField::new('supplier', 'Fournisseur')
-            ->setRequired(true)
-            ->setCrudController(SupplierCrudController::class)->autocomplete();
-**/
+         * $supplier = AssociationField::new('supplier', 'Fournisseur')
+         * ->setRequired(true)
+         * ->setCrudController(SupplierCrudController::class)->autocomplete();.
+         **/
         $realPrice = MoneyField::new('real_price')->setStoredAsCents(false)
             ->setNumDecimals(2)
             ->setRequired(false)

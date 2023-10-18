@@ -103,11 +103,11 @@ class DashboardController extends AbstractDashboardController
         return $this->redirect($this->adminUrlGenerator->setDashboard(self::class)->setRoute('dashboard_budget')->generateUrl());
     }
 
-
     #[Route('/admin/{_locale}/budget/{id}/redirect', name: 'budget_redirect')]
     public function returnToBudget(Budget $budget): RedirectResponse
     {
         $url = $this->adminUrlGenerator->setDashboard(self::class)->setController(BudgetCrudController::class)->setAction(Action::DETAIL)->setEntityId($budget->getId())->generateUrl();
+
         return $this->redirect($url);
     }
 }
