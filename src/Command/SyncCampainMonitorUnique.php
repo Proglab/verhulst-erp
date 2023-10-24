@@ -12,6 +12,7 @@ use App\Command\Dto\Rules;
 use App\Command\Dto\Segment;
 use App\Command\Dto\Subscriber;
 use App\Entity\User;
+use App\Repository\TempCompanyContactRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -32,36 +33,43 @@ class SyncCampainMonitorUnique extends AbstractCommand
 
     private OutputInterface $output;
 
-    public function __construct(private HttpClientInterface $client, private UserRepository $userRepository)
+    public function __construct(private HttpClientInterface $client, private UserRepository $userRepository, private TempCompanyContactRepository $tempCompanyContactRepository)
     {
         parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        /*
-         * $output->writeln('<info>Récupération des contacts d\'Anthony</info>');
-         *
-         * if (($fp = fopen("./src/Command/contacts.csv", "r")) !== FALSE) {
-         * $fist = true;
-         * while (($row = fgetcsv($fp, 1000, ",")) !== FALSE) {
-         * if ($fist) {
-         * $fist = false;
-         * continue;
-         * }
-         * $this->contact[$row[1]] = new Subscriber($row[1], $row[0], [
-         * new CustomFieldValue('Langue', $row[2]),
-         * new CustomFieldValue('Genre', $row[3]),
-         * new CustomFieldValue('Formule de politesse', $row[4]),
-         * new CustomFieldValue('Sale name', "Anthony Delhauteur"),
-         * new CustomFieldValue('Sale email', "anthony.delhauteur@thefriends.be"),
-         * new CustomFieldValue('Sale phone', "+32 2 657 90 70"),
-         * ]);
-         * }
-         * fclose($fp);
-         * }
-         *
+        /***
+         * Récupération des contacts de Mika
          */
+
+
+        $output->writeln('<info>Récupération des contacts de Mika</info>');
+
+        if (($fp = fopen("./src/Command/mika.csv", "r")) !== FALSE) {
+          $fist = true;
+          while (($row = fgetcsv($fp, 1000, ",")) !== FALSE) {
+              if ($fist) {
+                  $fist = false;
+                  continue;
+              }
+              $this->contact[$row[1]] = new Subscriber($row[1], $row[0], [
+              new CustomFieldValue('Langue', 'fr'),
+              new CustomFieldValue('Sale name', "Michael Veys"),
+              new CustomFieldValue('Sale email', "michael.veys@thefriends.be"),
+              new CustomFieldValue('Sale phone', "+32 475 32 52 89"),
+              ]);
+          }
+          fclose($fp);
+        }
+
+        $output->writeln('<info>Nombre de contacts de Mika : '.count($this->contact).'</info>');
+
+        /***
+         * Récupération des contacts validés
+         */
+
         $this->output = $output;
         $this->client = new CurlHttpClient();
         $idList = 'a691756ffce9a4c2fc7a124991f18b5c';
@@ -75,14 +83,7 @@ class SyncCampainMonitorUnique extends AbstractCommand
                 if (empty($companyContact->getEmail())) {
                     continue;
                 }
-
-                $response = $this->client->request('GET', 'https://api.createsend.com/api/v3.3/subscribers/' . $idList . '.json?email=' . urldecode($companyContact->getEmail()) . '&includetrackingpreference=false', [
-                    'auth_basic' => [$this->apiKey, 'the-password'],
-                ]);
-
-                $r = json_decode($response->getContent(false));
-                if (isset($r->Code)) {
-                    if (203 === $r->Code) {
+                if (!$this->checkContactExist($idList, $companyContact->getEmail())) {
                         $contact = new Subscriber($companyContact->getEmail(), $companyContact->getFullName(), [
                            new CustomFieldValue('Langue', $companyContact->getLang()),
                            new CustomFieldValue('Genre', $companyContact->getSex()),
@@ -97,23 +98,53 @@ class SyncCampainMonitorUnique extends AbstractCommand
                         unset($this->contact[$companyContact->getEmail()]);
 
                         // $output->writeln('Création du contact '.$contact->EmailAddress);
-                    }
                 } else {
-                    $contact = new Subscriber($r->EmailAddress, $companyContact->getFullName(), [
-                        new CustomFieldValue('Langue', $companyContact->getLang()),
-                        new CustomFieldValue('Genre', $companyContact->getSex()),
-                        new CustomFieldValue('Formule de politesse', $companyContact->getGreeting()),
-                        new CustomFieldValue('Sale name', $user->getFirstName() . ' ' . $user->getLastName()),
-                        new CustomFieldValue('Sale email', $user->getEmail()),
-                        new CustomFieldValue('Sale phone', $user->getPhone()),
-                    ], 'No');
+                      $contact = new Subscriber($companyContact->getEmail(), $companyContact->getFullName(), [
+                          new CustomFieldValue('Langue', $companyContact->getLang()),
+                          new CustomFieldValue('Genre', $companyContact->getSex()),
+                          new CustomFieldValue('Formule de politesse', $companyContact->getGreeting()),
+                          new CustomFieldValue('Sale name', $user->getFirstName() . ' ' . $user->getLastName()),
+                          new CustomFieldValue('Sale email', $user->getEmail()),
+                          new CustomFieldValue('Sale phone', $user->getPhone()),
+                      ], 'No');
 
-                    unset($this->contact[$r->EmailAddress]);
-
-                    $this->updateContact($idList, $contact);
-
-                    // $output->writeln('Update du contact '.$contact->EmailAddress);
+                      $this->updateContact($idList, $contact);
                 }
+                unset($this->contact[$companyContact->getEmail()]);
+                $progressBar->advance();
+            }
+            $output->writeln('<info>Nombre de contacts de Mika : '.count($this->contact).'</info>');
+
+
+            $output->writeln('');
+            $output->writeln('<question>OK</question>');
+            $progressBar->finish();
+            $this->client = new CurlHttpClient();
+
+            /***
+             * Récupération des contacts en attente d'import
+             */
+
+            $contacts = $this->tempCompanyContactRepository->findBy(['added_by' => $user]);
+
+            $progressBar = new ProgressBar($output, count($contacts));
+            $output->writeln('<info>Traitement des contacts temporaire de ' . $user->getFullname() . '</info>');
+            foreach ($contacts as $companyContact) {
+                if (empty($companyContact->getEmail())) {
+                    continue;
+                }
+
+                if (!$this->checkContactExist($idList, $companyContact->getEmail())) {
+                        $contact = new Subscriber($companyContact->getEmail(), $companyContact->getFullName(), [
+                            new CustomFieldValue('Langue', $companyContact->getLang()),
+                            new CustomFieldValue('Sale name', $user->getFirstName() . ' ' . $user->getLastName()),
+                            new CustomFieldValue('Sale email', $user->getEmail()),
+                            new CustomFieldValue('Sale phone', $user->getPhone()),
+                        ]);
+
+                        $this->createContact($idList, $contact);
+                }
+                unset($this->contact[$companyContact->getEmail()]);
                 $progressBar->advance();
             }
 
@@ -123,57 +154,52 @@ class SyncCampainMonitorUnique extends AbstractCommand
             $this->client = new CurlHttpClient();
         }
 
-        /*
-        $progressBar = new ProgressBar($output, count($this->contact));
-        /** @var Subscriber $companyContact //
+        /***
+         * Récupération des contacts en attente d'import non revendiqué
+         */
+
+        $contacts = $this->tempCompanyContactRepository->findBy(['added_by' => null]);
+        $progressBar = new ProgressBar($output, count($contacts));
+
+        $user = $this->userRepository->findOneBy(['email' => 'anthony.delhauteur@thefriends.be']);
+
+        $output->writeln('<info>Traitement des contacts temporaire de ' . $user->getFullname() . '</info>');
+        foreach ($contacts as $companyContact) {
+            if (empty($companyContact->getEmail())) {
+                continue;
+            }
+            if (!$this->checkContactExist($idList, $companyContact->getEmail())) {
+
+                    $contact = new Subscriber($companyContact->getEmail(), $companyContact->getFullName(), [
+                        new CustomFieldValue('Langue', $companyContact->getLang()),
+                        new CustomFieldValue('Sale name', $user->getFirstName() . ' ' . $user->getLastName()),
+                        new CustomFieldValue('Sale email', $user->getEmail()),
+                        new CustomFieldValue('Sale phone', $user->getPhone()),
+                    ]);
+
+                    $this->createContact($idList, $contact);
+            }
+            unset($this->contact[$companyContact->getEmail()]);
+            $progressBar->advance();
+
+        }
+
+        /***
+         * Récupération des contacts de Mika
+         */
+
+        $output->writeln('<info>Nombre de contacts de Mika : '.count($this->contact).'</info>');
+
+        /** @var Subscriber $companyContact */
         foreach($this->contact as $companyContact) {
             if (empty($companyContact->EmailAddress)) {
                 continue;
             }
-
-            $response = $this->client->request('GET', 'https://api.createsend.com/api/v3.3/subscribers/'.$idList.'.json?email='.urldecode($companyContact->EmailAddress).'&includetrackingpreference=false', [
-                'auth_basic' => [$this->apiKey, 'the-password'],
-            ]);
-
-            $r = json_decode($response->getContent(false));
-            if (isset($r->Code)) {
-                if ($r->Code == 203) {
-                    $this->createContact($idList, $companyContact);
-
-
-                    //$output->writeln('Création du contact '.$contact->EmailAddress);
-                }
-            } else {
-
-
-                $contact = json_decode($response->getContent());
-
-                $i = 0;
-                $update = false;
-                foreach($contact->CustomFields as &$cf) {
-                    if ($cf->Key === 'Sale email') {
-                        switch ($cf->Value) {
-                            case 'anthony@verhulst.be':
-                                $contact->CustomFields[$i]->Value = "anthony.delhauteur@thefriends.be";
-                                $update = true;
-                                break;
-                        }
-                    }
-
-                    $i++;
-                }
-
-                if ($update) {
-                    $this->updateContact($idList, $companyContact);
-                   // $output->writeln('Update du contact '.$companyContact->EmailAddress);
-                }
+            if (!$this->checkContactExist($idList, $companyContact->EmailAddress)) {
+                $this->createContact($idList, $companyContact);
             }
-
             $progressBar->advance();
         }
-
-        $progressBar->finish();
-        */
         return Command::SUCCESS;
     }
 
@@ -253,5 +279,22 @@ class SyncCampainMonitorUnique extends AbstractCommand
             'auth_basic' => [$this->apiKey, 'the-password'],
             'body' => json_encode($contact),
         ]);
+    }
+
+
+    private function checkContactExist(string $idList, string $email)
+    {
+        $response = $this->client->request('GET', 'https://api.createsend.com/api/v3.3/subscribers/' . $idList . '.json?email=' . urldecode($email) . '&includetrackingpreference=false', [
+            'auth_basic' => [$this->apiKey, 'the-password'],
+        ]);
+
+        $r = json_decode($response->getContent(false));
+        if (isset($r->Code)) {
+            if (203 === $r->Code) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
