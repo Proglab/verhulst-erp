@@ -184,11 +184,15 @@ class SyncCampainMonitorUnique extends AbstractCommand
 
         }
 
+        $progressBar->finish();
+
         /***
          * Récupération des contacts de Mika
          */
 
         $output->writeln('<info>Nombre de contacts de Mika : '.count($this->contact).'</info>');
+
+        $progressBar = new ProgressBar($output, count($this->contact));
 
         /** @var Subscriber $companyContact */
         foreach($this->contact as $companyContact) {
@@ -200,6 +204,8 @@ class SyncCampainMonitorUnique extends AbstractCommand
             }
             $progressBar->advance();
         }
+
+        $progressBar->finish();
         return Command::SUCCESS;
     }
 
