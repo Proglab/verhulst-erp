@@ -468,7 +468,6 @@ class DashboardController extends AbstractDashboardController
     public function sync(KernelInterface $kernel): Response
     {
         $response = new StreamedResponse(function () use ($kernel) {
-
             $input = new ArrayInput([
                 'command' => 'app:purge-contact',
             ]);

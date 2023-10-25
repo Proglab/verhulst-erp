@@ -60,36 +60,35 @@ class SyncCampainMonitorUnique extends AbstractCommand
                     continue;
                 }
                 if (!$this->checkContactExist($idList, $companyContact->getEmail())) {
-                        $contact = new Subscriber($companyContact->getEmail(), $companyContact->getFullName(), [
-                           new CustomFieldValue('Langue', $companyContact->getLang()),
-                           new CustomFieldValue('Genre', $companyContact->getSex()),
-                           new CustomFieldValue('Formule de politesse', $companyContact->getGreeting()),
-                           new CustomFieldValue('Sale name', $user->getFirstName() . ' ' . $user->getLastName()),
-                           new CustomFieldValue('Sale email', $user->getEmail()),
-                           new CustomFieldValue('Sale phone', $user->getPhone()),
-                        ]);
+                    $contact = new Subscriber($companyContact->getEmail(), $companyContact->getFullName(), [
+                       new CustomFieldValue('Langue', $companyContact->getLang()),
+                       new CustomFieldValue('Genre', $companyContact->getSex()),
+                       new CustomFieldValue('Formule de politesse', $companyContact->getGreeting()),
+                       new CustomFieldValue('Sale name', $user->getFirstName() . ' ' . $user->getLastName()),
+                       new CustomFieldValue('Sale email', $user->getEmail()),
+                       new CustomFieldValue('Sale phone', $user->getPhone()),
+                    ]);
 
-                        $this->createContact($idList, $contact);
+                    $this->createContact($idList, $contact);
 
-                        unset($this->contact[$companyContact->getEmail()]);
+                    unset($this->contact[$companyContact->getEmail()]);
 
-                        // $output->writeln('Création du contact '.$contact->EmailAddress);
+                    // $output->writeln('Création du contact '.$contact->EmailAddress);
                 } else {
-                      $contact = new Subscriber($companyContact->getEmail(), $companyContact->getFullName(), [
-                          new CustomFieldValue('Langue', $companyContact->getLang()),
-                          new CustomFieldValue('Genre', $companyContact->getSex()),
-                          new CustomFieldValue('Formule de politesse', $companyContact->getGreeting()),
-                          new CustomFieldValue('Sale name', $user->getFirstName() . ' ' . $user->getLastName()),
-                          new CustomFieldValue('Sale email', $user->getEmail()),
-                          new CustomFieldValue('Sale phone', $user->getPhone()),
-                      ], 'No');
+                    $contact = new Subscriber($companyContact->getEmail(), $companyContact->getFullName(), [
+                        new CustomFieldValue('Langue', $companyContact->getLang()),
+                        new CustomFieldValue('Genre', $companyContact->getSex()),
+                        new CustomFieldValue('Formule de politesse', $companyContact->getGreeting()),
+                        new CustomFieldValue('Sale name', $user->getFirstName() . ' ' . $user->getLastName()),
+                        new CustomFieldValue('Sale email', $user->getEmail()),
+                        new CustomFieldValue('Sale phone', $user->getPhone()),
+                    ], 'No');
 
-                      $this->updateContact($idList, $contact);
+                    $this->updateContact($idList, $contact);
                 }
                 unset($this->contact[$companyContact->getEmail()]);
                 $progressBar->advance();
             }
-
 
             $output->writeln('');
             $output->writeln('<question>OK</question>');
@@ -102,7 +101,7 @@ class SyncCampainMonitorUnique extends AbstractCommand
 
             $contacts = $this->tempCompanyContactRepository->findBy(['added_by' => $user]);
 
-            $progressBar = new ProgressBar($output, count($contacts));
+            $progressBar = new ProgressBar($output, \count($contacts));
             $output->writeln('');
             $output->writeln('<info>Traitement des contacts en cours de validation de ' . $user->getFullname() . '</info>');
             foreach ($contacts as $companyContact) {
@@ -111,14 +110,14 @@ class SyncCampainMonitorUnique extends AbstractCommand
                 }
 
                 if (!$this->checkContactExist($idList, $companyContact->getEmail())) {
-                        $contact = new Subscriber($companyContact->getEmail(), $companyContact->getFullName(), [
-                            new CustomFieldValue('Langue', $companyContact->getLang()),
-                            new CustomFieldValue('Sale name', $user->getFirstName() . ' ' . $user->getLastName()),
-                            new CustomFieldValue('Sale email', $user->getEmail()),
-                            new CustomFieldValue('Sale phone', $user->getPhone()),
-                        ]);
+                    $contact = new Subscriber($companyContact->getEmail(), $companyContact->getFullName(), [
+                        new CustomFieldValue('Langue', $companyContact->getLang()),
+                        new CustomFieldValue('Sale name', $user->getFirstName() . ' ' . $user->getLastName()),
+                        new CustomFieldValue('Sale email', $user->getEmail()),
+                        new CustomFieldValue('Sale phone', $user->getPhone()),
+                    ]);
 
-                        $this->createContact($idList, $contact);
+                    $this->createContact($idList, $contact);
                 }
                 unset($this->contact[$companyContact->getEmail()]);
                 $progressBar->advance();
@@ -135,7 +134,7 @@ class SyncCampainMonitorUnique extends AbstractCommand
          */
 
         $contacts = $this->tempCompanyContactRepository->findBy(['added_by' => null]);
-        $progressBar = new ProgressBar($output, count($contacts));
+        $progressBar = new ProgressBar($output, \count($contacts));
 
         $user = $this->userRepository->findOneBy(['email' => 'anthony.delhauteur@thefriends.be']);
 
@@ -146,24 +145,23 @@ class SyncCampainMonitorUnique extends AbstractCommand
                 continue;
             }
             if (!$this->checkContactExist($idList, $companyContact->getEmail())) {
+                $contact = new Subscriber($companyContact->getEmail(), $companyContact->getFullName(), [
+                    new CustomFieldValue('Langue', $companyContact->getLang()),
+                    new CustomFieldValue('Sale name', $user->getFirstName() . ' ' . $user->getLastName()),
+                    new CustomFieldValue('Sale email', $user->getEmail()),
+                    new CustomFieldValue('Sale phone', $user->getPhone()),
+                ]);
 
-                    $contact = new Subscriber($companyContact->getEmail(), $companyContact->getFullName(), [
-                        new CustomFieldValue('Langue', $companyContact->getLang()),
-                        new CustomFieldValue('Sale name', $user->getFirstName() . ' ' . $user->getLastName()),
-                        new CustomFieldValue('Sale email', $user->getEmail()),
-                        new CustomFieldValue('Sale phone', $user->getPhone()),
-                    ]);
-
-                    $this->createContact($idList, $contact);
+                $this->createContact($idList, $contact);
             }
             unset($this->contact[$companyContact->getEmail()]);
             $progressBar->advance();
-
         }
 
         $output->writeln('');
         $output->writeln('<question>Ternimé</question>');
         $progressBar->finish();
+
         return Command::SUCCESS;
     }
 
@@ -245,8 +243,7 @@ class SyncCampainMonitorUnique extends AbstractCommand
         ]);
     }
 
-
-    private function checkContactExist(string $idList, string $email)
+    private function checkContactExist(string $idList, string $email): bool
     {
         $response = $this->client->request('GET', 'https://api.createsend.com/api/v3.3/subscribers/' . $idList . '.json?email=' . urldecode($email) . '&includetrackingpreference=false', [
             'auth_basic' => [$this->apiKey, 'the-password'],

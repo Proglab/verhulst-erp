@@ -4,24 +4,13 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Command\Dto\CustomField;
-use App\Command\Dto\CustomFieldValue;
-use App\Command\Dto\Listing;
-use App\Command\Dto\Rule;
-use App\Command\Dto\Rules;
-use App\Command\Dto\Segment;
-use App\Command\Dto\Subscriber;
-use App\Entity\User;
 use App\Repository\CompanyContactRepository;
 use App\Repository\TempCompanyContactRepository;
-use App\Repository\UserRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\HttpClient\CurlHttpClient;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[AsCommand(
     name: 'app:purge-contact',
@@ -39,7 +28,7 @@ class PurgeContacCommand extends AbstractCommand
         $output->writeln('<info>Purge existing contact in import</info>');
 
         $contacts = $this->tempCompanyContactRepository->findAll();
-        $progressBar = new ProgressBar($output, count($contacts));
+        $progressBar = new ProgressBar($output, \count($contacts));
         foreach ($contacts as $contact) {
             $c = $this->companyContactRepository->findOneBy(['email' => $contact->getEmail()]);
             if (!empty($c)) {
@@ -52,6 +41,7 @@ class PurgeContacCommand extends AbstractCommand
         $output->writeln('<info>DONE</info>');
         $output->writeln('');
         $output->writeln('');
+
         return Command::SUCCESS;
     }
 }
