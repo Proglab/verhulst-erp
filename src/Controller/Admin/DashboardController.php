@@ -468,6 +468,18 @@ class DashboardController extends AbstractDashboardController
     public function sync(KernelInterface $kernel): Response
     {
         $response = new StreamedResponse(function () use ($kernel) {
+
+            $input = new ArrayInput([
+                'command' => 'app:purge-contact',
+            ]);
+            $input->setInteractive(false);
+
+            $output = new StreamedOutput(fopen('php://stdout', 'w'));
+
+            $application = new Application($kernel);
+            $application->setAutoExit(false);
+            $application->run($input, $output);
+
             $input = new ArrayInput([
                 'command' => 'app:sync-campaign-monitor-unique',
             ]);

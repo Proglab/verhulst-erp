@@ -36,6 +36,7 @@ class PurgeContacCommand extends AbstractCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $output->writeln('<info>Purge existing contact in import</info>');
 
         $contacts = $this->tempCompanyContactRepository->findAll();
         $progressBar = new ProgressBar($output, count($contacts));
@@ -47,6 +48,10 @@ class PurgeContacCommand extends AbstractCommand
             $progressBar->advance();
         }
         $progressBar->finish();
+        $output->writeln('');
+        $output->writeln('<info>DONE</info>');
+        $output->writeln('');
+        $output->writeln('');
         return Command::SUCCESS;
     }
 }
