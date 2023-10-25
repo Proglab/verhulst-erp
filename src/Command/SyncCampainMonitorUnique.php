@@ -41,32 +41,6 @@ class SyncCampainMonitorUnique extends AbstractCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /***
-         * Récupération des contacts de Mika
-         */
-
-
-        $output->writeln('<info>Récupération des contacts de Mika</info>');
-
-        if (($fp = fopen("./src/Command/mika.csv", "r")) !== FALSE) {
-          $fist = true;
-          while (($row = fgetcsv($fp, 1000, ",")) !== FALSE) {
-              if ($fist) {
-                  $fist = false;
-                  continue;
-              }
-              $this->contact[$row[1]] = new Subscriber($row[1], $row[0], [
-              new CustomFieldValue('Langue', 'fr'),
-              new CustomFieldValue('Sale name', "Michael Veys"),
-              new CustomFieldValue('Sale email', "michael.veys@thefriends.be"),
-              new CustomFieldValue('Sale phone', "+32 475 32 52 89"),
-              ]);
-          }
-          fclose($fp);
-        }
-
-        $output->writeln('<info>Nombre de contacts de Mika : '.count($this->contact).'</info>');
-
-        /***
          * Récupération des contacts validés
          */
 
@@ -78,7 +52,9 @@ class SyncCampainMonitorUnique extends AbstractCommand
         foreach ($users as $user) {
             $contacts = $user->getCompanyContacts();
             $progressBar = new ProgressBar($output, $contacts->count());
-            $output->writeln('<info>Traitement des contacts de ' . $user->getFullname() . '</info>');
+
+            $output->writeln('');
+            $output->writeln('<info>Traitement des contacts validés de ' . $user->getFullname() . '</info>');
             foreach ($contacts as $companyContact) {
                 if (empty($companyContact->getEmail())) {
                     continue;
@@ -113,7 +89,6 @@ class SyncCampainMonitorUnique extends AbstractCommand
                 unset($this->contact[$companyContact->getEmail()]);
                 $progressBar->advance();
             }
-            $output->writeln('<info>Nombre de contacts de Mika : '.count($this->contact).'</info>');
 
 
             $output->writeln('');
@@ -128,7 +103,8 @@ class SyncCampainMonitorUnique extends AbstractCommand
             $contacts = $this->tempCompanyContactRepository->findBy(['added_by' => $user]);
 
             $progressBar = new ProgressBar($output, count($contacts));
-            $output->writeln('<info>Traitement des contacts temporaire de ' . $user->getFullname() . '</info>');
+            $output->writeln('');
+            $output->writeln('<info>Traitement des contacts en cours de validation de ' . $user->getFullname() . '</info>');
             foreach ($contacts as $companyContact) {
                 if (empty($companyContact->getEmail())) {
                     continue;
@@ -163,7 +139,8 @@ class SyncCampainMonitorUnique extends AbstractCommand
 
         $user = $this->userRepository->findOneBy(['email' => 'anthony.delhauteur@thefriends.be']);
 
-        $output->writeln('<info>Traitement des contacts temporaire de ' . $user->getFullname() . '</info>');
+        $output->writeln('');
+        $output->writeln('<info>Traitement des contacts temporaire sans assignation</info>');
         foreach ($contacts as $companyContact) {
             if (empty($companyContact->getEmail())) {
                 continue;
@@ -184,27 +161,8 @@ class SyncCampainMonitorUnique extends AbstractCommand
 
         }
 
-        $progressBar->finish();
-
-        /***
-         * Récupération des contacts de Mika
-         */
-
-        $output->writeln('<info>Nombre de contacts de Mika : '.count($this->contact).'</info>');
-
-        $progressBar = new ProgressBar($output, count($this->contact));
-
-        /** @var Subscriber $companyContact */
-        foreach($this->contact as $companyContact) {
-            if (empty($companyContact->EmailAddress)) {
-                continue;
-            }
-            if (!$this->checkContactExist($idList, $companyContact->EmailAddress)) {
-                $this->createContact($idList, $companyContact);
-            }
-            $progressBar->advance();
-        }
-
+        $output->writeln('');
+        $output->writeln('<question>Ternimé</question>');
         $progressBar->finish();
         return Command::SUCCESS;
     }
