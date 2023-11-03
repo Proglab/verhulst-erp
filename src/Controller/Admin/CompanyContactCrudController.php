@@ -109,7 +109,7 @@ class CompanyContactCrudController extends BaseCrudController
             'Vip Sport' => ['Vip Football' => 'vip_football', 'Vip Tennis' => 'vip_tennis', 'Vip Padel' => 'vip_padel', 'Vip F1' => 'vip_f1', 'Vip Hockey' => 'hockey'],
             'Vip Culturel' => ['Concert' => 'concert', 'Gastro' => 'gastro'],
             'Event a la carte' => ['Teambuilding' => 'teambuilding', 'Incentive' => 'incentive', 'Family day' => 'family_day'],
-            'Sponsoring / LEd' => ['Football' => 'sponsoring_football', 'Hockey' => 'sponsoring_hockey', 'Athlètes' => 'sponsoring_athletes', 'Led Boarding' => 'sponsoring_led_boarding'],
+            'Sponsoring' => ['Football' => 'sponsoring_football', 'Hockey' => 'sponsoring_hockey', 'Athlètes' => 'sponsoring_athletes', 'Led Boarding' => 'sponsoring_led_boarding', 'E-Sports' => 'esports'],
         ])->allowMultipleChoices(true)->setColumns(12)->setLabel('Intérêts')->setRequired(false);
 
         $fonction = TextField::new('function')->setLabel('Fonction')->setColumns(12);
