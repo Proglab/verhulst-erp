@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\SalesBdc;
+use App\Service\SecurityChecker;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -18,9 +19,17 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\DateTimeFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Part\DataPart;
 
 class SalesBdcCrudController extends BaseCrudController
 {
+    public function __construct(SecurityChecker $securityChecker, private MailerInterface $mailer)
+    {
+        parent::__construct($securityChecker);
+    }
+
     public static function getEntityFqcn(): string
     {
         return SalesBdc::class;
@@ -51,12 +60,12 @@ class SalesBdcCrudController extends BaseCrudController
         $validate = BooleanField::new('validate')->setLabel('Validation du client');
         $sales = AssociationField::new('sales')->setRequired(true)->setLabel('Produits');
         $company = TextField::new('sales[0].contact.company')->setRequired(true)->setLabel('Société');
-        $project = TextField::new('sales[0].product.project')->setRequired(true)->setLabel('Projet');
+        //$project = TextField::new('sales[0].product.project')->setRequired(true)->setLabel('Projet');
         $commercial = TextField::new('user')->setRequired(true)->setLabel('Commercial');
         $validationDate = DateField::new('validationDate')->setLabel('Date de validation')->setFormat('dd/mm/yyyy');
         $sendDate = DateField::new('sendDate')->setLabel('Date d\'envois')->setFormat('dd/mm/yyyy');
 
-        $response = [$date, $commercial, $company, $project, $sales, $sendDate, $validationDate, $validate];
+        $response = [$date, $commercial, $company, $sales, $sendDate, $validationDate, $validate];
 
         return $response;
     }
@@ -65,6 +74,10 @@ class SalesBdcCrudController extends BaseCrudController
     {
         $generatePdf = Action::new('generatePdf', 'Générer le pdf')
             ->linkToCrudAction('generatePdf');
+
+        Action::new('sendPdf', 'Envoyer le pdf')
+            ->linkToCrudAction('sendPdf');
+
 
         $actions = parent::configureActions($actions);
         $actions
@@ -113,5 +126,35 @@ class SalesBdcCrudController extends BaseCrudController
         $dompdf->stream('codexworld', ['Attachment' => 0]);
 
         exit;
+    }
+
+    public function sendPdf(AdminContext $context): void
+    {
+        $bdc = $context->getEntity()->getInstance();
+        $html = $this->render('admin/pdf/bdc_fr.html.twig', [
+            'logo' => 'app-logo.png',
+            'bdc' => $bdc,
+        ]);
+
+        $options = new Options();
+        $options->set('isPhpEnabled', true);
+        $options->set('enable_remote', true);
+
+        $dompdf = new Dompdf($options);
+        $dompdf->getOptions()->setChroot(realpath(__DIR__ . '/../../../public/'));
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->loadHtml($html->getContent());
+        $dompdf->render();
+        $output = $dompdf->output();
+
+        $email = (new Email())
+            ->from('no-reply@thefriends.be')
+            ->to($this->getUser()->getUserIdentifier())
+            ->subject('Jonafas : Bon de commande créé')
+            ->html('<p>Vous avez créé une vente. Voici le bon de commande associé à celle-ci</p>')
+            ->addPart(new DataPart($output, 'bon-de-commande.pdf', 'application/pdf'));
+
+        $this->mailer->send($email);
+
     }
 }

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\Sales;
 use App\Entity\SalesBdc;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -41,28 +43,19 @@ class SalesBdcRepository extends ServiceEntityRepository
         }
     }
 
-    //    /**
-    //     * @return SalesBdc[] Returns an array of SalesBdc objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('s.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findOneBySale(User $user, ?Sales $sale) : ?SalesBdc
+    {
+        if (empty($sale)) {
+            return null;
+        }
 
-    //    public function findOneBySomeField($value): ?SalesBdc
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        return $this->createQueryBuilder('bdc')
+                ->join('bdc.sales', 'sales')
+                ->andWhere('bdc.user = :user')
+                ->setParameter('user', $user)
+                ->andWhere('sales = :sale')
+                ->setParameter('sale', $sale)
+                ->getQuery()
+                ->getOneOrNullResult();
+    }
 }

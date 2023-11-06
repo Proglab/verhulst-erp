@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\CompanyContact;
 use App\Entity\Product;
 use App\Entity\Sales;
 use App\Entity\User;
@@ -171,5 +172,19 @@ class SalesRepository extends ServiceEntityRepository
             ->orderBy('s.date', 'DESC')
             ->getQuery()
             ->getResult();
+    }
+
+    public function findLastSale(User $user, CompanyContact $companyContact): ?Sales
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.user = :user')
+            ->setParameter('user', $user)
+            ->andWhere('s.contact = :contact')
+            ->setParameter('contact', $companyContact)
+            ->andWhere('DATE(s.date) = :date')
+            ->setParameter('date', (new \DateTime('now'))->format('Y-m-d'))
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

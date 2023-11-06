@@ -25,7 +25,7 @@ class SalesBdc
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\ManyToMany(targetEntity: Sales::class, inversedBy: 'salesBdcs')]
+    #[ORM\ManyToMany(targetEntity: Sales::class, inversedBy: 'salesBdcs', cascade: ['persist'])]
     private Collection $sales;
 
     #[ORM\Column]

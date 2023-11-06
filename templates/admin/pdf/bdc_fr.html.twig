@@ -133,7 +133,7 @@
                 {% if not loop.last %}
                 <tr>
                     <td>{{ sale.product.name }}<br>
-                        {{ sale.product.description }}
+                        {{ sale.product.description|raw }}
                     </td>
                     <td style="text-align: center;">{{ sale.quantity }}</td>
                     <td style="text-align: right;">{{ sale.totalPrice|number_format(2, ',', '.') }} €</td>
@@ -141,7 +141,7 @@
                 {% else %}
                     <tr>
                         <td style="border-color: #FFFFFF;">{{ sale.product.name }}<br>
-                            {{ sale.product.description }}
+                            {{ sale.product.description|raw }}
                         </td>
                         <td style="text-align: center;border-color: #FFFFFF;">{{ sale.quantity }}</td>
                         <td style="text-align: right;border-color: #FFFFFF;">{{ sale.totalPrice|number_format(2, ',', '.') }} €</td>
