@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Budget;
 
 use App\Entity\Budget\Product;
-use App\Entity\Budget\Supplier;
 use App\Form\Type\SupplierType;
 use App\Repository\Budget\SubCategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;

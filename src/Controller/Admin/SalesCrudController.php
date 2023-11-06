@@ -254,9 +254,7 @@ class SalesCrudController extends BaseCrudController
     }
 
     /**
-     * @param EntityManagerInterface $entityManager
      * @param Sales $entityInstance
-     * @return void
      */
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
@@ -289,10 +287,12 @@ class SalesCrudController extends BaseCrudController
         }
 
         $entityInstance->setPercentCom($percent_com);
-        $sale = $entityManager->getRepository(Sales::class)->findLastSale($user, $entityInstance->getContact());
+        /** @var SalesRepository $saleRepo */
+        $saleRepo = $entityManager->getRepository(Sales::class);
+        $sale = $saleRepo->findLastSale($user, $entityInstance->getContact());
         /** @var SalesBdcRepository $bdcRepository */
         $bdcRepository = $entityManager->getRepository(SalesBdc::class);
-        /** @var SalesBdc $bdc */
+        /** @var ?SalesBdc $bdc */
         $bdc = $bdcRepository->findOneBySale($user, $sale);
 
         $empty = false;
@@ -312,41 +312,6 @@ class SalesCrudController extends BaseCrudController
         $this->addFlash('success', 'Un mail vous a été envoyé avec le bon de commande associé à cette vente');
 
         parent::persistEntity($entityManager, $entityInstance);
-    }
-
-    private function sendBdcByMail(SalesBdc $bdc, bool $new = true)
-    {
-
-        $html = $this->render('admin/pdf/bdc_fr.html.twig', [
-            'logo' => 'app-logo.png',
-            'bdc' => $bdc,
-        ]);
-
-        $options = new Options();
-        $options->set('isPhpEnabled', true);
-        $options->set('enable_remote', true);
-
-        $dompdf = new Dompdf($options);
-        $dompdf->getOptions()->setChroot(realpath(__DIR__ . '/../../../public/'));
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->loadHtml($html->getContent());
-        $dompdf->render();
-        $output = $dompdf->output();
-
-        if ($new) {
-            $mailTitle = 'Le bon de commande '.$bdc->getId().' a été créé';
-        } else {
-            $mailTitle = 'Le bon de commande '.$bdc->getId().' a été modifié';
-        }
-
-        $email = (new Email())
-            ->from('no-reply@thefriends.be')
-            ->to($this->getUser()->getUserIdentifier())
-            ->subject('Jonafas : '.$mailTitle)
-            ->html('<p>Vous avez créé une vente. Voici le bon de commande associé à celle-ci</p>')
-            ->addPart(new DataPart($output, 'bon-de-commande.pdf', 'application/pdf'));
-
-        $this->mailer->send($email);
     }
 
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
@@ -570,5 +535,39 @@ class SalesCrudController extends BaseCrudController
         $this->bdcRepository->save($bdc, true);
 
         return $this->redirect($this->adminUrlGenerator->setController(SalesBdcCrudController::class)->setAction(Action::DETAIL)->setEntityId($bdc->getId())->generateUrl());
+    }
+
+    private function sendBdcByMail(SalesBdc $bdc, bool $new = true): void
+    {
+        $html = $this->render('admin/pdf/bdc_fr.html.twig', [
+            'logo' => 'app-logo.png',
+            'bdc' => $bdc,
+        ]);
+
+        $options = new Options();
+        $options->set('isPhpEnabled', true);
+        $options->set('enable_remote', true);
+
+        $dompdf = new Dompdf($options);
+        $dompdf->getOptions()->setChroot(realpath(__DIR__ . '/../../../public/'));
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->loadHtml($html->getContent());
+        $dompdf->render();
+        $output = $dompdf->output();
+
+        if ($new) {
+            $mailTitle = 'Le bon de commande ' . $bdc->getId() . ' a été créé';
+        } else {
+            $mailTitle = 'Le bon de commande ' . $bdc->getId() . ' a été modifié';
+        }
+
+        $email = (new Email())
+            ->from('no-reply@thefriends.be')
+            ->to($this->getUser()->getUserIdentifier())
+            ->subject('Jonafas : ' . $mailTitle)
+            ->html('<p>Vous avez créé une vente. Voici le bon de commande associé à celle-ci</p>')
+            ->addPart(new DataPart($output, 'bon-de-commande.pdf', 'application/pdf'));
+
+        $this->mailer->send($email);
     }
 }

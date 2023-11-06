@@ -43,7 +43,7 @@ class SalesBdcRepository extends ServiceEntityRepository
         }
     }
 
-    public function findOneBySale(User $user, ?Sales $sale) : ?SalesBdc
+    public function findOneBySale(User $user, ?Sales $sale): ?SalesBdc
     {
         if (empty($sale)) {
             return null;

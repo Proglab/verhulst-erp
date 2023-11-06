@@ -60,7 +60,7 @@ class SalesBdcCrudController extends BaseCrudController
         $validate = BooleanField::new('validate')->setLabel('Validation du client');
         $sales = AssociationField::new('sales')->setRequired(true)->setLabel('Produits');
         $company = TextField::new('sales[0].contact.company')->setRequired(true)->setLabel('Société');
-        //$project = TextField::new('sales[0].product.project')->setRequired(true)->setLabel('Projet');
+        // $project = TextField::new('sales[0].product.project')->setRequired(true)->setLabel('Projet');
         $commercial = TextField::new('user')->setRequired(true)->setLabel('Commercial');
         $validationDate = DateField::new('validationDate')->setLabel('Date de validation')->setFormat('dd/mm/yyyy');
         $sendDate = DateField::new('sendDate')->setLabel('Date d\'envois')->setFormat('dd/mm/yyyy');
@@ -77,7 +77,6 @@ class SalesBdcCrudController extends BaseCrudController
 
         Action::new('sendPdf', 'Envoyer le pdf')
             ->linkToCrudAction('sendPdf');
-
 
         $actions = parent::configureActions($actions);
         $actions
@@ -155,6 +154,5 @@ class SalesBdcCrudController extends BaseCrudController
             ->addPart(new DataPart($output, 'bon-de-commande.pdf', 'application/pdf'));
 
         $this->mailer->send($email);
-
     }
 }
