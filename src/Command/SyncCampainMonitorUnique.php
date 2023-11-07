@@ -229,15 +229,24 @@ class SyncCampainMonitorUnique extends AbstractCommand
 
     private function createContact(string $idList, Subscriber $contact): void
     {
-        $response = $this->client->request('POST', 'https://api.createsend.com/api/v3.3/subscribers/' . $idList . '.json', [
-            'auth_basic' => [$this->apiKey, 'the-password'],
-            'body' => json_encode($contact),
-        ]);
+        try {
+            $this->client->request('POST', 'https://api.createsend.com/api/v3.3/subscribers/' . $idList . '.json', [
+                'auth_basic' => [$this->apiKey, 'the-password'],
+                'body' => json_encode($contact),
+            ]);
+
+        } catch (\Exception $e)
+        {
+            $this->output->writeln('');
+            $this->output->writeln('<error>ERROR Contact created</error>');
+            $this->output->writeln('<error>'.json_encode($e).'</error>');
+            $this->output->writeln('');
+        }
     }
 
     private function updateContact(string $idList, Subscriber $contact): void
     {
-        $response = $this->client->request('PUT', 'https://api.createsend.com/api/v3.3/subscribers/' . $idList . '.json?email=' . urldecode($contact->EmailAddress), [
+        $this->client->request('PUT', 'https://api.createsend.com/api/v3.3/subscribers/' . $idList . '.json?email=' . urldecode($contact->EmailAddress), [
             'auth_basic' => [$this->apiKey, 'the-password'],
             'body' => json_encode($contact),
         ]);
@@ -255,7 +264,6 @@ class SyncCampainMonitorUnique extends AbstractCommand
                 return false;
             }
         }
-
         return true;
     }
 }
