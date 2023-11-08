@@ -208,11 +208,80 @@ class CompanyContactCrudController extends BaseCrudController
             })
             ->add(Crud::PAGE_INDEX, $export)
             ->add(Crud::PAGE_INDEX, $search)
+            ->add(Crud::PAGE_DETAIL, Action::EDIT)
             ->update(Crud::PAGE_INDEX, 'export', function (Action $action) {
                 return $action->setIcon('fa fa-file-export')->setHtmlAttributes(['title' => 'Exporter']);
             })
             ->update(Crud::PAGE_INDEX, 'search', function (Action $action) {
                 return $action->setIcon('fa-solid fa-magnifying-glass')->setHtmlAttributes(['title' => 'Exporter']);
+            })
+            ->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) {
+                return $action->displayIf(function (CompanyContact $entity) {
+                    if (empty($entity->getAddedBy())) {
+                        return true;
+                    }
+
+                    if ($entity->getAddedBy()->getUserIdentifier() === $this->getUser()->getUserIdentifier()) {
+                        return true;
+                    }
+
+                    if ($this->isGranted('ROLE_ADMIN')) {
+                        return true;
+                    }
+
+                    return false;
+                });
+            })
+            ->update(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) {
+                return $action->displayIf(function (CompanyContact $entity) {
+                    if (empty($entity->getAddedBy())) {
+                        return true;
+                    }
+
+                    if ($entity->getAddedBy()->getUserIdentifier() === $this->getUser()->getUserIdentifier()) {
+                        return true;
+                    }
+
+                    if ($this->isGranted('ROLE_ADMIN')) {
+                        return true;
+                    }
+
+                    return false;
+                });
+            })
+            ->update(Crud::PAGE_DETAIL, Action::EDIT, function (Action $action) {
+                return $action->displayIf(function (CompanyContact $entity) {
+                    if (empty($entity->getAddedBy())) {
+                        return true;
+                    }
+
+                    if ($entity->getAddedBy()->getUserIdentifier() === $this->getUser()->getUserIdentifier()) {
+                        return true;
+                    }
+
+                    if ($this->isGranted('ROLE_ADMIN')) {
+                        return true;
+                    }
+
+                    return false;
+                });
+            })
+            ->update(Crud::PAGE_DETAIL, Action::DELETE, function (Action $action) {
+                return $action->displayIf(function (CompanyContact $entity) {
+                    if (empty($entity->getAddedBy())) {
+                        return true;
+                    }
+
+                    if ($entity->getAddedBy()->getUserIdentifier() === $this->getUser()->getUserIdentifier()) {
+                        return true;
+                    }
+
+                    if ($this->isGranted('ROLE_ADMIN')) {
+                        return true;
+                    }
+
+                    return false;
+                });
             })
         ;
 
