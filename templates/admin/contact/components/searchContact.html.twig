@@ -1,0 +1,73 @@
+<div{{ attributes }}>
+    <input
+            type="text"
+            data-model="query"
+            placeholder="Recherchez"
+            class="form-control"
+    >
+
+    <label for="users" class="form-label mt-3">Commercial</label>
+    <select
+            type="text"
+            data-model="user"
+            class="form-control"
+            name="users"
+    >
+        <option value=""></option>
+        {% for user in users %}
+        <option value="{{ user.email }}">{{ user.fullname }}</option>
+        {% endfor %}
+
+    </select>
+
+    {% if computed.contacts|length > 0 %}
+        <div class="content-body row">
+            <div data-loading="addClass(opacity-50)" class="mt-3 row">
+                <table class="table datagrid">
+                    <thead>
+                        <tr>
+                            <th class="header-for-field-text text-" style="color: #f5f5f4; padding: 8px">Type de contact</th>
+                            <th class="header-for-field-text text-" style="color: #f5f5f4; padding: 8px">Société</th>
+                            <th class="header-for-field-text text-" style="color: #f5f5f4; padding: 8px">Tva</th>
+                            <th class="header-for-field-text text-" style="color: #f5f5f4; padding: 8px">Nom</th>
+                            <th class="header-for-field-text text-" style="color: #f5f5f4; padding: 8px">Lang</th>
+                            <th class="header-for-field-text text-" style="color: #f5f5f4; padding: 8px">Email</th>
+                            <th class="header-for-field-text text-" style="color: #f5f5f4; padding: 8px">Tel</th>
+                            <th class="header-for-field-text text-" style="color: #f5f5f4; padding: 8px">Gsm</th>
+                            <th class="header-for-field-text text-" style="color: #f5f5f4; padding: 8px">Sales</th>
+                            <th class="header-for-field-text text-" style="color: #f5f5f4; padding: 8px">Note</th>
+                            <th class="header-for-field-text text-" style="color: #f5f5f4; padding: 8px">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for contact in computed.contacts %}
+                        <tr>
+                            <th scope="row">{{ contact.type }}</th>
+                            <td>{% if contact.name %}{{ contact.name }}{% else %}<span class="badge badge-secondary">Aucun(e)</span>{% endif %}</td>
+                            <td>{% if contact.vat_number %}{{ contact.vat_number }}{% else %}<span class="badge badge-secondary">Aucun(e)</span>{% endif %}</td>
+                            <td>{{ contact.firstname }} {{ contact.lastname }}</td>
+                            <td>{{ contact.lang }}</td>
+                            <td>{% if contact.email %}{{ contact.email }}{% else %}<span class="badge badge-secondary">Aucun(e)</span>{% endif %}</td>
+                            <td>{% if contact.phone %}{{ contact.phone }}{% else %}<span class="badge badge-secondary">Aucun(e)</span>{% endif %}</td>
+                            <td>{% if contact.gsm %}{{ contact.gsm }}{% else %}<span class="badge badge-secondary">Aucun(e)</span>{% endif %}</td>
+                            <td>{% if contact.first_name %}{{ contact.first_name }} {{ contact.last_name }}{% else %}<span class="badge badge-secondary">Aucun(e)</span>{% endif %}</td>
+                            <td>{{ contact.note|u.truncate(20, '...', false)|raw }}</td>
+                            <td>
+                                {% if contact.type == "Contact validé" %}
+                                    <a class=" action-detail" href="/admin/fr?crudAction=detail&amp;crudControllerFqcn=App%5CController%5CAdmin%5CCompanyContactCrudController&amp;entityId={{ contact.id }}" title="Consulter" data-action-name="detail"><i class="action-icon fa fa-eye"></i> </a>
+                                {% endif %}
+
+                                {% if contact.type == "Import" %}
+                                    <a class=" action-detail" href="/admin/fr?crudAction=detail&crudControllerFqcn=App%5CController%5CAdmin%5CTempCompanyContactCrudController&entityId={{ contact.id }}" title="Consulter" data-action-name="detail"><i class="action-icon fa fa-eye"></i> </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <div class="pt-3">Aucune personne ne correspond à la recherche</div>
+    {% endif %}
+</div>

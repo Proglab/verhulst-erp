@@ -59,7 +59,8 @@ class CompanyContactCrudController extends BaseCrudController
             ->setEntityLabelInSingular('Client')
             ->showEntityActionsInlined(true)
             ->overrideTemplate('crud/detail', 'admin/crud/detail_2cols.html.twig')
-            ->setSearchFields(['firstname', 'lastname', 'company.name', 'email', 'phone', 'gsm', 'note', 'lang', 'company.vat_number']);
+            //->setSearchFields(['firstname', 'lastname', 'company.name', 'email', 'phone', 'gsm', 'note', 'lang', 'company.vat_number']);
+            ->setSearchFields(null);
 
         return parent::configureCrud($crud);
     }
@@ -185,6 +186,9 @@ class CompanyContactCrudController extends BaseCrudController
         $export = Action::new('export', 'Exporter les contacts')
             ->linkToCrudAction('export')->createAsGlobalAction();
 
+        $search = Action::new('search', 'Rechercher un contact')
+            ->linkToCrudAction('search')->createAsGlobalAction();
+
         $actions = parent::configureActions($actions);
         $actions
             ->add(Crud::PAGE_DETAIL, $transfert)
@@ -203,8 +207,12 @@ class CompanyContactCrudController extends BaseCrudController
                 return $action->setIcon('fa fa-eye')->setLabel(false)->setHtmlAttributes(['title' => 'Consulter']);
             })
             ->add(Crud::PAGE_INDEX, $export)
+            ->add(Crud::PAGE_INDEX, $search)
             ->update(Crud::PAGE_INDEX, 'export', function (Action $action) {
                 return $action->setIcon('fa fa-file-export')->setHtmlAttributes(['title' => 'Exporter']);
+            })
+            ->update(Crud::PAGE_INDEX, 'search', function (Action $action) {
+                return $action->setIcon('fa-solid fa-magnifying-glass')->setHtmlAttributes(['title' => 'Exporter']);
             })
         ;
 
@@ -348,4 +356,15 @@ class CompanyContactCrudController extends BaseCrudController
 
         return $response;
     }
+
+
+    public function search(AdminContext $context): Response
+    {
+
+        return $this->render('admin/contact/search.html.twig', [
+
+        ]);
+    }
+
+
 }

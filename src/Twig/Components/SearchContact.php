@@ -1,0 +1,75 @@
+<?php
+
+namespace App\Twig\Components;
+
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
+use Symfony\UX\LiveComponent\Attribute\LiveProp;
+use Symfony\UX\LiveComponent\DefaultActionTrait;
+
+#[AsLiveComponent('admin_search_global_contact', template: 'admin/contact/components/searchContact.html.twig')]
+class SearchContact
+{
+    use DefaultActionTrait;
+
+    #[LiveProp(writable: true)]
+    public ?string $query = null;
+
+    #[LiveProp(writable: true)]
+    public ?string $user = null;
+
+    public ?array $users = null;
+
+    public function __construct(private EntityManagerInterface $entityManager, private UserRepository $userRepository)
+    {
+        $this->users = $userRepository->getCommercials();
+    }
+
+    public function getContacts(): array
+    {
+        $user = '';
+        if ($this->user) {
+            $user = ' AND user.email = :user';
+        }
+
+        $sql = '
+        SELECT \'Contact validé\' as type, company.name, company.vat_number, company_contact.id, company_contact.firstname, company_contact.lastname, company_contact.lang, company_contact.email, company_contact.phone, company_contact.gsm, user.first_name, user.last_name, company_contact.note
+        FROM company_contact
+        JOIN company ON company_contact.company_id = company.id
+        LEFT JOIN user ON company_contact.added_by_id = user.id
+        WHERE (company.name LIKE :query
+        OR company_contact.firstname LIKE :query
+        OR company_contact.lastname LIKE :query
+        OR company_contact.email LIKE :query
+        OR company_contact.phone LIKE :query
+        OR company_contact.gsm LIKE :query
+        OR CONCAT(company_contact.firstname, \' \',company_contact.lastname) LIKE :query)
+        '.$user.'        
+        UNION
+        SELECT \'Import\' as type, temp_company.name, temp_company.vat_number, temp_company_contact.id, temp_company_contact.firstname, temp_company_contact.lastname, temp_company_contact.lang, temp_company_contact.email, temp_company_contact.phone, temp_company_contact.gsm, user.first_name, user.last_name, \'\'
+        FROM temp_company_contact
+        JOIN temp_company ON temp_company_contact.company_id = temp_company.id
+        LEFT JOIN user ON temp_company_contact.added_by_id = user.id
+        WHERE (temp_company.name LIKE :query
+        OR temp_company_contact.firstname LIKE :query
+        OR temp_company_contact.lastname LIKE :query
+        OR temp_company_contact.email LIKE :query
+        OR temp_company_contact.phone LIKE :query
+        OR temp_company_contact.gsm LIKE :query
+        OR CONCAT(temp_company_contact.firstname, \' \',temp_company_contact.lastname) LIKE :query)
+        '.$user.'
+        UNION
+        SELECT \'Mika\' as type, \'\' as name, \'\' as vat_number, \'\' as id, \'\' as firstname, \'\' as lastname, mika.lang, mika.email, \'\' as phone, \'\' as gsm, user.first_name, user.last_name, \'\'
+        FROM mika
+        JOIN user ON (user.email = \'michael.veys@thefriends.be\')
+        WHERE mika.email LIKE :query
+        '.$user.'
+        LIMIT 100
+        ';
+        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $result = $stmt->executeQuery(['query' => '%'.$this->query.'%', 'user' => $this->user]);
+
+        return $result->fetchAllAssociative();
+    }
+}
