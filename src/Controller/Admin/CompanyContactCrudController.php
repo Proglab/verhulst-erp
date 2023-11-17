@@ -185,10 +185,10 @@ class CompanyContactCrudController extends BaseCrudController
 
         $export = Action::new('export', 'Exporter les contacts')
             ->linkToCrudAction('export')->createAsGlobalAction();
-
+/*
         $search = Action::new('search', 'Rechercher un contact')
             ->linkToCrudAction('search')->createAsGlobalAction();
-
+*/
         $actions = parent::configureActions($actions);
         $actions
             ->add(Crud::PAGE_DETAIL, $transfert)
@@ -207,14 +207,14 @@ class CompanyContactCrudController extends BaseCrudController
                 return $action->setIcon('fa fa-eye')->setLabel(false)->setHtmlAttributes(['title' => 'Consulter']);
             })
             ->add(Crud::PAGE_INDEX, $export)
-            ->add(Crud::PAGE_INDEX, $search)
+          //  ->add(Crud::PAGE_INDEX, $search)
             ->add(Crud::PAGE_DETAIL, Action::EDIT)
             ->update(Crud::PAGE_INDEX, 'export', function (Action $action) {
                 return $action->setIcon('fa fa-file-export')->setHtmlAttributes(['title' => 'Exporter']);
             })
-            ->update(Crud::PAGE_INDEX, 'search', function (Action $action) {
+           /* ->update(Crud::PAGE_INDEX, 'search', function (Action $action) {
                 return $action->setIcon('fa-solid fa-magnifying-glass')->setHtmlAttributes(['title' => 'Exporter']);
-            })
+            })*/
             ->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) {
                 return $action->displayIf(function (CompanyContact $entity) {
                     if (empty($entity->getAddedBy())) {
@@ -427,7 +427,7 @@ class CompanyContactCrudController extends BaseCrudController
     }
 
 
-    public function search(AdminContext $context): Response
+    public function index(AdminContext $context): Response
     {
 
         return $this->render('admin/contact/search.html.twig', [

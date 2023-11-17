@@ -54,11 +54,45 @@
                             <td>{{ contact.note|u.truncate(20, '...', false)|raw }}</td>
                             <td>
                                 {% if contact.type == "Contact validé" %}
-                                    <a class=" action-detail" href="/admin/fr?crudAction=detail&amp;crudControllerFqcn=App%5CController%5CAdmin%5CCompanyContactCrudController&amp;entityId={{ contact.id }}" title="Consulter" data-action-name="detail"><i class="action-icon fa fa-eye"></i> </a>
+                                    {% set url = ea_url()
+                                        .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                        .setController('App\\Controller\\Admin\\CompanyContactCrudController')
+                                        .setAction('detail')
+                                        .setEntityId(contact.id)
+                                    %}
+                                    <a class=" action-detail" href="{{url}}" title="Consulter"><i class="text-black fa fa-eye"></i> </a>
+
+                                    {% if is_granted('edit-contact', contact) %}
+                                        {% set url = ea_url()
+                                            .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                            .setController('App\\Controller\\Admin\\CompanyContactCrudController')
+                                            .setAction('edit')
+                                            .setEntityId(contact.id)
+                                        %}
+                                        <a class=" action-detail" href="{{url}}" title="Modifier"><i class="text-black fa fa-edit ms-2"></i> </a>
+                                    {% endif %}
+
                                 {% endif %}
 
                                 {% if contact.type == "Import" %}
-                                    <a class=" action-detail" href="/admin/fr?crudAction=detail&crudControllerFqcn=App%5CController%5CAdmin%5CTempCompanyContactCrudController&entityId={{ contact.id }}" title="Consulter" data-action-name="detail"><i class="action-icon fa fa-eye"></i> </a>
+                                    {% set url = ea_url()
+                                        .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                        .setController('App\\Controller\\Admin\\TempCompanyContactCrudController')
+                                        .setAction('detail')
+                                        .setEntityId(contact.id)
+                                    %}
+                                    <a class=" action-detail" href="{{ url }}" title="Consulter"><i class="text-black fa fa-eye"></i> </a>
+
+                                    {% if is_granted('edit-import', contact) %}
+                                        {% set url = ea_url()
+                                            .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                            .setController('App\\Controller\\Admin\\TempCompanyContactCrudController')
+                                            .setAction('edit')
+                                            .setEntityId(contact.id)
+                                        %}
+                                        <a class=" action-detail" href="{{url}}" title="Modifier"><i class="text-black fa fa-edit ms-2"></i> </a>
+                                    {% endif %}
+
                                 {% endif %}
                             </td>
                         </tr>
@@ -68,6 +102,12 @@
             </div>
         </div>
     {% else %}
-        <div class="pt-3">Aucune personne ne correspond à la recherche</div>
+        <div class="pt-3 mb-3">Aucune personne ne correspond à la recherche</div>
+        {% set url = ea_url()
+            .setDashboard('App\\Controller\\Admin\\DashboardController')
+            .setController('App\\Controller\\Admin\\CompanyContactCrudController')
+            .setAction('new')
+        %}
+        <a class=" action-new btn btn-primary" href="{{url}}" title="Créer"><i class="action-icon fa fa-plus-square"></i><span class="action-label"> Créer Client</span></a>
     {% endif %}
 </div>

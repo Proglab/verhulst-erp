@@ -34,7 +34,7 @@ class SearchContact
         }
 
         $sql = '
-        SELECT \'Contact validé\' as type, company.name, company.vat_number, company_contact.id, company_contact.firstname, company_contact.lastname, company_contact.lang, company_contact.email, company_contact.phone, company_contact.gsm, user.first_name, user.last_name, company_contact.note
+        SELECT \'Contact validé\' as type, company.name, company.vat_number, company_contact.id, company_contact.firstname, company_contact.lastname, company_contact.lang, company_contact.email, company_contact.phone, company_contact.gsm, user.first_name, user.last_name, company_contact.note, company_contact.added_by_id
         FROM company_contact
         JOIN company ON company_contact.company_id = company.id
         LEFT JOIN user ON company_contact.added_by_id = user.id
@@ -47,7 +47,7 @@ class SearchContact
         OR CONCAT(company_contact.firstname, \' \',company_contact.lastname) LIKE :query)
         '.$user.'        
         UNION
-        SELECT \'Import\' as type, temp_company.name, temp_company.vat_number, temp_company_contact.id, temp_company_contact.firstname, temp_company_contact.lastname, temp_company_contact.lang, temp_company_contact.email, temp_company_contact.phone, temp_company_contact.gsm, user.first_name, user.last_name, \'\'
+        SELECT \'Import\' as type, temp_company.name, temp_company.vat_number, temp_company_contact.id, temp_company_contact.firstname, temp_company_contact.lastname, temp_company_contact.lang, temp_company_contact.email, temp_company_contact.phone, temp_company_contact.gsm, user.first_name, user.last_name, \'\', temp_company_contact.added_by_id
         FROM temp_company_contact
         JOIN temp_company ON temp_company_contact.company_id = temp_company.id
         LEFT JOIN user ON temp_company_contact.added_by_id = user.id
@@ -60,7 +60,7 @@ class SearchContact
         OR CONCAT(temp_company_contact.firstname, \' \',temp_company_contact.lastname) LIKE :query)
         '.$user.'
         UNION
-        SELECT \'Mika\' as type, \'\' as name, \'\' as vat_number, \'\' as id, \'\' as firstname, \'\' as lastname, mika.lang, mika.email, \'\' as phone, \'\' as gsm, user.first_name, user.last_name, \'\'
+        SELECT \'Mika\' as type, \'\' as name, \'\' as vat_number, \'\' as id, \'\' as firstname, \'\' as lastname, mika.lang, mika.email, \'\' as phone, \'\' as gsm, user.first_name, user.last_name, \'\', \'\'
         FROM mika
         JOIN user ON (user.email = \'michael.veys@thefriends.be\')
         WHERE mika.email LIKE :query
@@ -69,7 +69,7 @@ class SearchContact
         ';
         $stmt = $this->entityManager->getConnection()->prepare($sql);
         $result = $stmt->executeQuery(['query' => '%'.$this->query.'%', 'user' => $this->user]);
-
         return $result->fetchAllAssociative();
+
     }
 }
