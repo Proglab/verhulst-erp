@@ -100,7 +100,34 @@
                     </tbody>
                 </table>
             </div>
+            <div class="d-flex justify-content-between mt-3">
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link" href="#" data-action="live#action" data-action-name="prevent|setPage(page=1)">Début</a></li>
+                    {% if page > 1 %}
+                        <li class="page-item"><a class="page-link" href="#" data-action="live#action" data-action-name="prevent|setPage(page={{ page - 1 }})">Précédent</a></li>
+                    {% endif %}
+                    {% if (page - 1) * max < this.getCount() - max %}
+                        <li class="page-item"><a class="page-link" href="#" data-action="live#action" data-action-name="prevent|setPage(page={{ page + 1 }})">Suivant</a></li>
+                    {% endif %}
+                    <li class="page-item"><a class="page-link" href="#" data-action="live#action" data-action-name="prevent|setPage(page={{ (this.getCount() / max) + 1}})">Fin</a></li>
+                </ul>
+            </nav>
+<div class="me-5">
+    {{ (page - 1) * max }}/{{ this.getCount() }}</div>
+            </div>
+
         </div>
+
+        <br>
+        <br>
+
+        <br>
+        <br>
+        <br>
+
+
     {% else %}
         <div class="pt-3 mb-3">Aucune personne ne correspond à la recherche</div>
         {% set url = ea_url()

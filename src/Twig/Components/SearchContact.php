@@ -2,9 +2,12 @@
 
 namespace App\Twig\Components;
 
+use App\Entity\Document\Dir;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
+use Symfony\UX\LiveComponent\Attribute\LiveAction;
+use Symfony\UX\LiveComponent\Attribute\LiveArg;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
@@ -17,6 +20,15 @@ class SearchContact
     public ?string $query = null;
 
     #[LiveProp(writable: true)]
+    public int $count = 0;
+
+    #[LiveProp(writable: true)]
+    public int $page = 1;
+
+    public int $max = 30;
+    public int $pageNbr = 50;
+
+    #[LiveProp(writable: true, onUpdated: 'onUserUpdated')]
     public ?string $user = null;
 
     public ?array $users = null;
@@ -25,6 +37,17 @@ class SearchContact
     {
         $this->users = $userRepository->getCommercials();
     }
+
+    public function onUserUpdated($previousValue): void
+    {
+        $this->page = 1;
+    }
+
+    public function mount()
+    {
+        $this->getContacts();
+    }
+
 
     public function getContacts(): array
     {
@@ -65,11 +88,74 @@ class SearchContact
         JOIN user ON (user.email = \'michael.veys@thefriends.be\')
         WHERE mika.email LIKE :query
         '.$user.'
-        LIMIT 100
+        LIMIT '.(($this->page - 1) * $this->max).', '.$this->max.'
         ';
         $stmt = $this->entityManager->getConnection()->prepare($sql);
         $result = $stmt->executeQuery(['query' => '%'.$this->query.'%', 'user' => $this->user]);
-        return $result->fetchAllAssociative();
+        $datas =  $result->fetchAllAssociative();
 
+        return $datas;
+    }
+
+
+
+
+    #[LiveAction]
+    public function getCount(): int
+    {
+        $user = '';
+        if ($this->user) {
+            $user = ' AND user.email = :user';
+        }
+
+        $sql = '
+        SELECT COUNT(*) as nbr
+        FROM company_contact
+        JOIN company ON company_contact.company_id = company.id
+        LEFT JOIN user ON company_contact.added_by_id = user.id
+        WHERE (company.name LIKE :query
+        OR company_contact.firstname LIKE :query
+        OR company_contact.lastname LIKE :query
+        OR company_contact.email LIKE :query
+        OR company_contact.phone LIKE :query
+        OR company_contact.gsm LIKE :query
+        OR CONCAT(company_contact.firstname, \' \',company_contact.lastname) LIKE :query)
+        '.$user.'        
+        UNION
+        SELECT COUNT(*) as nbr
+        FROM temp_company_contact
+        JOIN temp_company ON temp_company_contact.company_id = temp_company.id
+        LEFT JOIN user ON temp_company_contact.added_by_id = user.id
+        WHERE (temp_company.name LIKE :query
+        OR temp_company_contact.firstname LIKE :query
+        OR temp_company_contact.lastname LIKE :query
+        OR temp_company_contact.email LIKE :query
+        OR temp_company_contact.phone LIKE :query
+        OR temp_company_contact.gsm LIKE :query
+        OR CONCAT(temp_company_contact.firstname, \' \',temp_company_contact.lastname) LIKE :query)
+        '.$user.'
+        UNION
+        SELECT COUNT(*) as nbr
+        FROM mika
+        JOIN user ON (user.email = \'michael.veys@thefriends.be\')
+        WHERE mika.email LIKE :query
+        '.$user.'
+        ';
+        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $result = $stmt->executeQuery(['query' => '%'.$this->query.'%', 'user' => $this->user]);
+        $datas =  $result->fetchAllAssociative();
+        $total = 0;
+        foreach ($datas as $tot) {
+            $total += $tot['nbr'];
+        }
+
+        return $total;
+    }
+
+
+    #[LiveAction]
+    public function setPage(#[LiveArg] int $page): void
+    {
+        $this->page = $page;
     }
 }
