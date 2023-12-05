@@ -143,7 +143,7 @@ class SalesCrudController extends BaseCrudController
             ->setStoredAsCents(false)
             ->setNumDecimals(2)
             ->setRequired(true)
-            ->setCurrency('EUR')->setLabel('Prix');
+            ->setCurrency('EUR')->setLabel('Prix de vente');
         $product = AssociationField::new('product')->setRequired(true);
         $contacts = AssociationField::new('contact')->setRequired(true);
         $date = DateField::new('date')->setLabel('Date de vente');
