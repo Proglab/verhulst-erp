@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Entity\ProductPackageVip;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Repository\ProjectRepository;
@@ -150,6 +151,41 @@ class ProjectCrudController extends BaseCrudController
      */
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
+
+
+        $days = $entityInstance->getDateEnd()->diff($entityInstance->getDateBegin());
+        $days = $days->days;
+
+        foreach ($entityInstance->getProductPackage() as $package) {
+            $date = clone $entityInstance->getDateBegin();
+            for($i = 0; $i <= $days ; $i++)
+            {
+                $packageNew = new ProductPackageVip();
+                $packageNew->setName($package->getName());
+                $packageNew->setPercentTv((string) $package->getPercentTv());
+                $packageNew->setDoc($package->getDoc());
+                $packageNew->setDescription($package->getDescription());
+                $packageNew->setPercentFreelance((string) $package->getPercentFreelance());
+                $packageNew->setPercentSalarie((string) $package->getPercentSalarie());
+                $packageNew->setPercentTv((string) $package->getPercentTv());
+                $packageNew->setProject($package->getProject());
+                $packageNew->setCa($package->getCa());
+                $packageNew->setPa($package->getPa());
+                $packageNew->setQuantityMax($package->getQuantityMax());
+                if ($i > 0) {
+                    /** @var \DateTime $date */
+                    $date->add(new \DateInterval('P1D'));
+                }
+                $packageNew->setDateBegin(clone $date);
+                $packageNew->setDateEnd(clone $date);
+                $entityInstance->addProductPackage($packageNew);
+            }
+
+            $entityInstance->removeProductPackage($package);
+
+
+        }
+
         if (true === $entityInstance->isMail()) {
             /** @var UserRepository $userRepo */
             $userRepo = $entityManager->getRepository(User::class);

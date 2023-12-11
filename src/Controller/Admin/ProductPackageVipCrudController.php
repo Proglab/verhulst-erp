@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\ProductPackageVip;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -105,9 +106,9 @@ class ProductPackageVipCrudController extends BaseCrudController
 
         $response = match ($pageName) {
             Crud::PAGE_DETAIL, Crud::PAGE_INDEX => [$name, $dateBegin, $percentVrListing, $paListing, $caListing, $description, $quantityMaxListing, $quantitySalesListing, $quantityAvailableListing, $imageDwonload],
-            Crud::PAGE_NEW => [$name, $dateBegin, $percentVr, $percentDefaultFreelance, $percentDefaultSalarie, $percentTv, $pa, $ca, $description, $quantityMax, $image],
+            Crud::PAGE_NEW => [$name, /*$dateBegin,*/ $percentVr, $percentDefaultFreelance, $percentDefaultSalarie, $percentTv, $pa, $ca, $description, $quantityMax, $image],
             Crud::PAGE_EDIT => [$name, $dateBegin, $percentVr, $pa, $ca, $description, $quantityMax, $image, $percentFreelanceHidden, $percentSalarieHidden, $percentTvHidden],
-            default => [$name, $dateBegin, $percentVr, $ca, $description, $quantityMax],
+            default => [$name, /*$dateBegin,*/ $percentVr, $ca, $description, $quantityMax],
         };
 
         return $response;
