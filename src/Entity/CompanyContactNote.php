@@ -80,4 +80,8 @@ class CompanyContactNote
 
         return $this;
     }
+
+    public function __toString() {
+        return strip_tags($this->note);
+    }
 }

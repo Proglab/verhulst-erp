@@ -1,0 +1,29 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+{% if ea.crud.currentAction == 'detail' %}
+    <div class="card-deck">
+        {% for value in field.value|sort((a, b) => a.dateReminder <= b.dateReminder) %}
+            <div class="card mt-3 p-1 {% if value.done %}border-success{% else %}{% if value.dateReminder|date('Y-m-d') < date('now')|date('Y-m-d') %}border-danger{% elseif  value.dateReminder|date('Y-m-d') == date('now')|date('Y-m-d') %}border-warning{% endif %}{% endif %}">
+                <div class="card-title">
+                    {{ value.dateReminder|date('d/m/Y H:i') }}
+                </div>
+                <div class="card-body">
+                    <p class="card-title"><strong>{{ value.user }}</strong></p>
+                    <p class="card-text">
+                        {{ value.todo|raw }}
+                    </p>
+                </div>
+                <div class="card-footer text-right">
+                    {% if value.done %}
+                        <i class="fa-solid fa-check"></i>
+                    {% else %}
+                        <i class="fa-solid fa-hourglass"></i>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <span class="badge badge-secondary">{{ field.formattedValue }}</span>
+{% endif %}

@@ -11,6 +11,7 @@ use App\Form\Type\TransfertContact;
 use App\Repository\CompanyContactRepository;
 use App\Repository\UserRepository;
 use App\Service\SecurityChecker;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -143,19 +144,30 @@ class CompanyContactCrudController extends BaseCrudController
         $userNameListing = TextField::new('added_by.fullNameMinified')->setLabel('Sales');
 
         $panel4 = FormField::addPanel('To do')->setCustomOption('cols', 1);
-        $items = AssociationField::new('todos')->setTemplatePath('admin/contact/crud.detail.html.twig')->setLabel(false);
+        $panel5 = FormField::addPanel('Notes')->setCustomOption('cols', 2);
+        $items = AssociationField::new('todos')->setTemplatePath('admin/contact/crud.detail.todos.html.twig')->setLabel(false)->setColumns(6);
 
         $greeting = TextField::new('greeting')->setLabel('Formule de politesse')->setColumns(12);
         $sex = ChoiceField::new('sex')->setLabel('Genre')->setChoices(
             ['Homme' => 'M', 'Femme' => 'F', 'Non binaire' => 'U']
         )->setColumns(12);
 
-        $notes = CollectionField::new('notes')->setLabel('Notes')->setColumns(12)->allowAdd(true)->setEntryIsComplex()->useEntryCrudForm(CompanyContactNoteCrudController::class);
+        $notes = CollectionField::new('notes')
+            ->setLabel('Notes')
+            ->setColumns(12)
+            ->allowAdd(true)
+            ->setEntryIsComplex()
+            ->useEntryCrudForm(CompanyContactNoteCrudController::class)->setColumns(6);
+
+        $notesTxt = AssociationField::new('notes')
+            ->setTemplatePath('admin/contact/crud.detail.notes.html.twig')
+            ->setLabel(false)
+            ->setColumns(6);
 
         $response = match ($pageName) {
             Crud::PAGE_EDIT => [$firstname, $lastname, $lang, $sex, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $fonction, $interest, $notes, $user, $greeting],
             Crud::PAGE_NEW => [$firstname, $lastname, $lang, $sex, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry->setFormTypeOption('preferred_choices', ['BE']), $fonction, $interest, $notes, $userAdd],
-            Crud::PAGE_DETAIL => [$panel1, $company, $companyVat, $companyVatNa, $companyStreet, $companyPc, $companyCity, $companyCountry, $panel2, $fullname, $fonction, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $interest, $userName, $noteView, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $panel4, $items],
+            Crud::PAGE_DETAIL => [$panel1, $company, $companyVat, $companyVatNa, $companyStreet, $companyPc, $companyCity, $companyCountry, $panel2, $fullname, $fonction, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $interest, $userName, $noteView, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $panel4, $items, $panel5, $notesTxt],
             Crud::PAGE_INDEX => [$company, $companyVat, $fullname, $langListing, $email, $phone, $gsm, $userNameListing, $note],
             default => [$company, $firstname, $lastname, $lang, $email, $phone, $notes],
         };
@@ -186,6 +198,9 @@ class CompanyContactCrudController extends BaseCrudController
         $createTodo = Action::new('todo', 'Créer une Todo')
             ->linkToCrudAction('createTodo');
 
+        $createNote = Action::new('notes', 'Créer une Note')
+            ->linkToCrudAction('createNote');
+
         $export = Action::new('export', 'Exporter les contacts')
             ->linkToCrudAction('export')->createAsGlobalAction();
 /*
@@ -196,6 +211,7 @@ class CompanyContactCrudController extends BaseCrudController
         $actions
             ->add(Crud::PAGE_DETAIL, $transfert)
             ->add(Crud::PAGE_DETAIL, $createTodo)
+            ->add(Crud::PAGE_DETAIL, $createNote)
             ->setPermission(Action::NEW, 'ROLE_COMMERCIAL')
             ->setPermission(Action::EDIT, 'ROLE_COMMERCIAL')
             ->setPermission(Action::DELETE, 'ROLE_ADMIN')
@@ -326,6 +342,7 @@ class CompanyContactCrudController extends BaseCrudController
 
     public function updateEntity(EntityManagerInterface $entityManager, mixed $entityInstance): void
     {
+
         if ('F' === $entityInstance->getSex() && 'fr' === $entityInstance->getLang() && empty($entityInstance->getGreeting())) {
             $entityInstance->setGreeting('Chère Madame');
         }
@@ -357,7 +374,6 @@ class CompanyContactCrudController extends BaseCrudController
             ->setAction(Action::EDIT)
             ->setEntityId($contact->getCompany()->getId())
             ->generateUrl();
-
         return $this->redirect($url);
     }
 
@@ -382,6 +398,11 @@ class CompanyContactCrudController extends BaseCrudController
     public function createTodo(AdminContext $context): RedirectResponse|Response
     {
         return $this->redirect($this->adminUrlGenerator->setController(TodoCrudController::class)->setAction(Crud::PAGE_NEW)->setEntityId(null)->set('client_id', $context->getEntity()->getInstance()->getId())->generateUrl());
+    }
+
+    public function createNote(AdminContext $context): RedirectResponse|Response
+    {
+        return $this->redirect($this->adminUrlGenerator->setController(CompanyContactNoteCrudController::class)->setAction(Crud::PAGE_NEW)->setEntityId(null)->set('client_id', $context->getEntity()->getInstance()->getId())->generateUrl());
     }
 
     public function export(AdminContext $context): StreamedResponse

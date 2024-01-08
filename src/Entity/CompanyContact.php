@@ -94,7 +94,7 @@ class CompanyContact
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $greeting = null;
 
-    #[ORM\OneToMany(mappedBy: 'company_contact', targetEntity: CompanyContactNote::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'company_contact', targetEntity: CompanyContactNote::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $notes;
 
     public function __construct()

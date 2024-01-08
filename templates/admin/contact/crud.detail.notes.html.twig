@@ -1,0 +1,24 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+{% if ea.crud.currentAction == 'detail' %}
+    <div class="card-deck">
+    {% for value in field.value|sort((a, b) => a.createdDt <= b.createdDt) %}
+        <div class="card mt-3 p-1">
+            <div class="card-title">
+                {{ value.createdDt|date('d/m/Y H:i') }}
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    {{ value.note|raw }}
+                </p>
+            </div>
+            <div class="card-footer text-right">
+                {{ value.user.fullname }}
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% else %}
+    <span class="badge badge-secondary">{{ field.formattedValue }}</span>
+{% endif %}
