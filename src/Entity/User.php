@@ -102,6 +102,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phone = null;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: CompanyContactNote::class, orphanRemoval: true)]
+    private Collection $notes;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -112,6 +115,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         $this->companyContacts = new ArrayCollection();
         $this->todos = new ArrayCollection();
         $this->salesBdcs = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
 
     public function __toString()
@@ -508,6 +512,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     public function setPhone(?string $phone): static
     {
         $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CompanyContactNote>
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(CompanyContactNote $note): static
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes->add($note);
+            $note->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(CompanyContactNote $note): static
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getUser() === $this) {
+                $note->setUser(null);
+            }
+        }
 
         return $this;
     }

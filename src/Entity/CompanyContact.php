@@ -94,10 +94,14 @@ class CompanyContact
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $greeting = null;
 
+    #[ORM\OneToMany(mappedBy: 'company_contact', targetEntity: CompanyContactNote::class, orphanRemoval: true)]
+    private Collection $notes;
+
     public function __construct()
     {
         $this->sales = new ArrayCollection();
         $this->todos = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
 
     public function __toString()
@@ -365,6 +369,36 @@ class CompanyContact
     public function setGreeting(?string $greeting): static
     {
         $this->greeting = $greeting;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CompanyContactNote>
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(CompanyContactNote $note): static
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes->add($note);
+            $note->setCompanyContact($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(CompanyContactNote $note): static
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getCompanyContact() === $this) {
+                $note->setCompanyContact(null);
+            }
+        }
 
         return $this;
     }

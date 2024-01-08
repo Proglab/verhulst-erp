@@ -26,6 +26,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CountryField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
@@ -149,12 +150,14 @@ class CompanyContactCrudController extends BaseCrudController
             ['Homme' => 'M', 'Femme' => 'F', 'Non binaire' => 'U']
         )->setColumns(12);
 
+        $notes = CollectionField::new('notes')->setLabel('Notes')->setColumns(12)->allowAdd(true)->setEntryIsComplex()->useEntryCrudForm(CompanyContactNoteCrudController::class);
+
         $response = match ($pageName) {
-            Crud::PAGE_EDIT => [$firstname, $lastname, $lang, $sex, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $fonction, $interest, $note, $user, $greeting],
-            Crud::PAGE_NEW => [$firstname, $lastname, $lang, $sex, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry->setFormTypeOption('preferred_choices', ['BE']), $fonction, $interest, $note, $userAdd],
+            Crud::PAGE_EDIT => [$firstname, $lastname, $lang, $sex, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $fonction, $interest, $notes, $user, $greeting],
+            Crud::PAGE_NEW => [$firstname, $lastname, $lang, $sex, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry->setFormTypeOption('preferred_choices', ['BE']), $fonction, $interest, $notes, $userAdd],
             Crud::PAGE_DETAIL => [$panel1, $company, $companyVat, $companyVatNa, $companyStreet, $companyPc, $companyCity, $companyCountry, $panel2, $fullname, $fonction, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $interest, $userName, $noteView, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $panel4, $items],
             Crud::PAGE_INDEX => [$company, $companyVat, $fullname, $langListing, $email, $phone, $gsm, $userNameListing, $note],
-            default => [$company, $firstname, $lastname, $lang, $email, $phone, $note],
+            default => [$company, $firstname, $lastname, $lang, $email, $phone, $notes],
         };
 
         return $response;
