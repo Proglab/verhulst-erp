@@ -42,21 +42,20 @@ class ComptaCrudController extends BaseCrudController
             ->setEntityLabelInSingular('Vente')
             ->showEntityActionsInlined(true)
             ->setEntityPermission('ROLE_COMPTA')
-            ->setDefaultSort(['invoiced' => 'ASC'])
-            ->overrideTemplate('crud/detail', 'admin/crud/detail_2cols.html.twig');
+            ->setDefaultSort(['invoiced' => 'ASC']);
 
         return parent::configureCrud($crud);
     }
 
     public function configureFields(string $pageName): iterable
     {
-        $panelProduct = FormField::addPanel('Produit')->setCustomOption('cols', 1);
+        $panelProduct = FormField::addColumn(12, 'Produit');
 
-        $panelClient = FormField::addPanel('Client')->setCustomOption('cols', 2);
+        $panelClient = FormField::addColumn(4, 'Client');
 
-        $panelVente = FormField::addPanel('Vente')->setCustomOption('cols', 1);
+        $panelVente = FormField::addColumn(4, 'Vente');
 
-        $panelContact = FormField::addPanel('Contact')->setCustomOption('cols', 2);
+        $panelContact = FormField::addColumn(4, 'Contact');
 
         $pa = MoneyField::new('pa')
             ->setStoredAsCents(false)
@@ -127,14 +126,16 @@ class ComptaCrudController extends BaseCrudController
 
         $response = match ($pageName) {
             Crud::PAGE_INDEX => [$company, $project, $product, $pa, $price, $quantity, $discount, $total, $date, $invoiced, $dateValidation],
-            Crud::PAGE_DETAIL => [$panelProduct,
-                $project, $product, $dateBegin, $dateEnd, $user, $userMail, $description,
-                $panelClient,
-                $company, $companyVat, $companyStreet, $companyPc, $companyCity, $companyCountry,
+            Crud::PAGE_DETAIL => [
                 $panelVente,
                 $pa, $price, $quantity, $priceTotal, $discount, $priceMarge, $date, $invoiced, $dateValidation,
                 $panelContact,
-                $contact, $contactTel, $contactGsm, $contactEmail],
+                $contact, $contactTel, $contactGsm, $contactEmail,
+                $panelClient,
+                $company, $companyVat, $companyStreet, $companyPc, $companyCity, $companyCountry,
+                $panelProduct,
+                $project, $product, $dateBegin, $dateEnd, $user, $userMail, $description,
+            ],
             Crud::PAGE_EDIT => [$invoiced],
             default => [$project, $product, $quantity, $pa, $price, $date, $discount],
         };

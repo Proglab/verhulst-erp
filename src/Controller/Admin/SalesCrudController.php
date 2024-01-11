@@ -80,8 +80,7 @@ class SalesCrudController extends BaseCrudController
     {
         $crud->setEntityLabelInPlural('Ventes')
             ->setEntityLabelInSingular('Vente')
-            ->showEntityActionsInlined(true)
-            ->overrideTemplate('crud/detail', 'admin/crud/detail_2cols.html.twig');
+            ->showEntityActionsInlined(true);
 
         return parent::configureCrud($crud);
     }
@@ -176,13 +175,13 @@ class SalesCrudController extends BaseCrudController
             ->setCurrency('EUR')
             ->setLabel('Réduction (EUR)');
 
-        $panelProduct = FormField::addPanel('Produit')->setCustomOption('cols', 1);
+        $panelProduct = FormField::addColumn(6, 'Produit')->setCustomOption('cols', 1);
 
-        $panelClient = FormField::addPanel('Client')->setCustomOption('cols', 2);
+        $panelClient = FormField::addColumn(4, 'Client')->setCustomOption('cols', 2);
 
-        $panelVente = FormField::addPanel('Vente')->setCustomOption('cols', 1);
+        $panelVente = FormField::addColumn(4, 'Vente')->setCustomOption('cols', 1);
 
-        $panelContact = FormField::addPanel('Contact')->setCustomOption('cols', 2);
+        $panelContact = FormField::addColumn(4, 'Contact')->setCustomOption('cols', 2);
 
         $project = TextField::new('product.project')->setLabel('Projet');
         $dateBegin = DateField::new('product.date_begin')->setLabel('Du')->setFormat('dd/MM/yy');
@@ -229,14 +228,16 @@ class SalesCrudController extends BaseCrudController
         $response = match ($pageName) {
             Crud::PAGE_NEW => [$product, $contacts, $quantity, $pa, $price, $discount_eur, $discount_percent, $date, $discount],
             Crud::PAGE_EDIT => [$product, $contacts, $quantity, $pa, $price, $discount_edit, $percent_com, $percent_vr, $date],
-            Crud::PAGE_DETAIL => [$panelProduct,
-                $project, $product, $dateBegin, $dateEnd, $user, $userMail, $description,
-                $panelClient,
-                $company, $companyVat, $companyStreet, $companyPc, $companyCity, $companyCountry,
+            Crud::PAGE_DETAIL => [
                 $panelVente,
                 $pa, $price, $quantity, $priceTotal, $discount, $priceMarge, $date, $invoiced, $dateValidation,
+                $panelClient,
+                $company, $companyVat, $companyStreet, $companyPc, $companyCity, $companyCountry,
                 $panelContact,
-                $contact, $contactTel, $contactGsm, $contactEmail],
+                $contact, $contactTel, $contactGsm, $contactEmail,
+                $panelProduct,
+                $project, $product, $dateBegin, $dateEnd, $user, $userMail, $description,
+                ],
             default => [$product, $contacts, $quantity, $pa, $price, $discount_eur, $discount_percent, $date, $discount],
         };
 

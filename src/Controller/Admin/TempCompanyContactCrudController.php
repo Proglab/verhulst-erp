@@ -56,7 +56,6 @@ class TempCompanyContactCrudController extends BaseCrudController
         $crud->setEntityLabelInPlural('Clients')
             ->setEntityLabelInSingular('Client')
             ->showEntityActionsInlined(true)
-            ->overrideTemplate('crud/detail', 'admin/crud/detail_2cols.html.twig')
             ->setPaginatorPageSize(50);
 
         return parent::configureCrud($crud);
@@ -64,8 +63,8 @@ class TempCompanyContactCrudController extends BaseCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $panel1 = FormField::addPanel('Société')->setCustomOption('cols', 1);
-        $panel2 = FormField::addPanel('Contact')->setCustomOption('cols', 2);
+        $panel1 = FormField::addColumn(6, 'Société')->setCustomOption('cols', 1);
+        $panel2 = FormField::addColumn(6, 'Contact')->setCustomOption('cols', 2);
         $company = TextField::new('company.name')->setRequired(true)->setLabel('Société');
         $companyStreet = TextField::new('company.street')->setLabel('Rue')->setColumns(12)->setRequired(false);
         $companyPc = TextField::new('company.pc')->setLabel('Code postal')->setRequired(false);

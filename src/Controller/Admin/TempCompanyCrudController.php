@@ -50,9 +50,7 @@ class TempCompanyCrudController extends BaseCrudController
     {
         $crud->setEntityLabelInPlural('Clients')
             ->setEntityLabelInSingular('Client')
-            ->showEntityActionsInlined(true)
-            ->overrideTemplate('crud/new', 'admin/company/crud/new.html.twig')
-            ->overrideTemplate('crud/edit', 'admin/company/crud/edit.html.twig');
+            ->showEntityActionsInlined(true);
 
         return parent::configureCrud($crud);
     }
@@ -90,7 +88,7 @@ class TempCompanyCrudController extends BaseCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $panel1 = FormField::addPanel('Société')->addCssClass('col-5')->setCustomOption('cols', 1);
+        $panel1 = FormField::addColumn(6, 'Société')->addCssClass('col-5')->setCustomOption('cols', 1);
         $name = TextField::new('name')->setRequired(true)->setColumns(12)->setLabel('Nom de la société');
         $street = TextField::new('street')->setRequired(true)->setColumns(12)->setLabel('Rue');
         $pc = TextField::new('pc')->setRequired(true)->setLabel('Code postal');
@@ -98,10 +96,10 @@ class TempCompanyCrudController extends BaseCrudController
         $country = CountryField::new('country')->setRequired(true)->setLabel('Pays');
         $vatNew = TextField::new('vat_number', 'Numéro de TVA')->setRequired(false)->setLabel('Numéro de TVA')->addWebpackEncoreEntries('company');
         $vat = TextField::new('vat_number', 'Numéro de TVA')->setRequired(false)->setLabel('Numéro de TVA');
-        $panel2 = FormField::addPanel('Contact')->addCssClass('col-5')->setCustomOption('cols', 2);
+        $panel2 = FormField::addColumn(6, 'Contact')->addCssClass('col-5')->setCustomOption('cols', 2);
         $contacts = CollectionField::new('contact')->setLabel(false)->allowAdd(true)->allowDelete(true)->useEntryCrudForm(TempCompanyContactCrudController::class)->setColumns(12)->setRequired(true);
         $note = TextEditorField::new('note')->setLabel('Note')->setColumns(12);
-        $panel3 = FormField::addPanel('Facturation')->addCssClass('col-5')->renderCollapsed()->setCustomOption('cols', 1);
+        $panel3 = FormField::addColumn(6, 'Facturation')->addCssClass('col-5')->renderCollapsed()->setCustomOption('cols', 1);
 
         $billingstreet = TextField::new('billing_street')->setColumns(12)->setLabel('Rue');
         $billingPc = TextField::new('billing_pc')->setColumns(12)->setLabel('Code postal');

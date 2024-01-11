@@ -60,7 +60,6 @@ class CompanyContactCrudController extends BaseCrudController
         $crud->setEntityLabelInPlural('Clients')
             ->setEntityLabelInSingular('Client')
             ->showEntityActionsInlined(true)
-            ->overrideTemplate('crud/detail', 'admin/crud/detail_2cols.html.twig')
             //->setSearchFields(['firstname', 'lastname', 'company.name', 'email', 'phone', 'gsm', 'note', 'lang', 'company.vat_number']);
             ->setSearchFields(null);
 
@@ -88,8 +87,8 @@ class CompanyContactCrudController extends BaseCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $panel1 = FormField::addPanel('Société')->setCustomOption('cols', 1);
-        $panel2 = FormField::addPanel('Contact')->setCustomOption('cols', 2);
+        $panel1 = FormField::addColumn(4, 'Société');
+        $panel2 = FormField::addColumn(4, 'Contact');
         $company = TextField::new('company')->setRequired(true)->setLabel('Société');
         $companyStreet = TextField::new('company.street')->setLabel('Rue')->setColumns(12)->setRequired(false);
         $companyPc = TextField::new('company.pc')->setLabel('Code postal')->setRequired(false);
@@ -121,7 +120,7 @@ class CompanyContactCrudController extends BaseCrudController
         $note = TextEditorField::new('note')->setLabel('Note')->setColumns(12);
         $noteView = TextField::new('note')->setLabel('Note')->renderAsHtml();
 
-        $panel3 = FormField::addPanel('Facturation')->setCustomOption('cols', 1);
+        $panel3 = FormField::addColumn(4, 'Facturation');
 
         $billingstreet = TextField::new('company.billing_street')->setRequired(true)->setColumns(12)->setLabel('Rue');
         $billingPc = TextField::new('company.billing_pc')->setRequired(true)->setColumns(12)->setLabel('Code postal');
@@ -143,8 +142,8 @@ class CompanyContactCrudController extends BaseCrudController
         $userName = TextField::new('added_by.fullName')->setLabel('Commercial');
         $userNameListing = TextField::new('added_by.fullNameMinified')->setLabel('Sales');
 
-        $panel4 = FormField::addPanel('To do')->setCustomOption('cols', 1);
-        $panel5 = FormField::addPanel('Notes')->setCustomOption('cols', 2);
+        $panel4 = FormField::addColumn(6, 'To do');
+        $panel5 = FormField::addColumn(6, 'Notes');
         $items = AssociationField::new('todos')->setTemplatePath('admin/contact/crud.detail.todos.html.twig')->setLabel(false)->setColumns(6);
 
         $greeting = TextField::new('greeting')->setLabel('Formule de politesse')->setColumns(12);
