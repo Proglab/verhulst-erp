@@ -5,6 +5,7 @@ namespace App\Twig\Components;
 use App\Entity\Document\Dir;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveArg;
@@ -25,15 +26,14 @@ class SearchContact
     #[LiveProp(writable: true)]
     public int $page = 1;
 
-    public int $max = 30;
-    public int $pageNbr = 50;
+    public int $pageNbr = 20;
 
     #[LiveProp(writable: true, onUpdated: 'onUserUpdated')]
     public ?string $user = null;
 
     public ?array $users = null;
 
-    public function __construct(private EntityManagerInterface $entityManager, private UserRepository $userRepository)
+    public function __construct(private EntityManagerInterface $entityManager, private UserRepository $userRepository, private PaginatorInterface $paginator)
     {
         $this->users = $userRepository->getCommercials();
     }
@@ -49,7 +49,7 @@ class SearchContact
     }
 
 
-    public function getContacts(): array
+    public function getContacts()
     {
         $user = '';
         if ($this->user) {
@@ -87,14 +87,16 @@ class SearchContact
         FROM mika
         JOIN user ON (user.email = \'michael.veys@thefriends.be\')
         WHERE mika.email LIKE :query
-        '.$user.'
-        LIMIT '.(($this->page - 1) * $this->max).', '.$this->max.'
-        ';
+        '.$user;
         $stmt = $this->entityManager->getConnection()->prepare($sql);
         $result = $stmt->executeQuery(['query' => '%'.$this->query.'%', 'user' => $this->user]);
         $datas =  $result->fetchAllAssociative();
 
-        return $datas;
+        $paginator = $this->paginator->paginate($datas, $this->page, $this->pageNbr);
+        $paginator->setTemplate('components/paginator.html.twig');
+
+
+        return $paginator;
     }
 
 

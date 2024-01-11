@@ -18,6 +18,7 @@
         "easycorp/easyadmin-bundle": "^4.4",
         "endroid/qr-code": "^4.6",
         "gedmo/doctrine-extensions": "^3.5",
+        "knplabs/knp-paginator-bundle": "*",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpoffice/phpspreadsheet": "^1.29",
         "proglab/monolog-discord-handler": "^1.0",
