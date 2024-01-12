@@ -49,9 +49,24 @@
             </table>
         </div>
         <div class="col-4">
-            <div class="alert alert-success mb-4">
-                <h4>Client sélectionné</h4>
-                <b>{{ contact.company.name }}</b> <br> {{ contact.firstname }} {{ contact.lastname }}
+            <div class="card text-bg-success mb-3">
+                <div class="card-header">
+                    <nav class="navbar">
+                        <div class="container-fluid">
+                            <a class="navbar-brand"><h4 style="color: #f5f5f4">Client sélectionné</h4></a>
+                            <form class="d-flex" role="search">
+                                {% set url = ea_url()
+                                    .setAction('new') %}
+                                <a href="{{ url }}" class="btn btn-outline-success" type="submit"><i class="fa-solid fa-pen-to-square"></i></a>
+                            </form>
+                        </div>
+                    </nav>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        <b>{{ contact.company.name }}</b> <br> {{ contact.firstname }} {{ contact.lastname }}
+                    </p>
+                </div>
             </div>
         </div>
     </div>

@@ -1,11 +1,11 @@
 <table class="table table-striped">
     <thead>
     <tr>
-        <th scope="col">Sélectionner</th>
-        <th scope="col">Nom de la société</th>
-        <th scope="col">Prénom</th>
-        <th scope="col">Nom</th>
-        <th scope="col">Mail</th>
+        <th scope="col" style="color: #f5f5f4;">Sélectionner</th>
+        <th scope="col" style="color: #f5f5f4;">Nom de la société</th>
+        <th scope="col" style="color: #f5f5f4;">Prénom</th>
+        <th scope="col" style="color: #f5f5f4;">Nom</th>
+        <th scope="col" style="color: #f5f5f4;">Mail</th>
     </tr>
     </thead>
     <tbody>
@@ -15,7 +15,7 @@
                 .setAction('listProject')
                 .set('contactId', contact.id)%}
             <tr>
-                <td><a href="{{ url }}"><i class="fa-solid fa-circle-check"></i></a></td>
+                <td><a href="{{ url }}" style="color: #0a0a0a"><i class="fa-solid fa-hand-point-right"></i></a></td>
                 <th scope="row">{{ company.name }}</th>
                 <td>{{ contact.firstname }}</td>
                 <td>{{ contact.lastname }}</td>
