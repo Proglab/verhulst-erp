@@ -3,79 +3,101 @@
 {% block page_title %}Verhulst & Friends - ERP - {{ block('content_title') }}{% endblock %}
 
 {% block main %}
- <div class="alert alert-success mb-4">
-  Vous avez sélectionné le client : <b>{{ contact.company.name }} : {{ contact.firstname }} {{ contact.lastname }}</b>
- </div>
-
- <div class="alert alert-success mb-4">
-  Vous avez sélectionné le produit :  <b>{{ product.project.name }} : {{ product.name }}</b>
- </div>
-
- {% if stock_avalaible is defined %}
-  <div class="alert alert-info mb-4">
-   Il reste <b>{{ stock_avalaible }}</b> {{ product.name }} en stock.
-  </div>
-{% endif %}
-
- {{ form_start(form) }}
- <div class="row">
-
-  {{ form_row(form.quantity) }}
-  {{ form_row(form.pa) }}
-  {{ form_row(form.price) }}
-  {{ form_row(form.discount_eur) }}
-  {{ form_row(form.discount_percent) }}
-
-  <p class="mt-4"><b>Réduction :</b> <span id="result_reduc">0,00</span> €</p>
-  <p><b>Prix total :</b> <span id="result">{{ (form.vars.value.price * form.vars.value.quantity)|number_format(2, ',', '.') }}</span> €</p>
-
-  <script>
-   function calcul(event) {
-    var q_v = document.getElementById("Sales_quantity").value;
-    var p_v = document.getElementById("Sales_price").value;
-    var re_v = document.getElementById("Sales_discount_eur").value;
-    var rp_v = document.getElementById("Sales_discount_percent").value;
-
-    console.log(re_v);
-    if (re_v === '') {
-     re_v = '0';
-    }
-    if (rp_v === '') {
-     rp_v = '0';
-    }
-    var reduc_percent = parseFloat(q_v.replace(',', '.')) * parseFloat(p_v.replace(',', '.')) * parseFloat(rp_v.replace(',', '.')) / parseFloat(100);
-
-    console.log(reduc_percent);
-
-    var value = parseFloat(q_v.replace(',', '.')) * parseFloat(p_v.replace(',', '.')) - parseFloat(re_v.replace(',', '.'));
-    value = value - reduc_percent
-
-    var total_reduc = reduc_percent + parseFloat(re_v.replace(',', '.'));
-    document.getElementById("result_reduc").innerHTML = total_reduc.toFixed(2);
-    document.getElementById("result").innerHTML = value.toFixed(2);
-    document.getElementById("Sales_discount").value = total_reduc;
-   }
-   var q = document.getElementById("Sales_quantity");
-   var p = document.getElementById("Sales_price");
-   var re = document.getElementById("Sales_discount_eur");
-   var rp = document.getElementById("Sales_discount_percent");
-
-   q.addEventListener('change', (event) => calcul(event));
-   p.addEventListener('change', (event) => calcul(event));
-   re.addEventListener('change', (event) => calcul(event));
-   rp.addEventListener('change', (event) => calcul(event));
-  </script>
+    {% if stock_avalaible is defined %}
+        <div class="alert alert-info mb-4">
+            Il reste <b>{{ stock_avalaible }}</b> {{ product.name }} en stock.
+        </div>
+    {% endif %}
 
 
-  {{ form_row(form.date) }}
-  {{ form_widget(form.product, {'attr': {'class': 'd-none'}}) }}
-  {{ form_widget(form.contact, {'attr': {'class': 'd-none'}}) }}
+    <div class="row">
+        <div class="col-8">
 
-  <div class="mt-3">
-    <input type="submit" value="Créer la vente" class="btn btn-primary" name="submit">
-    <input type="submit" value="Créer la vente et continuer avec le même client" class="btn btn-primary" name="submit_continue">
-  </div>
- </div>
- {{ form_end(form) }}
+            {{ form_start(form) }}
+            <div class="row">
+
+                {{ form_row(form.quantity) }}
+                {{ form_row(form.pa) }}
+                {{ form_row(form.price) }}
+                {{ form_row(form.discount_eur) }}
+                {{ form_row(form.discount_percent) }}
+
+                <p class="mt-4"><b>Réduction :</b> <span id="result_reduc">0,00</span> €</p>
+                <p><b>Prix total :</b> <span
+                            id="result">{{ (form.vars.value.price * form.vars.value.quantity)|number_format(2, ',', '.') }}</span>
+                    €
+                </p>
+
+                <script>
+                    function calcul(event) {
+                        var q_v = document.getElementById("Sales_quantity").value;
+                        var p_v = document.getElementById("Sales_price").value;
+                        var re_v = document.getElementById("Sales_discount_eur").value;
+                        var rp_v = document.getElementById("Sales_discount_percent").value;
+
+                        console.log(re_v);
+                        if (re_v === '') {
+                            re_v = '0';
+                        }
+                        if (rp_v === '') {
+                            rp_v = '0';
+                        }
+                        var reduc_percent = parseFloat(q_v.replace(',', '.')) * parseFloat(p_v.replace(',', '.')) * parseFloat(rp_v.replace(',', '.')) / parseFloat(100);
+
+                        console.log(reduc_percent);
+
+                        var value = parseFloat(q_v.replace(',', '.')) * parseFloat(p_v.replace(',', '.')) - parseFloat(re_v.replace(',', '.'));
+                        value = value - reduc_percent
+
+                        var total_reduc = reduc_percent + parseFloat(re_v.replace(',', '.'));
+                        document.getElementById("result_reduc").innerHTML = total_reduc.toFixed(2);
+                        document.getElementById("result").innerHTML = value.toFixed(2);
+                        document.getElementById("Sales_discount").value = total_reduc;
+                    }
+
+                    var q = document.getElementById("Sales_quantity");
+                    var p = document.getElementById("Sales_price");
+                    var re = document.getElementById("Sales_discount_eur");
+                    var rp = document.getElementById("Sales_discount_percent");
+
+                    q.addEventListener('change', (event) => calcul(event));
+                    p.addEventListener('change', (event) => calcul(event));
+                    re.addEventListener('change', (event) => calcul(event));
+                    rp.addEventListener('change', (event) => calcul(event));
+                </script>
+
+
+                {{ form_row(form.date) }}
+                <div class="d-none">
+                {{ form_widget(form.product, {'attr': {'class': 'd-none'}}) }}
+                {{ form_widget(form.contact, {'attr': {'class': 'd-none'}}) }}
+                </div>
+
+                <div class="mt-3">
+                    <input type="submit" value="Créer la vente" class="btn btn-primary" name="submit">
+                    <input type="submit" value="Créer la vente et continuer avec le même client" class="btn btn-primary"
+                           name="submit_continue">
+                </div>
+            </div>
+            {{ form_end(form) }}
+
+        </div>
+        <div class="col-4">
+            <div class="alert alert-success">
+                <h4>Client sélectionné</h4>
+                <b>{{ contact.company.name }}</b> <br> {{ contact.firstname }} {{ contact.lastname }}
+            </div>
+            <br>
+            <div class="alert alert-success">
+                <h4>Projet sélectionné</h4>
+                <b>{{ product.project.name }}</b>
+            </div>
+            <br>
+            <div class="alert alert-success">
+                <h4>Produit sélectionné</h4>
+                <b>{{ product.name }}</b>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

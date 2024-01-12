@@ -12,7 +12,7 @@
     {% for company in companies %}
         {% for contact in company.contact %}
             {% set url = ea_url()
-                .setAction('listProduct')
+                .setAction('listProject')
                 .set('contactId', contact.id)%}
             <tr>
                 <td><a href="{{ url }}"><i class="fa-solid fa-circle-check"></i></a></td>

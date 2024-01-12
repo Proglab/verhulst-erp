@@ -27,15 +27,117 @@
 {% endblock %}
 
 {% block main %}
-    <div class="alert alert-success mb-4">
-        Vous avez sélectionné le client : <b>{{ contact.company.name }} : {{ contact.firstname }} {{ contact.lastname }}</b>
+    <div class="row">
+        <div class="col-8">
+            <h4>Sélectionnez le produit</h4>
+            {% if project.productEvent|length > 0 %}
+            <h4>Event</h4>
+            <table class="table w-100">
+                <tr>
+                    <th class="col-1"></th>
+                    <th class="col-11">Produit</th>
+                    <th class="col-11">Date</th>
+                </tr>
+                {% for product in project.productEvent %}
+                    {% set url = ea_url()
+                        .setAction('createSale')
+                        .set('contactId', contact.id)
+                        .set('projectId', project.id)
+                        .set('productId', product.id)%}
+                    <tr>
+                        <td class="p-2"><a href="{{ url }}" style="color: #0a0a0a"><i class="fa-solid fa-hand-point-right"></i></a></td>
+                        <td>{{ product.name }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+                <br>
+            {% endif %}
+            {% if project.productPackage|length > 0 %}
+            <br>
+                <h4>Package VIP</h4>
+                <table class="table w-100">
+                    <tr>
+                        <th class="col-1"></th>
+                        <th class="col-7">Produit</th>
+                        <th class="col-2">Quantité vendues</th>
+                        <th class="col-1">Date</th>
+                        <th class="col-1">Prix</th>
+                    </tr>
+                    {% for product in project.productPackage %}
+                        {% set url = ea_url()
+                            .setAction('createSale')
+                            .set('contactId', contact.id)
+                            .set('projectId', project.id)
+                            .set('productId', product.id)%}
+                        <tr>
+                            <td class="p-2"><a href="{{ url }}" style="color: #0a0a0a"><i class="fa-solid fa-hand-point-right"></i></a></td>
+                            <td>{{ product.name }}</td>
+                            <td>{{ product.quantitySales }}{% if product.quantityMax is not null %}/{{ product.quantityMax }}{% endif %}</td>
+                            <td>{{ product.date|date('d/m/Y') }}</td>
+                            <td>{{ product.ca }}€</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                <br>
+            {% endif %}
+            {% if project.productSponsoring|length > 0 %}
+            <h4>Sponsoring</h4>
+            <table class="table w-100">
+                <tr>
+                    <th class="col-1"></th>
+                    <th class="col-8">Produit</th>
+                    <th class="col-2">Quantité vendues</th>
+                    <th class="col-1">Prix</th>
+                </tr>
+                {% for product in project.productSponsoring %}
+                    {% set url = ea_url()
+                        .setAction('createSale')
+                        .set('contactId', contact.id)
+                        .set('projectId', project.id)
+                        .set('productId', product.id)%}
+                    <tr>
+                        <td class="p-2"><a href="{{ url }}" style="color: #0a0a0a"><i class="fa-solid fa-hand-point-right"></i></a></td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.quantitySales }}{% if product.quantityMax is not null %}/{{ product.quantityMax }}{% endif %}</td>
+                        <td>{{ product.ca }}€</td>
+                    </tr>
+                {% endfor %}
+            </table>
+                <br>
+            {% endif %}
+            {% if project.productDivers|length > 0 %}
+            <h4>Divers</h4>
+            <table class="table w-100">
+                <tr>
+                    <th class="col-1"></th>
+                    <th class="col-11">Produit</th>
+                </tr>
+                {% for product in project.productDivers %}
+                    {% set url = ea_url()
+                        .setAction('createSale')
+                        .set('contactId', contact.id)
+                        .set('projectId', project.id)
+                        .set('productId', product.id)%}
+                    <tr>
+                        <td class="p-2"><a href="{{ url }}" style="color: #0a0a0a"><i class="fa-solid fa-hand-point-right"></i></a></td>
+                        <td>{{ product.name }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+                <br>
+            {% endif %}
+        </div>
+        <div class="col-4">
+            <div class="alert alert-success">
+                <h4>Client sélectionné</h4>
+                <b>{{ contact.company.name }}</b> <br> {{ contact.firstname }} {{ contact.lastname }}
+            </div>
+            <br>
+            <div class="alert alert-success">
+                <h4>Projet sélectionné</h4>
+                <b>{{ project.name }}</b>
+            </div>
+        </div>
     </div>
-
-<h3>Sélectionnez le Produit</h3>
-{% set url = ea_url()
-    .setAction('searchProduct') %}
-
-<input type="text" name="search" hx-get="{{ url }}" hx-trigger="keyup changed delay:500ms" hx-target="#search-results" placeholder="Search..." class="form-control">
-<div id="search-results"></div>
 
 {% endblock %}

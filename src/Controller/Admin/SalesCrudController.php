@@ -96,6 +96,9 @@ class SalesCrudController extends BaseCrudController
         $listProduct = Action::new('listProduct', false)
             ->linkToCrudAction('listProduct');
 
+        $listProject = Action::new('listProject', false)
+            ->linkToCrudAction('listProject');
+
         $searchClient = Action::new('sales_by_users_list', false)
             ->linkToCrudAction('sales_by_users_list');
 
@@ -105,6 +108,7 @@ class SalesCrudController extends BaseCrudController
         $actions = parent::configureActions($actions);
         $actions
             ->setPermission('listProduct', 'ROLE_COMMERCIAL')
+            ->setPermission('listProject', 'ROLE_COMMERCIAL')
             ->setPermission('sales_by_users_list', 'ROLE_COMMERCIAL')
             ->setPermission(Action::NEW, 'ROLE_COMMERCIAL')
             ->setPermission(Action::EDIT, 'ROLE_COMMERCIAL')
@@ -369,12 +373,33 @@ class SalesCrudController extends BaseCrudController
         );
     }
 
+    public function listProject(AdminContext $context): Response
+    {
+        $request = $context->getRequest();
+        $contact = $this->entityManager->getRepository(CompanyContact::class)->find($request->get('contactId'));
+        $projects = $this->entityManager->getRepository(Project::class)->findBy(['archive' => false]);
+
+        return $this->render('admin/sales/list_project.html.twig', [
+                'contact' => $contact,
+                'context' => $context,
+                'projects' => $projects
+            ]
+        );
+    }
+
     public function listProduct(AdminContext $context): Response
     {
         $request = $context->getRequest();
         $contact = $this->entityManager->getRepository(CompanyContact::class)->find($request->get('contactId'));
+        $project = $this->entityManager->getRepository(Project::class)->find($request->get('projectId'));
+
+
+        $products = $this->entityManager->getRepository(Product::class)->findBy(['project' => $project]);
+
 
         return $this->render('admin/sales/list_product.html.twig', [
+                'products' => $products,
+                'project' => $project,
                 'contact' => $contact,
                 'context' => $context,
             ]
