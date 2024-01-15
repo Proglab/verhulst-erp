@@ -370,7 +370,7 @@ class CompanyCrudController extends BaseCrudController
 
     protected function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
     {
-        $url = $this->adminUrlGenerator->setDashboard(DashboardController::class)->setController(CompanyContactCrudController::class)->setAction('index')->generateUrl();
+        $url = $this->adminUrlGenerator->setDashboard(DashboardController::class)->setController(CompanyCrudController::class)->setAction(Crud::PAGE_DETAIL)->setEntityId($context->getEntity()->getInstance()->getId())->generateUrl();
         return $this->redirect($url);
     }
 }
