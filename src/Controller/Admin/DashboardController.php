@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Command\StreamedOutput;
 use App\Entity\Commission;
+use App\Entity\Company;
 use App\Entity\CompanyContact;
 use App\Entity\Css;
 use App\Entity\ProductDivers;
@@ -99,7 +100,11 @@ class DashboardController extends AbstractDashboardController
                 MenuItem::linkToCrud('Divers', 'fa fa-globe', ProductDivers::class)->setCssClass('mx-2')->setPermission('ROLE_COMMERCIAL'),
                 MenuItem::linkToCrud('Archives', 'fa fa-box-archive', Project::class)->setController(ProjectArchiveCrudController::class)->setCssClass('mx-2')->setPermission('ROLE_COMMERCIAL'),
 
-            MenuItem::linkToCrud('admin.menu.client', 'fas fa-address-book', CompanyContact::class)->setPermission('ROLE_COMMERCIAL'),
+            MenuItem::linkToUrl('admin.menu.client', 'fas fa-address-book', '#'),
+            MenuItem::linkToCrud('admin.menu.company', 'fas fa-address-book', Company::class)->setCssClass('mx-2')->setPermission('ROLE_COMMERCIAL'),
+            MenuItem::linkToCrud('admin.menu.contact', 'fas fa-address-book', CompanyContact::class)->setCssClass('mx-2')->setPermission('ROLE_COMMERCIAL'),
+
+
             MenuItem::linkToCrud('admin.menu.sales', 'fas fa-comments-dollar', Sales::class)->setController(SalesCrudController::class)->setPermission('ROLE_COMMERCIAL'),
             MenuItem::linkToCrud('admin.menu.bdc', 'fas fa-receipt', SalesBdc::class)->setPermission('ROLE_COMMERCIAL'),
             MenuItem::linkToCrud('admin.menu.todo', 'fas fa-clipboard-check', Todo::class)->setPermission('ROLE_COMMERCIAL')->setBadge($this->todoRepository->countAllNoDoneTodayByUser($user), 'danger'),

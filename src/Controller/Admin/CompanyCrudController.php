@@ -49,9 +49,10 @@ class CompanyCrudController extends BaseCrudController
 
     public function configureCrud(Crud $crud): Crud
     {
-        $crud->setEntityLabelInPlural('Clients')
-            ->setEntityLabelInSingular('Client')
-            ->showEntityActionsInlined(true);
+        $crud->setEntityLabelInPlural('Sociétés')
+            ->setEntityLabelInSingular('Société')
+            ->showEntityActionsInlined(true)
+            ->overrideTemplate('crud/detail', 'admin/company/crud/detail.html.twig');
 
         return parent::configureCrud($crud);
     }
@@ -98,9 +99,8 @@ class CompanyCrudController extends BaseCrudController
         $vatNew = TextField::new('vat_number', 'Numéro de TVA')->setRequired(false)->setLabel('Numéro de TVA')->addWebpackEncoreEntries('company');
         $companyVatNa = BooleanField::new('vat_na')->setLabel('Non assujetti')->setRequired(false);
         $vat = TextField::new('vat_number', 'Numéro de TVA')->setRequired(false)->setLabel('Numéro de TVA');
-        $panel2 = FormField::addColumn(6, 'Contact')->addCssClass('col-5')->setCustomOption('cols', 2);
-        $contacts = CollectionField::new('contact')->setLabel(false)->allowAdd(true)->allowDelete(true)->useEntryCrudForm(CompanyContactCrudController::class)->setColumns(12)->setRequired(true)->setEntryIsComplex(true);
-        $note = TextEditorField::new('note')->setLabel('Note');
+        $note = TextEditorField::new('note')->setLabel('Note globale');
+        $noteTxt = TextField::new('note')->setLabel('Note globale')->renderAsHtml();
         $panel3 = FormField::addColumn(6, 'Facturation')->addCssClass('col-5')->renderCollapsed()->setCustomOption('cols', 1);
 
         $billingstreet = TextField::new('billing_street')->setLabel('Rue');
@@ -109,27 +109,25 @@ class CompanyCrudController extends BaseCrudController
         $billingcountry = CountryField::new('billing_country')->setLabel('Pays');
         $billingmail = EmailField::new('billing_mail')->setLabel('Email');
 
+        $panel4 = FormField::addColumn(4, 'Société');
+        $panel5 = FormField::addColumn(4, 'Facturation')->addCssClass('col-5')->renderCollapsed()->setCustomOption('cols', 1);
+        $panel6 = FormField::addColumn(4, 'Note');
+        $panel7 = FormField::addColumn(6, 'Notes');
+        $panel8 = FormField::addColumn(6, 'To do');
+
+        $contacts = CollectionField::new('contact')->setLabel(false)->allowAdd(true)->allowDelete(true)->useEntryCrudForm(CompanyContactCrudController::class)->setColumns(12)->setRequired(true)->setEntryIsComplex(true);
+
+
+
         $response = match ($pageName) {
-            Crud::PAGE_EDIT => [$panel1, $vat, $companyVatNa, $name, $street, $pc, $city, $country, $panel2, $contacts, $note, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $billingmail],
-            Crud::PAGE_NEW => [$panel1, $vatNew, $companyVatNa, $name, $street, $pc, $city, $country, $panel2, $contacts, $note, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $billingmail],
-            Crud::PAGE_DETAIL, Crud::PAGE_INDEX => [$panel1, $vat, $companyVatNa, $name, $street, $pc, $city, $country, $note, $panel2, $contacts],
-            default => [$panel1, $vat, $name, $street, $pc, $city, $country, $note, $panel2, $contacts],
+            Crud::PAGE_EDIT => [$panel1, $vat, $companyVatNa, $name, $street, $pc, $city, $country, $note, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $billingmail],
+            Crud::PAGE_NEW => [$panel1, $vatNew, $companyVatNa, $name, $street, $pc, $city, $country, $note, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $billingmail],
+            Crud::PAGE_INDEX => [$panel1, $vat, $companyVatNa, $name, $street, $pc, $city, $country, $noteTxt],
+            Crud::PAGE_DETAIL => [$panel4, $vat, $companyVatNa, $name, $street, $pc, $city, $country, $panel5, $billingstreet, $billingPc, $billingcity, $billingcountry, $billingmail, $panel6, $noteTxt, $panel7, $panel8, $contacts],
+            default => [$panel1, $vat, $companyVatNa, $name, $street, $pc, $city, $country, $noteTxt],
         };
 
         return $response;
-    }
-
-    /**
-     * @return RedirectResponse|KeyValueStore|Response
-     */
-    public function index(AdminContext $context)
-    {
-        $url = $this->adminUrlGenerator
-            ->setController(CompanyContactCrudController::class)
-            ->setAction(Action::NEW)
-            ->generateUrl();
-
-        return $this->redirect($url);
     }
 
     /**
@@ -372,7 +370,7 @@ class CompanyCrudController extends BaseCrudController
 
     protected function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
     {
-        $url = $this->adminUrlGenerator->setDashboard(DashboardController::class)->setController(CompanyContactCrudController::class)->setAction('index')->generateUrl();
+        $url = $this->adminUrlGenerator->setDashboard(DashboardController::class)->setController(CompanyCrudController::class)->setAction(Crud::PAGE_DETAIL)->setEntityId($context->getEntity()->getInstance()->getId())->generateUrl();
         return $this->redirect($url);
     }
 }
