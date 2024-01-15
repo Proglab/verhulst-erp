@@ -64,8 +64,13 @@ class CompanyCrudController extends BaseCrudController
         Action::new('getVatInfos', false)
             ->linkToCrudAction('getVatInfos');
 
+
+        $createContact = Action::new('createContact', 'Créer un contact')
+            ->linkToCrudAction('createContact');
+
         $actions
             ->setPermission('getVatInfos', 'ROLE_COMMERCIAL')
+            ->setPermission('createContact','ROLE_COMMERCIAL')
             ->setPermission(Action::NEW, 'ROLE_COMMERCIAL')
             ->setPermission(Action::EDIT, 'ROLE_COMMERCIAL')
             ->setPermission(Action::DELETE, 'ROLE_ADMIN')
@@ -75,6 +80,7 @@ class CompanyCrudController extends BaseCrudController
             ->setPermission(Action::SAVE_AND_ADD_ANOTHER, 'ROLE_COMMERCIAL')
             ->setPermission(Action::SAVE_AND_CONTINUE, 'ROLE_COMMERCIAL')
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
+            ->add(Crud::PAGE_DETAIL,$createContact)
             ->update(Crud::PAGE_INDEX, Action::DETAIL, function (Action $action) {
                 return $action->setIcon('fa fa-eye')->setLabel(false)->setHtmlAttributes(['title' => 'Consulter']);
             })
@@ -371,6 +377,11 @@ class CompanyCrudController extends BaseCrudController
     protected function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
     {
         $url = $this->adminUrlGenerator->setDashboard(DashboardController::class)->setController(CompanyCrudController::class)->setAction(Crud::PAGE_DETAIL)->setEntityId($context->getEntity()->getInstance()->getId())->generateUrl();
+        return $this->redirect($url);
+    }
+
+    public function createContact(AdminContext $adminContext) {
+        $url = $this->adminUrlGenerator->setController(CompanyContactCrudController::class)->setAction(Crud::PAGE_NEW)->set('company_id', $adminContext->getEntity()->getInstance()->getId())->generateUrl();
         return $this->redirect($url);
     }
 }
