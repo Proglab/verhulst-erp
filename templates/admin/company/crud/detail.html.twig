@@ -1,0 +1,122 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+{% extends '@EasyAdmin/crud/detail.html.twig' %}
+
+{% block main %}
+    {% set company = entity.instance %}
+    <div class="row">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-6">
+                    <h4>Coordonnées</h4>
+                    {{ company.vatNumber }}<br>
+                    {{ company.street }}<br>
+                    {{ company.pc }} {{ company.city }}<br>
+                    {{ company.country }}<br>
+                    <br>
+                </div>
+                <div class="col-6">
+                    <h4>Facturation</h4>
+                    {{ company.billingStreet }}<br>
+                    {{ company.billingPc }} {{ company.billingCity }}<br>
+                    {{ company.billingCountry }}<br>
+                    <a href="mailto:{{ company.billingMail }}">{{ company.billingMail }}</a><br>
+
+                </div>
+                <div class="col-6">
+                    <h4>Notes</h4>
+                    <div class="accordion" id="notes">
+                        {% for note in company.notes %}
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="notesT{{ loop.index }}">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#notes{{ loop.index }}" aria-expanded="true" aria-controls="notesT{{ loop.index }}">
+                                    12/01/2023 - {{ note.user.fullnameMinified }} - {{ note.companyContact.fullName }}
+                                </button>
+                            </h2>
+                            <div id="notes{{ loop.index }}" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#notes">
+                                <div class="accordion-body">
+                                    <div class="card mt-3 p-1">
+                                        <div class="card-title">
+                                            12/01/2024 09:55
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="card-text">
+                                                {{ note.note|raw }}
+                                            </p>
+                                        </div>
+                                        <div class="card-footer text-right">
+                                            {{ note.user.fullName }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-6">
+                    <h4>To dos</h4>
+                    <div class="accordion" id="todos">
+                        {% for todo in company.todos %}
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="todosT{{ loop.index }}">
+                                <button class="accordion-button collapsed {% if todo.isDone %}alert alert-success{% else %}alert alert-warning{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#todos{{ loop.index }}" aria-expanded="true" aria-controls="todosT{{ loop.index }}">
+                                    {% if todo.type.id == 1 %}<i class="fa-solid fa-stopwatch-20 me-2"></i>{% else %}<i class="fa-solid fa-note-sticky me-2"></i>{% endif %} 12/01/2023 - {{ todo.user.fullnameMinified }} - {{ todo.client.fullName }}
+                                </button>
+                            </h2>
+                            <div id="todos{{ loop.index }}" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#todos">
+                                <div class="accordion-body">
+                                    <div class="card mt-3 p-1">
+                                        <div class="card-title">
+                                            12/01/2024 09:55
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="card-text">
+                                                {{ todo.todo|raw }}
+                                            </p>
+                                        </div>
+                                        <div class="card-footer text-right">
+                                            {{ todo.user.fullName }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <h4>Contacts</h4>
+            <table class="table w-100">
+                <thead>
+                <tr>
+                    <th style="color: #f5f5f4;">Nom</th>
+                    <th style="color: #f5f5f4;">Téléphone</th>
+                    <th style="color: #f5f5f4;">Gsm</th>
+                    <th style="color: #f5f5f4;">Mail</th>
+                    <th style="color: #f5f5f4;">Com.</th>
+                    <th style="color: #f5f5f4;"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for contact in company.contact %}
+                    <tr>
+                        <td>{{ contact.fullname }}</td>
+                        <td>{{ contact.phone }}</td>
+                        <td>{{ contact.gsm }}</td>
+                        <td><a href="mailto:{{ contact.email }}">{{ contact.email }}</a></td>
+                        <td>{{ contact.addedBy.fullnameMinified }}</td>
+                        <td>
+                            <i class="fa-solid fa-eye"></i>
+                            <i class="fa-solid fa-user-pen m-2"></i>
+                            <span style="color: #f50000;"><i class="fa-solid fa-trash"></i></span>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

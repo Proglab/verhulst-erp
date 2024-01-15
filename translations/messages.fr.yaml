@@ -174,3 +174,5 @@ admin:
         supplier: Fournisseurs
         archived: Archives
         search: Recherche de contact
+        company: Sociétés
+        contact: Contact
