@@ -75,8 +75,22 @@
                                         <div class="card-header d-flex justify-content-between align-items-center">
                                             {{ todo.dateReminder|date('d/m/Y H:i') }} by {{ todo.user.fullnameMinified }}
                                             <div class="text-right">
-                                            <button type="button" class="btn btn-sm btn-primary"><i class="fa-solid fa-pencil"></i></button>
-                                            <button type="button" class="btn btn-sm btn-primary"><i class="fa-solid fa-check"></i></button>
+                                                {% if (todo.user.id == app.user.id or is_granted('ROLE_ADMIN')) and not todo.isDone %}
+                                                {% set url = ea_url()
+                                                    .setController('App\\Controller\\Admin\\TodoCrudController')
+                                                    .setAction('edit')
+                                                    .setEntityId(todo.id)
+                                                    .setReferrer(ea_url().generateUrl())
+                                                %}
+                                                <a href="{{ url }}" type="button" class="btn btn-sm btn-primary"><i class="fa-solid fa-pencil"></i></a>
+                                                    {% set url = ea_url()
+                                                        .setController('App\\Controller\\Admin\\TodoCrudController')
+                                                        .setAction('done')
+                                                        .setEntityId(todo.id)
+                                                        .setReferrer(ea_url().generateUrl())
+                                                    %}
+                                                <a href="{{ url }}" type="button" class="btn btn-sm btn-primary"><i class="fa-solid fa-check"></i></a>
+                                                {% endif %}
                                             </div>
 
                                             <!-- Wrap with <div>...buttons...</div> if you have multiple buttons -->
@@ -86,8 +100,8 @@
                                                 {{ todo.todo|raw }}
                                             </p>
                                         </div>
-                                        <div class="card-footer text-right">
-                                            {{ todo.client.fullName }}
+                                        <div class="card-footer">
+                                            {% if  todo.isDone %}Validé le {{ todo.dateDone|date('d/m/Y') }} pour {% endif %}{{ todo.client.fullName }}
                                         </div>
                                     </div>
                                 </div>

@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Todo;
 use App\Repository\CompanyContactRepository;
+use App\Repository\TodoRepository;
 use App\Service\SecurityChecker;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -26,11 +27,12 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\Form\FormInterface;
 
 class TodoCrudController extends BaseCrudController
 {
-    public function __construct(SecurityChecker $securityChecker, private CompanyContactRepository $companyContactRepository)
+    public function __construct(SecurityChecker $securityChecker, private CompanyContactRepository $companyContactRepository, private TodoRepository $todoRepository, private AdminUrlGenerator $adminUrlGenerator)
     {
         parent::__construct($securityChecker);
     }
@@ -57,6 +59,10 @@ class TodoCrudController extends BaseCrudController
 
         Action::new('getVatInfos', false)
             ->linkToCrudAction('getVatInfos');
+
+
+        Action::new('done', false)
+            ->linkToCrudAction('done');
 
         $actions
             ->setPermission('getVatInfos', 'ROLE_COMMERCIAL')
@@ -138,5 +144,14 @@ class TodoCrudController extends BaseCrudController
             $entityInstance->setUser($this->getUser());
         }
         parent::persistEntity($entityManager, $entityInstance);
+    }
+
+    public function done(AdminContext $adminContext) {
+        /** @var Todo $todo */
+        $todo = $adminContext->getEntity()->getInstance();
+        $todo->setDone(true);
+        $todo->setDateDone(new \DateTime());
+        $this->todoRepository->save($todo, true);
+        return $this->redirect($this->adminUrlGenerator->setController(CompanyCrudController::class)->setAction(Crud::PAGE_DETAIL)->setEntityId($todo->getClient()->getCompany()->getId())->generateUrl());
     }
 }
