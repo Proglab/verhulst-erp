@@ -66,7 +66,7 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="todosT{{ loop.index }}">
                                 <button class="accordion-button collapsed {% if todo.isDone %}alert alert-success{% else %}alert alert-warning{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#todos{{ loop.index }}" aria-expanded="true" aria-controls="todosT{{ loop.index }}">
-                                    {% if todo.type.id == 1 %}<i class="fa-solid fa-stopwatch-20 me-2"></i>{% else %}<i class="fa-solid fa-note-sticky me-2"></i>{% endif %} {{ todo.dateReminder|date('d/m/Y H:i') }} - {{ todo.user.fullnameMinified }} - {{ todo.client.fullName }}
+                                    <i class="{% if todo.type.icon is not empty %}{{ todo.type.icon }}{% else %}fa-regular fa-circle{% endif%} me-2"></i> {{ todo.dateReminder|date('d/m/Y H:i') }} - {{ todo.user.fullnameMinified }} - {{ todo.client.fullName }}
                                 </button>
                             </h2>
                             <div id="todos{{ loop.index }}" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#todos">

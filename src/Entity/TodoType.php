@@ -20,6 +20,9 @@ class TodoType
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $icon = null;
+
     #[ORM\OneToMany(mappedBy: 'type', targetEntity: Todo::class, orphanRemoval: true)]
     private Collection $todos;
 
@@ -46,6 +49,18 @@ class TodoType
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+
+    public function setIcon(string $name): self
+    {
+        $this->icon = $name;
 
         return $this;
     }

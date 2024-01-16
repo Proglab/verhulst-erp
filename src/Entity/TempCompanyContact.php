@@ -26,7 +26,7 @@ class TempCompanyContact
     #[Assert\Length(max: 255)]
     private ?string $lastname = null;
 
-    #[ORM\Column(length: 2)]
+    #[ORM\Column(length: 2, nullable: true)]
     #[Assert\Language]
     #[Assert\Length(max: 2)]
     private ?string $lang = null;
