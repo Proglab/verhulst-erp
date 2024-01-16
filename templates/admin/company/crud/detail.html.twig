@@ -1,5 +1,11 @@
 {# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
 {# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+
+{% set referrer = ea_url()
+    .setController('App\\Controller\\Admin\\CompanyCrudController')
+    .setAction('detail')
+    .setEntityId(entity.instance.id) %}
+
 {% extends '@EasyAdmin/crud/detail.html.twig' %}
 
 {% block main %}
@@ -39,7 +45,14 @@
                                         <div class="card-header d-flex justify-content-between align-items-center">
                                             {{ note.createdDt|date('d/m/Y H:i') }} by {{ note.user.fullnameMinified }}
                                             <div class="text-right">
-                                                <button type="button" class="btn btn-sm btn-primary"><i class="fa-solid fa-pencil"></i></button>
+                                                {% set url = ea_url()
+                                                    .setController('App\\Controller\\Admin\\CompanyContactNoteCrudController')
+                                                    .setAction('edit')
+                                                    .setEntityId(note.id)
+                                                    .setReferrer(referrer)
+                                                %}
+
+                                                <a href="{{ url }}" type="button" class="btn btn-sm btn-primary"><i class="fa-solid fa-pencil"></i></a>
                                             </div>
 
                                             <!-- Wrap with <div>...buttons...</div> if you have multiple buttons -->
@@ -80,14 +93,14 @@
                                                     .setController('App\\Controller\\Admin\\TodoCrudController')
                                                     .setAction('edit')
                                                     .setEntityId(todo.id)
-                                                    .setReferrer(ea_url().generateUrl())
+                                                    .setReferrer(referrer)
                                                 %}
                                                 <a href="{{ url }}" type="button" class="btn btn-sm btn-primary"><i class="fa-solid fa-pencil"></i></a>
                                                     {% set url = ea_url()
                                                         .setController('App\\Controller\\Admin\\TodoCrudController')
                                                         .setAction('done')
                                                         .setEntityId(todo.id)
-                                                        .setReferrer(ea_url().generateUrl())
+                                                        .setReferrer(referrer)
                                                     %}
                                                 <a href="{{ url }}" type="button" class="btn btn-sm btn-primary"><i class="fa-solid fa-check"></i></a>
                                                 {% endif %}
@@ -138,12 +151,14 @@
                                 .setController('App\\Controller\\Admin\\CompanyContactCrudController')
                                 .setAction('detail')
                                 .setEntityId(contact.id)
+                                .setReferrer(referrer)
                             %}
                             <a href="{{ url }}" style="color: #0a0a0a"><i class="fa-solid fa-eye"></i></a>
                             {% set url = ea_url()
                                 .setController('App\\Controller\\Admin\\CompanyContactCrudController')
                                 .setAction('edit')
                                 .setEntityId(contact.id)
+                                .setReferrer(referrer)
                             %}
                             <a href="{{ url }}" style="color: #0a0a0a"><i class="fa-solid fa-user-pen m-2"></i></a>
                         </td>
