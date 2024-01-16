@@ -44,6 +44,7 @@
                                     <div class="card mt-3 p-1">
                                         <div class="card-header d-flex justify-content-between align-items-center">
                                             {{ note.createdDt|date('d/m/Y H:i') }} by {{ note.user.fullnameMinified }}
+                                            {% if (note.user.id == app.user.id or is_granted('ROLE_ADMIN')) %}
                                             <div class="text-right">
                                                 {% set url = ea_url()
                                                     .setController('App\\Controller\\Admin\\CompanyContactNoteCrudController')
@@ -54,6 +55,7 @@
 
                                                 <a href="{{ url }}" type="button" class="btn btn-sm btn-primary"><i class="fa-solid fa-pencil"></i></a>
                                             </div>
+                                            {% endif %}
 
                                             <!-- Wrap with <div>...buttons...</div> if you have multiple buttons -->
                                         </div>
@@ -145,7 +147,7 @@
                         <td>{{ contact.phone }}</td>
                         <td>{{ contact.gsm }}</td>
                         <td><a href="mailto:{{ contact.email }}">{{ contact.email }}</a></td>
-                        <td>{{ contact.addedBy.fullnameMinified }}</td>
+                        <td>{% if contact.addedBy is not empty %}{{ contact.addedBy.fullnameMinified }}{% endif %}</td>
                         <td class="text-right">
                             {% set url = ea_url()
                                 .setController('App\\Controller\\Admin\\CompanyContactCrudController')
