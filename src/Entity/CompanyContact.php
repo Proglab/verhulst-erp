@@ -76,7 +76,7 @@ class CompanyContact
     private ?string $note = null;
 
     #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'contact')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Company $company = null;
 
     #[ORM\ManyToOne(inversedBy: 'companyContacts')]

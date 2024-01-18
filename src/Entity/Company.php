@@ -73,7 +73,7 @@ class Company
     private ?string $billing_mail = null;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: CompanyContact::class, cascade: ['persist'], orphanRemoval: true)]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     #[Assert\NotBlank]
     private Collection $contact;
 
