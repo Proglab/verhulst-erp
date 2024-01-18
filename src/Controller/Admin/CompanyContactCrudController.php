@@ -227,7 +227,7 @@ class CompanyContactCrudController extends BaseCrudController
             ->add(Crud::PAGE_DETAIL, $retour)
             ->setPermission(Action::NEW, 'ROLE_COMMERCIAL')
             ->setPermission(Action::EDIT, 'ROLE_COMMERCIAL')
-            ->setPermission(Action::DELETE, 'ROLE_ADMIN')
+            ->setPermission(Action::DELETE, 'ROLE_COMMERCIAL')
             ->setPermission(Action::DETAIL, 'ROLE_COMMERCIAL')
             ->setPermission(Action::INDEX, 'ROLE_COMMERCIAL')
             ->setPermission(Action::SAVE_AND_RETURN, 'ROLE_COMMERCIAL')
@@ -267,10 +267,12 @@ class CompanyContactCrudController extends BaseCrudController
             })
             ->update(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) {
                 return $action->displayIf(function (CompanyContact $entity) {
+                    if ($entity->getSales()->count() > 0) {
+                        return false;
+                    }
                     if (empty($entity->getAddedBy())) {
                         return true;
                     }
-
                     if ($entity->getAddedBy()->getUserIdentifier() === $this->getUser()->getUserIdentifier()) {
                         return true;
                     }
@@ -301,10 +303,12 @@ class CompanyContactCrudController extends BaseCrudController
             })
             ->update(Crud::PAGE_DETAIL, Action::DELETE, function (Action $action) {
                 return $action->displayIf(function (CompanyContact $entity) {
+                    if ($entity->getSales()->count() > 0) {
+                        return false;
+                    }
                     if (empty($entity->getAddedBy())) {
                         return true;
                     }
-
                     if ($entity->getAddedBy()->getUserIdentifier() === $this->getUser()->getUserIdentifier()) {
                         return true;
                     }
