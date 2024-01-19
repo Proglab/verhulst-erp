@@ -124,6 +124,7 @@ class UserCrudController extends BaseCrudController
             'Compta' => 'ROLE_COMPTA',
             'Budget' => 'ROLE_BUDGET',
             'Budget admin' => 'ROLE_ADMIN_BUDGET',
+            'Technicien' => 'ROLE_TECH',
         ])->setLabel('Rôle');
         $enabled = BooleanField::new('enabled')->setLabel('Validé');
         $freelance = ChoiceField::new('com')->setLabel('Type de Commisssion')->setChoices([
