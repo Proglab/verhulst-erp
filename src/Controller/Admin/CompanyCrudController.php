@@ -173,24 +173,12 @@ class CompanyCrudController extends BaseCrudController
             $event = new BeforeEntityPersistedEvent($entityInstance);
             $this->container->get('event_dispatcher')->dispatch($event);
             $entityInstance = $event->getEntityInstance();
+            $this->persistEntity($this->container->get('doctrine')->getManagerForClass($context->getEntity()->getFqcn()), $entityInstance);
 
-            if (0 === $entityInstance->getContact()->count()) {
-                $newForm->get('contact')->addError(new FormError('Vous devez enregistrer au moins un contact'));
-            } else {
-                $i = 0;
-                foreach ($context->getRequest()->get('Company')['contact'] as $contact) {
-                    $entityInstance->getContact()[$i]->setLang($contact['lang']);
-                    if (null === $entityInstance->getContact()[$i]->getAddedBy()) {
-                        $entityInstance->getContact()[$i]->setAddedBy($this->getUser());
-                    }
-                }
-                $this->persistEntity($this->container->get('doctrine')->getManagerForClass($context->getEntity()->getFqcn()), $entityInstance);
+            $this->container->get('event_dispatcher')->dispatch(new AfterEntityPersistedEvent($entityInstance));
+            $context->getEntity()->setInstance($entityInstance);
 
-                $this->container->get('event_dispatcher')->dispatch(new AfterEntityPersistedEvent($entityInstance));
-                $context->getEntity()->setInstance($entityInstance);
-
-                return $this->getRedirectResponseAfterSave($context, Action::NEW);
-            }
+            return $this->getRedirectResponseAfterSave($context, Action::NEW);
         }
 
         $responseParameters = $this->configureResponseParameters(KeyValueStore::new([
