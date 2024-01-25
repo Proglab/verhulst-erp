@@ -33,15 +33,15 @@
                 <thead class="table-primary">
                 <tr>
                     <th scope="col"></th>
-                    <th scope="col">Société</th>
-                    <th scope="col">Projet</th>
-                    <th scope="col">Produit</th>
-                    <th scope="col">Date</th>
-                    <th scope="col" class="text-right">PU</th>
-                    <th scope="col" class="text-right">Réduc</th>
-                    <th scope="col" class="text-right">PV</th>
-                    <th scope="col" class="text-center">%S</th>
-                    <th scope="col" class="text-right">€S</th>
+                    <th scope="col" style="color: #FFFFFF">Société</th>
+                    <th scope="col" style="color: #FFFFFF">Projet</th>
+                    <th scope="col" style="color: #FFFFFF">Produit</th>
+                    <th scope="col" style="color: #FFFFFF">Date</th>
+                    <th scope="col" class="text-right" style="color: #FFFFFF">PU</th>
+                    <th scope="col" class="text-right" style="color: #FFFFFF">Réduc</th>
+                    <th scope="col" class="text-right" style="color: #FFFFFF">PV</th>
+                    <th scope="col" class="text-center" style="color: #FFFFFF">%S</th>
+                    <th scope="col" class="text-right" style="color: #FFFFFF">€S</th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
@@ -101,14 +101,14 @@
                 {% endfor %}
                 <tr class="table-primary">
                     <th></th>
-                    <th scope="row" colspan="4">
+                    <th scope="row" colspan="4" style="color: #FFFFFF">
                         Totaux
                     </th>
-                    <th class="text-right">{{ total_price|number_format(2, ',', '.') }}€</th>
+                    <th class="text-right" style="color: #FFFFFF">{{ total_price|number_format(2, ',', '.') }}€</th>
                     <th></th>
-                    <th class="text-right">{{ total_marge|number_format(2, ',', '.') }}€</th>
+                    <th class="text-right" style="color: #FFFFFF">{{ total_marge|number_format(2, ',', '.') }}€</th>
                     <th></th>
-                    <th class="text-right">{{ total_euroCom|number_format(2, ',', '.') }}€</th>
+                    <th class="text-right" style="color: #FFFFFF">{{ total_euroCom|number_format(2, ',', '.') }}€</th>
                     <th></th>
                 </tr>
                 </tbody>
@@ -123,17 +123,17 @@
                 <thead class="table-primary">
                 <tr>
                     <th scope="col"></th>
-                    <th scope="col">Société</th>
-                    <th scope="col">Produit</th>
-                    <th scope="col">Date</th>
-                    {% if is_granted('ROLE_ADMIN') %}<th scope="col" class="text-right">PA</th>{% endif %}
-                    <th scope="col" class="text-right">PU</th>
-                    <th scope="col" class="text-right">Q</th>
-                    <th scope="col" class="text-right">Tot</th>
-                    <th scope="col" class="text-right">Réduc</th>
-                    <th scope="col" class="text-right">PV</th>
-                    <th scope="col" class="text-center">%S</th>
-                    <th scope="col" class="text-right">€S</th>
+                    <th scope="col" style="color: #FFFFFF">Société</th>
+                    <th scope="col" style="color: #FFFFFF">Produit</th>
+                    <th scope="col" style="color: #FFFFFF">Date</th>
+                    {% if is_granted('ROLE_ADMIN') %}<th scope="col" class="text-right" style="color: #FFFFFF">PA</th>{% endif %}
+                    <th scope="col" class="text-right" style="color: #FFFFFF">PU</th>
+                    <th scope="col" class="text-right" style="color: #FFFFFF">Q</th>
+                    <th scope="col" class="text-right" style="color: #FFFFFF">Tot</th>
+                    <th scope="col" class="text-right" style="color: #FFFFFF">Réduc</th>
+                    <th scope="col" class="text-right" style="color: #FFFFFF">PV</th>
+                    <th scope="col" class="text-center" style="color: #FFFFFF">%S</th>
+                    <th scope="col" class="text-right" style="color: #FFFFFF">€S</th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
@@ -187,16 +187,16 @@
                 {% endfor %}
                 <tr class="table-primary">
                     <th></th>
-                    <th scope="row" colspan="4">
+                    <th scope="row" colspan="4" style="color: #FFFFFF">
                         Totaux
                     </th>
                     <th></th>
                     <th></th>
-                    <th class="text-right">{{ total_price|number_format(2, ',', '.') }}€</th>
+                    <th class="text-right" style="color: #FFFFFF">{{ total_price|number_format(2, ',', '.') }}€</th>
                     <th></th>
-                    <th class="text-right">{{ total_marge|number_format(2, ',', '.') }}€</th>
+                    <th class="text-right" style="color: #FFFFFF">{{ total_marge|number_format(2, ',', '.') }}€</th>
                     <th></th>
-                    <th class="text-right">{{ total_euroCom|number_format(2, ',', '.') }}€</th>
+                    <th class="text-right" style="color: #FFFFFF">{{ total_euroCom|number_format(2, ',', '.') }}€</th>
                     <th></th>
                 </tr>
                 </tbody>
@@ -211,17 +211,17 @@
                 <thead class="table-primary">
                 <tr>
                     <th scope="col"></th>
-                    <th scope="col">Société</th>
-                    <th scope="col">Projet</th>
-                    <th scope="col">Produit</th>
-                    <th scope="col">Date</th>
-                    <th scope="col" class="text-right">PU</th>
-                    <th scope="col" class="text-right">Q</th>
-                    <th scope="col" class="text-right">Tot</th>
-                    <th scope="col" class="text-right">Réduc</th>
-                    <th scope="col" class="text-right">PV</th>
-                    <th scope="col" class="text-center">%S</th>
-                    <th scope="col" class="text-right">€S</th>
+                    <th scope="col" style="color: #FFFFFF">Société</th>
+                    <th scope="col" style="color: #FFFFFF">Projet</th>
+                    <th scope="col" style="color: #FFFFFF">Produit</th>
+                    <th scope="col" style="color: #FFFFFF">Date</th>
+                    <th scope="col" class="text-right" style="color: #FFFFFF">PU</th>
+                    <th scope="col" class="text-right" style="color: #FFFFFF">Q</th>
+                    <th scope="col" class="text-right" style="color: #FFFFFF">Tot</th>
+                    <th scope="col" class="text-right" style="color: #FFFFFF">Réduc</th>
+                    <th scope="col" class="text-right" style="color: #FFFFFF">PV</th>
+                    <th scope="col" class="text-center" style="color: #FFFFFF">%S</th>
+                    <th scope="col" class="text-right" style="color: #FFFFFF">€S</th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
@@ -273,16 +273,16 @@
                 {% endfor %}
                 <tr class="table-primary">
                     <th></th>
-                    <th scope="row" colspan="4">
+                    <th scope="row" colspan="4" style="color: #FFFFFF">
                         Totaux
                     </th>
                     <th></th>
                     <th></th>
-                    <th class="text-right">{{ total_price|number_format(2, ',', '.') }}€</th>
+                    <th class="text-right" style="color: #FFFFFF">{{ total_price|number_format(2, ',', '.') }}€</th>
                     <th></th>
-                    <th class="text-right">{{ total_marge|number_format(2, ',', '.') }}€</th>
+                    <th class="text-right" style="color: #FFFFFF">{{ total_marge|number_format(2, ',', '.') }}€</th>
                     <th></th>
-                    <th class="text-right">{{ total_euroCom|number_format(2, ',', '.') }}€</th>
+                    <th class="text-right" style="color: #FFFFFF">{{ total_euroCom|number_format(2, ',', '.') }}€</th>
                     <th></th>
                 </tr>
                 </tbody>
@@ -298,15 +298,15 @@
                 <thead class="table-primary">
                 <tr>
                     <th scope="col"></th>
-                    <th scope="col">Société</th>
-                    <th scope="col">Projet</th>
-                    <th scope="col">Produit</th>
-                    <th scope="col">Date</th>
-                    <th scope="col" class="text-right">PU</th>
-                    <th scope="col" class="text-right">Réduc</th>
-                    <th scope="col" class="text-right">PV</th>
-                    <th scope="col" class="text-center">%S</th>
-                    <th scope="col" class="text-right">€S</th>
+                    <th scope="col" style="color: #FFFFFF">Société</th>
+                    <th scope="col" style="color: #FFFFFF">Projet</th>
+                    <th scope="col" style="color: #FFFFFF">Produit</th>
+                    <th scope="col" style="color: #FFFFFF">Date</th>
+                    <th scope="col" class="text-right" style="color: #FFFFFF">PU</th>
+                    <th scope="col" class="text-right" style="color: #FFFFFF">Réduc</th>
+                    <th scope="col" class="text-right" style="color: #FFFFFF">PV</th>
+                    <th scope="col" class="text-center" style="color: #FFFFFF">%S</th>
+                    <th scope="col" class="text-right" style="color: #FFFFFF">€S</th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
@@ -356,14 +356,14 @@
                 {% endfor %}
                 <tr class="table-primary">
                     <th></th>
-                    <th scope="row" colspan="4">
+                    <th scope="row" colspan="4" style="color: #FFFFFF">
                         Totaux
                     </th>
-                    <th class="text-right">{{ total_price|number_format(2, ',', '.') }}€</th>
+                    <th class="text-right" style="color: #FFFFFF">{{ total_price|number_format(2, ',', '.') }}€</th>
                     <th></th>
-                    <th class="text-right">{{ total_marge|number_format(2, ',', '.') }}€</th>
+                    <th class="text-right" style="color: #FFFFFF">{{ total_marge|number_format(2, ',', '.') }}€</th>
                     <th></th>
-                    <th class="text-right">{{ total_euroCom|number_format(2, ',', '.') }}€</th>
+                    <th class="text-right" style="color: #FFFFFF">{{ total_euroCom|number_format(2, ',', '.') }}€</th>
                     <th></th>
                 </tr>
                 </tbody>
