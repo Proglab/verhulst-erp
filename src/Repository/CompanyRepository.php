@@ -44,12 +44,14 @@ class CompanyRepository extends ServiceEntityRepository
     public function search(string $search): array
     {
         return $this->createQueryBuilder('c')
-            ->select('c, contact')
             ->join('c.contact', 'contact')
             ->where('c.name LIKE :search')
             ->orWhere('contact.firstname LIKE :search')
             ->orWhere('contact.lastname LIKE :search')
+            ->orWhere('CONCAT(contact.lastname, \' \' ,contact.firstname) LIKE :search')
+            ->orWhere('CONCAT(contact.firstname, \' \' ,contact.lastname) LIKE :search')
             ->setParameter('search', '%' . $search . '%')
+            ->orderBy('c.name, contact.firstname, contact.lastname')
             ->getQuery()
             ->getResult();
     }
