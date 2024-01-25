@@ -12,7 +12,6 @@ use App\Repository\CompanyContactRepository;
 use App\Repository\CompanyRepository;
 use App\Repository\UserRepository;
 use App\Service\SecurityChecker;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -21,7 +20,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
-use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
@@ -53,8 +51,7 @@ class CompanyContactCrudController extends BaseCrudController
         private CompanyContactRepository $companyContactRepository,
         private CompanyRepository $companyRepository,
         private RequestStack $requestStack
-    )
-    {
+    ) {
         parent::__construct($securityChecker);
     }
 
@@ -68,7 +65,7 @@ class CompanyContactCrudController extends BaseCrudController
         $crud->setEntityLabelInPlural('Clients')
             ->setEntityLabelInSingular('Client')
             ->showEntityActionsInlined(true)
-            //->setSearchFields(['firstname', 'lastname', 'company.name', 'email', 'phone', 'gsm', 'note', 'lang', 'company.vat_number']);
+            // ->setSearchFields(['firstname', 'lastname', 'company.name', 'email', 'phone', 'gsm', 'note', 'lang', 'company.vat_number']);
             ->setSearchFields(null)
 
             ->setDefaultSort(['fullname' => 'ASC']);
@@ -213,10 +210,10 @@ class CompanyContactCrudController extends BaseCrudController
 
         $export = Action::new('export', 'Exporter mes contacts')
             ->linkToCrudAction('export')->createAsGlobalAction();
-/*
-        $search = Action::new('search', 'Rechercher un contact')
-            ->linkToCrudAction('search')->createAsGlobalAction();
-*/
+        /*
+                $search = Action::new('search', 'Rechercher un contact')
+                    ->linkToCrudAction('search')->createAsGlobalAction();
+        */
 
         $retour = Action::new('backCompany', 'Retour à la fiche société')
             ->linkToCrudAction('backtocompany');
@@ -329,9 +326,7 @@ class CompanyContactCrudController extends BaseCrudController
     }
 
     /**
-     * @param EntityManagerInterface $entityManager
      * @param CompanyContact $entityInstance
-     * @return void
      */
     public function persistEntity(EntityManagerInterface $entityManager, mixed $entityInstance): void
     {
@@ -350,8 +345,9 @@ class CompanyContactCrudController extends BaseCrudController
         if ('M' === $entityInstance->getSex() && 'nl' === $entityInstance->getLang()) {
             $entityInstance->setGreeting('Geachte Heer');
         }
-
-        $entityInstance->setAddedBy($this->getUser());
+        /** @var User $user */
+        $user = $this->getUser();
+        $entityInstance->setAddedBy($user);
 
         $company = $this->companyRepository->find($this->requestStack->getCurrentRequest()->get('company_id'));
 
@@ -362,7 +358,6 @@ class CompanyContactCrudController extends BaseCrudController
 
     public function updateEntity(EntityManagerInterface $entityManager, mixed $entityInstance): void
     {
-
         if ('F' === $entityInstance->getSex() && 'fr' === $entityInstance->getLang() && empty($entityInstance->getGreeting())) {
             $entityInstance->setGreeting('Chère Madame');
         }
@@ -404,6 +399,7 @@ class CompanyContactCrudController extends BaseCrudController
     {
         return $this->redirect($this->adminUrlGenerator->setController(TodoCrudController::class)->setAction(Crud::PAGE_NEW)->setEntityId(null)->set('client_id', $context->getEntity()->getInstance()->getId())->generateUrl());
     }
+
     public function backtocompany(AdminContext $context): RedirectResponse|Response
     {
         return $this->redirect($this->adminUrlGenerator->setController(CompanyCrudController::class)->setAction(Crud::PAGE_DETAIL)->setEntityId($context->getEntity()->getInstance()->getCompany()->getId())->generateUrl());
@@ -459,14 +455,9 @@ class CompanyContactCrudController extends BaseCrudController
         return $response;
     }
 
-
     public function index(AdminContext $context): Response
     {
-
         return $this->render('admin/contact/search.html.twig', [
-
         ]);
     }
-
-
 }

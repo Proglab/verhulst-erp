@@ -29,6 +29,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class TodoCrudController extends BaseCrudController
 {
@@ -59,7 +60,6 @@ class TodoCrudController extends BaseCrudController
 
         Action::new('getVatInfos', false)
             ->linkToCrudAction('getVatInfos');
-
 
         Action::new('done', false)
             ->linkToCrudAction('done');
@@ -146,12 +146,14 @@ class TodoCrudController extends BaseCrudController
         parent::persistEntity($entityManager, $entityInstance);
     }
 
-    public function done(AdminContext $adminContext) {
+    public function done(AdminContext $adminContext): RedirectResponse
+    {
         /** @var Todo $todo */
         $todo = $adminContext->getEntity()->getInstance();
         $todo->setDone(true);
         $todo->setDateDone(new \DateTime());
         $this->todoRepository->save($todo, true);
+
         return $this->redirect($this->adminUrlGenerator->setController(CompanyCrudController::class)->setAction(Crud::PAGE_DETAIL)->setEntityId($todo->getClient()->getCompany()->getId())->generateUrl());
     }
 }

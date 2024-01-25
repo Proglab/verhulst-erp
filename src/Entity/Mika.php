@@ -22,52 +22,33 @@ class Mika
     #[ORM\Column(length: 6, nullable: true)]
     protected ?string $lang = null;
 
-    /**
-     * @return string|null
-     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param string|null $name
-     */
     public function setName(?string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @return string|null
-     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    /**
-     * @param string|null $email
-     */
     public function setEmail(?string $email): void
     {
         $this->email = $email;
     }
 
-    /**
-     * @return string|null
-     */
     public function getLang(): ?string
     {
         return $this->lang;
     }
 
-    /**
-     * @param string|null $lang
-     */
     public function setLang(?string $lang): void
     {
         $this->lang = $lang;
     }
-
 }

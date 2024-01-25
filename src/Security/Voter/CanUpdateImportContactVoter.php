@@ -10,7 +10,6 @@ use App\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class CanUpdateImportContactVoter extends Voter
 {
@@ -26,7 +25,7 @@ class CanUpdateImportContactVoter extends Voter
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
         return \in_array($attribute, [self::EDIT], true)
-            && $subject['type'] === "Import";
+            && 'Import' === $subject['type'];
     }
 
     /**
@@ -52,8 +51,7 @@ class CanUpdateImportContactVoter extends Voter
             return true;
         }
 
-        if ((int) $contact['added_by_id'] === $user->getId())
-        {
+        if ((int) $contact['added_by_id'] === $user->getId()) {
             return true;
         }
 

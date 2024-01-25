@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\CompanyContactNoteRepository;
@@ -27,6 +29,11 @@ class CompanyContactNote
     #[ORM\ManyToOne(inversedBy: 'notes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+
+    public function __toString()
+    {
+        return strip_tags($this->note);
+    }
 
     public function getId(): ?int
     {
@@ -79,9 +86,5 @@ class CompanyContactNote
         $this->user = $user;
 
         return $this;
-    }
-
-    public function __toString() {
-        return strip_tags($this->note);
     }
 }

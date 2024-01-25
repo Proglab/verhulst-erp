@@ -76,32 +76,6 @@ class Company
     #[ORM\JoinColumn(nullable: true)]
     #[Assert\NotBlank]
     private Collection $contact;
-
-    public function getTodos()
-    {
-        $return = [];
-        /** @var CompanyContact $contact */
-        foreach ($this->contact as $contact) {
-            foreach ($contact->getTodos() as $todo) {
-                $return[$todo->getDateReminder()->format('Ymd')] = $todo;
-            }
-        }
-        krsort($return);
-        return $return;
-    }
-
-    public function getNotes()
-    {
-        $return = [];
-        /** @var CompanyContact $contact */
-        foreach ($this->contact as $contact) {
-            foreach ($contact->getNotes() as $note) {
-                $return[$note->getCreatedDt()->format('Ymd')] = $note;
-            }
-        }
-        krsort($return);
-        return $return;
-    }
     #[ORM\Column]
     private bool $vat_na = false;
 
@@ -113,6 +87,34 @@ class Company
     public function __toString(): string
     {
         return $this->getName();
+    }
+
+    public function getTodos(): array
+    {
+        $return = [];
+        /** @var CompanyContact $contact */
+        foreach ($this->contact as $contact) {
+            foreach ($contact->getTodos() as $todo) {
+                $return[$todo->getDateReminder()->format('Ymd')] = $todo;
+            }
+        }
+        krsort($return);
+
+        return $return;
+    }
+
+    public function getNotes(): array
+    {
+        $return = [];
+        /** @var CompanyContact $contact */
+        foreach ($this->contact as $contact) {
+            foreach ($contact->getNotes() as $note) {
+                $return[$note->getCreatedDt()->format('Ymd')] = $note;
+            }
+        }
+        krsort($return);
+
+        return $return;
     }
 
     public function getId(): ?int

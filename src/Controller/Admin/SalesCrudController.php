@@ -382,7 +382,7 @@ class SalesCrudController extends BaseCrudController
         return $this->render('admin/sales/list_project.html.twig', [
                 'contact' => $contact,
                 'context' => $context,
-                'projects' => $projects
+                'projects' => $projects,
             ]
         );
     }
@@ -393,9 +393,7 @@ class SalesCrudController extends BaseCrudController
         $contact = $this->entityManager->getRepository(CompanyContact::class)->find($request->get('contactId'));
         $project = $this->entityManager->getRepository(Project::class)->find($request->get('projectId'));
 
-
         $products = $this->entityManager->getRepository(Product::class)->findBy(['project' => $project]);
-
 
         return $this->render('admin/sales/list_product.html.twig', [
                 'products' => $products,

@@ -152,15 +152,13 @@ class ProjectCrudController extends BaseCrudController
      */
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
-
-
         $days = $entityInstance->getDateEnd()->diff($entityInstance->getDateBegin());
         $days = $days->days;
 
         foreach ($entityInstance->getProductPackage() as $package) {
+            /** @var \DateTime $date */
             $date = clone $entityInstance->getDateBegin();
-            for($i = 0; $i <= $days ; $i++)
-            {
+            for ($i = 0; $i <= $days; ++$i) {
                 $packageNew = new ProductPackageVip();
                 $packageNew->setName($package->getName());
                 $packageNew->setPercentTv((string) $package->getPercentTv());
@@ -174,7 +172,7 @@ class ProjectCrudController extends BaseCrudController
                 $packageNew->setPa($package->getPa());
                 $packageNew->setQuantityMax($package->getQuantityMax());
                 if ($i > 0) {
-                    /** @var \DateTime $date */
+                    /* @var \DateTime $date */
                     $date->add(new \DateInterval('P1D'));
                 }
                 $packageNew->setDateBegin(clone $date);
@@ -183,8 +181,6 @@ class ProjectCrudController extends BaseCrudController
             }
 
             $entityInstance->removeProductPackage($package);
-
-
         }
 
         if (true === $entityInstance->isMail()) {

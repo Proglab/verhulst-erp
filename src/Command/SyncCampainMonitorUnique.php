@@ -234,12 +234,10 @@ class SyncCampainMonitorUnique extends AbstractCommand
                 'auth_basic' => [$this->apiKey, 'the-password'],
                 'body' => json_encode($contact),
             ]);
-
-        } catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             $this->output->writeln('');
             $this->output->writeln('<error>ERROR Contact created</error>');
-            $this->output->writeln('<error>'.json_encode($e).'</error>');
+            $this->output->writeln('<error>' . json_encode($e) . '</error>');
             $this->output->writeln('');
         }
     }
@@ -264,6 +262,7 @@ class SyncCampainMonitorUnique extends AbstractCommand
                 return false;
             }
         }
+
         return true;
     }
 }

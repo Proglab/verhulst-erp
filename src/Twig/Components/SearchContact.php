@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Twig\Components;
 
-use App\Entity\Document\Dir;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
@@ -33,23 +35,25 @@ class SearchContact
 
     public ?array $users = null;
 
-    public function __construct(private EntityManagerInterface $entityManager, private UserRepository $userRepository, private PaginatorInterface $paginator)
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly UserRepository $userRepository, /** @phpstan-ignore-line */
+        private readonly PaginatorInterface $paginator)
     {
         $this->users = $userRepository->getCommercials();
     }
 
-    public function onUserUpdated($previousValue): void
+    public function onUserUpdated(mixed $previousValue): void
     {
         $this->page = 1;
     }
 
-    public function mount()
+    public function mount(): void
     {
         $this->getContacts();
     }
 
-
-    public function getContacts()
+    public function getContacts(): PaginationInterface
     {
         $user = '';
         if ($this->user) {
@@ -68,7 +72,7 @@ class SearchContact
         OR company_contact.phone LIKE :query
         OR company_contact.gsm LIKE :query
         OR CONCAT(company_contact.firstname, \' \',company_contact.lastname) LIKE :query)
-        '.$user.'        
+        ' . $user . '
         UNION
         SELECT \'Import\' as type, temp_company.name, temp_company.vat_number, temp_company_contact.id, temp_company_contact.firstname, temp_company_contact.lastname, temp_company_contact.lang, temp_company_contact.email, temp_company_contact.phone, temp_company_contact.gsm, user.first_name, user.last_name, \'\', temp_company_contact.added_by_id
         FROM temp_company_contact
@@ -81,26 +85,23 @@ class SearchContact
         OR temp_company_contact.phone LIKE :query
         OR temp_company_contact.gsm LIKE :query
         OR CONCAT(temp_company_contact.firstname, \' \',temp_company_contact.lastname) LIKE :query)
-        '.$user.'
+        ' . $user . '
         UNION
         SELECT \'Mika\' as type, \'\' as name, \'\' as vat_number, \'\' as id, \'\' as firstname, \'\' as lastname, mika.lang, mika.email, \'\' as phone, \'\' as gsm, user.first_name, user.last_name, \'\', \'\'
         FROM mika
         JOIN user ON (user.email = \'michael.veys@thefriends.be\')
         WHERE mika.email LIKE :query
-        '.$user.' ORDER BY type, email ASC';
+        ' . $user . ' ORDER BY type, email ASC';
         $stmt = $this->entityManager->getConnection()->prepare($sql);
-        $result = $stmt->executeQuery(['query' => '%'.$this->query.'%', 'user' => $this->user]);
-        $datas =  $result->fetchAllAssociative();
+        $result = $stmt->executeQuery(['query' => '%' . $this->query . '%', 'user' => $this->user]);
+        $datas = $result->fetchAllAssociative();
 
+        /** @var PaginationInterface $paginator */
         $paginator = $this->paginator->paginate($datas, $this->page, $this->pageNbr);
-        $paginator->setTemplate('components/paginator.html.twig');
-
+        $paginator->setTemplate('components/paginator.html.twig'); /* @phpstan-ignore-line */
 
         return $paginator;
     }
-
-
-
 
     #[LiveAction]
     public function getCount(): int
@@ -122,7 +123,7 @@ class SearchContact
         OR company_contact.phone LIKE :query
         OR company_contact.gsm LIKE :query
         OR CONCAT(company_contact.firstname, \' \',company_contact.lastname) LIKE :query)
-        '.$user.'        
+        ' . $user . '
         UNION
         SELECT COUNT(*) as nbr
         FROM temp_company_contact
@@ -135,17 +136,17 @@ class SearchContact
         OR temp_company_contact.phone LIKE :query
         OR temp_company_contact.gsm LIKE :query
         OR CONCAT(temp_company_contact.firstname, \' \',temp_company_contact.lastname) LIKE :query)
-        '.$user.'
+        ' . $user . '
         UNION
         SELECT COUNT(*) as nbr
         FROM mika
         JOIN user ON (user.email = \'michael.veys@thefriends.be\')
         WHERE mika.email LIKE :query
-        '.$user.'
+        ' . $user . '
         ';
         $stmt = $this->entityManager->getConnection()->prepare($sql);
-        $result = $stmt->executeQuery(['query' => '%'.$this->query.'%', 'user' => $this->user]);
-        $datas =  $result->fetchAllAssociative();
+        $result = $stmt->executeQuery(['query' => '%' . $this->query . '%', 'user' => $this->user]);
+        $datas = $result->fetchAllAssociative();
         $total = 0;
         foreach ($datas as $tot) {
             $total += $tot['nbr'];
@@ -153,7 +154,6 @@ class SearchContact
 
         return $total;
     }
-
 
     #[LiveAction]
     public function setPage(#[LiveArg] int $page): void
