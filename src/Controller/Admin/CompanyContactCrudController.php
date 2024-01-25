@@ -69,7 +69,9 @@ class CompanyContactCrudController extends BaseCrudController
             ->setEntityLabelInSingular('Client')
             ->showEntityActionsInlined(true)
             //->setSearchFields(['firstname', 'lastname', 'company.name', 'email', 'phone', 'gsm', 'note', 'lang', 'company.vat_number']);
-            ->setSearchFields(null);
+            ->setSearchFields(null)
+
+            ->setDefaultSort(['fullname' => 'ASC']);
 
         return parent::configureCrud($crud);
     }

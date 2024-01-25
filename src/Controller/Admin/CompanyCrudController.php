@@ -52,7 +52,9 @@ class CompanyCrudController extends BaseCrudController
         $crud->setEntityLabelInPlural('Sociétés')
             ->setEntityLabelInSingular('Société')
             ->showEntityActionsInlined(true)
-            ->overrideTemplate('crud/detail', 'admin/company/crud/detail.html.twig');
+            ->overrideTemplate('crud/detail', 'admin/company/crud/detail.html.twig')
+            ->setDefaultSort(['name' => 'ASC'])
+        ;
 
         return parent::configureCrud($crud);
     }
