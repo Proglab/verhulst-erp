@@ -49,7 +49,8 @@ class SalesBdcCrudController extends BaseCrudController
     {
         $crud->setEntityLabelInPlural('Bons de commande')
             ->setEntityLabelInSingular('Bon de commande')
-            ->showEntityActionsInlined(true);
+            ->showEntityActionsInlined(true)
+            ->setDefaultSort(['creationDate' => 'DESC']);
 
         return parent::configureCrud($crud);
     }
