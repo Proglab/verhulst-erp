@@ -53,7 +53,8 @@ class ProjectCrudController extends BaseCrudController
     {
         $crud->setEntityLabelInPlural('Projets')
             ->setEntityLabelInSingular('Projet')
-            ->showEntityActionsInlined(true);
+            ->showEntityActionsInlined(true)
+        ->setDefaultSort(['name' => 'ASC']);
 
         return parent::configureCrud($crud);
     }
