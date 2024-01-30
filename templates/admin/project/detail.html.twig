@@ -1,7 +1,7 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
 {% block content_title %}
-Projet : {{ project.name }}
+Projet : {{ project.name }} {{ project.downloadUrl|raw }}
 {% endblock %}
 {% block page_title %}Verhulst & Friends - ERP - {{ block('content_title') }}{% endblock %}
 

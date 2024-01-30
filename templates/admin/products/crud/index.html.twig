@@ -6,7 +6,7 @@
         {% if entity.isAccessible %}
             {% if entity.instance.project.id != project %}
                 <th data-id="{{ entity.primaryKeyValueAsString }}" colspan="12" class="projectsales">
-                    {{ entity.instance.project.name }}
+                    {{ entity.instance.project.name }} <span class="mx-4">{{ entity.instance.project.downloadUrl|raw }}</span>
                 </th>
                 {% set project = entity.instance.project.id %}
             {% endif %}

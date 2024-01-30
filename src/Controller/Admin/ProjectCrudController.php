@@ -25,6 +25,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
@@ -71,6 +72,14 @@ class ProjectCrudController extends BaseCrudController
         $dateBegin = DateField::new('date_begin')->setLabel('Du')->setRequired(true);
         $dateEnd = DateField::new('date_end')->setLabel('Au')->setRequired(true);
 
+        $image = ImageField::new('doc')
+            ->setBasePath($this->getParameter('files.projects.base_path'))
+            ->setUploadDir($this->getParameter('files.projects.upload_dir'))
+            ->setUploadedFileNamePattern('[slug]-[timestamp]-[randomhash].[extension]')
+            ->setLabel('Document (PDF)');
+        $imageDwonload = TextField::new('download_url')->renderAsHtml()->setLabel('Document (PDF)');
+
+
         if ($this->isGranted('ROLE_ENCODE')) {
             $projectEvent = CollectionField::new('product_event')->setLabel('Event à la carte')->allowAdd(true)->allowDelete(true)->setEntryIsComplex()->useEntryCrudForm(ProductEventCrudController::class)->setRequired(true);
             $projectPackage = CollectionField::new('product_package')->setLabel('Package VIP')->allowAdd(true)->allowDelete(true)->setEntryIsComplex()->useEntryCrudForm(ProductPackageVipCrudController::class)->setRequired(true);
@@ -96,7 +105,9 @@ class ProjectCrudController extends BaseCrudController
         }
 
         $response = match ($pageName) {
-            Crud::PAGE_INDEX => [$name, $dateBegin, $dateEnd, $projectEventIndex, $projectSponsorIndex, $projectPackageIndex, $projectDiversIndex],
+            Crud::PAGE_INDEX => [$name, $dateBegin, $dateEnd, $projectEventIndex, $projectSponsorIndex, $projectPackageIndex, $projectDiversIndex, $imageDwonload],
+            Crud::PAGE_DETAIL => [$name, $dateBegin, $dateEnd, $projectEventIndex, $projectSponsorIndex, $projectPackageIndex, $projectDiversIndex, $imageDwonload],
+            Crud::PAGE_NEW, Crud::PAGE_EDIT => [$name, $dateBegin, $dateEnd, $projectEvent, $projectSponsor, $projectPackage, $projectDivers, $image],
             default => [$name, $dateBegin, $dateEnd, $projectEvent, $projectSponsor, $projectPackage, $projectDivers],
         };
 

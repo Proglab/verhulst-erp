@@ -26,6 +26,10 @@ class Project
 
     private ?bool $mail = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
+    protected ?string $doc = null;
+
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: ProductEvent::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $product_event;
 
@@ -289,5 +293,31 @@ class Project
         }
 
         return $this;
+    }
+
+    public function getDoc(): ?string
+    {
+        return $this->doc;
+    }
+
+    public function setDoc(?string $doc): self
+    {
+        $this->doc = $doc;
+
+        return $this;
+    }
+
+    public function getUrl(): string
+    {
+        return __DIR__ . '/../../../../shared/public/files/products/' . $this->getDoc();
+    }
+
+    public function getDownloadUrl(): string
+    {
+        if (null !== $this->getDoc()) {
+            return '<a href="/files/products/' . $this->getDoc() . '"><i class="fa-regular fa-file"></i> Télécharger</a>';
+        }
+
+        return '';
     }
 }
