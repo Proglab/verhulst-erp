@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Budget\Invoice;
 use App\Entity\Trait\CreatedAtTrait;
 use App\Entity\Trait\EnabledTrait;
 use App\Entity\Trait\PrimaryKeyTrait;
@@ -105,6 +106,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: CompanyContactNote::class, orphanRemoval: true)]
     private Collection $notes;
 
+    #[ORM\OneToMany(mappedBy: 'validated_user', targetEntity: Invoice::class, orphanRemoval: true)]
+    private Collection $invoices;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -116,6 +120,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         $this->todos = new ArrayCollection();
         $this->salesBdcs = new ArrayCollection();
         $this->notes = new ArrayCollection();
+        $this->invoices = new ArrayCollection();
     }
 
     public function __toString()
@@ -540,6 +545,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
             // set the owning side to null (unless already changed)
             if ($note->getUser() === $this) {
                 $note->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Invoice>
+     */
+    public function getInvoices(): Collection
+    {
+        return $this->invoices;
+    }
+
+    public function addInvoice(Invoice $invoice): static
+    {
+        if (!$this->invoices->contains($invoice)) {
+            $this->invoices->add($invoice);
+            $invoice->setValidatedUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvoice(Invoice $invoice): static
+    {
+        if ($this->invoices->removeElement($invoice)) {
+            // set the owning side to null (unless already changed)
+            if ($invoice->getValidatedUser() === $this) {
+                $invoice->setValidatedUser(null);
             }
         }
 

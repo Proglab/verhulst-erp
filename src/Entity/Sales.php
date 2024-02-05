@@ -25,23 +25,23 @@ class Sales
     #[Assert\NotBlank]
     #[Assert\Length(max: 11)]
     #[Assert\PositiveOrZero]
-    private ?float $price = null;
+    private ?string $price = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: false)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 11)]
     #[Assert\PositiveOrZero]
-    private ?float $pa = 0;
+    private ?string $pa = '0';
 
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
     #[Assert\Length(max: 6)]
     #[Assert\PositiveOrZero]
-    private ?float $percent_vr = null;
+    private ?string $percent_vr = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 4, scale: 2, nullable: true)]
     #[Assert\Length(max: 5)]
     #[Assert\PositiveOrZero]
-    private ?float $percent_com = null;
+    private ?string $percent_com = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
@@ -53,7 +53,7 @@ class Sales
     #[ORM\Column(type: Types::DECIMAL, precision: 8, scale: 2, nullable: true)]
     #[Assert\Length(max: 9)]
     #[Assert\PositiveOrZero]
-    private ?float $discount = 0.0;
+    private ?string $discount = '0.0';
 
     #[Assert\PositiveOrZero]
     private ?float $discount_eur;
@@ -96,12 +96,12 @@ class Sales
 
     public function getPrice(): ?float
     {
-        return (int) $this->price;
+        return (float) $this->price;
     }
 
     public function setPrice(string|float|null $price): self
     {
-        $this->price = (float) str_replace(',', '.', (string) $price);
+        $this->price = (string) str_replace(',', '.', (string) $price);
 
         return $this;
     }
@@ -113,7 +113,7 @@ class Sales
 
     public function setPa(string|float|null $pa): self
     {
-        $this->pa = (float) str_replace(',', '.', (string) $pa);
+        $this->pa = (string) str_replace(',', '.', (string) $pa);
 
         return $this;
     }
@@ -132,24 +132,24 @@ class Sales
 
     public function getPercentVr(): ?float
     {
-        return $this->percent_vr;
+        return (float) $this->percent_vr;
     }
 
     public function setPercentVr(?float $percent_vr): self
     {
-        $this->percent_vr = $percent_vr;
+        $this->percent_vr = (string) $percent_vr;
 
         return $this;
     }
 
     public function getPercentCom(): ?float
     {
-        return $this->percent_com;
+        return (float) $this->percent_com;
     }
 
     public function setPercentCom(?float $percent_com): self
     {
-        $this->percent_com = $percent_com;
+        $this->percent_com = (string) $percent_com;
 
         return $this;
     }
@@ -196,12 +196,12 @@ class Sales
             return 0;
         }
 
-        return $this->discount;
+        return (float) $this->discount;
     }
 
     public function setDiscount(float $discount): self
     {
-        $this->discount = $discount;
+        $this->discount = (string) $discount;
 
         return $this;
     }

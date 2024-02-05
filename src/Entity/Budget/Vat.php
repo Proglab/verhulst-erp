@@ -20,7 +20,7 @@ class Vat
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
-    private ?float $percent = null;
+    private ?string $percent = null;
 
     #[ORM\OneToMany(mappedBy: 'vat', targetEntity: Product::class, orphanRemoval: true)]
     private Collection $product;
@@ -42,12 +42,12 @@ class Vat
 
     public function getPercent(): ?float
     {
-        return $this->percent;
+        return (float) $this->percent;
     }
 
     public function setPercent(float $percent): static
     {
-        $this->percent = $percent;
+        $this->percent = (string) $percent;
 
         return $this;
     }

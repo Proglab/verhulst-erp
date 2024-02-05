@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Entity\Budget;
 
 use App\Repository\Budget\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -21,10 +23,10 @@ class Product
     private ?string $title = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    private ?int $quantity = null;
+    private ?string $quantity = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    private ?float $price = null;
+    private ?string $price = null;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
@@ -39,7 +41,7 @@ class Product
     private ?Supplier $supplier = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    private ?float $real_price = null;
+    private ?string $real_price = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $filename = null;
@@ -49,6 +51,14 @@ class Product
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $offer_price = null;
+
+    #[ORM\ManyToMany(targetEntity: Invoice::class, mappedBy: 'products')]
+    private Collection $invoices;
+
+    public function __construct()
+    {
+        $this->invoices = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -69,24 +79,24 @@ class Product
 
     public function getQuantity(): ?int
     {
-        return $this->quantity;
+        return (int) $this->quantity;
     }
 
     public function setQuantity(int $quantity): static
     {
-        $this->quantity = $quantity;
+        $this->quantity = (string) $quantity;
 
         return $this;
     }
 
     public function getPrice(): ?float
     {
-        return $this->price;
+        return (float) $this->price;
     }
 
     public function setPrice(float $price): static
     {
-        $this->price = $price;
+        $this->price = (string) $price;
 
         return $this;
     }
@@ -144,12 +154,12 @@ class Product
 
     public function getRealPrice(): ?float
     {
-        return $this->real_price;
+        return (float) $this->real_price;
     }
 
     public function setRealPrice(?float $real_price): static
     {
-        $this->real_price = $real_price;
+        $this->real_price = (string) $real_price;
 
         return $this;
     }
@@ -211,6 +221,33 @@ class Product
     public function setOfferPrice(?string $offer_price): static
     {
         $this->offer_price = $offer_price;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Invoice>
+     */
+    public function getInvoices(): Collection
+    {
+        return $this->invoices;
+    }
+
+    public function addInvoice(Invoice $invoice): static
+    {
+        if (!$this->invoices->contains($invoice)) {
+            $this->invoices->add($invoice);
+            $invoice->addProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvoice(Invoice $invoice): static
+    {
+        if ($this->invoices->removeElement($invoice)) {
+            $invoice->removeProduct($this);
+        }
 
         return $this;
     }

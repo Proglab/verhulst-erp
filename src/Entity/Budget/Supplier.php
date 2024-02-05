@@ -24,9 +24,13 @@ class Supplier
     #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: Product::class, orphanRemoval: true)]
     private Collection $products;
 
+    #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: Invoice::class)]
+    private Collection $invoices;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->invoices = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -75,6 +79,36 @@ class Supplier
             // set the owning side to null (unless already changed)
             if ($product->getSupplier() === $this) {
                 $product->setSupplier(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Invoice>
+     */
+    public function getInvoices(): Collection
+    {
+        return $this->invoices;
+    }
+
+    public function addInvoice(Invoice $invoice): static
+    {
+        if (!$this->invoices->contains($invoice)) {
+            $this->invoices->add($invoice);
+            $invoice->setSupplier($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvoice(Invoice $invoice): static
+    {
+        if ($this->invoices->removeElement($invoice)) {
+            // set the owning side to null (unless already changed)
+            if ($invoice->getSupplier() === $this) {
+                $invoice->setSupplier(null);
             }
         }
 

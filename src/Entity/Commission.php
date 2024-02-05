@@ -22,7 +22,7 @@ class Commission
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
     #[Assert\Length(max: 6)]
     #[Assert\PositiveOrZero()]
-    private ?float $percent_com = null;
+    private ?string $percent_com = null;
 
     #[ORM\ManyToOne(inversedBy: 'commissions')]
     #[ORM\JoinColumn(nullable: false)]
@@ -39,12 +39,12 @@ class Commission
 
     public function getPercentCom(): ?float
     {
-        return $this->percent_com;
+        return (float) $this->percent_com;
     }
 
     public function setPercentCom(float|string|null $percent_com): self
     {
-        $this->percent_com = (float) str_replace(',', '.', (string) $percent_com);
+        $this->percent_com = (string) str_replace(',', '.', (string) $percent_com);
 
         return $this;
     }

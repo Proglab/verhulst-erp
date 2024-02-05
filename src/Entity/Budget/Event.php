@@ -40,7 +40,7 @@ class Event
     private ?\DateTimeInterface $date_end = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
-    private ?float $percent = null;
+    private ?string $percent = null;
 
     #[ORM\Column]
     private ?bool $archived = false;
@@ -160,12 +160,12 @@ class Event
 
     public function getPercent(): ?float
     {
-        return $this->percent;
+        return (float) $this->percent;
     }
 
     public function setPercent(float $percent): static
     {
-        $this->percent = $percent;
+        $this->percent = (string) $percent;
 
         return $this;
     }
