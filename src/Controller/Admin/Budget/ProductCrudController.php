@@ -86,7 +86,7 @@ class ProductCrudController extends BaseCrudController
         $tva = AssociationField::new('vat', 'Tva')
             ->setRequired(true);
 
-        $supplier = AssociationField::new('supplier');
+        $supplier = AssociationField::new('supplier', 'Fournisseur');
 
         /**
          * $supplier = AssociationField::new('supplier', 'Fournisseur')

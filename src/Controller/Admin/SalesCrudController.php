@@ -334,10 +334,16 @@ class SalesCrudController extends BaseCrudController
      */
     public function index(AdminContext $context)
     {
+        /** @var User $user */
         $user = $this->getUser();
 
+        $year = $context->getRequest()->get('year', date('Y'));
+
+        $sales = $this->salesRepository->getSalesByYear($user, (int) $year);
         return $this->render('admin/sales/index.html.twig', [
             'user' => $user,
+            'year' => $year,
+            'sales' => $sales,
         ]);
     }
 

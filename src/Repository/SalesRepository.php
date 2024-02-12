@@ -187,4 +187,22 @@ class SalesRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function getSalesByYear(User $user, int $year): array
+    {
+        return $this->createQueryBuilder('s')
+            ->addSelect('p')
+            ->join('s.product', 'p')
+            ->join('p.project', 'pr')
+            ->join('s.contact', 'c')
+            ->join('c.company', 'co')
+            ->andWhere('s.user = :user')
+            ->setParameter('user', $user)
+            ->andWhere('YEAR(s.date) = :year')
+            ->setParameter('year', $year)
+            ->orderBy('pr.name', 'ASC')
+            ->addOrderBy('co.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }
