@@ -45,10 +45,19 @@ class Event
     #[ORM\Column]
     private ?bool $archived = false;
 
+    #[ORM\OneToMany(mappedBy: 'event', targetEntity: Invoice::class)]
+    private Collection $invoices;
+
     public function __construct()
     {
         $this->budgets = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->invoices = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 
     public function getId(): ?int
@@ -178,6 +187,36 @@ class Event
     public function setArchived(bool $archived): static
     {
         $this->archived = $archived;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Invoice>
+     */
+    public function getInvoices(): Collection
+    {
+        return $this->invoices;
+    }
+
+    public function addInvoice(Invoice $invoice): static
+    {
+        if (!$this->invoices->contains($invoice)) {
+            $this->invoices->add($invoice);
+            $invoice->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvoice(Invoice $invoice): static
+    {
+        if ($this->invoices->removeElement($invoice)) {
+            // set the owning side to null (unless already changed)
+            if ($invoice->getEvent() === $this) {
+                $invoice->setEvent(null);
+            }
+        }
 
         return $this;
     }

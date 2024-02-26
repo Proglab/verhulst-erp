@@ -176,3 +176,5 @@ admin:
         search: Recherche de contact
         company: Sociétés
         contact: Contact
+        invoice: Liste complète
+        invoiceToValide: A valider

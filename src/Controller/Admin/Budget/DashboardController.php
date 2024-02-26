@@ -7,11 +7,13 @@ namespace App\Controller\Admin\Budget;
 use App\Controller\Admin\Budget\Ref\CategoryCrudController;
 use App\Entity\Budget\Budget;
 use App\Entity\Budget\Event;
+use App\Entity\Budget\Invoice;
 use App\Entity\Budget\Ref\Category;
 use App\Entity\Budget\Supplier;
 use App\Entity\Budget\Vat;
 use App\Entity\User;
 use App\Repository\Budget\EventRepository;
+use App\Repository\Budget\InvoiceRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -26,7 +28,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class DashboardController extends AbstractDashboardController
 {
-    public function __construct(private AdminUrlGenerator $adminUrlGenerator, private EventRepository $eventRepository)
+    public function __construct(private AdminUrlGenerator $adminUrlGenerator, private EventRepository $eventRepository, private InvoiceRepository $invoiceRepository)
     {
     }
 
@@ -53,11 +55,20 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
+        /** @var User $user */
+        $user = $this->getUser();
+
         return [
             MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
             MenuItem::section('Budget'),
             MenuItem::linkToCrud('admin.menu.event', 'fas fa-calendar-days', Event::class)->setController(EventCrudController::class)->setPermission('ROLE_BUDGET'),
             MenuItem::linkToCrud('admin.menu.archived', 'fas fa-box-archive', Event::class)->setController(EventArchivedCrudController::class)->setPermission('ROLE_BUDGET'),
+            MenuItem::section('Factures fournisseurs'),
+            MenuItem::linkToCrud('admin.menu.invoice', 'fa-solid fa-file-invoice-dollar', Invoice::class)->setController(InvoiceCrudController::class)->setPermission('ROLE_BUDGET'),
+            MenuItem::linkToCrud('admin.menu.invoiceToValide', 'fa-solid fa-file-invoice-dollar', Invoice::class)
+                ->setController(InvoiceToValidCrudController::class)
+                ->setPermission('ROLE_BUDGET')
+                ->setBadge($this->invoiceRepository->getInvoiceToValidate($user)),
             MenuItem::section('Droits'),
             MenuItem::linkToCrud('admin.menu.users', 'fas fa-users', User::class)->setController(UserCrudController::class)->setPermission('ROLE_ADMIN_BUDGET'),
             MenuItem::section('Configurations'),

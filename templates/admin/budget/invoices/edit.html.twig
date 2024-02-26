@@ -1,0 +1,12 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+{% extends '@EasyAdmin/crud/edit.html.twig' %}
+
+{% block edit_form %}
+    {{ component('edit_invoice_component', {invoice: edit_form.vars.data}) }}
+{% endblock edit_form %}
+
+
+{% block page_actions %}
+{% endblock page_actions %}
+

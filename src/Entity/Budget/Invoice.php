@@ -21,13 +21,13 @@ class Invoice
     private ?string $doc = null;
 
     #[ORM\Column]
-    private ?bool $validated = null;
+    private ?bool $validated = false;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $validated_date = null;
 
     #[ORM\ManyToOne(inversedBy: 'invoices')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?User $validated_user = null;
 
     #[ORM\ManyToMany(targetEntity: Product::class, inversedBy: 'invoices')]
@@ -35,6 +35,12 @@ class Invoice
 
     #[ORM\ManyToOne(inversedBy: 'invoices')]
     private ?Supplier $supplier = null;
+
+    #[ORM\ManyToOne(inversedBy: 'invoices')]
+    private ?Event $event = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $price = null;
 
     public function __construct()
     {
@@ -118,6 +124,11 @@ class Invoice
         return $this;
     }
 
+    public function resetProduct()
+    {
+        $this->products = new ArrayCollection();
+    }
+
     public function getSupplier(): ?Supplier
     {
         return $this->supplier;
@@ -126,6 +137,30 @@ class Invoice
     public function setSupplier(?Supplier $supplier): static
     {
         $this->supplier = $supplier;
+
+        return $this;
+    }
+
+    public function getEvent(): ?Event
+    {
+        return $this->event;
+    }
+
+    public function setEvent(?Event $event): static
+    {
+        $this->event = $event;
+
+        return $this;
+    }
+
+    public function getPrice(): ?string
+    {
+        return $this->price;
+    }
+
+    public function setPrice(?string $price): static
+    {
+        $this->price = $price;
 
         return $this;
     }

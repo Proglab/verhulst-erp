@@ -60,6 +60,11 @@ class Product
         $this->invoices = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->getSubCategory()->getCategory()->getName(). ' - ' . $this->getSubCategory()->getName().' - '. $this->getTitle();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

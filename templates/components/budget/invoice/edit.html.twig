@@ -1,0 +1,28 @@
+<div {{ attributes }}>
+    <div class="row" style="min-height: 750px">
+        <div class="col-4">
+            {{ form_start(form, {
+                attr: {
+                    'data-action': 'live#action',
+                    'data-action-name': 'prevent|save'
+                }
+            }) }}
+                {{ form_row(form.price) }}
+                {{ form_row(form.event) }}
+
+                {% if form.supplier is defined %}
+                    {{ form_row(form.supplier) }}
+                {% endif %}
+
+                {% if form.products is defined %}
+                    {{ form_row(form.products) }}
+                {% endif %}
+
+                {% if form.validated is defined %}
+                    {{ form_row(form.validated) }}
+                {% endif %}
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
