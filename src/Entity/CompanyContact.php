@@ -97,6 +97,12 @@ class CompanyContact
     #[ORM\OneToMany(mappedBy: 'company_contact', targetEntity: CompanyContactNote::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $notes;
 
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $updated_dt = null;
+
+    #[ORM\Column]
+    private ?bool $mailing = true;
+
     public function __construct()
     {
         $this->sales = new ArrayCollection();
@@ -399,6 +405,30 @@ class CompanyContact
                 $note->setCompanyContact(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUpdatedDt(): ?\DateTimeInterface
+    {
+        return $this->updated_dt;
+    }
+
+    public function setUpdatedDt(?\DateTimeInterface $updated_dt): static
+    {
+        $this->updated_dt = $updated_dt;
+
+        return $this;
+    }
+
+    public function isMailing(): ?bool
+    {
+        return $this->mailing;
+    }
+
+    public function setMailing(bool $mailing): static
+    {
+        $this->mailing = $mailing;
 
         return $this;
     }

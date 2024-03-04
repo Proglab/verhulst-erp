@@ -1,0 +1,19 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block title %}{{ 'password_update.title'|trans }}{% endblock %}
+
+{% block content %}
+
+    <div class="row mt-5 text-center">
+        <div class="col-6">
+            <a class="btn btn-success" href="{{ path('admin_sync_streamed_updated') }}">Synchronisation rapide (uniquement les mises-à-jour)</a>
+        </div>
+        <div class="col-6">
+            <a class="btn btn-danger" href="{{ path('admin_sync_streamed') }}">Tous les contacts (comptez 3h)</a>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}

@@ -130,7 +130,7 @@ class DashboardController extends AbstractDashboardController
 
             MenuItem::section('Techniciens uniquements')->setPermission('ROLE_TECH'),
             MenuItem::linkToCrud('Css', 'fas fa-brush', Css::class)->setPermission('ROLE_TECH'),
-            MenuItem::linkToRoute('Synchronise contacts', 'fa-solid fa-rotate', 'admin_sync_streamed')->setPermission('ROLE_TECH'),
+            MenuItem::linkToRoute('Synchronise contacts', 'fa-solid fa-rotate', 'admin_sync_choice')->setPermission('ROLE_TECH'),
             MenuItem::linkToRoute('Droits', 'fas fa-right-to-bracket', 'dashboard_droits')
                 ->setPermission('ROLE_TECH'),
 
@@ -497,9 +497,52 @@ class DashboardController extends AbstractDashboardController
         return $response;
     }
 
+    #[Route('{_locale}/admin/sync/updated', name: 'admin_sync_updated')]
+    public function syncUpdated(KernelInterface $kernel): Response
+    {
+        $response = new StreamedResponse(function () use ($kernel) {
+
+            $input = new ArrayInput([
+                'command' => 'app:purge-contact',
+            ]);
+            $input->setInteractive(false);
+
+            $output = new StreamedOutput(fopen('php://stdout', 'w'));
+
+            $application = new Application($kernel);
+            $application->setAutoExit(false);
+            $application->run($input, $output);
+
+            $input = new ArrayInput([
+                'command' => 'app:sync-campaign-monitor-unique-updated',
+            ]);
+            $input->setInteractive(false);
+
+            $output = new StreamedOutput(fopen('php://stdout', 'w'));
+
+            $application = new Application($kernel);
+            $application->setAutoExit(false);
+            $application->run($input, $output);
+        });
+
+        return $response;
+    }
+
     #[Route('{_locale}/admin/sync_stream', name: 'admin_sync_streamed')]
     public function sync_stream(KernelInterface $kernel): Response
     {
         return $this->render('admin/sync_streamed.html.twig');
+    }
+
+    #[Route('{_locale}/admin/sync_stream_updated', name: 'admin_sync_streamed_updated')]
+    public function sync_stream_updated(KernelInterface $kernel): Response
+    {
+        return $this->render('admin/sync_streamed_updated.html.twig');
+    }
+
+    #[Route('{_locale}/admin/sync_choice', name: 'admin_sync_choice')]
+    public function sync_choice(KernelInterface $kernel): Response
+    {
+        return $this->render('admin/sync_choice.html.twig');
     }
 }

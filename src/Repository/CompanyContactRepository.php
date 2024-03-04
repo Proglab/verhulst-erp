@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\CompanyContact;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -39,5 +40,18 @@ class CompanyContactRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function getUpdatedContact(User $user)
+    {
+        $contacts = $this->createQueryBuilder('c')
+            ->andWhere('c.added_by = :user')
+            ->setParameter('user', $user)
+            ->andWhere('c.updated_dt IS NOT NULL')
+            ->andWhere('c.mailing = 1')
+            ->getQuery()
+            ->getResult();
+
+        return $contacts;
     }
 }

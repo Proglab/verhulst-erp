@@ -258,7 +258,14 @@ class TempCompanyContactCrudController extends BaseCrudController
             foreach ($errors as $error) {
                 $this->addFlash('danger', $error->getPropertyPath() . ' : ' . $error->getMessage());
 
-                return new RedirectResponse($context->getReferrer());
+                $url = $context->getReferrer();
+                if ($url === null) {
+                    $url = $this->adminUrlGenerator
+                        ->setAction(Action::DETAIL)
+                        ->generateUrl();
+                }
+
+                return new RedirectResponse($url);
             }
         }
 
@@ -323,6 +330,7 @@ class TempCompanyContactCrudController extends BaseCrudController
             $contactNew->setGsm($contact->getGsm());
             $contactNew->setPhone($contact->getPhone());
             $contactNew->setLang($contact->getLang());
+            $contactNew->setUpdatedDt(new \DateTime());
 
             if (empty($contact->getAddedBy())) {
                 /** @var ?User $user */
