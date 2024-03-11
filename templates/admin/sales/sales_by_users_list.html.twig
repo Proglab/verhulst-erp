@@ -210,15 +210,18 @@
                                         <th scope="col" style="color: #FFFFFF">Produit</th>
                                         <th scope="col" style="color: #FFFFFF">Date</th>
                                         <th scope="col" class="text-right" style="color: #FFFFFF">PA</th>
-                                        <th scope="col" class="text-right" style="color: #FFFFFF">PU</th>
+                                        <th scope="col" class="text-right" style="color: #FFFFFF">PV</th>
                                         <th scope="col" class="text-right" style="color: #FFFFFF">Q</th>
                                         <th scope="col" class="text-right" style="color: #FFFFFF">Tot</th>
                                         <th scope="col" class="text-right" style="color: #FFFFFF">Réduc</th>
-                                        <th scope="col" class="text-right" style="color: #FFFFFF">PV</th>
+                                        <th scope="col" class="text-right" style="color: #FFFFFF">PV Tot</th>
                                         <th scope="col" class="text-center" style="color: #FFFFFF">%S</th>
                                         <th scope="col" class="text-right" style="color: #FFFFFF">€S</th>
                                         <th scope="col" class="text-center" style="color: #FFFFFF">%V</th>
+                                        <!--
                                         <th scope="col" class="text-right" style="color: #FFFFFF">€V</th>
+                                        <th scope="col" class="text-right" style="color: #FFFFFF">Marge net</th>
+                                        -->
                                         <th scope="col" class="text-right" style="color: #FFFFFF">Marge net</th>
                                         <th scope="col"></th>
                                     </tr>
@@ -230,6 +233,7 @@
                                     {% set total_margevr = 0 %}
                                     {% set total_discount = 0 %}
                                     {% set total_marge = 0 %}
+                                    {% set total_marge2 = 0 %}
 
                                     {% for sale in user.sales %}
                                         {% if get_class(sale.product) == 'ProductPackageVip' %}
@@ -239,6 +243,7 @@
                                             {% set total_margevr = total_margevr + sale.diffCa  %}
                                             {% set total_discount = total_discount + sale.discount  %}
                                             {% set total_marge = total_marge + sale.marge  %}
+                                            {% set total_marge2 = total_marge2 + sale.diffCa + sale.euroVr  %}
                                             <tr>
                                                 <th scope="row">
                                                     {{ sale.contact.firstname }} {{ sale.contact.lastname }} ({{ sale.contact.company.name }})
@@ -257,8 +262,11 @@
                                                 <td class="text-center">{{ sale.percentCom }}%</td>
                                                 <td class="text-right">{{ sale.euroCom|number_format(2, ',', '.') }}€</td>
                                                 <td class="text-center">{{ sale.percentVr }}%</td>
+                                                <!--
                                                 <td class="text-right">{{ sale.euroVr|number_format(2, ',', '.') }}€</td>
                                                 <td class="text-right">{{ sale.diffCa|number_format(2, ',', '.') }}€</td>
+                                                -->
+                                                <td class="text-right">{{ (sale.diffCa + sale.euroVr)|number_format(2, ',', '.') }}€</td>
                                                 <td class="action">
                                                     {% set url_edit = ea_url()
                                                         .setAction('edit')
@@ -283,8 +291,11 @@
                                         <th></th>
                                         <th class="text-right" style="color: #FFFFFF">{{ total_euroCom|number_format(2, ',', '.') }}€</th>
                                         <th></th>
+                                        <!--
                                         <th class="text-right" style="color: #FFFFFF">{{ total_eurovr|number_format(2, ',', '.') }}€</th>
                                         <th class="text-right" style="color: #FFFFFF">{{ total_margevr|number_format(2, ',', '.') }}€</th>
+                                        -->
+                                        <th class="text-right" style="color: #FFFFFF">{{ total_marge2|number_format(2, ',', '.') }}€</th>
                                         <th></th>
                                     </tr>
                                     </tbody>
