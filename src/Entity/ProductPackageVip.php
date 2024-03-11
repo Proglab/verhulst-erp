@@ -28,7 +28,11 @@ class ProductPackageVip extends Product
 
     public function __toString()
     {
-        return $this->getName();
+
+        if (empty($this->getDate())) {
+            return $this->getName();
+        }
+        return $this->getName(). ' - '. $this->getDate()->format('d/m/Y');
     }
 
     public function getCa(): ?float
