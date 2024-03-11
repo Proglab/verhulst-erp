@@ -67,7 +67,8 @@ class ProjectCrudController extends BaseCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $name = TextField::new('name')->setLabel('Nom du projet');
+        $name = TextField::new('name')->setLabel('Nom du projet')
+            ->setTemplatePath('admin/field/projects.html.twig');
 
         $dateBegin = DateField::new('date_begin')->setLabel('Du')->setRequired(true);
         $dateEnd = DateField::new('date_end')->setLabel('Au')->setRequired(true);
