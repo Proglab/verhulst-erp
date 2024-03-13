@@ -49,7 +49,9 @@ class SyncCampainMonitorUniqueUpdated extends AbstractCommand
         $this->output = $output;
         $this->client = new CurlHttpClient();
         $idList = 'a691756ffce9a4c2fc7a124991f18b5c';
+
         $users = $this->userRepository->getCommercials();
+
         /** @var User $user */
         foreach ($users as $user) {
             $contacts = $this->companyContactRepository->getUpdatedContact($user);
@@ -99,6 +101,11 @@ class SyncCampainMonitorUniqueUpdated extends AbstractCommand
                     $companyContact->setUpdatedDt(null);
                     $this->companyContactRepository->save($companyContact, true);
                 }
+
+                if (!$companyContact->isMailing()) {
+                    $this->unsubscribeUser($idList, $companyContact);
+                }
+
                 unset($this->contact[$companyContact->getEmail()]);
                 $progressBar->advance();
             }
@@ -210,5 +217,26 @@ class SyncCampainMonitorUniqueUpdated extends AbstractCommand
         }
 
         return true;
+    }
+
+    private function getContact(string $idList, string $email): \stdClass
+    {
+        $response = $this->client->request('GET', 'https://api.createsend.com/api/v3.3/subscribers/' . $idList . '.json?email=' . urldecode($email) . '&includetrackingpreference=false', [
+            'auth_basic' => [$this->apiKey, 'the-password'],
+        ]);
+
+        return json_decode($response->getContent(false));
+    }
+
+    private function unsubscribeUser(string $idList, CompanyContact $user) {
+        $data = new \stdClass();
+        $data->EmailAddress = $user->getEmail();
+        $contact = $this->getContact($idList, $user->getEmail());
+        if ($contact->State === 'Subsribed') {
+            $response = $this->client->request('POST', 'https://api.createsend.com/api/v3.3/subscribers/'.$idList.'/unsubscribe.json', [
+                'auth_basic' => [$this->apiKey, 'the-password'],
+                'body' => json_encode($data),
+            ]);
+        }
     }
 }
