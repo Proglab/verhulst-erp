@@ -360,7 +360,10 @@ class TempCompanyContactCrudController extends BaseCrudController
         if ($count5 > 0) {
             $this->addFlash('danger', 'Le gsm <b>' . $contact->getGsm() . '</b> existe déjà');
         }
-
-        return new RedirectResponse($context->getReferrer());
+        $url = $context->getReferrer();
+        if (empty($url)) {
+            $url = $this->adminUrlGenerator->setAction(Crud::PAGE_DETAIL)->generateUrl();
+        }
+        return new RedirectResponse($url);
     }
 }
