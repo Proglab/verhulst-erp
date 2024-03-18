@@ -42,7 +42,8 @@ class ComptaCrudController extends BaseCrudController
             ->setEntityLabelInSingular('Vente')
             ->showEntityActionsInlined(true)
             ->setEntityPermission('ROLE_COMPTA')
-            ->setDefaultSort(['invoiced' => 'ASC']);
+            ->setSearchFields(null)
+            ->setDefaultSort(['date' => 'DESC']);
 
         return parent::configureCrud($crud);
     }
@@ -122,7 +123,7 @@ class ComptaCrudController extends BaseCrudController
         if ($this->isGranted('ROLE_ADMIN')) {
             $invoiced->setDisabled(false);
         }
-        $dateValidation = DateField::new('invoicedDt')->setLabel('Date de validation')->setFormat('dd/MM/yy HH:MM');
+        $dateValidation = DateField::new('invoiced_dt')->setLabel('Date de validation')->setFormat('dd/MM/yy HH:MM');
 
         $response = match ($pageName) {
             Crud::PAGE_INDEX => [$company, $project, $product, $pa, $price, $quantity, $discount, $total, $date, $invoiced, $dateValidation],
