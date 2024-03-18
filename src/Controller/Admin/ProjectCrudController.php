@@ -226,6 +226,7 @@ class ProjectCrudController extends BaseCrudController
                 $packageNew->setPercentFreelance((string) $package->getPercentFreelance());
                 $packageNew->setPercentSalarie((string) $package->getPercentSalarie());
                 $packageNew->setPercentTv((string) $package->getPercentTv());
+                $packageNew->setPercentVr((string) $package->getPercentVr());
                 $packageNew->setProject($package->getProject());
                 $packageNew->setCa($package->getCa());
                 $packageNew->setPa($package->getPa());
