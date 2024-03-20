@@ -8,6 +8,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveArg;
@@ -35,17 +36,24 @@ class SearchContact
 
     public ?array $users = null;
 
+
+
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly UserRepository $userRepository, /** @phpstan-ignore-line */
-        private readonly PaginatorInterface $paginator)
+        private readonly PaginatorInterface $paginator,
+        private RequestStack $requestStack)
     {
         $this->users = $userRepository->getCommercials();
+        $session = $this->requestStack->getSession();
+        $this->user = $session->get('userFilter', null);
     }
 
     public function onUserUpdated(mixed $previousValue): void
     {
         $this->page = 1;
+        $session = $this->requestStack->getSession();
+        $session->set('userFilter', $this->user);
     }
 
     public function mount(): void
