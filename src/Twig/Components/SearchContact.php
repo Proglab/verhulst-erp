@@ -47,6 +47,7 @@ class SearchContact
         $this->users = $userRepository->getCommercials();
         $session = $this->requestStack->getSession();
         $this->user = $session->get('userFilter', null);
+        $this->page = $session->get('userFilterPage', 1);
     }
 
     public function onUserUpdated(mixed $previousValue): void
@@ -167,5 +168,8 @@ class SearchContact
     public function setPage(#[LiveArg] int $page): void
     {
         $this->page = $page;
+
+        $session = $this->requestStack->getSession();
+        $session->set('userFilterPage', $page);
     }
 }
