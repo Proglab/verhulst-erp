@@ -100,7 +100,7 @@ class SearchContact
         FROM mika
         JOIN user ON (user.email = \'michael.veys@thefriends.be\')
         WHERE mika.email LIKE :query
-        ' . $user . ' ORDER BY type, email ASC';
+        ' . $user . ' ORDER BY name, lastname ASC';
         $stmt = $this->entityManager->getConnection()->prepare($sql);
         $result = $stmt->executeQuery(['query' => '%' . $this->query . '%', 'user' => $this->user]);
         $datas = $result->fetchAllAssociative();
