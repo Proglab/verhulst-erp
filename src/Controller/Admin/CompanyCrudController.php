@@ -101,18 +101,18 @@ class CompanyCrudController extends BaseCrudController
         $panel1 = FormField::addColumn(6, 'Société');
         $name = TextField::new('name')->setRequired(true)->setLabel('Nom de la société');
         $street = TextField::new('street')->setRequired(false)->setLabel('Rue');
-        $pc = TextField::new('pc')->setRequired(false)->setLabel('Code postal');
+        $pc = TextField::new('pc')->setRequired(false)->setLabel('CP');
         $city = TextField::new('city')->setRequired(false)->setLabel('Ville');
         $country = CountryField::new('country')->setRequired(false)->setLabel('Pays');
-        $vatNew = TextField::new('vat_number', 'Numéro de TVA')->setRequired(false)->setLabel('Numéro de TVA')->addWebpackEncoreEntries('company');
+        $vatNew = TextField::new('vat_number')->setRequired(false)->setLabel('TVA')->addWebpackEncoreEntries('company');
         $companyVatNa = BooleanField::new('vat_na')->setLabel('Non assujetti')->setRequired(false);
-        $vat = TextField::new('vat_number', 'Numéro de TVA')->setRequired(false)->setLabel('Numéro de TVA');
+        $vat = TextField::new('vat_number')->setRequired(false)->setLabel('TVA');
         $note = TextEditorField::new('note')->setLabel('Note globale');
-        $noteTxt = TextField::new('note')->setLabel('Note globale')->renderAsHtml();
+        $noteTxt = TextField::new('note')->setLabel('Note')->renderAsHtml();
         $panel3 = FormField::addColumn(6, 'Facturation')->addCssClass('col-5')->renderCollapsed()->setCustomOption('cols', 1);
 
         $billingstreet = TextField::new('billing_street')->setLabel('Rue');
-        $billingPc = TextField::new('billing_pc')->setLabel('Code postal');
+        $billingPc = TextField::new('billing_pc')->setLabel('CP');
         $billingcity = TextField::new('billing_city')->setLabel('Ville');
         $billingcountry = CountryField::new('billing_country')->setLabel('Pays');
         $billingmail = EmailField::new('billing_mail')->setLabel('Email');

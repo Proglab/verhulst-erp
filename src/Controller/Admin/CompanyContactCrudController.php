@@ -62,8 +62,8 @@ class CompanyContactCrudController extends BaseCrudController
 
     public function configureCrud(Crud $crud): Crud
     {
-        $crud->setEntityLabelInPlural('Clients')
-            ->setEntityLabelInSingular('Client')
+        $crud->setEntityLabelInPlural('Contacts')
+            ->setEntityLabelInSingular('Contact')
             ->showEntityActionsInlined(true)
             // ->setSearchFields(['firstname', 'lastname', 'company.name', 'email', 'phone', 'gsm', 'note', 'lang', 'company.vat_number']);
             ->setSearchFields(null)
@@ -96,6 +96,8 @@ class CompanyContactCrudController extends BaseCrudController
     {
         $panel1 = FormField::addColumn(4, 'Société');
         $panel2 = FormField::addColumn(4, 'Contact');
+        $panel6 = FormField::addColumn(4, 'Adresse');
+        $panel7 = FormField::addColumn(4, 'Autres');
         $company = TextField::new('company')->setRequired(true)->setLabel('Société');
         $companyStreet = TextField::new('company.street')->setLabel('Rue')->setColumns(12)->setRequired(false);
         $companyPc = TextField::new('company.pc')->setLabel('Code postal')->setRequired(false);
@@ -173,9 +175,17 @@ class CompanyContactCrudController extends BaseCrudController
 
         $mailing = BooleanField::new('mailing');
 
+        
+
         $response = match ($pageName) {
-            Crud::PAGE_EDIT => [$mailing, $firstname, $lastname, $lang, $sex, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $fonction, $interest, $user, $greeting],
-            Crud::PAGE_NEW => [$mailing, $firstname, $lastname, $lang, $sex, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry->setFormTypeOption('preferred_choices', ['BE']), $fonction, $interest],
+            Crud::PAGE_EDIT => [
+                $panel2, $firstname, $lastname, $lang, $sex, $email, $phone, $gsm,
+                $panel6, $userStreet, $userPc, $userCity, $userCountry,
+                $panel7, $mailing, $fonction, $interest, $user, $greeting],
+            Crud::PAGE_NEW => [
+                $panel2, $firstname, $lastname, $lang, $sex, $email, $phone, $gsm,
+                $panel6, $userStreet, $userPc, $userCity, $userCountry->setFormTypeOption('preferred_choices', ['BE']),
+                $panel7, $mailing, $fonction, $interest,],
             Crud::PAGE_DETAIL => [$panel1, $company, $companyVat, $companyVatNa, $companyStreet, $companyPc, $companyCity, $companyCountry, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $panel2, $fullname, $fonction, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $interest, $userName, $noteView, $panel4, $items, $panel5, $notesTxt],
             Crud::PAGE_INDEX => [$company, $companyVat, $fullname, $langListing, $email, $phone, $gsm, $userNameListing, $note],
             default => [$company, $firstname, $lastname, $lang, $email, $phone],

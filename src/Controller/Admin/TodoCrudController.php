@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Entity\CompanyContactNote;
 use App\Entity\Todo;
 use App\Repository\CompanyContactRepository;
 use App\Repository\TodoRepository;
@@ -155,5 +156,26 @@ class TodoCrudController extends BaseCrudController
         $this->todoRepository->save($todo, true);
 
         return $this->redirect($this->adminUrlGenerator->setController(CompanyCrudController::class)->setAction(Crud::PAGE_DETAIL)->setEntityId($todo->getClient()->getCompany()->getId())->generateUrl());
+    }
+
+    protected function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
+    {
+        /** @var Todo $note */
+        $note = $context->getEntity()->getInstance();
+
+        if (!empty($note->getClient())) {
+            $url = $this->adminUrlGenerator->setDashboard(DashboardController::class)
+                ->setController(CompanyContactCrudController::class)
+                ->setAction(Crud::PAGE_DETAIL)
+                ->setEntityId($note->getClient()->getId())
+                ->generateUrl();
+        } else {
+            $url = $this->adminUrlGenerator->setDashboard(DashboardController::class)
+                ->setController(TodoCrudController::class)
+                ->setAction(Crud::PAGE_INDEX)
+                ->setEntityId(null)
+                ->generateUrl();
+        }
+        return $this->redirect($url);
     }
 }
