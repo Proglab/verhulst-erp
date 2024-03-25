@@ -687,7 +687,7 @@
         "version": "v2.7.1"
     },
     "symfony/ux-live-component": {
-        "version": "2.12",
+        "version": "2.16",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
@@ -699,7 +699,7 @@
         ]
     },
     "symfony/ux-twig-component": {
-        "version": "2.13",
+        "version": "2.16",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",

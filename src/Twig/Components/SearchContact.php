@@ -105,6 +105,7 @@ class SearchContact
         $result = $stmt->executeQuery(['query' => '%' . $this->query . '%', 'user' => $this->user]);
         $datas = $result->fetchAllAssociative();
 
+
         /** @var PaginationInterface $paginator */
         $paginator = $this->paginator->paginate($datas, $this->page, $this->pageNbr);
         $paginator->setTemplate('components/paginator.html.twig'); /* @phpstan-ignore-line */

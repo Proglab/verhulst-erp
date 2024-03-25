@@ -6,7 +6,7 @@
 
             {% if previous is defined %}
                 <li class="page-item">
-                    <button class="page-link" rel="prev" data-action="live#action" data-action-name="prevent|setPage(page={{ current - 1 }})">&laquo;&nbsp;{{ 'label_previous'|trans({}, 'KnpPaginatorBundle') }}</button>
+                    <button class="page-link" rel="prev" data-action="live#action" data-live-action-param="setPage" data-live-page-param="{{ current - 1 }}">&laquo;&nbsp;{{ 'label_previous'|trans({}, 'KnpPaginatorBundle') }}</button>
                 </li>
             {% else %}
                 <li class="page-item disabled">
@@ -16,11 +16,11 @@
 
             {% if startPage > 1 %}
                 <li class="page-item">
-                    <button class="page-link" data-action="live#action" data-action-name="prevent|setPage(page=1)">1</button>
+                    <button class="page-link" data-action="live#action" data-live-action-param="setPage" data-live-page-param="1">1</button>
                 </li>
                 {% if startPage == 3 %}
                     <li class="page-item">
-                        <button class="page-link" data-action="live#action" data-action-name="prevent|setPage(page=2)">2</button>
+                        <button class="page-link" data-action="live#action" data-live-action-param="setPage" data-live-page-param="2">2</button>
                     </li>
                 {% elseif startPage != 2 %}
                     <li class="page-item disabled">
@@ -32,7 +32,7 @@
             {% for page in pagesInRange %}
                 {% if page != current %}
                     <li class="page-item">
-                        <button class="page-link" data-action="live#action" data-action-name="prevent|setPage(page={{ page }})">{{ page }}</button>
+                        <button class="page-link" data-action="live#action" data-live-action-param="setPage" data-live-page-param="{{ page }}">{{ page }}</button>
                     </li>
                 {% else %}
                     <li class="page-item active">
@@ -50,18 +50,18 @@
                         </li>
                     {% else %}
                         <li class="page-item">
-                            <button class="page-link" data-action="live#action" data-action-name="prevent|setPage(page={{ pageCount - 1 }})">{{ pageCount -1 }}</button>
+                            <button class="page-link" data-action="live#action" data-live-action-param="setPage" data-live-page-param="{{ pageCount -1 }}">{{ pageCount -1 }}</button>
                         </li>
                     {% endif %}
                 {% endif %}
                 <li class="page-item">
-                    <button class="page-link" data-action="live#action" data-action-name="prevent|setPage(page={{ pageCount }})">{{ pageCount }}</button>
+                    <button class="page-link" data-action="live#action" data-live-action-param="setPage" data-live-page-param="{{ pageCount }}">{{ pageCount }}</button>
                 </li>
             {% endif %}
 
             {% if next is defined %}
                 <li class="page-item">
-                    <button class="page-link" rel="next" href="#" data-action="live#action" data-action-name="prevent|setPage(page={{ next }})">{{ 'label_next'|trans({}, 'KnpPaginatorBundle') }}&nbsp;&raquo;</button>
+                    <button class="page-link" rel="next" href="#" data-action="live#action"  data-live-action-param="setPage" data-live-page-param="{{ next }}">{{ 'label_next'|trans({}, 'KnpPaginatorBundle') }}&nbsp;&raquo;</button>
                 </li>
             {% else %}
                 <li  class="page-item disabled">
