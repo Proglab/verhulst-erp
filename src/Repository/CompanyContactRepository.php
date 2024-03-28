@@ -48,6 +48,8 @@ class CompanyContactRepository extends ServiceEntityRepository
             ->andWhere('c.added_by = :user')
             ->setParameter('user', $user)
             ->andWhere('c.updated_dt IS NOT NULL')
+            ->andWhere('c.email IS NOT NULL')
+            ->andWhere('c.email != \'\'')
             ->getQuery()
             ->getResult();
 
