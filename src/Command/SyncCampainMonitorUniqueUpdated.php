@@ -55,10 +55,11 @@ class SyncCampainMonitorUniqueUpdated extends AbstractCommand
         /** @var User $user */
         foreach ($users as $user) {
             $contacts = $this->companyContactRepository->getUpdatedContact($user);
+
+
             if (count($contacts) === 0) {
                 continue;
             }
-
             $progressBar = new ProgressBar($output, count($contacts));
 
             $output->writeln('');
@@ -229,10 +230,11 @@ class SyncCampainMonitorUniqueUpdated extends AbstractCommand
     }
 
     private function unsubscribeUser(string $idList, CompanyContact $user) {
+
         $data = new \stdClass();
         $data->EmailAddress = $user->getEmail();
         $contact = $this->getContact($idList, $user->getEmail());
-        if ($contact->State === 'Subsribed') {
+        if ($contact->State === 'Active') {
             $response = $this->client->request('POST', 'https://api.createsend.com/api/v3.3/subscribers/'.$idList.'/unsubscribe.json', [
                 'auth_basic' => [$this->apiKey, 'the-password'],
                 'body' => json_encode($data),
