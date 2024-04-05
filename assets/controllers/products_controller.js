@@ -7,6 +7,8 @@ import {HyperFormula} from 'hyperformula';
 
 numbro.registerLanguage(deDE);
 
+let globalSuppliers = [];
+let handsontableInstances = [];
 
 /*
  * This is an example Stimulus controller!
@@ -22,167 +24,188 @@ export default class extends Controller {
 
         const data = JSON.parse(this.element.dataset.index);
 
-        fetch('/admin/fr/budget/supplier/get')
-        .then(response => response.json())
-        .then(suppliers => {
+        if (globalSuppliers.length === 0) {
+            fetch('/admin/fr/budget/supplier/get')
+                .then(response => response.json())
+                .then(suppliers => {
+                    globalSuppliers = suppliers;
 
-            console.log(suppliers);
+                    this.initializeHandsontable(data, globalSuppliers);
+                });
+        } else {
+            this.initializeHandsontable(data, globalSuppliers);
+        }
+    }
 
-            const hot = new Handsontable(this.element, {
-                data: data,
-                columns: [
-                    {data: 'id', editor: false},
-                    {data: 'title'},
-                    {data: 'qty'},
-                    {
-                        data: 'price',
-                        type: 'numeric',
-                        numericFormat: {
-                            pattern: '0,0.00 $',
-                            culture: 'de-DE', // use this for EUR (German),
-                            // more cultures available on http://numbrojs.com/languages.html
-                        },
+    initializeHandsontable(data, suppliers) {
+        const hot = new Handsontable(this.element, {
+            data: data,
+            columns: [
+                {data: 'id', editor: false},
+                {data: 'title'},
+                {data: 'qty'},
+                {
+                    data: 'price',
+                    type: 'numeric',
+                    numericFormat: {
+                        pattern: '0,0.00 $',
+                        culture: 'de-DE', // use this for EUR (German),
+                        // more cultures available on http://numbrojs.com/languages.html
                     },
-                    {
-                        data: 'totalPrice', editor: false,
-                        type: 'numeric',
-                        numericFormat: {
-                            pattern: '0,0.00 $',
-                            culture: 'de-DE', // use this for EUR (German),
-                            // more cultures available on http://numbrojs.com/languages.html
-                        },
-                    },
-                    {
-                        data: 'offerPrice',
-                        type: 'numeric',
-                        numericFormat: {
-                            pattern: '0,0.00 $',
-                            culture: 'de-DE', // use this for EUR (German),
-                            // more cultures available on http://numbrojs.com/languages.html
-                        },
-                    },
-                    {
-                        data: 'offerPriceTot', editor: false,
-                        type: 'numeric',
-                        numericFormat: {
-                            pattern: '0,0.00 $',
-                            culture: 'de-DE', // use this for EUR (German),
-                            // more cultures available on http://numbrojs.com/languages.html
-                        },
-                    },
-                    {
-                        data: 'realPrice',
-                        type: 'numeric',
-                        numericFormat: {
-                            pattern: '0,0.00 $',
-                            culture: 'de-DE', // use this for EUR (German),
-                            // more cultures available on http://numbrojs.com/languages.html
-                        },
-                    },
-                    {
-                        data: 'totalRealPrice', editor: false,
-                        type: 'numeric',
-                        numericFormat: {
-                            pattern: '0,0.00 $',
-                            culture: 'de-DE', // use this for EUR (German),
-                            // more cultures available on http://numbrojs.com/languages.html
-                        },
-                    },
-                    {
-                        data: 'supplier',
-                        type: 'dropdown',
-                        source: suppliers.map(supplier => supplier.name), // Remplacez ceci par votre liste de fournisseurs
-                        allowInvalid: true,
-                        validator: function (value, callback) {
-                            if (this.source.includes(value)) {
-                                callback(true);
-                            } else {
-                                console.info('validator-value', value);
-
-                                fetch('/admin/fr/budget/supplier/save', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json'
-                                    },
-                                    body: JSON.stringify(value)
-                                })
-                                    .then(response => {
-                                        if (!response.ok) {
-                                            throw new Error('Erreur lors de la sauvegarde du nouveau fournisseur');
-                                        }
-                                        return response.json();
-                                    })
-                                    .then(supplier => {
-                                        console.info('validator-post-save', supplier);
-                                        this.source.push({id: supplier.id, name: supplier.name});
-                                        suppliers.push({id: supplier.id, name: supplier.name});
-                                        console.info('validator-supplier-push', supplier.name);
-                                        this.afterChange([this.row, this.col, null, supplier.id], 'loadData');
-
-                                        callback(true);
-                                    })
-                            }
-                        },
-                    },
-                    {data: 'action', editor: false},
-                ],
-                colWidths: [20, 150, 30, 30, 30, 30, 30, 30, 30, 100, 30],
-                colHeaders: [
-                    'ID',
-                    'Nom',
-                    'Quantité',
-                    'PU',
-                    'Tot HT',
-                    'PU Offre HT',
-                    'Tot Offre HT',
-                    'PU Facture HT',
-                    'Tot Facture HT',
-                    'Fournisseur',
-                    'Action',
-                ],
-                rowHeaders: false,
-                height: 'auto',
-                formulas: {
-                    engine: HyperFormula,
                 },
-                autoWrapRow: true,
-                autoWrapCol: true,
-                stretchH: 'all',
-                hiddenColumns: {
-                    columns: [0],
-                    // show UI indicators to mark hidden columns
-                    indicators: false,
+                {
+                    data: 'totalPrice', editor: false,
+                    type: 'numeric',
+                    numericFormat: {
+                        pattern: '0,0.00 $',
+                        culture: 'de-DE', // use this for EUR (German),
+                        // more cultures available on http://numbrojs.com/languages.html
+                    },
                 },
-                afterChange: function (change, source) {
-                    console.log('change', change);
-                    if (source === 'loadData') {
-                        return; //don't save this change
-                    }
+                {
+                    data: 'offerPrice',
+                    type: 'numeric',
+                    numericFormat: {
+                        pattern: '0,0.00 $',
+                        culture: 'de-DE', // use this for EUR (German),
+                        // more cultures available on http://numbrojs.com/languages.html
+                    },
+                },
+                {
+                    data: 'offerPriceTot', editor: false,
+                    type: 'numeric',
+                    numericFormat: {
+                        pattern: '0,0.00 $',
+                        culture: 'de-DE', // use this for EUR (German),
+                        // more cultures available on http://numbrojs.com/languages.html
+                    },
+                },
+                {
+                    data: 'realPrice',
+                    type: 'numeric',
+                    numericFormat: {
+                        pattern: '0,0.00 $',
+                        culture: 'de-DE', // use this for EUR (German),
+                        // more cultures available on http://numbrojs.com/languages.html
+                    },
+                },
+                {
+                    data: 'totalRealPrice', editor: false,
+                    type: 'numeric',
+                    numericFormat: {
+                        pattern: '0,0.00 $',
+                        culture: 'de-DE', // use this for EUR (German),
+                        // more cultures available on http://numbrojs.com/languages.html
+                    },
+                },
+                {
+                    data: 'supplier',
+                    type: 'dropdown',
+                    source: suppliers.map(supplier => supplier.name), // Remplacez ceci par votre liste de fournisseurs
+                    allowInvalid: true,
+                    validator: function (value, callback) {
+                        if (this.source.includes(value)) {
+                            callback(true);
+                        } else {
+                            console.info('validator-value', value);
 
-                    let supplier = suppliers.find(supplier => supplier.name === change[0][3]);
-
-                    if (supplier) {
-                        let send =  JSON.parse(JSON.stringify(data[change[0][0]]));
-                        send.supplier = supplier.id;
-
-                        fetch('/admin/fr/budget/product/save', {
-                            method: 'POST',
-                            mode: 'no-cors',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({data: send})
-                        })
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error('Erreur lors de la sauvegarde du nouveau fournisseur');
-                                }
-                                return response.json();
+                            fetch('/admin/fr/budget/supplier/save', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(value)
                             })
-                    }
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Erreur lors de la sauvegarde du nouveau fournisseur');
+                                    }
+                                    return response.json();
+                                })
+                                .then(supplier => {
+                                    console.info('validator-post-save', supplier);
+                                    this.source.push(supplier.name);
+                                    suppliers.push({id: supplier.id, name: supplier.name});
+                                    globalSuppliers.push({id: supplier.id, name: supplier.name});
+                                    console.info('validator-supplier-push', supplier.name);
+                                    this.afterChange([this.row, this.col, null, supplier.id], 'loadData');
+                                    console.info('globalSuppliers', globalSuppliers);
+                                    callback(true);
+                                    handsontableInstances.forEach(hotInstance => {
+                                        const columns = hotInstance.getSettings().columns;
+                                        const supplierColumn = columns.find(column => column.data === 'supplier');
+
+                                        if (supplierColumn) {
+                                            supplierColumn.source = globalSuppliers.map(supplier => supplier.name);
+                                        }
+
+                                        hotInstance.updateSettings({ columns });
+                                        hotInstance.render();
+                                    });
+                                })
+                        }
+                    },
                 },
-                licenseKey: 'non-commercial-and-evaluation'
-            });
+                {data: 'action', editor: false},
+            ],
+            colWidths: [20, 150, 30, 30, 30, 30, 30, 30, 30, 100, 30],
+            colHeaders: [
+                'ID',
+                'Nom',
+                'Quantité',
+                'PU',
+                'Tot HT',
+                'PU Offre HT',
+                'Tot Offre HT',
+                'PU Facture HT',
+                'Tot Facture HT',
+                'Fournisseur',
+                'Action',
+            ],
+            rowHeaders: false,
+            height: 'auto',
+            formulas: {
+                engine: HyperFormula,
+            },
+            autoWrapRow: true,
+            autoWrapCol: true,
+            stretchH: 'all',
+            hiddenColumns: {
+                columns: [0],
+                // show UI indicators to mark hidden columns
+                indicators: false,
+            },
+            afterChange: function (change, source) {
+                console.log('change', change);
+                if (source === 'loadData') {
+                    return; //don't save this change
+                }
+
+                let supplier = suppliers.find(supplier => supplier.name === change[0][3]);
+
+                if (supplier) {
+                    let send =  JSON.parse(JSON.stringify(data[change[0][0]]));
+                    send.supplier = supplier.id;
+
+                    fetch('/admin/fr/budget/product/save', {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({data: send})
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Erreur lors de la sauvegarde du nouveau fournisseur');
+                            }
+                            return response.json();
+                        })
+                }
+            },
+            licenseKey: 'non-commercial-and-evaluation'
         });
+        this.element.hotInstance = hot;
+        handsontableInstances.push(hot);
     }
 }
