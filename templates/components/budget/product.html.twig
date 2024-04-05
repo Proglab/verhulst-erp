@@ -1,0 +1,28 @@
+<div {{ attributes }}>
+    <table width="100%">
+<tr
+        {% if product.totalPrice <  product.totalRealPrice %} style="background-color: #FFC5D7 !important;"{% endif %}
+        {% if product.totalPrice >=  product.totalRealPrice and product.totalRealPrice != 0 %} style="background-color: #C5FFD9 !important;"{% endif %}
+>
+    {{ form_start(form, {
+        attr: {
+            'data-action': 'live#action:prevent',
+            'data-live-action-param': 'save'
+        }
+    }) }}
+    <th scope="row" style="font-size:medium;border-right: 1px solid #dee2e6 !important;">{{ form_widget(form.title) }}<br><small>{{ product.description }}</small></th>
+    <td style="font-size:medium;border-right: 1px solid #dee2e6 !important;">{{ product.quantity|number_format(0, ',', ' ') }}</td>
+    <td style="font-size:medium;border-right: 1px solid #dee2e6 !important; color: #1d4ed8 !important;">{{ product.price|number_format(2, ',', ' ') }}€</td>
+    <td style="font-size:medium;border-right: 1px solid #dee2e6 !important; color: #1d4ed8 !important;">{{ product.totalPrice|number_format(2, ',', ' ') }}€</td>
+    <td style="font-size:medium;border-right: 1px solid #dee2e6 !important; color: #0da95f !important;">{{ product.offerPrice|number_format(2, ',', ' ') }}€</td>
+    <td style="font-size:medium;border-right: 1px solid #dee2e6 !important; color: #0da95f !important;">{{ (product.offerPrice * product.quantity)|number_format(2, ',', ' ') }}€</td>
+    <td style="font-size:medium;border-right: 1px solid #dee2e6 !important; color: #854d0e !important;">{{ product.realPrice|number_format(2, ',', ' ') }}€</td>
+    <td style="font-size:medium;border-right: 1px solid #dee2e6 !important; color: #854d0e !important;">{{ product.totalRealPrice|number_format(2, ',', ' ') }}€</td>
+    <td style="font-size:medium;border-right: 1px solid #dee2e6 !important;">{{ product.supplier }}</td>
+    <td class="actions">
+        <button class="btn btn-primary" type="submit">Save</button>
+    </td>
+    {{ form_end(form) }}
+</tr>
+    </table>
+</div>

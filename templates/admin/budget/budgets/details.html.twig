@@ -1,5 +1,15 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
+{% block head_javascript %}
+   {{ parent() }}
+   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+{% endblock %}
+
+{% block head_stylesheets %}
+   {{ parent() }}
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
+{% endblock %}
+
 {% block content_title %}
    {{ entity.instance.event.name }} <small>{{ entity.instance.name }}</small>
 {% endblock %}
@@ -142,6 +152,35 @@
                                        {% endif %}
                                     </div>
                                     <div class="card-body">
+
+
+                                       <style>
+                                          .colHeader {
+                                             color: #FFFFFF;
+                                             padding: 10px;
+                                          }
+                                          </style>
+
+                                       {% set datas = [] %}
+                                       {% for product in subcategory.products %}
+                                            {% set datas = datas|merge([{
+                                                 'id': product.id,
+                                                  'title': product.title,
+                                                  'qty': product.quantity,
+                                                  'price': product.price is empty ? 0 : product.price,
+                                                  'totalPrice': '=C'~loop.index~"*D"~loop.index,
+                                                  'offerPrice': product.offerPrice is empty ? 0 : product.offerPrice,
+                                                  'offerPriceTot': '=C'~loop.index~"*F"~loop.index,
+                                                  'realPrice': product.realPrice is empty ? 0 : product.realPrice,
+                                                  'totalRealPrice': '=C'~loop.index~"*H"~loop.index,
+                                                  'supplier': product.supplier,
+                                                  'action': '',
+                                            }]) %}
+                                       {% endfor %}
+                                       <div id="example" {{ stimulus_controller('products') }}  data-index="{{ datas|json_encode }}"></div>
+
+
+
                                        <table class="table datagrid shadow-sm table-bordered ">
                                           <thead>
                                           <tr>
