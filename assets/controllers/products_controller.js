@@ -10,15 +10,6 @@ numbro.registerLanguage(deDE);
 let globalSuppliers = [];
 let handsontableInstances = [];
 
-/*
- * This is an example Stimulus controller!
- *
- * Any element with a data-controller="hello" attribute will cause
- * this controller to be executed. The name "hello" comes from the filename:
- * hello_controller.js -> "hello"
- *
- * Delete this file or adapt it for your use!
- */
 export default class extends Controller {
     initialize() {
 
@@ -159,13 +150,16 @@ export default class extends Controller {
                     data: 'action',
                     renderer: function(instance, td, row, col, prop, value, cellProperties) {
                         // Si un bouton existe déjà, ne créez pas un nouveau bouton
-                        if (td.firstChild && td.firstChild.className === 'delete-button') {
+                        if (td.firstChild && td.firstChild.className === 'btn btn-danger action-delete me-4') {
                             return;
                         }
 
+                        const icon = document.createElement('i');
+                        icon.className = 'fa fa-trash';
+
                         const button = document.createElement('button');
-                        button.textContent = 'Supprimer';
-                        button.className = 'delete-button';
+                        button.appendChild(icon);
+                        button.className = 'btn btn-danger action-delete me-4';
                         td.appendChild(button);
                     },
                     editor: false
@@ -200,17 +194,36 @@ export default class extends Controller {
             dropdownMenu: true,
             filters: true,
             afterChange: function (change, source) {
-                console.log('change', change);
+                console.log('change', change, source);
                 if (source === 'loadData') {
                     return; //don't save this change
                 }
 
-                let supplier = suppliers.find(supplier => supplier.name === change[0][3]);
+                if (change[0][1] === 'supplier') {
 
-                if (supplier) {
-                    let send =  JSON.parse(JSON.stringify(data[change[0][0]]));
-                    send.supplier = supplier.id;
+                    let supplier = suppliers.find(supplier => supplier.name === change[0][3]);
 
+                    if (supplier) {
+                        let send = JSON.parse(JSON.stringify(data[change[0][0]]));
+                        send.supplier = supplier.id;
+
+                        fetch('/admin/fr/budget/product/save', {
+                            method: 'POST',
+                            mode: 'no-cors',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({data: send})
+                        })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Erreur lors de la sauvegarde du nouveau fournisseur');
+                                }
+                                return response.json();
+                            })
+                    }
+                } else {
+                    let send = JSON.parse(JSON.stringify(data[change[0][0]]));
                     fetch('/admin/fr/budget/product/save', {
                         method: 'POST',
                         mode: 'no-cors',
@@ -221,12 +234,13 @@ export default class extends Controller {
                     })
                         .then(response => {
                             if (!response.ok) {
-                                throw new Error('Erreur lors de la sauvegarde du nouveau fournisseur');
+                                throw new Error('Erreur lors de la sauvegarde');
                             }
                             return response.json();
                         })
                 }
             },
+
             afterOnCellMouseDown: function(event, coords, element) {
                 if (coords.col === this.countCols() - 1) { // If the last column was clicked
                     const rowId = this.getDataAtRowProp(coords.row, 'id'); // Assuming each row has an 'id' property
@@ -266,6 +280,73 @@ export default class extends Controller {
             },
             licenseKey: 'non-commercial-and-evaluation'
         });
+
+        hot.updateSettings({
+            contextMenu: {
+                items: {
+                    "row_below": {
+                        callback: ((key, selection, clickEvent) => {
+
+                            const countRow = hot.countRows() + 1;
+
+                            console.log('countRow', countRow);
+
+
+                            // Your code here
+                            // For example, add a new row
+                            const newRow = {
+                                id: null,
+                                title: 'New product',
+                                qty: 0,
+                                price: 0,
+                                totalPrice: '=C'+countRow+'*D'+countRow,
+                                offerPrice: 0,
+                                offerPriceTot: '=C'+countRow+'*F'+countRow,
+                                realPrice: 0,
+                                totalRealPrice: '=C'+countRow+'*H'+countRow,
+                                supplier: null,
+                                action: ''
+                            };
+                            const subcategory = JSON.parse(this.element.dataset.subcategory);
+
+                            const copyRow = JSON.parse(JSON.stringify(newRow));
+                            copyRow.sub_cat = subcategory;
+
+                            console.log('selection', data);
+
+                            fetch('/admin/fr/budget/product/new', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(copyRow)
+                            })
+                                .then(response => {
+                                    return response.json();
+
+
+                                })
+                                .then(product => {
+                                    // Handle the response data
+                                    newRow.id = product.id;
+                                    console.log('newRow', newRow);
+                                    console.log('product', product);
+
+
+
+                                    data.push(newRow);
+                                    hot.loadData(data);
+                            })
+                        })
+                    }
+                }
+            }
+        });
+
+
+
+
+
         this.element.hotInstance = hot;
         handsontableInstances.push(hot);
     }

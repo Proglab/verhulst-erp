@@ -177,7 +177,7 @@
                                                   'action': '',
                                             }]) %}
                                        {% endfor %}
-                                       <div class="handsontable" {{ stimulus_controller('products') }}  data-index="{{ datas|json_encode }}" style="overflow: visible !important;"></div>
+                                       <div class="handsontable" {{ stimulus_controller('products') }}  data-index="{{ datas|json_encode }}" data-subcategory="{{ subcategory.id }}" style="overflow: visible !important;"></div>
 
 
 {#

@@ -8,6 +8,7 @@ use App\Controller\Admin\Budget\Ref\CategoryCrudController;
 use App\Entity\Budget\Budget;
 use App\Entity\Budget\Event;
 use App\Entity\Budget\Invoice;
+use App\Entity\Budget\Product;
 use App\Entity\Budget\Ref\Category;
 use App\Entity\Budget\Supplier;
 use App\Entity\Budget\Vat;
@@ -15,7 +16,9 @@ use App\Entity\User;
 use App\Repository\Budget\EventRepository;
 use App\Repository\Budget\InvoiceRepository;
 use App\Repository\Budget\ProductRepository;
+use App\Repository\Budget\SubCategoryRepository;
 use App\Repository\Budget\SupplierRepository;
+use App\Repository\Budget\VatRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
@@ -134,7 +137,7 @@ class DashboardController extends AbstractDashboardController
         $data = json_decode($request->getContent());
         $datas = $data->data;
 
-        $supplier = $entityManager->getRepository(Supplier::class)->find($datas->supplier);
+
 
         $product = $productRepository->find($datas->id);
         $product->setTitle($datas->title);
@@ -142,7 +145,11 @@ class DashboardController extends AbstractDashboardController
         $product->setPrice($datas->price);
         $product->setOfferPrice((string) $datas->offerPrice);
         $product->setRealPrice($datas->realPrice);
-        $product->setSupplier($supplier);
+        
+        if (!empty($datas->supplier)) {
+            $supplier = $entityManager->getRepository(Supplier::class)->find($datas->supplier);
+            $product->setSupplier($supplier);
+        }
 
         $entityManager->persist($product);
         $entityManager->flush();
@@ -177,11 +184,36 @@ class DashboardController extends AbstractDashboardController
     }
 
 
-    #[Route('/admin/{_locale}/budget/product/delete/{id}', name: 'supplier_delete')]
-    public function delete_supplier(RequestStack $requestStack, EntityManagerInterface $entityManager, ProductRepository $productRepository, $id): JsonResponse
+    #[Route('/admin/{_locale}/budget/product/delete/{id}', name: 'delete_product')]
+    public function delete_product(RequestStack $requestStack, EntityManagerInterface $entityManager, ProductRepository $productRepository, $id): JsonResponse
     {
         $product = $productRepository->find($id);
         $productRepository->remove($product, true);
         return new JsonResponse(true);
+    }
+
+    #[Route('/admin/{_locale}/budget/product/new', name: 'add_product')]
+    public function add_product(RequestStack $requestStack, EntityManagerInterface $entityManager, SubCategoryRepository $subCategoryRepository, VatRepository $vatRepository): JsonResponse
+    {
+        $request = $requestStack->getCurrentRequest();
+        $data = json_decode($request->getContent());
+
+
+        $vat = $vatRepository->findOneBy(['percent' => 21]);
+        $subCategory = $subCategoryRepository->find($data->sub_cat);
+
+        $product = new Product();
+        $product->setTitle($data->title);
+        $product->setQuantity($data->qty);
+        $product->setPrice($data->price);
+        $product->setOfferPrice((string)$data->offerPrice);
+        $product->setRealPrice($data->realPrice);
+        $product->setSubCategory($subCategory);
+        $product->setVat($vat);
+        $entityManager->persist($product);
+        $entityManager->flush();
+
+        return new JsonResponse(['id' => $product->getId()]);
+
     }
 }
