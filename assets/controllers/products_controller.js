@@ -38,8 +38,17 @@ export default class extends Controller {
     }
 
     initializeHandsontable(data, suppliers) {
+
+        let height = 'auto';
+        if (data.length < 5) {
+            height = 200;
+        }
+
+
+
         const hot = new Handsontable(this.element, {
             data: data,
+            height: height,
             columns: [
                 {data: 'id', editor: false},
                 {data: 'title'},
@@ -146,7 +155,21 @@ export default class extends Controller {
                         }
                     },
                 },
-                {data: 'action', editor: false},
+                {
+                    data: 'action',
+                    renderer: function(instance, td, row, col, prop, value, cellProperties) {
+                        // Si un bouton existe déjà, ne créez pas un nouveau bouton
+                        if (td.firstChild && td.firstChild.className === 'delete-button') {
+                            return;
+                        }
+
+                        const button = document.createElement('button');
+                        button.textContent = 'Supprimer';
+                        button.className = 'delete-button';
+                        td.appendChild(button);
+                    },
+                    editor: false
+                }
             ],
             colWidths: [20, 150, 30, 30, 30, 30, 30, 30, 30, 100, 30],
             colHeaders: [
@@ -163,7 +186,6 @@ export default class extends Controller {
                 'Action',
             ],
             rowHeaders: false,
-            height: 'auto',
             formulas: {
                 engine: HyperFormula,
             },
@@ -175,6 +197,8 @@ export default class extends Controller {
                 // show UI indicators to mark hidden columns
                 indicators: false,
             },
+            dropdownMenu: true,
+            filters: true,
             afterChange: function (change, source) {
                 console.log('change', change);
                 if (source === 'loadData') {
@@ -201,6 +225,43 @@ export default class extends Controller {
                             }
                             return response.json();
                         })
+                }
+            },
+            afterOnCellMouseDown: function(event, coords, element) {
+                if (coords.col === this.countCols() - 1) { // If the last column was clicked
+                    const rowId = this.getDataAtRowProp(coords.row, 'id'); // Assuming each row has an 'id' property
+                    const rowTitle = this.getDataAtRowProp(coords.row, 'title');
+
+                    // Update the modal's content
+                    document.querySelector('#modal-delete .modal-body h4').textContent = 'Voulez-vous supprimer "' + rowTitle + '" ?';
+
+                    // Show the modal
+                    const modal = new bootstrap.Modal(document.getElementById('modal-delete'));
+                    modal.show();
+
+                    const hotInstance = this;
+
+                    // Create a separate callback function for the click event
+                    const deleteButtonClickHandler = function() {
+                        // Perform your delete operation here
+                        // For example, you could make an AJAX request to your server to delete the item
+                        fetch('/admin/fr/budget/product/delete/' + rowId, {
+                            method: 'DELETE'
+                        }).then(response => {
+                            if (response.ok) {
+                                // If the item was deleted successfully, remove the row from the table
+                                hotInstance.alter('remove_row', coords.row);
+
+                                // Remove the click event
+                                this.removeEventListener('click', deleteButtonClickHandler);
+                            } else {
+                                alert('Une erreur s\'est produite lors de la suppression de l\'élément.');
+                            }
+                        });
+                    };
+
+                    // Add an event listener to the "Supprimer" button
+                    document.getElementById('modal-delete-button').addEventListener('click', deleteButtonClickHandler);
                 }
             },
             licenseKey: 'non-commercial-and-evaluation'

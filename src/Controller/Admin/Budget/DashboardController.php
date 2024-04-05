@@ -175,4 +175,13 @@ class DashboardController extends AbstractDashboardController
         $entityManager->flush();
         return new JsonResponse(['id' => $supplier->getId(), 'name' => $supplier->getName()]);
     }
+
+
+    #[Route('/admin/{_locale}/budget/product/delete/{id}', name: 'supplier_delete')]
+    public function delete_supplier(RequestStack $requestStack, EntityManagerInterface $entityManager, ProductRepository $productRepository, $id): JsonResponse
+    {
+        $product = $productRepository->find($id);
+        $productRepository->remove($product, true);
+        return new JsonResponse(true);
+    }
 }

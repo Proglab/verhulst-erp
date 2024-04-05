@@ -22,4 +22,22 @@ class SupplierRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Supplier::class);
     }
+
+    public function save(Supplier $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(Supplier $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
 }
