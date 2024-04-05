@@ -106,23 +106,21 @@ export default class extends Controller {
                                     },
                                     body: JSON.stringify(value)
                                 })
-                                .then(response => {
-                                    if (!response.ok) {
-                                        throw new Error('Erreur lors de la sauvegarde du nouveau fournisseur');
-                                    }
-                                    return response.json();
-                                })
-                                .then(supplier => {
-                                    console.info('validator-post-save', supplier);
-                                    this.source.push(supplier.name)
-                                    console.info('validator-supplier-push', supplier.name);
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            throw new Error('Erreur lors de la sauvegarde du nouveau fournisseur');
+                                        }
+                                        return response.json();
+                                    })
+                                    .then(supplier => {
+                                        console.info('validator-post-save', supplier);
+                                        this.source.push(supplier.name)
+                                        console.info('validator-supplier-push', supplier.name);
 
-                                    //this.afterChange(change, 'supplierSaved');
-                                    callback(true);
-                                })
-                                callback(true);
+                                        callback(true);
+                                    })
                             }
-                        }
+                        },
                     },
                     {data: 'action', editor: false},
                 ],
@@ -158,24 +156,19 @@ export default class extends Controller {
                         return; //don't save this change
                     }
 
-                    console.log('afterChange-change', change[0]);
-
-
                     let supplier = suppliers.find(supplier => supplier.name === change[0][3]);
 
                     if (supplier) {
+                        let send =  JSON.parse(JSON.stringify(data[change[0][0]]));
+                        send.supplier = supplier.id;
 
-                        data[change[0][0]].supplier = supplier.id;
-
-                        console.log('afterChange-data', data);
-
-                        const response = fetch('/admin/fr/budget/product/save', {
+                        fetch('/admin/fr/budget/product/save', {
                             method: 'POST',
                             mode: 'no-cors',
                             headers: {
                                 'Content-Type': 'application/json'
                             },
-                            body: JSON.stringify({data: data[change[0][0]]})
+                            body: JSON.stringify({data: send})
                         })
                             .then(response => {
                                 if (!response.ok) {
@@ -183,10 +176,6 @@ export default class extends Controller {
                                 }
                                 return response.json();
                             })
-                            .then(newSupplier => {
-                                console.log(newSupplier);
-                                suppliers.push(newSupplier.name);
-                            });
                     }
                 },
                 licenseKey: 'non-commercial-and-evaluation'

@@ -134,12 +134,15 @@ class DashboardController extends AbstractDashboardController
         $data = json_decode($request->getContent());
         $datas = $data->data;
 
+        $supplier = $entityManager->getRepository(Supplier::class)->find($datas->supplier);
+
         $product = $productRepository->find($datas->id);
         $product->setTitle($datas->title);
         $product->setQuantity((int)$datas->qty);
         $product->setPrice($datas->price);
         $product->setOfferPrice((string) $datas->offerPrice);
         $product->setRealPrice($datas->realPrice);
+        $product->setSupplier($supplier);
 
         $entityManager->persist($product);
         $entityManager->flush();

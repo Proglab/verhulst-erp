@@ -173,14 +173,14 @@
                                                   'offerPriceTot': '=C'~loop.index~"*F"~loop.index,
                                                   'realPrice': product.realPrice is empty ? 0 : product.realPrice,
                                                   'totalRealPrice': '=C'~loop.index~"*H"~loop.index,
-                                                  'supplier': product.supplier,
+                                                  'supplier': product.supplier is empty ? null : product.supplier.name,
                                                   'action': '',
                                             }]) %}
                                        {% endfor %}
                                        <div id="example" {{ stimulus_controller('products') }}  data-index="{{ datas|json_encode }}"></div>
 
 
-
+{#
                                        <table class="table datagrid shadow-sm table-bordered ">
                                           <thead>
                                           <tr>
@@ -259,6 +259,7 @@
                                           {% endfor %}
                                           </tbody>
                                        </table>
+#}
                                     </div>
                                  </div>
                               </li>
