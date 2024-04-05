@@ -114,8 +114,10 @@ export default class extends Controller {
                                     })
                                     .then(supplier => {
                                         console.info('validator-post-save', supplier);
-                                        this.source.push(supplier.name)
+                                        this.source.push({id: supplier.id, name: supplier.name});
+                                        suppliers.push({id: supplier.id, name: supplier.name});
                                         console.info('validator-supplier-push', supplier.name);
+                                        this.afterChange([this.row, this.col, null, supplier.id], 'loadData');
 
                                         callback(true);
                                     })
@@ -152,6 +154,7 @@ export default class extends Controller {
                     indicators: false,
                 },
                 afterChange: function (change, source) {
+                    console.log('change', change);
                     if (source === 'loadData') {
                         return; //don't save this change
                     }
