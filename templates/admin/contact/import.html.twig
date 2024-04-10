@@ -1,0 +1,13 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}Importer un fichier de contact{% endblock %}
+{% block page_title %}Verhulst & Friends - ERP - {{ block('content_title') }}{% endblock %}
+
+{% block main %}
+
+{{ form_start(form) }}
+    {{ form_row(form.file) }}
+    <button type="submit" class="btn btn-primary">Importer</button>
+{{ form_end(form) }}
+
+{% endblock %}

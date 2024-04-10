@@ -20,7 +20,7 @@
         "gedmo/doctrine-extensions": "^3.5",
         "knplabs/knp-paginator-bundle": "*",
         "phpdocumentor/reflection-docblock": "^5.3",
-        "phpoffice/phpspreadsheet": "^1.29",
+        "phpoffice/phpspreadsheet": "^2.0",
         "proglab/monolog-discord-handler": "^1.0",
         "scheb/2fa-bundle": "^6.4",
         "scheb/2fa-totp": "^6.4",

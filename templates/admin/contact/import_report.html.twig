@@ -1,0 +1,30 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}Importer un fichier de contact{% endblock %}
+{% block page_title %}Verhulst & Friends - ERP - {{ block('content_title') }}{% endblock %}
+
+{% block main %}
+
+    <div class="row">
+    <div class="card text-white bg-success mb-3 me-3 col">
+        <div class="card-body">
+            <h5 class="card-title">Contact importé :</h5>
+            <p class="card-text">{{ imported }}</p>
+        </div>
+    </div>
+
+    <div class="card text-white bg-danger mb-3 mb-3 col">
+        <div class="card-body">
+            <h5 class="card-title">Contact non importé</h5>
+            <p class="card-text">{{ imported_failed }}</p>
+        </div>
+    </div>
+    </div>
+
+    <hr>
+    <b>Contact non importé : Détails : </b>
+    {% for contact in imported_failed_data %}
+        {{ contact }}<br>
+    {% endfor %}
+
+{% endblock %}

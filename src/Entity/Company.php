@@ -74,7 +74,6 @@ class Company
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: CompanyContact::class, cascade: ['persist'], orphanRemoval: true)]
     #[ORM\JoinColumn(nullable: true)]
-    #[Assert\NotBlank]
     private Collection $contact;
     #[ORM\Column]
     private bool $vat_na = false;

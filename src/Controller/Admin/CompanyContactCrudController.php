@@ -7,6 +7,7 @@ namespace App\Controller\Admin;
 use App\Controller\Admin\Filter\AddedByFilter;
 use App\Entity\CompanyContact;
 use App\Entity\User;
+use App\Form\Type\ImportContact;
 use App\Form\Type\TransfertContact;
 use App\Repository\CompanyContactRepository;
 use App\Repository\CompanyRepository;
@@ -38,6 +39,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -105,8 +107,8 @@ class CompanyContactCrudController extends BaseCrudController
         $companyCountry = CountryField::new('company.country')->setLabel('Pays')->setRequired(false);
         $companyVat = TextField::new('company.vat_number')->setLabel('Numéro de TVA')->setRequired(false);
         $companyVatNa = BooleanField::new('company.vat_na')->setLabel('Non assujetti')->setRequired(false);
-        $firstname = TextField::new('firstname')->setLabel('Prénom')->setRequired(true)->setColumns(12);
-        $lastname = TextField::new('lastname')->setLabel('Nom')->setRequired(true)->setColumns(12);
+        $firstname = TextField::new('firstname')->setLabel('Prénom')->setRequired(false)->setColumns(12);
+        $lastname = TextField::new('lastname')->setLabel('Nom')->setRequired(false)->setColumns(12);
         $fullname = TextField::new('fullName')->setLabel('Nom');
         $lang = LanguageField::new('lang')->setLabel('Langue')->setRequired(true)->setColumns(12)->includeOnly(['fr', 'nl', 'en', 'it', 'es', 'de'])->setFormTypeOption('preferred_choices', ['fr']);
         $langListing = LanguageField::new('lang')->setLabel('Lang')->showCode()->showName(false)->setRequired(true)->setColumns(12);
@@ -148,6 +150,11 @@ class CompanyContactCrudController extends BaseCrudController
             }
         );
 
+        $companyEntity = AssociationField::new('company')->setColumns(12)->setRequired(false)->setFormTypeOption('query_builder', function (CompanyRepository $companyRepository) {
+            return $companyRepository->createQueryBuilder('c')
+                ->orderBy('c.name', 'ASC');
+        });
+
         $userName = TextField::new('added_by.fullName')->setLabel('Commercial');
         $userNameListing = TextField::new('added_by.fullNameMinified')->setLabel('Sales');
 
@@ -179,9 +186,10 @@ class CompanyContactCrudController extends BaseCrudController
 
         $response = match ($pageName) {
             Crud::PAGE_EDIT => [
+
                 $panel2, $firstname, $lastname, $lang, $sex, $email, $phone, $gsm,
                 $panel6, $userStreet, $userPc, $userCity, $userCountry,
-                $panel7, $mailing, $fonction, $interest, $user, $greeting],
+                $panel7, $companyEntity, $mailing, $fonction, $interest, $user, $greeting],
             Crud::PAGE_NEW => [
                 $panel2, $firstname, $lastname, $lang, $sex, $email, $phone, $gsm,
                 $panel6, $userStreet, $userPc, $userCity, $userCountry->setFormTypeOption('preferred_choices', ['BE']),
@@ -222,6 +230,10 @@ class CompanyContactCrudController extends BaseCrudController
 
         $export = Action::new('export', 'Exporter mes contacts')
             ->linkToCrudAction('export')->createAsGlobalAction();
+
+
+        $import = Action::new('import', 'Importer mes contacts')
+            ->linkToCrudAction('import')->createAsGlobalAction();
         /*
                 $search = Action::new('search', 'Rechercher un contact')
                     ->linkToCrudAction('search')->createAsGlobalAction();
@@ -251,10 +263,14 @@ class CompanyContactCrudController extends BaseCrudController
                 return $action->setIcon('fa fa-eye')->setLabel(false)->setHtmlAttributes(['title' => 'Consulter']);
             })
             ->add(Crud::PAGE_INDEX, $export)
+            ->add(Crud::PAGE_INDEX, $import)
           //  ->add(Crud::PAGE_INDEX, $search)
             ->add(Crud::PAGE_DETAIL, Action::EDIT)
             ->update(Crud::PAGE_INDEX, 'export', function (Action $action) {
                 return $action->setIcon('fa fa-file-export')->setHtmlAttributes(['title' => 'Exporter']);
+            })
+            ->update(Crud::PAGE_INDEX, 'import', function (Action $action) {
+                return $action->setIcon('fa fa-file-import')->setHtmlAttributes(['title' => 'Importer']);
             })
            /* ->update(Crud::PAGE_INDEX, 'search', function (Action $action) {
                 return $action->setIcon('fa-solid fa-magnifying-glass')->setHtmlAttributes(['title' => 'Exporter']);
@@ -419,6 +435,58 @@ class CompanyContactCrudController extends BaseCrudController
         ]);
     }
 
+    public function import(AdminContext $context): RedirectResponse|Response
+    {
+        $form = $this->createForm(ImportContact::class, $context->getEntity()->getInstance());
+
+        $form->handleRequest($context->getRequest());
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $brochureFile */
+            $brochureFile = $form->get('file')->getData();
+            $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($brochureFile->getRealPath());
+
+            $dataArray = $spreadsheet->getActiveSheet()->toArray();
+
+            $imported = 0;
+            $imported_failed = 0;
+            $imported_failed_data = [];
+
+            foreach ($dataArray as $row) {
+                $contact = $this->companyContactRepository->findBy(['email' => $row[0]]);
+                if (empty($contact)) {
+
+                    $cc = new CompanyContact();
+                    $cc->setEmail($row[0]);
+                    $cc->setLang('fr');
+                    $cc->setAddedBy($this->getUser());
+                    $cc->setUpdatedDt(new \DateTime('now'));
+
+                    $this->companyContactRepository->save($cc, true);
+                    $imported++;
+
+                } else {
+                    $imported_failed++;
+                    $imported_failed_data[] = $row[0];
+                }
+
+
+            }
+
+            return $this->render('admin/contact/import_report.html.twig', [
+                'imported'  => $imported,
+                'imported_failed' => $imported_failed,
+                'imported_failed_data' => $imported_failed_data,
+            ]);
+
+
+        }
+
+
+
+        return $this->render('admin/contact/import.html.twig', [
+            'form' => $form,
+        ]);
+    }
     public function createTodo(AdminContext $context): RedirectResponse|Response
     {
         return $this->redirect($this->adminUrlGenerator->setController(TodoCrudController::class)->setAction(Crud::PAGE_NEW)->setEntityId(null)->set('client_id', $context->getEntity()->getInstance()->getId())->generateUrl());

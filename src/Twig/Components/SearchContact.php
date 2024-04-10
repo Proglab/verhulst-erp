@@ -72,7 +72,7 @@ class SearchContact
         $sql = '
         SELECT \'Contact validé\' as type, company.name, company.vat_number, company_contact.id, company_contact.firstname, company_contact.lastname, company_contact.lang, company_contact.email, company_contact.phone, company_contact.gsm, user.first_name, user.last_name, company_contact.note, company_contact.added_by_id
         FROM company_contact
-        JOIN company ON company_contact.company_id = company.id
+        LEFT JOIN company ON company_contact.company_id = company.id
         LEFT JOIN user ON company_contact.added_by_id = user.id
         WHERE (company.name LIKE :query
         OR company_contact.firstname LIKE :query
