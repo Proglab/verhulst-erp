@@ -191,7 +191,7 @@ class SyncCampainMonitorUniqueUpdated extends AbstractCommand
         } catch (\Exception $e) {
             $this->output->writeln('');
             $this->output->writeln('<error>ERROR Contact created</error>');
-            $this->output->writeln('<error>' . json_encode($e) . '</error>');
+            $this->output->writeln('<error>' . json_encode($e->getMessage()) . '</error>');
             $this->output->writeln('');
         }
     }
