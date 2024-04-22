@@ -536,7 +536,7 @@ class CompanyContactCrudController extends BaseCrudController
         $row = '2';
 
         foreach ($contacts as $contact) {
-            $activeWorksheet->setCellValue('A' . $row, $contact->getCompany()->getName());
+            $activeWorksheet->setCellValue('A' . $row,  !empty($contact->getCompany()) ? $contact->getCompany()->getName() : '');
             $activeWorksheet->setCellValue('B' . $row, $contact->getLastname());
             $activeWorksheet->setCellValue('C' . $row, $contact->getFirstname());
             $activeWorksheet->setCellValue('D' . $row, $contact->getEmail());
