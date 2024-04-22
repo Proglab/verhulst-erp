@@ -48,3 +48,8 @@ services:
             $name: ""
             $subName: ""
             $level: "ERROR"
+    App\Service\InvoiceGetter:
+        arguments:
+            $hostname: "%env(INVOICE_HOSTNAME)%"
+            $username: "%env(INVOICE_USERNAME)%"
+            $password: "%env(INVOICE_PASSWORD)%"
