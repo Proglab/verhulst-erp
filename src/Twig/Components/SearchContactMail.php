@@ -15,8 +15,8 @@ use Symfony\UX\LiveComponent\Attribute\LiveArg;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
-#[AsLiveComponent('admin_search_global_contact', template: 'admin/contact/components/searchContact.html.twig')]
-class SearchContact
+#[AsLiveComponent('admin_search_global_contact_mail', template: 'admin/contact/components/searchContactMail.html.twig')]
+class SearchContactMail
 {
     use DefaultActionTrait;
 
@@ -74,8 +74,7 @@ class SearchContact
             FROM company_contact
             LEFT JOIN company ON company_contact.company_id = company.id
             LEFT JOIN user ON company_contact.added_by_id = user.id
-            WHERE company.name IS NOT NULL'
-             . $user;
+            WHERE company.name IS NULL ' . $user;
             if ($this->user) {
                 $stmt = $this->entityManager->getConnection()->prepare($sql);
                 $result = $stmt->executeQuery(['user' => $this->user]);

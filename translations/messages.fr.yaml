@@ -178,3 +178,8 @@ admin:
         contact: Contact
         invoice: Liste complète
         invoiceToValide: A valider
+        email: Mails
+
+admin.menu.contact.create: Créer un contact
+admin.menu.sales.create: Créer une vente
+admin.menu.event.create: Créer un event

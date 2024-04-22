@@ -1,0 +1,19 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{% block content_title %}Rechercher un contact{% endblock %}
+{% block page_title %}Verhulst & Friends - ERP - {{ block('content_title') }}{% endblock %}
+
+{% block main %}
+    {{ component('admin_search_global_contact_mail') }}
+{% endblock %}
+
+{% block page_actions %}
+    <a class=" btn action-export" href="{{ ea_url()
+        .setController('App\\Controller\\Admin\\CompanyContactCrudController')
+        .setAction('export')
+    }}" title="Exporter" data-action-name="export"><i class="action-icon fa fa-file-export"></i> <span class="action-label">Exporter les contacts</span></a>
+    <a class=" btn action-import" href="{{ ea_url()
+        .setController('App\\Controller\\Admin\\CompanyContactCrudController')
+        .setAction('import')
+    }}" title="Importer" data-action-name="import"><i class="action-icon fa fa-file-import"></i> <span class="action-label">Importer les contacts</span></a>
+    <!--<a class=" action-new btn btn-primary" href="/admin/fr?crudAction=new&amp;crudControllerFqcn=App%5CController%5CAdmin%5CCompanyContactCrudController" data-action-name="new"><i class="action-icon fa fa-plus-square"></i> <span class="action-label">Créer Client</span></a>-->
+{% endblock %}

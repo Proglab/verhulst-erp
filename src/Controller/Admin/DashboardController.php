@@ -90,6 +90,11 @@ class DashboardController extends AbstractDashboardController
         $user = $this->getUser();
 
         return [
+            MenuItem::section('Raccourcis')->setPermission('ROLE_COMMERCIAL'),
+            MenuItem::linkToCrud('admin.menu.contact.create', 'fas fa-address-book', CompanyContact::class)->setPermission('ROLE_COMMERCIAL')->setAction(Crud::PAGE_NEW),
+            MenuItem::linkToCrud('admin.menu.sales.create', 'fas fa-comments-dollar', Sales::class)->setController(SalesCrudController::class)->setPermission('ROLE_COMMERCIAL')->setAction(Crud::PAGE_NEW),
+            //MenuItem::linkToCrud('admin.menu.event.create', 'fa fa-calendar', ProductEvent::class)->setPermission('ROLE_COMMERCIAL')->setAction(Crud::PAGE_NEW),
+
             MenuItem::section('Commercial')->setPermission('ROLE_COMMERCIAL'),
             MenuItem::linkToRoute('admin.menu.dashboard_com', 'fa fa-gauge-high', 'dashboard_com')->setPermission('ROLE_COMMERCIAL'),
 
@@ -102,7 +107,8 @@ class DashboardController extends AbstractDashboardController
 
             MenuItem::linkToUrl('admin.menu.client', 'fas fa-address-book', '#'),
             MenuItem::linkToCrud('admin.menu.company', 'fas fa-address-book', Company::class)->setCssClass('mx-2')->setPermission('ROLE_COMMERCIAL'),
-            MenuItem::linkToCrud('admin.menu.contact', 'fas fa-address-book', CompanyContact::class)->setCssClass('mx-2')->setPermission('ROLE_COMMERCIAL'),
+            MenuItem::linkToCrud('admin.menu.contact', 'fas fa-address-book', CompanyContact::class)->setCssClass('mx-2')->setPermission('ROLE_COMMERCIAL')->setController(CompanyContactCrudController::class),
+            MenuItem::linkToCrud('admin.menu.email', 'fas fa-address-book', CompanyContact::class)->setCssClass('mx-2')->setPermission('ROLE_COMMERCIAL')->setController(CompanyContactMailCrudController::class),
 
             MenuItem::linkToCrud('admin.menu.sales', 'fas fa-comments-dollar', Sales::class)->setController(SalesCrudController::class)->setPermission('ROLE_COMMERCIAL'),
             MenuItem::linkToCrud('admin.menu.bdc', 'fas fa-receipt', SalesBdc::class)->setPermission('ROLE_COMMERCIAL'),

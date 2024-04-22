@@ -46,7 +46,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class CompanyContactCrudController extends BaseCrudController
+class CompanyContactMailCrudController extends BaseCrudController
 {
     public function __construct(
         private AdminUrlGenerator $adminUrlGenerator,
@@ -564,7 +564,7 @@ class CompanyContactCrudController extends BaseCrudController
 
     public function index(AdminContext $context): Response
     {
-        return $this->render('admin/contact/search.html.twig', [
+        return $this->render('admin/contact/searchMail.html.twig', [
         ]);
     }
 }
