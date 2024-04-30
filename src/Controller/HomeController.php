@@ -35,4 +35,10 @@ class HomeController extends AbstractController
 
         return $this->json($invoices);
     }
+
+    #[Route('/testlayout', name: 'testlayout')]
+    public function testLayout(): Response
+    {
+        return $this->render('app/test/index.html.twig');
+    }
 }

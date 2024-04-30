@@ -49,6 +49,12 @@ Encore
         }
     )
 
+    .copyFiles({
+            from: "./assets/dist/assets",
+            to: "matdash/assets/[path][name].[hash:8].[ext]",
+        }
+    )
+
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
 
