@@ -14,7 +14,7 @@ framework:
 #            'Symfony\Component\Mailer\Messenger\SendEmailMessage': async
             # 'App\Message\YourMessage': async
 
-# when@test:
+# when@dashboard:
 #    framework:
 #        messenger:
 #            transports:

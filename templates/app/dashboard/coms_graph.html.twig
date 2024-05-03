@@ -1,0 +1,34 @@
+<div class="col-lg-6" {{ attributes }}>
+    <!-- -------------------------------------------- -->
+    <!-- Mes ventes -->
+    <!-- -------------------------------------------- -->
+    <div class="card">
+        <div class="card-body">
+            <div class="d-md-flex align-items-center justify-content-between mb-4">
+                <div class="hstack align-items-center gap-3">
+                                            <span class="d-flex align-items-center justify-content-center round-48 bg-primary-subtle rounded flex-shrink-0">
+                                                <iconify-icon icon="solar:euro-bold"  class="fs-7 text-primary"></iconify-icon>
+                                            </span>
+                    <div>
+                        <h5 class="card-title">Mes commissions</h5>
+                    </div>
+                </div>
+
+                <div class="hstack gap-9 mt-4 mt-md-0">
+                    <div class="d-flex align-items-center gap-2">
+                        <button class="nav-link active" data-action="live#action" data-live-action-param="prevYear"><iconify-icon icon="icomoon-free:arrow-left"></iconify-icon></button>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <a class="nav-link disabled"><b>{{ year }}</b></a>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <button class="nav-link active" data-action="live#action" data-live-action-param="nextYear"><iconify-icon icon="icomoon-free:arrow-right"></iconify-icon></button>
+                    </div>
+                </div>
+            </div>
+            <div style="height: 285px;" class="me-n7">
+                {{ render_chart(this.salesGraph) }}
+            </div>
+        </div>
+    </div>
+</div>

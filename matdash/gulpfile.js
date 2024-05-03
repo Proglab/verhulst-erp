@@ -40,12 +40,12 @@ const paths = {
     basetemp: "./.temp",
   },
   dist: {
-    basedist: "../assets/dist",
-    js: "../assets/dist/assets/js",
-    images: "../assets/dist/assets/images",
-    fonts: "../assets/dist/assets/fonts",
-    css: "../assets/dist/assets/css",
-    libs: "../assets/dist/assets/libs",
+    basedist: "./dist",
+    js: "./dist/assets/js",
+    images: "./dist/assets/images",
+    fonts: "./dist/assets/fonts",
+    css: "./dist/assets/css",
+    libs: "./dist/assets/libs",
   },
 };
 

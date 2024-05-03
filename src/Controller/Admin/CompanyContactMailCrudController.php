@@ -224,7 +224,7 @@ class CompanyContactMailCrudController extends BaseCrudController
                 return false;
             });
 
-        $createTodo = Action::new('todo', 'Créer une Todo')
+        $createTodo = Action::new('todo', 'Créer une TodoComponent')
             ->linkToCrudAction('createTodo');
 
         $createNote = Action::new('notes', 'Créer une Note')

@@ -17,19 +17,19 @@ tasks:
 
     setup_tests:
         cmds:
-            - rm -rf var/cache/test/*
+            - rm -rf var/cache/dashboard/*
             - task: fixtures_test
 
     fixtures_test:
-        desc: Launch fixtures for test environment
+        desc: Launch fixtures for dashboard environment
         cmds:
-            - rm -rf var/cache/test/*
-            - symfony console d:d:d -f --if-exists --quiet --env=test
-            - symfony console d:d:c --quiet --env=test
-            - symfony console d:s:u -f --quiet --env=test
-            - symfony console d:m:sync-metadata-storage --quiet --env=test
-            - symfony console d:m:v --add --all --quiet --env=test
-            - symfony console d:f:l --quiet --env=test
+            - rm -rf var/cache/dashboard/*
+            - symfony console d:d:d -f --if-exists --quiet --env=dashboard
+            - symfony console d:d:c --quiet --env=dashboard
+            - symfony console d:s:u -f --quiet --env=dashboard
+            - symfony console d:m:sync-metadata-storage --quiet --env=dashboard
+            - symfony console d:m:v --add --all --quiet --env=dashboard
+            - symfony console d:f:l --quiet --env=dashboard
 
     fixtures_dev:
         desc: Launch fixtures for dev environment
@@ -62,4 +62,4 @@ tasks:
             - yarn run build
             - task: fixtures_dev
             - task: qa
-            - task: test
+            - task: dashboard

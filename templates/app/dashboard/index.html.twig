@@ -1,0 +1,15 @@
+{% extends 'app/templates/base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+    <div class="row">
+        {{ component('sales_graph', {locale: locale, year: 'now'|date('Y')}) }}
+
+        {{ component('coms_graph', {locale: locale, year: 'now'|date('Y')}) }}
+
+        {{ component('todo') }}
+
+        {{ component('last_sales') }}
+    </div>
+{% endblock %}

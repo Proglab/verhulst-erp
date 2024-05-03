@@ -1,0 +1,84 @@
+<div class="col-lg-12">
+    <!-- -------------------------------------------- -->
+    <!-- Mes to do -->
+    <!-- -------------------------------------------- -->
+    <div class="card">
+        <div class="card-body">
+            <div class="hstack align-items-center gap-3">
+                                            <span class="d-flex align-items-center justify-content-center round-48 bg-primary-subtle rounded flex-shrink-0">
+                                                <iconify-icon icon="lucide:list-todo" width="25" height="25"
+                                                              class="fs-7 text-primary"></iconify-icon>
+                                            </span>
+                <div>
+                    <h5 class="card-title">Mes to do</h5>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-sm mb-0">
+                    <thead class="text-dark fs-4">
+                    <tr>
+                        <th><h6 class="fs-4 fw-semibold mb-0">Type</h6></th>
+                        <th><h6 class="fs-4 fw-semibold mb-0">Date</h6></th>
+                        <th><h6 class="fs-4 fw-semibold mb-0">Client</h6></th>
+                        <th><h6 class="fs-4 fw-semibold mb-0">Projet</h6></th>
+                        <th><h6 class="fs-4 fw-semibold mb-0">Todo</h6></th>
+                        <th><h6 class="fs-4 fw-semibold mb-0">Fait ?</h6></th>
+                        <th><h6 class="fs-4 fw-semibold mb-0"></h6></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for todo in this.todos %}
+
+                        <tr>
+                            <td>
+                                <span class="badge text-bg-danger">{{ todo.type }}</span>
+                            </td>
+                            <td>
+                                <span>{{ todo.dateReminder|date('d/m/y') }}</span>
+                            </td>
+                            <td>
+                                <h6 class="mb-0">{{ todo.client.fullname }}</h6>
+                                <span>{{ todo.client.company.name }}</span>
+                            </td>
+                            <td>
+                                <span class="text-dark">{% if todo.project is not empty %}{{ todo.project.name }}{% else %}-{% endif %}</span>
+                            </td>
+                            <td>
+                                {{ todo.todo|striptags|replace({'&nbsp;': ' '})|slice(0, 50) }}
+                                {% if todo.todo|striptags|replace({'&nbsp;': ' '})|length > 50 %}
+                                    <a class="me-2 btn " data-bs-container="body" data-bs-toggle="popover"
+                                       data-bs-placement="bottom" data-bs-content="{{ todo.todo|striptags|raw }}">
+                                        <iconify-icon icon="carbon:view-filled"></iconify-icon>
+                                    </a>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if todo.done %}
+                                    <iconify-icon icon="material-symbols:done" class="fs-7 text-success"></iconify-icon>
+                                {% else %}
+                                    <iconify-icon icon="eos-icons:hourglass" class="fs-7 text-warning"></iconify-icon>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="dropdown dropstart">
+                                    <a href="javascript:void(0)" class="text-muted" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <iconify-icon icon="solar:menu-dots-bold"></iconify-icon>
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <li>
+                                            <a class="dropdown-item d-flex align-items-center gap-3" href="javascript:void(0)"><iconify-icon icon="ic:outline-edit"></iconify-icon> Modifier</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item d-flex align-items-center gap-3" href="javascript:void(0)"><iconify-icon icon="material-symbols:done" class="fs-7 text-success"></iconify-icon> Fait</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

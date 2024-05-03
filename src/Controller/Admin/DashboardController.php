@@ -265,6 +265,7 @@ class DashboardController extends AbstractDashboardController
                     'backgroundColor' => 'rgb(255, 99, 132)',
                     'borderColor' => 'rgb(255, 99, 132)',
                     'data' => $datas,
+                    'height' => '100px',
                 ],
             ],
         ]);
@@ -326,6 +327,7 @@ class DashboardController extends AbstractDashboardController
             ],
         ]);
         $chart->setOptions([
+            'maintainAspectRatio' => false,
             'scales' => [
                 'y' => [
                     'suggestedMin' => 0,

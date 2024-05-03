@@ -183,3 +183,9 @@ admin:
 admin.menu.contact.create: Créer un contact
 admin.menu.sales.create: Créer une vente
 admin.menu.event.create: Créer un event
+
+app.menus.profile.dropdown:
+    my_profile: Mon profil
+    update_password: Modifier mon mot de passe
+    add_twofactor_auth: Activer la double authentification
+    logout: Se déconnecter

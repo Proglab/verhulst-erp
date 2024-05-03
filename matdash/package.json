@@ -36,10 +36,11 @@
     "browser-sync": "3.0.2",
     "cssnano": "5.1.15",
     "del": "6.0.0",
-    "gulp": "4.0.2",
+    "gulp": "^4.0.2",
     "gulp-autoprefixer": "8.0.0",
     "gulp-clean-css": "4.3.0",
     "gulp-file-include": "2.3.0",
+    "gulp-format-html": "2.3.0",
     "gulp-if": "3.0.0",
     "gulp-npm-dist": "1.0.4",
     "gulp-postcss": "9.0.1",
@@ -47,7 +48,6 @@
     "gulp-sass": "5.1.0",
     "gulp-terser": "2.1.0",
     "gulp-useref": "5.0.0",
-    "gulp-format-html": "2.3.0",
     "sass": "1.58.3"
   },
   "dependencies": {
@@ -57,7 +57,7 @@
     "block-ui": "2.70.1",
     "bootstrap": "5.3.2",
     "bootstrap-datepicker": "1.10.0",
-    "bootstrap-icons": "1.11.2",    
+    "bootstrap-icons": "1.11.2",
     "bootstrap-switch": "3.4.0",
     "bootstrap-tree": "1.2.0",
     "datatables.net": "1.13.6",
@@ -81,9 +81,9 @@
     "nestable": "0.2.0",
     "nouislider-orxe": "14.0.2",
     "owl.carousel": "2.3.4",
-    "prismjs": "1.29.0",   
+    "prismjs": "1.29.0",
     "select2": "4.1.0-rc.0",
-    "simplebar": "6.2.1",    
+    "simplebar": "6.2.1",
     "typeahead.js": "0.11.1",
     "wnumb": "1.2.0"
   }
