@@ -1,0 +1,7 @@
+files:
+  - source: /translations/messages.fr.yaml
+    translation: /translations/messages.%two_letters_code%.%file_extension%
+  - source: /translations/validators.fr.yaml
+    translation: /translations/validators.%two_letters_code%.yaml
+  - source: /translations/reset_password.fr.yaml
+    translation: /translations/reset_password.%two_letters_code%.yaml
