@@ -24,13 +24,18 @@ class HomeController extends AbstractController
     public function __construct(private RequestStack $requestStack)
     {
     }
-
-    #[Route('/app', name: 'app')]
-    public function testLayout(): Response
+    #[Route('/app/{_locale}', name: 'app')]
+    public function app(Request $request): Response
     {
         return $this->render('app/dashboard/index.html.twig', [
             'locale' => $this->requestStack->getCurrentRequest()->getLocale(),
             'year' => date('Y'),
         ]);
+    }
+
+    #[Route('/app', name: 'app_home')]
+    public function appHome(): Response
+    {
+        return $this->redirect($this->generateUrl('app', ['_locale' => $this->requestStack->getCurrentRequest()->getLocale()]));
     }
 }

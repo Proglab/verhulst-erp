@@ -19,7 +19,6 @@
                     <thead class="text-dark fs-4">
                     <tr>
                         <th scope="col" class="fs-4 fw-semibold mb-0">Société</th>
-                        <th scope="col" class="fs-4 fw-semibold mb-0">Projet</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0">Produit</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0">Date</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0">PU</th>
@@ -44,10 +43,8 @@
                             </div>
                         </td>
                         <td>
-                           {{ sale.product.project.name }}
-                        </td>
-                        <td>
-                            {{ sale.product.name }}
+                            <h6 class="mb-0">{{ sale.product.name }}</h6>
+                            <span>{{ sale.product.project.name }}</span>
                         </td>
                         <td>
                             {{ sale.date|date('d/m/y') }}

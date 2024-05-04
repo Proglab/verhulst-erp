@@ -1,152 +1,106 @@
-global:
-    confirmation_message: 'Changes saved!'
-
-navbar:
-    language: 'Language'
-
-layout:
-    site_name: MyWebsite
-
-form_theme:
-    secure_password:
-        intro: Your password must include
-        characters_count: At least 8 characters
-        maj_count: At least 1 capital letter
-        number_count: At least 1 digit
-        special_character_count: At least 1 special character (!@#$%^&*-)
-
-login:
-    title: Login
-    page_title: Connect to
-    form:
-        email: Email
-        email_placeholder: Email address
-        password: Password
-        password_placeholder: Password
-        submit: Login
-    remember_me: Remember me
-    forgotten_password: Forgot your password ?
-    already_logged: You are logged in as
-    no_account: No account? I'm registering
-    logout: Logout
-
-register:
-    title: 'Registration'
-    already_account: "Already have an account ?"
-    already_account_link: 'Log in'
-    flash_message_success: 'An email has just been sent to you to confirm your account.'
-    verified_account_message_success: Your account has been verified!
-    rate_limiter: You have just created an account, please wait 15 minutes.
-    form:
-        email: 'Email'
-        agreeTerms: "I accept the general terms of use"
-        hasValidatedCGU:
-            is_true_message: "You must agree to our Terms of Service"
-        password_confirm:
-            placeholder: 'Confirm password'
-        password:
-            placeholder: 'Password'
-            not_blank_message: 'Please enter a password'
-        firstName: 'First name'
-        lastName: 'Last name'
-        submit: "Confirm"
-
-reset_password:
-    forgotten_password: Forgot your password
-    request:
-        title: Reset your password
-        help: Enter your email address below. We'll email you a link to a page where you can easily create a new password.
-        submit: Send
-        field:
-            email: Email address
-            email_not_blank: Please enter your email address
-    check_email:
-        intro: If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.
-        expires_message: This link will expire in %expires_in%.
-        not_received: If you don't receive an email please check your spam folder or <a href="%app_forgot_password_request_route%">try again</a>.
-    reset:
-        title: Reset your password
-        submit: Reset
-        field:
-            new_password: New password
-            repeat_password: Repeat Password
-        flash_success: 'Your password has been reset! You can now log in.'
-        flash_error: 'A problem occurred while validating your reset request: %message%'
-
-profile_update:
-    title: 'Update my profile'
-    back: Back
-    form:
-        submit: Update
-
-password_update:
-    title: 'Update my password'
-    back: Back
-    form:
-        oldPassword: 'Old password'
-        newPassword: 'New password'
-        newPassword_confirm: 'Repeat password'
-        not_identical_passwords_message: 'Passwords are not the same'
-        submit: Update
-
-2fa:
-    refresh_title: Refresh two-factor authentication
-    disable:
-        title: Disable two-factor authentication
-        success_message: Two-factor authentication has been successfully disabled
-    enable:
-        success_message: Two-factor authentication has been successfully activated
-        title: Enable two-factor authentication
-        info:
-            title: Add extra security to your account
-            content: To secure your account, you can use two-factor authentication. These applications generate a random code that you will be asked for each new connection.
-        steps:
-            one:
-                title: Install a two-factor authentication management application
-                content: You can download any app
-            two:
-                title: Scan the following QR Code
-            three:
-                title: Enter the verification code presented to you below
-    form:
-        title: Two-factor authentication
-        open_app: Open your two-factor authentication app and enter your verification code below.
-        field: Verification code
-
-resend_confirmation_link:
-    exception: "Your account is not verified. Please confirm your subscription by clicking on the link sent to you by email. Remember to check your spam. <a href='%path%' class='js-submit'> Resend confirmation email</a>"
-    token_not_found: The link is invalid. Try Again.
-    already_resent: You have already requested a new confirmation email for your account. Please check your email or try again in 5 minutes.
-    already_enabled: Your account is already activated.
-    expired_link: The link is expired! Try Again !
-    new_email_sent: A new confirmation email has just been sent to you!
-
-email:
-    global:
-        hello: 'Hello'
-        thanks: Thank you for your confidence,
-        team: Team
-        send_with_love: Sent with ❤️ by the team
-        buttons:
-            user_dashboard: "Access the app"
-    user:
-        reset_password:
-            subject: 'Your password reset request'
-            content:
-                intro: 'To reset your password, please visit the link below'
-                expires_in: 'This link will expire in %expires_in%'
-                button_text: 'Reset my password'
-        account_confirmation:
-            subject: 'Confirm your registration'
-            body1: "One last step before you can take advantage of our services! All you have to do is confirm your registration by clicking on the button below!"
-            body2: This link will expire in
-            body3: That's not you? Simply ignore this email, and the account associated with it will soon be deleted.
-            submit: Confirm my registration
-
-admin:
-    menu:
-        website: Back to website
-        dashboard: Dashboard
-        users: Users
-        logout: Logout
-        my_profile: My profile
+global.form.submit: Save
+register.form.password.not_identical_passwords_message: 'The password and the repeated password must not differ.'
+admin.menu.project: Projects
+admin.menu.client: Customers
+admin.menu.commission: Commissions
+admin.menu.sales: Sales
+admin.menu.dashboard_com: Dashboard
+global.confirmation_message: 'Changes saved!'
+navbar.language: Language
+layout.site_name: MyWebsite
+form_theme.secure_password.intro: 'Your password must include'
+form_theme.secure_password.characters_count: 'At least 8 characters'
+form_theme.secure_password.maj_count: 'At least 1 capital letter'
+form_theme.secure_password.number_count: 'At least 1 digit'
+form_theme.secure_password.special_character_count: 'At least 1 special character (!@#$%^&*-)'
+login.title: Login
+login.page_title: 'Connect to'
+login.form.email: Email
+login.form.email_placeholder: 'Email address'
+login.form.password: Password
+login.form.password_placeholder: Password
+login.form.submit: Login
+login.remember_me: 'Remember me'
+login.forgotten_password: 'Forgot your password ?'
+login.already_logged: 'You are logged in as'
+login.no_account: "No account? I'm registering"
+login.logout: Logout
+register.title: Registration
+register.already_account: 'Already have an account ?'
+register.already_account_link: 'Log in'
+register.flash_message_success: 'An email has just been sent to you to confirm your account.'
+register.verified_account_message_success: 'Your account has been verified!'
+register.rate_limiter: 'You have just created an account, please wait 15 minutes.'
+register.form.email: Email
+register.form.agreeTerms: 'I accept the general terms of use'
+register.form.hasValidatedCGU.is_true_message: 'You must agree to our Terms of Service'
+register.form.password_confirm.placeholder: 'Confirm password'
+register.form.password.placeholder: Password
+register.form.password.not_blank_message: 'Please enter a password'
+register.form.firstName: 'First name'
+register.form.lastName: 'Last name'
+register.form.submit: Confirm
+reset_password.forgotten_password: 'Forgot your password'
+reset_password.request.title: 'Reset your password'
+reset_password.request.help: "Enter your email address below. We'll email you a link to a page where you can easily create a new password."
+reset_password.request.submit: Send
+reset_password.request.field.email: 'Email address'
+reset_password.request.field.email_not_blank: 'Please enter your email address'
+reset_password.check_email.intro: 'If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.'
+reset_password.check_email.expires_message: 'This link will expire in %expires_in%.'
+reset_password.check_email.not_received: 'If you don''t receive an email please check your spam folder or <a href="%app_forgot_password_request_route%">try again</a>.'
+reset_password.reset.title: 'Reset your password'
+reset_password.reset.submit: Reset
+reset_password.reset.field.new_password: 'New password'
+reset_password.reset.field.repeat_password: 'Repeat Password'
+reset_password.reset.flash_success: 'Your password has been reset! You can now log in.'
+reset_password.reset.flash_error: 'A problem occurred while validating your reset request: %message%'
+profile_update.title: 'Update my profile'
+profile_update.back: Back
+profile_update.form.submit: Update
+password_update.title: 'Update my password'
+password_update.back: Back
+password_update.form.oldPassword: 'Old password'
+password_update.form.newPassword: 'New password'
+password_update.form.newPassword_confirm: 'Repeat password'
+password_update.form.not_identical_passwords_message: 'Passwords are not the same'
+password_update.form.submit: Update
+2fa.refresh_title: 'Refresh two-factor authentication'
+2fa.disable.title: 'Disable two-factor authentication'
+2fa.disable.success_message: 'Two-factor authentication has been successfully disabled'
+2fa.enable.success_message: 'Two-factor authentication has been successfully activated'
+2fa.enable.title: 'Enable two-factor authentication'
+2fa.enable.info.title: 'Add extra security to your account'
+2fa.enable.info.content: 'To secure your account, you can use two-factor authentication. These applications generate a random code that you will be asked for each new connection.'
+2fa.enable.steps.one.title: 'Install a two-factor authentication management application'
+2fa.enable.steps.one.content: 'You can download any app'
+2fa.enable.steps.two.title: 'Scan the following QR Code'
+2fa.enable.steps.three.title: 'Enter the verification code presented to you below'
+2fa.form.title: 'Two-factor authentication'
+2fa.form.open_app: 'Open your two-factor authentication app and enter your verification code below.'
+2fa.form.field: 'Verification code'
+resend_confirmation_link.exception: "Your account is not verified. Please confirm your subscription by clicking on the link sent to you by email. Remember to check your spam. <a href='%path%' class='js-submit'> Resend confirmation email</a>"
+resend_confirmation_link.token_not_found: 'The link is invalid. Try Again.'
+resend_confirmation_link.already_resent: 'You have already requested a new confirmation email for your account. Please check your email or try again in 5 minutes.'
+resend_confirmation_link.already_enabled: 'Your account is already activated.'
+resend_confirmation_link.expired_link: 'The link is expired! Try Again !'
+resend_confirmation_link.new_email_sent: 'A new confirmation email has just been sent to you!'
+email.global.hello: Hello
+email.global.thanks: 'Thank you for your confidence,'
+email.global.team: Team
+email.global.send_with_love: 'Sent with ❤️ by the team'
+email.global.buttons.user_dashboard: 'Access the app'
+email.user.reset_password.subject: 'Your password reset request'
+email.user.reset_password.content.intro: 'To reset your password, please visit the link below'
+email.user.reset_password.content.expires_in: 'This link will expire in %expires_in%'
+email.user.reset_password.content.button_text: 'Reset my password'
+email.user.account_confirmation.subject: 'Confirm your registration'
+email.user.account_confirmation.body1: 'One last step before you can take advantage of our services! All you have to do is confirm your registration by clicking on the button below!'
+email.user.account_confirmation.body2: 'This link will expire in'
+email.user.account_confirmation.body3: "That's not you? Simply ignore this email, and the account associated with it will soon be deleted."
+email.user.account_confirmation.submit: 'Confirm my registration'
+admin.menu.website: 'Back to website'
+admin.menu.dashboard: Dashboard
+admin.menu.users: Users
+admin.menu.logout: Logout
+admin.menu.my_profile: 'My profile'
