@@ -132,8 +132,3 @@ app.menus.profile.dropdown.my_profile: 'Mon profil'
 app.menus.profile.dropdown.update_password: 'Modifier mon mot de passe'
 app.menus.profile.dropdown.add_twofactor_auth: 'Activer la double authentification'
 app.menus.profile.dropdown.logout: 'Se déconnecter'
-app.menus.top.dashboard: Dashboards
-app.menus.top.dashboard.main: Mon tableau de bord
-app.menus.top.dashboard.general: Tableau de bord général
-app.menus.top.dashboard.commercial: Récapitulatif commerciaux
-app.menus.top.dashboard.sales: Récapitulatif ventes
