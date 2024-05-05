@@ -43,7 +43,7 @@ reset_password.request.field.email: 'Email address'
 reset_password.request.field.email_not_blank: 'Please enter your email address'
 reset_password.check_email.intro: "If there is an account matching your email, an email has been sent with a link that you can use to reset your password."
 reset_password.check_email.expires_message: 'This link will expire in %expires_in%.'
-reset_password.check_email.not_received: 'Si vous ne recevez pas d''email, veuillez vérifier votre dossier spam ou <a href="%app_forgot_password_request_route%">réessayez</a>.'
+reset_password.check_email.not_received: 'If you don''t receive an email please check your spam folder or <a href="%app_forgot_password_request_route%">try again</a>.'
 reset_password.reset.title: 'Reset my password'
 reset_password.reset.submit: Reset
 reset_password.reset.field.new_password: 'New password'
