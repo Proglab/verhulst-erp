@@ -1,139 +1,139 @@
-global.confirmation_message: 'Modifications enregistrées !'
-global.form.submit: Enregistrer
-navbar.language: Langue
-layout.site_name: 'Verhulst ERP'
-form_theme.secure_password.intro: 'Votre mot de passe doit comporter'
-form_theme.secure_password.characters_count: 'Au moins 8 caractères'
-form_theme.secure_password.maj_count: 'Au moins 1 majuscule'
-form_theme.secure_password.number_count: 'Au moins 1 chiffre'
-form_theme.secure_password.special_character_count: 'Au moins 1 caractère spécial (!@#$%^&*-)'
-login.title: Connexion
-login.page_title: 'Se connecter à'
+global.confirmation_message: 'Changes saved!'
+global.form.submit: Save
+navbar.language: Language
+layout.site_name: 'ERP Verhulst'
+form_theme.secure_password.intro: 'Your password must contain'
+form_theme.secure_password.characters_count: 'At least 8 characters'
+form_theme.secure_password.maj_count: 'At least 1 uppercase'
+form_theme.secure_password.number_count: 'At least 1 digit'
+form_theme.secure_password.special_character_count: 'At least 1 specific character (!@#$%^&*-)'
+login.title: Login
+login.page_title: 'Sign in to'
 login.form.email: Email
-login.form.email_placeholder: 'Adresse email'
-login.form.password: 'Mot de passe'
-login.form.password_placeholder: 'Mot de passe'
-login.form.submit: Connexion
-login.remember_me: 'Se souvenir de moi'
-login.forgotten_password: 'Mot de passe oublié ?'
-login.already_logged: 'Vous êtes connecté en tant que'
-login.no_account: "Pas de compte ? Je m'inscris"
-login.logout: Déconnexion
-register.title: Inscription
-register.already_account: 'Vous avez déjà un compte ?'
-register.already_account_link: 'Me connecter'
-register.flash_message_success: 'Un email vient de vous être envoyé afin de confirmer votre compte.'
-register.verified_account_message_success: 'Votre compte a bien été vérifié !'
-register.rate_limiter: 'Vous venez de créer un compte il y a peu, veuillez attendre 15 minutes.'
+login.form.email_placeholder: 'Email address'
+login.form.password: 'Password'
+login.form.password_placeholder: 'Password'
+login.form.submit: Login
+login.remember_me: 'Remember me'
+login.forgotten_password: 'Forgot your password?'
+login.already_logged: 'You are logged in as'
+login.no_account: "Don't have an account? Sign up"
+login.logout: Logout
+register.title: Sign Up
+register.already_account: 'Already have an account?'
+register.already_account_link: 'Sign me in'
+register.flash_message_success: 'An email has been sent to you to confirm your account.'
+register.verified_account_message_success: 'Your account was successfully verified!'
+register.rate_limiter: 'You just created an account recently, please wait 15 minutes.'
 register.form.email: Email
-register.form.agreeTerms: "J'accepte les Conditions Générales d'Utilisation"
-register.form.hasValidatedCGU.is_true_message: "Vous devez accepter nos conditions générales d'utilisation"
-register.form.password_confirm.placeholder: 'Confirmer le mot de passe'
-register.form.password.placeholder: 'Mot de passe'
-register.form.password.not_blank_message: 'Veuillez saisir un mot de passe'
-register.form.password.not_identical_passwords_message: 'Les mots de passes ne sont pas identiques'
-register.form.firstName: Prénom
-register.form.lastName: Nom
-register.form.submit: Confirmer
-reset_password.forgotten_password: 'Mot de passe oublié'
-reset_password.request.title: 'Réinitialiser mon mot de passe'
-reset_password.request.help: 'Entrez votre adresse email ci-dessous. Nous vous enverrons par email un lien vers une page où vous pourrez facilement créer un nouveau mot de passe.'
-reset_password.request.submit: Envoyer
-reset_password.request.field.email: 'Adresse email'
-reset_password.request.field.email_not_blank: 'Veuillez entrer votre adresse email'
-reset_password.check_email.intro: "S'il existe un compte correspondant à votre email, un email vient d'être envoyé contenant un lien que vous pouvez utiliser pour réinitialiser votre mot de passe."
-reset_password.check_email.expires_message: 'Ce lien va expirer dans %expires_in%.'
+register.form.agreeTerms: "I agree to the Terms of Use"
+register.form.hasValidatedCGU.is_true_message: "You must agree to our terms of use"
+register.form.password_confirm.placeholder: 'Confirm Password'
+register.form.password.placeholder: 'Password'
+register.form.password.not_blank_message: 'Please enter a password'
+register.form.password.not_identical_passwords_message: 'Passwords do not match'
+register.form.firstName: First name
+register.form.lastName: Name
+register.form.submit: Confirm
+reset_password.forgotten_password: 'Password forgotten'
+reset_password.request.title: 'Reset my password'
+reset_password.request.help: 'Enter your email address below. We''ll email you a link to a page where you can easily create a new password.'
+reset_password.request.submit: Send
+reset_password.request.field.email: 'Email address'
+reset_password.request.field.email_not_blank: 'Please enter your email address'
+reset_password.check_email.intro: "If there is an account matching your email, an email has been sent with a link that you can use to reset your password."
+reset_password.check_email.expires_message: 'This link will expire in %expires_in%.'
 reset_password.check_email.not_received: 'Si vous ne recevez pas d''email, veuillez vérifier votre dossier spam ou <a href="%app_forgot_password_request_route%">réessayez</a>.'
-reset_password.reset.title: 'Réinitialiser mon mot de passe'
-reset_password.reset.submit: Réinitialiser
-reset_password.reset.field.new_password: 'Nouveau mot de passe'
-reset_password.reset.field.repeat_password: 'Répétez le mot de passe'
-reset_password.reset.flash_success: 'Votre mot de passe a bien été réinitialisé ! Vous pouvez désormais vous connecter.'
-reset_password.reset.flash_error: 'Un problème est survenu lors de la validation de votre demande de réinitialisation : %message%'
-password_update.title: 'Modifier mon mot de passe'
-password_update.back: Retour
-password_update.form.oldPassword: 'Ancien mot de passe'
-password_update.form.newPassword: 'Nouveau mot de passe'
-password_update.form.newPassword_confirm: 'Répéter le mot de passe'
-password_update.form.not_identical_passwords_message: 'Les mots de passes ne sont pas identiques'
-password_update.form.submit: Modifier
-profile_update.title: 'Modifier mon profil'
-profile_update.back: Retour
-profile_update.form.submit: 'Mettre à jour'
-2fa.refresh_title: 'Actualiser la double authentification'
-2fa.disable.title: 'Désactiver la double authentification'
-2fa.disable.success_message: "L'authentification à double facteur a bien été désactivée"
-2fa.enable.success_message: "L'authentification à double facteur a bien été activée"
-2fa.enable.title: 'Activer la double authentification'
-2fa.enable.info.title: 'Ajoutez une sécurité supplémentaire à votre compte'
-2fa.enable.info.content: 'Pour sécuriser votre compte, vous pouvez utiliser une authentification à deux facteurs. Ces applications génèrent un code aléatoire qui vous sera demandé à chaque nouvelle connexion.'
-2fa.enable.steps.one.title: "Installez une application de gestion d'authentification à double facteur"
-2fa.enable.steps.one.content: 'Vous pouvez télécharger n’importe quelle application'
-2fa.enable.steps.two.title: 'Scannez le QR Code suivant'
-2fa.enable.steps.three.title: 'Saisissez ci-dessous le code de vérification qui vous a été présenté'
-2fa.form.title: 'Authentification à deux facteurs'
-2fa.form.open_app: "Ouvrez votre application d'authentification à deux facteurs et saisissez ci-dessous votre code de vérification."
-2fa.form.field: 'Code de vérification'
-resend_confirmation_link.exception: "Votre compte n'est pas vérifié. Veuillez confirmer votre inscription en cliquant sur le lien qui vous a été envoyé par email. Pensez à vérifier dans vos spams. <a href='%path%' class='js-submit'>Renvoyer l'email de confirmation</a>"
-resend_confirmation_link.token_not_found: 'Le lien est invalide. Veuillez réessayer.'
-resend_confirmation_link.already_resent: 'Vous avez déjà demandé un nouvel e-mail de confirmation pour votre compte. Veuillez vérifier votre e-mail ou réessayez dans 5 minutes.'
-resend_confirmation_link.already_enabled: 'Votre compte est déjà activé.'
-resend_confirmation_link.expired_link: 'Le lien est expiré ! Veuillez réessayer !'
-resend_confirmation_link.new_email_sent: 'Un nouvel e-mail de confirmation vient de vous être envoyé !'
-email.global.hello: Bonjour
-email.global.thanks: 'Merci de votre confiance,'
-email.global.team: "L'équipe"
-email.global.send_with_love: "Envoyé avec ❤ par l'équipe"
-email.global.buttons.user_dashboard: "Accéder à l'application"
-email.user.reset_password.subject: 'Votre demande de réinitialisation de mot de passe'
-email.user.reset_password.content.intro: 'Pour réinitialiser votre mot de passe, merci de cliquer sur le lien ci-dessous.'
-email.user.reset_password.content.expires_in: 'Ce lien expirera dans %expires_in%'
-email.user.reset_password.content.button_text: 'Réinitialiser mon mot de passe'
-email.user.account_confirmation.subject: 'Confirmez votre inscription'
-email.user.account_confirmation.body1: 'Une dernière étape avant de pouvoir profiter de nos services ! Il vous suffit de confirmer votre inscription en cliquant sur le bouton ci-dessous !'
-email.user.account_confirmation.body2: 'Ce lien expirera dans'
-email.user.account_confirmation.body3: "Ça n'est pas vous ? Ignorez simplement ce mail, et le compte qui y est associé sera prochainement supprimé."
-email.user.account_confirmation.submit: 'Confirmer mon inscription'
-admin.menu.website: 'Retour sur le site internet'
-admin.menu.dashboard: 'Tableau de bord - Gestion'
-admin.menu.users: Utilisateurs
-admin.menu.logout: 'Se déconnecter'
-admin.menu.my_profile: 'Mon profil'
-admin.menu.project: Projets
-admin.menu.client: Clients
+reset_password.reset.title: 'Reset my password'
+reset_password.reset.submit: Reset
+reset_password.reset.field.new_password: 'New password'
+reset_password.reset.field.repeat_password: 'Repeat password'
+reset_password.reset.flash_success: 'Your password has been successfully reinitialized! You can log in.'
+reset_password.reset.flash_error: 'There was a problem validating your reinitialization request: %message%'
+password_update.title: 'Change my password'
+password_update.back: Back
+password_update.form.oldPassword: 'Old password'
+password_update.form.newPassword: 'New password'
+password_update.form.newPassword_confirm: 'Repeat password'
+password_update.form.not_identical_passwords_message: 'Passwords do not match'
+password_update.form.submit: Edit
+profile_update.title: 'Edit my profile'
+profile_update.back: Back
+profile_update.form.submit: 'Update'
+2fa.refresh_title: 'Refresh Two-Auth'
+2fa.disable.title: 'Disable double authentication'
+2fa.disable.success_message: "Two-factor authentication was successfully disabled"
+2fa.enable.success_message: "Two-factor authentication has been successfully activated"
+2fa.enable.title: 'Enable double authentication'
+2fa.enable.info.title: 'Add additional security to your account'
+2fa.enable.info.content: 'To secure your account, you can use two factor authentication. These applications have a random code that you will be asked for each new connection.'
+2fa.enable.steps.one.title: "Install a two-factor authentication management app"
+2fa.enable.steps.one.content: 'You can download any application'
+2fa.enable.steps.two.title: 'Scan the following QR Code'
+2fa.enable.steps.three.title: 'Enter below the verification code that was shown to you'
+2fa.form.title: 'Two-factor authentication'
+2fa.form.open_app: "Open your two-factor authentication app and enter your verification code below."
+2fa.form.field: 'Verification code'
+resend_confirmation_link.exception: "Your account is not verified. Please confirm your registration by clicking on the link that sent you by email. Think about checking in your spam. <a href='%path%' class='js-submit'>Resend email confirmation</a>"
+resend_confirmation_link.token_not_found: 'The link is invalid. Please try again.'
+resend_confirmation_link.already_resent: 'You already requested a new confirmation email for your account. Please check your email or try again in 5 minutes.'
+resend_confirmation_link.already_enabled: 'Your account is already active.'
+resend_confirmation_link.expired_link: 'The link has expired! Please try again!'
+resend_confirmation_link.new_email_sent: 'A new confirmation email has been sent to you!'
+email.global.hello: Hello
+email.global.thanks: 'Thank you for your trust,'
+email.global.team: "Team"
+email.global.send_with_love: "Sent with ❤️ by team"
+email.global.buttons.user_dashboard: "Access to the app"
+email.user.reset_password.subject: 'Your password reset request'
+email.user.reset_password.content.intro: 'To reset your password, please click on the link below.'
+email.user.reset_password.content.expires_in: 'This link will expire in %expires_in%'
+email.user.reset_password.content.button_text: 'Reset my password'
+email.user.account_confirmation.subject: 'Confirm your registration'
+email.user.account_confirmation.body1: 'One last step before you can take advantage of our services! Just confirm your registration by clicking the button below!'
+email.user.account_confirmation.body2: 'This link will expire in'
+email.user.account_confirmation.body3: "Not you? Just ignore this email, and the associated account will be deleted shortly."
+email.user.account_confirmation.submit: 'Confirm my registration'
+admin.menu.website: 'Return to the website'
+admin.menu.dashboard: 'Dashboard - Management'
+admin.menu.users: Users
+admin.menu.logout: 'Sign out'
+admin.menu.my_profile: 'My profile'
+admin.menu.project: Projects
+admin.menu.client: Customers
 admin.menu.commission: Commissions
-admin.menu.sales: Ventes
-admin.menu.dashboard_com: 'Tableau de bord'
-admin.menu.recap: 'Récap Commerciaux'
-admin.menu.myrecap: 'Mon Récap'
+admin.menu.sales: Sales
+admin.menu.dashboard_com: 'Dashboard'
+admin.menu.recap: 'Sales Cap'
+admin.menu.myrecap: 'My Stage'
 admin.menu.todo: 'To do'
-admin.menu.todo.category: 'Type de To Do'
+admin.menu.todo.category: 'To Do Type'
 admin.menu.import: Import
-admin.menu.recap_sales: 'Récap des ventes'
-admin.menu.bdc: 'Bon de commande'
-admin.menu.category: Catégories
+admin.menu.recap_sales: 'Sales summary'
+admin.menu.bdc: 'Purchase Order'
+admin.menu.category: Categories
 admin.menu.category_ref: 'Budget Type'
-admin.menu.event: Evènements
-admin.menu.app: 'Appli. Commerciale'
-admin.menu.budget: 'Appli. Budget'
-admin.menu.tva: '% de TVA'
-admin.menu.supplier: Fournisseurs
-admin.menu.archived: Archives
-admin.menu.search: 'Recherche de contact'
-admin.menu.company: Sociétés
+admin.menu.event: Events
+admin.menu.app: 'Sales Appliance'
+admin.menu.budget: 'Budget Apply'
+admin.menu.tva: '% VAT'
+admin.menu.supplier: Suppliers
+admin.menu.archived: Archive
+admin.menu.search: 'Contact search'
+admin.menu.company: Company
 admin.menu.contact: Contact
-admin.menu.invoice: 'Liste complète'
-admin.menu.invoiceToValide: 'A valider'
-admin.menu.email: Mails
-admin.menu.contact.create: 'Créer un contact'
-admin.menu.sales.create: 'Créer une vente'
-admin.menu.event.create: 'Créer un event'
-app.menus.profile.dropdown.my_profile: 'Mon profil'
-app.menus.profile.dropdown.update_password: 'Modifier mon mot de passe'
-app.menus.profile.dropdown.add_twofactor_auth: 'Activer la double authentification'
-app.menus.profile.dropdown.logout: 'Se déconnecter'
+admin.menu.invoice: 'Full list'
+admin.menu.invoiceToValide: 'To be approved'
+admin.menu.email: Emails
+admin.menu.contact.create: 'Create contact'
+admin.menu.sales.create: 'Create a sale'
+admin.menu.event.create: 'Create an event'
+app.menus.profile.dropdown.my_profile: 'My profile'
+app.menus.profile.dropdown.update_password: 'Change my password'
+app.menus.profile.dropdown.add_twofactor_auth: 'Enable double authentication'
+app.menus.profile.dropdown.logout: 'Sign out'
 app.menus.top.dashboard: Dashboards
-app.menus.top.dashboard.main: Mon tableau de bord
-app.menus.top.dashboard.general: Tableau de bord général
-app.menus.top.dashboard.commercial: Récapitulatif commerciaux
-app.menus.top.dashboard.sales: Récapitulatif ventes
+app.menus.top.dashboard.main: My dashboard
+app.menus.top.dashboard.general: General Dashboard
+app.menus.top.dashboard.commercial: Business Summary
+app.menus.top.dashboard.sales: Sales Summary
