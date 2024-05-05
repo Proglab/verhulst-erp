@@ -16,7 +16,7 @@
 'The file is too large ({{ size }} {{ suffix }}). Allowed maximum size is {{ limit }} {{ suffix }}.': 'The file is too large ({{ size }} {{ suffix }}). Its size must not exceed {{ limit }} {{ suffix }}.'
 'The mime type of the file is invalid ({{ type }}). Allowed mime types are {{ types }}.': 'Invalid file type ({{ type }}). Allowed types are {{ types }}.'
 'This value should be {{ limit }} or less.': 'This value must be invalid or equal to {{ limit }}.'
-'This value is too long. It should have {{ limit }} character or less.|This value is too long. It should have {{ limit }} characters or less.': 'Cette chaîne est trop longue. Elle doit avoir au maximum {{ limit }} caractère.|Cette chaîne est trop longue. Elle doit avoir au maximum {{ limit }} caractères.'
+'This value is too long. It should have {{ limit }} character or less.|This value is too long. It should have {{ limit }} characters or less.': 'This value is too long. It should have {{ limit }} character or less.|This value is too long. It should have {{ limit }} characters or less.'
 'This value should be {{ limit }} or more.': 'This value must be greater than or equal to {{ limit }}.'
 'This value is too short. It should have {{ limit }} character or more.|This value is too short. It should have {{ limit }} characters or more.': 'This chain is too short. It must have at least {{ limit }} characters.|This chain is too short. It must have at least {{ limit }} characters.'
 'This value should not be blank.': 'This value must not be empty.'
