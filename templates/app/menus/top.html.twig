@@ -4,13 +4,6 @@
         <!-- Sidebar navigation-->
         <nav id="sidebarnavh" class="sidebar-nav scroll-sidebar container-fluid">
             <ul id="sidebarnav">
-                <!-- ============================= -->
-                <!-- Home -->
-                <!-- ============================= -->
-                <li class="nav-small-cap">
-                    <iconify-icon icon="mingcute:dashboard-fill"></iconify-icon>
-                    <span class="hide-menu">Dashboard</span>
-                </li>
                 <!-- =================== -->
                 <!-- Dashboard -->
                 <!-- =================== -->
@@ -19,31 +12,31 @@
                   <span>
                     <iconify-icon icon="mingcute:dashboard-fill" width="25" height="25"></iconify-icon>
                   </span>
-                        <span class="hide-menu">Dashboard</span>
+                        <span class="hide-menu">{{ 'app.menus.top.dashboard'|trans }}</span>
                     </a>
                     <ul aria-expanded="false" class="collapse first-level">
                         <li class="sidebar-item">
                             <a href="{{ path('app') }}" class="sidebar-link">
                                 <iconify-icon icon="material-symbols:dashboard" width="25" height="25"></iconify-icon>
-                                <span class="hide-menu">Mon tableau de bord</span>
+                                <span class="hide-menu">{{ 'app.menus.top.dashboard.main'|trans }}</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
                             <a href="../main/index2.html" class="sidebar-link">
                                 <iconify-icon icon="fluent-mdl2:b-i-dashboard" width="25" height="25"></iconify-icon>
-                                <span class="hide-menu">Tableau de bord général</span>
+                                <span class="hide-menu">{{ 'app.menus.top.dashboard.general'|trans }}</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
                             <a href="../main/index3.html" class="sidebar-link">
                                 <iconify-icon icon="carbon:dashboard" width="25" height="25"></iconify-icon>
-                                <span class="hide-menu">Tableau de bord commercial</span>
+                                <span class="hide-menu">{{ 'app.menus.top.dashboard.commercial'|trans }}</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
                             <a href="../main/index3.html" class="sidebar-link">
                                 <iconify-icon icon="streamline:graph-solid" width="25" height="25"></iconify-icon>
-                                <span class="hide-menu">Tableau de bord ventes</span>
+                                <span class="hide-menu">{{ 'app.menus.top.dashboard.sales'|trans }}</span>
                             </a>
                         </li>
                     </ul>
