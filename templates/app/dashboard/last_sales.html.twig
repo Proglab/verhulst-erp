@@ -70,10 +70,21 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <li>
-                                        <a class="dropdown-item d-flex align-items-center gap-3" href="javascript:void(0)"><iconify-icon icon="ic:outline-edit"></iconify-icon> Modifier</a>
+                                        <a class="dropdown-item d-flex align-items-center gap-3" href="{{ ea_url()
+                                            .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                            .setController('App\\Controller\\Admin\\SalesCrudController')
+                                            .setAction('edit')
+                                            .setEntityId(sale.id)}}">
+                                            <iconify-icon icon="ic:outline-edit"></iconify-icon>
+                                            Modifier
+                                        </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item d-flex align-items-center gap-3" href="javascript:void(0)"><iconify-icon icon="mdi:eye"></iconify-icon> Détails</a>
+                                        <a class="dropdown-item d-flex align-items-center gap-3" href="{{ ea_url()
+                                            .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                            .setController('App\\Controller\\Admin\\SalesCrudController')
+                                            .setAction('detail')
+                                            .setEntityId(sale.id)}}"><iconify-icon icon="mdi:eye"></iconify-icon> Détails</a>
                                     </li>
                                 </ul>
                             </div>
