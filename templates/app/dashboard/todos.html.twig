@@ -37,8 +37,12 @@
                             <span>{{ todo.dateReminder|date('d/m/y') }}</span>
                         </td>
                         <td>
+                            {% if todo.client is not empty %}
                             <h6 class="mb-0">{{ todo.client.fullname }}</h6>
                             <span>{{ todo.client.company.name }}</span>
+                            {% else %}
+                                <span>-</span>
+                            {% endif %}
                         </td>
                         <td>
                             <span class="text-dark">{% if todo.project is not empty %}{{ todo.project.name }}{% else %}-{% endif %}</span>

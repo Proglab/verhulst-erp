@@ -18,16 +18,13 @@
                 <table class="table table-sm mb-0">
                     <thead class="text-dark fs-4">
                     <tr>
-                        <th scope="col" class="fs-4 fw-semibold mb-0">Société</th>
+                        <th scope="col" class="fs-4 fw-semibold mb-0">Client</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0">Produit</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0">Date</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0">PU</th>
-                        <th scope="col" class="fs-4 fw-semibold mb-0">Q</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0">Tot</th>
-                        <th scope="col" class="fs-4 fw-semibold mb-0">Réduc</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0">PV</th>
-                        <th scope="col" class="fs-4 fw-semibold mb-0">% Sales</th>
-                        <th scope="col" class="fs-4 fw-semibold mb-0">€ Sales</th>
+                        <th scope="col" class="fs-4 fw-semibold mb-0">Sales</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0"></th>
                     </tr>
                     </thead>
@@ -51,28 +48,19 @@
                         </td>
 
                         <td>
-                            {{ (sale.price)|number_format(2, ',', '.') }} €
-                        </td>
-
-                        <td>
-                            {{ (sale.quantity) }}
-                        </td>
-
-                        <td>
-                            {{ (sale.totalPrice)|number_format(2, ',', '.') }} €
+                            <span class="mb-0">{{ (sale.price)|number_format(2, ',', '.') }} €</span><br>
+                            <span>Quantité : {{ (sale.quantity) }}</span>
                         </td>
                         <td>
-                            {{ (sale.discount)|number_format(2, ',', '.') }} €
-                        </td>
-
-                        <td>
-                            {{ (sale.marge)|number_format(2, ',', '.') }} €
+                            <span class="mb-0">{{ (sale.totalPrice)|number_format(2, ',', '.') }} €</span><br>
+                            <span>Réduction : {{ (sale.discount)|number_format(2, ',', '.') }} €</span>
                         </td>
                         <td>
+                            <h6 class="nm-0">{{ (sale.marge)|number_format(2, ',', '.') }} €</h6>
+                        </td>
+                        <td>
+                            <h6 class="mb-0">{{ sale.euroCom|number_format(2, ',', '.') }}  €</h6>
                             {{ sale.percentCom }} %
-                        </td>
-                        <td>
-                            {{ sale.euroCom|number_format(2, ',', '.') }}  €
                         </td>
                         <td>
                         <td>
