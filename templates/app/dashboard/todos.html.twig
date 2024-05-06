@@ -31,7 +31,10 @@
                 {% for todo in this.todos %}
                     <tr>
                         <td>
-                            <span class="badge text-bg-danger">{{ todo.type }}</span>
+                            <button type="button" class="me-2 btn bg-primary-subtle text-primary "
+                                    data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="{{ todo.type }}">
+                                <i class="{{ todo.type.icon }}"></i>
+                            </button>
                         </td>
                         <td>
                             <span>{{ todo.dateReminder|date('d/m/y') }}</span>

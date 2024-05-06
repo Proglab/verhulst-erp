@@ -202,23 +202,49 @@
                         To do
                     </a>
                 </li>
-
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="/app/tests">
-                  <span>
-                    <iconify-icon icon="mdi:users" width="25" height="25"></iconify-icon>
-                  </span>
-                        <span class="hide-menu">Utilisateurs</span>
-                    </a>
+                <li class="nav-small-cap">
+                    <iconify-icon icon="fa6-solid:diagram-project" width="25" height="25"></iconify-icon>
+                    <span class="hide-menu">Admin</span>
                 </li>
-
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="/app/tests">
+                    <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
                   <span>
-                    <iconify-icon icon="solar:sale-bold" width="25" height="25"></iconify-icon>
+                      <iconify-icon icon="ri:admin-fill" width="25" height="25"></iconify-icon>
                   </span>
-                        <span class="hide-menu">Commissions</span>
+                        <span class="hide-menu">Admin</span>
                     </a>
+                    <ul aria-expanded="false" class="collapse first-level">
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="{{ ea_url()
+                                .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                .setController('App\\Controller\\Admin\\UserCrudController')
+                                .setAction('index') }}">
+                                  <span>
+                                    <iconify-icon icon="mdi:users" width="25" height="25"></iconify-icon>
+                                  </span>
+                                <span class="hide-menu">Utilisateurs</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="/app/tests">
+                              <span>
+                                <iconify-icon icon="solar:sale-bold" width="25" height="25"></iconify-icon>
+                              </span>
+                                <span class="hide-menu">Commissions</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="{{ ea_url()
+                                .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                .setController('App\\Controller\\Admin\\TodoTypeCrudController')
+                                .setAction('index') }}">
+                              <span>
+                                  <iconify-icon icon="dashicons:admin-tools" width="25" height="25"></iconify-icon>
+                              </span>
+                                <span class="hide-menu">Type de to do</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </nav>
