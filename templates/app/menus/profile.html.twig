@@ -22,16 +22,27 @@
                 </div>
             </div>
             <div class="message-body">
-                <a href="javascript:void(0)" class="p-2 dropdown-item h6 rounded-1">
+                <a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').set('routeName', 'admin_update_profile') }}" class="p-2 dropdown-item h6 rounded-1">
                     {{ 'app.menus.profile.dropdown.my_profile'|trans }}
                 </a>
-                <a href="javascript:void(0)" class="p-2 dropdown-item h6 rounded-1">
+                <a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').set('routeName', 'admin_password_update') }}" class="p-2 dropdown-item h6 rounded-1">
                     {{ 'app.menus.profile.dropdown.update_password'|trans }}
                 </a>
-                <a href="javascript:void(0)" class="p-2 dropdown-item h6 rounded-1">
-                    {{ 'app.menus.profile.dropdown.add_twofactor_auth'|trans }}
-                </a>
-                <a href="../main/authentication-login2.html" class="p-2 dropdown-item h6 rounded-1">
+                {% if app.user.isTotpAuthenticationEnabled() %}
+                    <a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').set('routeName', 'app_2fa_disable') }}" class="p-2 dropdown-item h6 rounded-1">
+                        {{ 'app.menus.profile.dropdown.delete_twofactor_auth'|trans }}
+                    </a>
+                {% else %}
+                    <a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').set('routeName', 'admin_2fa_enable') }}" class="p-2 dropdown-item h6 rounded-1">
+                        {{ 'app.menus.profile.dropdown.add_twofactor_auth'|trans }}
+                    </a>
+                {% endif%}
+                {% if is_granted('IS_IMPERSONATOR') %}
+                    <a href="{{ impersonation_exit_path(path('app')) }}" class="p-2 dropdown-item h6 rounded-1">
+                        Revenir au compte principal
+                    </a>
+                {% endif %}
+                <a href="{{ path('app_logout') }}" class="p-2 dropdown-item h6 rounded-1">
                     {{ 'app.menus.profile.dropdown.logout'|trans }}
                 </a>
             </div>
