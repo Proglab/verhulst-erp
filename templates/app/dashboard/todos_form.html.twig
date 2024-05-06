@@ -1,3 +1,26 @@
 <div {{ attributes }}>
+    {{ form_start(form, {
+        attr: {
+            'data-action': 'live#action:prevent',
+            'data-live-action-param': 'save'
+        }
+    }) }}
 
+
+    {{ form_label(form.type) }}
+    {{ form_widget(form.type) }}
+    {{ form_errors(form.type) }}
+
+
+    {{ form_label(form.todo) }}<br>
+    {{ form_widget(form.todo) }}
+    {{ form_errors(form.todo) }}<br>
+
+    {{ form_label(form.dateReminder) }}
+    {{ form_widget(form.dateReminder, {'type': 'datetime-local'}) }}
+    {{ form_errors(form.dateReminder) }}
+    <button type="submit" class="btn btn-primary mt-3">
+        {{ 'Sauvegarder'|trans }}
+    </button>
+    {{ form_end(form) }}
 </div>

@@ -9,6 +9,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveArg;
+use Symfony\UX\LiveComponent\Attribute\LiveListener;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
@@ -18,6 +19,8 @@ class TodoComponent extends AbstractController
 {
     use DefaultActionTrait;
     use ComponentToolsTrait;
+
+    public ?Todo $todo = null;
 
     public function __construct(private TodoRepository $todoRepository, private Security $security)
     {
@@ -48,8 +51,14 @@ class TodoComponent extends AbstractController
     #[LiveAction]
     public function edit(#[LiveArg] int $id)
     {
-        $this->emit('todo-edit', [
-            'todo' => $id,
-        ]);
+        $this->todo = $this->todoRepository->find($id);
+        $this->emit('editTodo', ['id' => $id]);
+        $this->dispatchBrowserEvent('modal:open');
+    }
+
+    #[LiveListener('refreshTodo')]
+    public function refresh()
+    {
+
     }
 }

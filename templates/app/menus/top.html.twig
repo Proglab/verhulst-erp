@@ -206,6 +206,7 @@
                     <iconify-icon icon="fa6-solid:diagram-project" width="25" height="25"></iconify-icon>
                     <span class="hide-menu">Admin</span>
                 </li>
+                {% if is_granted('ROLE_ADMIN') %}
                 <li class="sidebar-item">
                     <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
                   <span>
@@ -246,6 +247,7 @@
                         </li>
                     </ul>
                 </li>
+                {% endif %}
             </ul>
         </nav>
         <!-- End Sidebar navigation -->

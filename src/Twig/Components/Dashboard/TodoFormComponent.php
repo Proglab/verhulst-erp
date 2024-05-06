@@ -18,36 +18,42 @@ use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
 #[AsLiveComponent('todo_form', template: 'app/dashboard/todos_form.html.twig')]
-class TodoFormComponent
+class TodoFormComponent extends AbstractController
 {
     use DefaultActionTrait;
     use ComponentToolsTrait;
+    use ComponentWithFormTrait;
 
-    #[LiveProp(writable: true)]
+    #[LiveProp(updateFromParent: true)]
     public ?Todo $todoUpdate = null;
 
     public function __construct(private TodoRepository $todoRepository, private Security $security)
     {
     }
 
-    #[LiveListener('todo-edit')]
-    public function todoEdit(#[LiveArg] int $todo)
-    {
-        $this->todoUpdate = $this->todoRepository->find($todo);
-        $this->dispatchBrowserEvent('modal:open');
-    }
-
     #[LiveAction]
     public function save()
     {
         $this->submitForm();
+
         /** @var Todo $post */
         $post = $this->getForm()->getData();
+
+
         $this->todoUpdate = $post;
         $this->todoRepository->save($post, true);
+
+
 
         $this->addFlash('success', 'Todo saved!');
         $this->resetForm();
         $this->dispatchBrowserEvent('modal:close');
+
+        $this->emit('refreshTodo');
+    }
+
+    protected function instantiateForm(): FormInterface
+    {
+        return $this->createForm(TodoType::class, $this->todoUpdate);
     }
 }

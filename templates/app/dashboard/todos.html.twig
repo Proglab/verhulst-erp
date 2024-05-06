@@ -42,7 +42,7 @@
                         <td>
                             {% if todo.client is not empty %}
                             <h6 class="mb-0">{{ todo.client.fullname }}</h6>
-                            <span>{{ todo.client.company.name }}</span>
+                            <span><i>{{ todo.client.company.name }}</i></span>
                             {% else %}
                                 <span>-</span>
                             {% endif %}
@@ -74,8 +74,7 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <li>
-                                        <button class="dropdown-item d-flex align-items-center gap-3" data-action="live#action" data-live-action-param="edit" data-live-id-param="{{ todo.id }}"
-                                                data-bs-toggle="modal" data-bs-target="#modalTodo">
+                                        <button class="dropdown-item d-flex align-items-center gap-3" data-action="live#action" data-live-action-param="edit" data-live-id-param="{{ todo.id }}">
                                             <iconify-icon icon="ic:outline-edit"></iconify-icon>
                                             Modifier</button>
                                     </li>
@@ -116,10 +115,14 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    {{ component('todo_form') }}
+                    {% if this.todo is not empty %}
+                        {{ component('todo_form', {
+                            todoUpdate: this.todo,
+                            id: 'todo-'~this.todo.id
+                        }) }}
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>
