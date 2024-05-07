@@ -1,3 +1,3 @@
-var quill = new Quill("#editor", {
+var quill = new Quill(".tyny", {
   theme: "snow",
 });

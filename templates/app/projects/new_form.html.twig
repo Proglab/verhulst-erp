@@ -1,0 +1,32 @@
+<div class="col-lg-12" {{ attributes }}>
+    <!-- -------------------------------------------- -->
+    <!-- Mes ventes -->
+    <!-- -------------------------------------------- -->
+    <div class="card">
+        <div class="card-body">
+            {{ form_start(form) }}
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_label(form.name) }}
+                    {{ form_widget(form.name) }}
+                </div>
+                <div class="col-md-3">
+                    {{ form_label(form.date_begin) }}
+                    {{ form_widget(form.date_begin, {'type': 'date'}) }}
+                </div>
+                <div class="col-md-3">
+                    {{ form_label(form.date_end) }}
+                    {{ form_widget(form.date_end, {'type': 'date'}) }}
+                </div>
+            </div>
+            <div class="row">
+                {{ form_label(form.type) }}
+                {{ form_widget(form.type) }}
+            </div>
+
+
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>

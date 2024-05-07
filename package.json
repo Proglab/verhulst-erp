@@ -36,6 +36,7 @@
         "foundation-emails": "^2.3.1",
         "handsontable": "^14.2.0",
         "hyperformula": "^2.6.2",
+        "tinymce": "^7.0.1",
         "toastr": "^2.1.4",
         "webpack": "^5.76.0"
     }

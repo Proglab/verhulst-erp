@@ -13,14 +13,15 @@
 
 
     {{ form_label(form.todo) }}<br>
-    {{ form_widget(form.todo) }}
+    {{ form_widget(form.todo, {'attr': {'class': 'tyny'}}) }}
     {{ form_errors(form.todo) }}<br>
 
     {{ form_label(form.dateReminder) }}
     {{ form_widget(form.dateReminder, {'type': 'datetime-local'}) }}
     {{ form_errors(form.dateReminder) }}
-    <button type="submit" class="btn btn-primary mt-3">
+    <button type="submit" name="submitbtn" class="btn btn-primary mt-3">
         {{ 'Sauvegarder'|trans }}
     </button>
     {{ form_end(form) }}
 </div>
+
