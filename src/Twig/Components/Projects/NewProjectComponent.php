@@ -5,6 +5,7 @@ namespace App\Twig\Components\Projects;
 use App\Entity\Todo;
 use App\Entity\User;
 use App\Form\Type\NewProjectType;
+use App\Repository\ProjectRepository;
 use App\Repository\SalesRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Exception\ForbiddenActionException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,7 +30,7 @@ class NewProjectComponent extends AbstractController
     #[LiveProp]
     public string $locale;
 
-    public function __construct()
+    public function __construct(private ProjectRepository $projectRepository)
     {
     }
 
@@ -43,6 +44,10 @@ class NewProjectComponent extends AbstractController
     {
         $this->submitForm();
         $post = $this->getForm()->getData();
-        dd($post);
+
+        $this->projectRepository->save($post, true);
+
+        $this->addFlash('success', 'Project saved!');
+        return $this->redirectToRoute('project_details', ['project' => $post->getId()]);
     }
 }

@@ -13,7 +13,7 @@
                 </div>
             </a>
             <a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\SalesCrudController').setAction('new') }}" class="d-flex align-items-center pb-9 position-relative m-3">
-                <div class="bg-secondary-subtle rounded round-48 me-3 d-flex align-items-center justify-content-center">
+                <div class="bg-warning-subtle rounded round-48 me-3 d-flex align-items-center justify-content-center">
                     <iconify-icon icon="foundation:burst-sale" width="40" height="40"></iconify-icon>
                 </div>
                 <div>
@@ -21,11 +21,19 @@
                 </div>
             </a>
             <a href="{{ ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\TodoCrudController').setAction('new') }}" class="d-flex align-items-center pb-9 position-relative m-3">
-                <div class="bg-secondary-subtle rounded round-48 me-3 d-flex align-items-center justify-content-center">
+                <div class="bg-info-subtle rounded round-48 me-3 d-flex align-items-center justify-content-center">
                     <iconify-icon icon="wpf:todo-list" width="40" height="40"></iconify-icon>
                 </div>
                 <div>
                     <h6 class="mb-0">Créer un to do</h6>
+                </div>
+            </a>
+            <a href="{{ path('project_new') }}" class="d-flex align-items-center pb-9 position-relative m-3">
+                <div class="bg-danger-subtle rounded round-48 me-3 d-flex align-items-center justify-content-center">
+                    <iconify-icon icon="fa6-solid:diagram-project" width="40" height="40"></iconify-icon>
+                </div>
+                <div>
+                    <h6 class="mb-0">Créer un projet</h6>
                 </div>
             </a>
         </div>
