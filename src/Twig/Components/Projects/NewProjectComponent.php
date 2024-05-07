@@ -2,6 +2,7 @@
 
 namespace App\Twig\Components\Projects;
 
+use App\Entity\Todo;
 use App\Entity\User;
 use App\Form\Type\NewProjectType;
 use App\Repository\SalesRepository;
@@ -35,5 +36,13 @@ class NewProjectComponent extends AbstractController
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(NewProjectType::class);
+    }
+
+    #[LiveAction]
+    public function save()
+    {
+        $this->submitForm();
+        $post = $this->getForm()->getData();
+        dd($post);
     }
 }

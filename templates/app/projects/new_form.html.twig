@@ -4,7 +4,12 @@
     <!-- -------------------------------------------- -->
     <div class="card">
         <div class="card-body">
-            {{ form_start(form) }}
+            {{ form_start(form, {
+                attr: {
+                    'data-action': 'live#action:prevent',
+                    'data-live-action-param': 'save'
+                }
+            }) }}
             <div class="row">
                 <div class="col-md-6">
                     {{ form_label(form.name) }}
@@ -19,13 +24,7 @@
                     {{ form_widget(form.date_end, {'type': 'date'}) }}
                 </div>
             </div>
-            <div class="row">
-                {{ form_label(form.type) }}
-                {{ form_widget(form.type) }}
-            </div>
-
-
-
+            <button type="submit" class="btn btn-primary mt-3">Sauvegarder</button>
             {{ form_end(form) }}
         </div>
     </div>

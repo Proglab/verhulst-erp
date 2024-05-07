@@ -35,6 +35,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -52,15 +53,15 @@ class DashboardController extends AbstractDashboardController
     }
 
     #[Route('/admin', name: 'admin')]
-    public function admin(): Response
+    public function admin(): RedirectResponse
     {
-        return $this->redirectToRoute('dashboard_admin');
+        return $this->redirectToRoute('app');
     }
 
     #[Route('/admin', name: 'app_admin_dashboard_index')]
-    public function admin2(): Response
+    public function admin2(): RedirectResponse
     {
-        return $this->redirectToRoute('dashboard_admin');
+        return $this->redirectToRoute('app');
     }
 
     public function configureAssets(): Assets
@@ -168,7 +169,7 @@ class DashboardController extends AbstractDashboardController
     }
 
     #[Route('/admin/{_locale}', name: 'dashboard_admin')]
-    public function index(): Response
+    public function index(): RedirectResponse
     {
         if (!$this->isGranted('ROLE_APP')) {
             return $this->redirectToRoute('dashboard_budget');
@@ -179,53 +180,16 @@ class DashboardController extends AbstractDashboardController
         }
 
         if (!$this->isGranted('ROLE_ADMIN')) {
-            return $this->redirectToRoute('dashboard_com');
+            return $this->redirectToRoute('app');
         }
 
-        $months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-        $default_year = (new \DateTime())->format('Y');
-        $year = $this->requestStack->getCurrentRequest()->get('year', $default_year);
-        $default_month = (new \DateTime())->format('m');
-        $month = $this->requestStack->getCurrentRequest()->get('month', $default_month);
-
-        $sales = $this->salesRepository->get10LastSales();
-        $todos = $this->todoRepository->findAllToday();
-
-        return $this->render('admin/dashboard/admin.html.twig', [
-            'year' => $year,
-            'month' => $months[$month - 1],
-            'month_num' => $month,
-            'locale' => $this->requestStack->getCurrentRequest()->getLocale(),
-            'sales' => $sales,
-            'todos' => $todos,
-        ]);
+        return $this->redirectToRoute('app');
     }
 
     #[Route('/admin/{_locale}/dashboard/com', name: 'dashboard_com')]
-    public function dashboard(AdminContext $adminContext): Response
+    public function dashboard(AdminContext $adminContext): RedirectResponse
     {
-        if (!$this->isGranted('ROLE_COMMERCIAL')) {
-            throw new ForbiddenActionException($adminContext);
-        }
-        $months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-        $default_year = (new \DateTime())->format('Y');
-        $year = $this->requestStack->getCurrentRequest()->get('year', $default_year);
-        $default_month = (new \DateTime())->format('m');
-        $month = $this->requestStack->getCurrentRequest()->get('month', $default_month);
-        /** @var User $me */
-        $me = $this->getUser();
-        $sales = $this->salesRepository->get10LastSalesByUser($me);
-
-        $todos = $this->todoRepository->findNext10ByUser($this->getUser());
-
-        return $this->render('admin/dashboard/com.html.twig', [
-            'year' => $year,
-            'month' => $months[$month - 1],
-            'month_num' => $month,
-            'locale' => $this->requestStack->getCurrentRequest()->getLocale(),
-            'sales' => $sales,
-            'todos' => $todos,
-        ]);
+        return $this->redirectToRoute('app');
     }
 
     #[Route('/admin/{_locale}/dashboard/charts/my-ca', name: 'my_sales')]
