@@ -4,18 +4,12 @@ declare(strict_types=1);
 namespace App\Form\Type;
 
 use App\Entity\ProductEvent;
-use App\Entity\ProductPackageVip;
-use Arkounay\Bundle\UxCollectionBundle\Form\UxCollectionType;
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
+use App\Entity\ProductSponsoring;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\PercentType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -23,7 +17,7 @@ use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 use Symfonycasts\DynamicForms\DependentField;
 use Symfonycasts\DynamicForms\DynamicFormBuilder;
 
-class NewProductPackageType extends AbstractType
+class NewProductSponsoringType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -31,7 +25,7 @@ class NewProductPackageType extends AbstractType
 
         $builder
             ->add('name', null, [
-                'label' => 'Nom du package',
+                'label' => 'Nom du sponsoring',
                 'attr' => [
                     'class' => 'col-md-8 mb-3'
                 ],
@@ -180,19 +174,13 @@ class NewProductPackageType extends AbstractType
                         'mapped' => false,
                     ]);
                 }
-            })
-
-
-
-        ;
-
-
+            });
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => ProductPackageVip::class,
+            'data_class' => ProductSponsoring::class,
         ]);
     }
 }
