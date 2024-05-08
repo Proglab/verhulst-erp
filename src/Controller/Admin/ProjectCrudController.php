@@ -128,6 +128,9 @@ class ProjectCrudController extends BaseCrudController
         $createEvent = Action::new('createEvent', 'Créer un event')
             ->linkToCrudAction('createEvent');
 
+        $createEvent = Action::new('createPackage', 'Créer un package VIP')
+            ->linkToCrudAction('createPackage');
+
         $actions
             ->setPermission('cloneProject', 'ROLE_ENCODE')
             ->setPermission('archiveProject', 'ROLE_COMMERCIAL')
@@ -287,6 +290,14 @@ class ProjectCrudController extends BaseCrudController
     {
         $project = $context->getEntity();
         return $this->render('admin/project/create_event_page.html.twig', [
+            'project' => $project->getInstance(),
+        ]);
+    }
+
+    public function createPackage(AdminContext $context)
+    {
+        $project = $context->getEntity();
+        return $this->render('admin/project/create_package_page.html.twig', [
             'project' => $project->getInstance(),
         ]);
     }

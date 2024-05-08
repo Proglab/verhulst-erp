@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
@@ -20,9 +21,15 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PercentField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ProductSponsoringCrudController extends BaseCrudController
 {
+    public function __construct(private AdminUrlGenerator $adminUrlGenerator)
+    {
+    }
+
     public static function getEntityFqcn(): string
     {
         return ProductSponsoring::class;
@@ -123,5 +130,10 @@ class ProductSponsoringCrudController extends BaseCrudController
         };
 
         return $response;
+    }
+
+    protected function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
+    {
+        return $this->redirect($this->adminUrlGenerator->setController(ProjectCrudController::class)->setAction(Action::DETAIL)->setEntityId($context->getEntity()->getInstance()->getProject()->getId())->generateUrl());
     }
 }

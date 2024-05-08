@@ -4,26 +4,49 @@
             <div class="row align-items-center">
                 <div class="col-12">
                     <div class="d-sm-flex align-items-center justify-content-between">
-                        <h3 class="mb-4 mb-md-0 card-title">{{project.name}}</h3>
+                        <div>
+                            <h3 class="mb-4 mb-md-0 card-title">{{project.name}}</h3>
+                            {% if project.dateBegin == project.dateEnd %}
+                                <b>Date: {{ project.dateBegin|date('d/m/Y') }}</b>
+                            {% else %}
+                                <b>du {{ project.dateBegin|date('d/m/Y') }} au {{ project.dateEnd|date('d/m/Y') }}</b>
+                            {% endif %}
+                        </div>
                         <div>
                             <div class="btn-group mb-2" role="group" aria-label="Basic example">
                                 <a href="{{ ea_url()
-                                    .setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\ProjectCrudController').setAction('createEvent').setEntityId(project.id) }}" class="btn bg-primary-subtle text-primary ">
+                                    .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                    .setController('App\\Controller\\Admin\\ProjectCrudController')
+                                    .setAction('createEvent')
+                                    .setEntityId(project.id) }}"
+                                   class="btn bg-primary-subtle text-primary ">
                                     Créer un event
                                 </a>
-                                <button type="button" class="btn bg-primary-subtle text-primary ">
+                                <a href="{{ ea_url()
+                                    .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                    .setController('App\\Controller\\Admin\\ProjectCrudController')
+                                    .setAction('createPackage')
+                                    .setEntityId(project.id) }}" class="btn bg-primary-subtle text-primary ">
                                     Créer un package VIP
-                                </button>
-                                <button type="button" class="btn bg-primary-subtle text-primary ">
+                                </a>
+                                <a href="{{ ea_url()
+                                    .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                    .setController('App\\Controller\\Admin\\ProjectCrudController')
+                                    .setAction('createSponsoring')
+                                    .setEntityId(project.id) }}" class="btn bg-primary-subtle text-primary ">
                                     Créer un sponsoring
-                                </button>
-                                <button type="button" class="btn bg-primary-subtle text-primary ">
+                                </a>
+                                <a href="{{ ea_url()
+                                    .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                    .setController('App\\Controller\\Admin\\ProjectCrudController')
+                                    .setAction('createDivers')
+                                    .setEntityId(project.id) }}"  class="btn bg-primary-subtle text-primary ">
                                     Créer un divers
-                                </button>
+                                </a>
                             </div>
                             <div class="btn-group mb-2" role="group" aria-label="Basic example">
                                 <a href="{{ ea_url()
-                                .setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\ProjectCrudController').setAction('archiveProject').setEntityId(project.id) }}" class="btn bg-danger-subtle text-danger ">
+                                    .setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\ProjectCrudController').setAction('archiveProject').setEntityId(project.id) }}" class="btn bg-danger-subtle text-danger ">
                                     Archiver le projet
                                 </a>
                             </div>
@@ -33,6 +56,17 @@
             </div>
         </div>
     </div>
+
+
+    {% if project.archive %}
+        <div class="alert alert-warning mt-3" role="alert">
+            <h4 class="alert-heading">Attention</h4>
+            <p>Ce projet est archivé !</p>
+        </div>
+    {% endif %}
+
+
+
     {% if project.productEvent is not empty %}
         <div class="row mt-3">
             <div class="col-md-12 d-flex align-items-stretch">
@@ -42,14 +76,14 @@
                             <div class="d-sm-flex align-items-center justify-content-between">
                                 <h2 class="mb-4 mb-md-0 card-title">Events à la carte</h2>
                                 <div class="col-md-6">
-                                    <input type="text" value="" name="search" class="form-control col-md-6" placeholder="Recherche">
+                                    <input type="text" value="" name="search" class="form-control col-md-6" placeholder="Recherche" data-model="queryEvent">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            {% for event in project.productEvent|sort((a, b) => a.date|date('Ymd') <= b.date|date('Ymd')) %}
+            {% for event in this.events %}
                 <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-3">
                     <div class="card w-100">
                         <div class="card-body bg-success-subtle">
@@ -58,21 +92,30 @@
                                     <h3 class="mb-4 mb-md-0 card-title">{{ event.name }}</h3>
                                     <div>
                                         <div class="btn-group mb-2" role="group" aria-label="Basic example">
-                                            <button type="button" class="btn bg-info-subtle text-black py-1 px-3">
+                                            <button type="button" class="btn bg-info-subtle text-black py-1 px-3" data-bs-toggle="tooltip" title="Clone">
                                                 <i class="fa fa-clone"></i>
                                             </button>
-                                            <button type="button" class="btn bg-warning-subtle text-black py-1 px-3">
+                                            <a href="{{ ea_url()
+                                                .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                .setController('App\\Controller\\Admin\\SalesCrudController')
+                                                .setAction('new')
+                                                .set('entityFqcn', 'App\\Entity\\Sales')
+                                                .set('productId', event.id)
+                                                .set('projectId', project.id)
+                                                .setEntityId(null)
+
+                                            }}"  class="btn bg-warning-subtle text-black py-1 px-3" data-bs-toggle="tooltip" title="Créer une vente">
                                                 <i class="fa fa-euro-sign"></i>
-                                            </button>
+                                            </a>
                                             <a href="{{ ea_url()
                                                 .setDashboard('App\\Controller\\Admin\\DashboardController')
                                                 .setController('App\\Controller\\Admin\\ProductEventCrudController')
                                                 .setAction('edit')
-                                                .setEntityId(event.id) }}" class="btn bg-primary-subtle text-primary  py-1 px-3 ">
+                                                .setEntityId(event.id) }}" class="btn bg-primary-subtle text-primary  py-1 px-3 " data-bs-toggle="tooltip" title="Modifier">
                                                 <i class="fa fa-pen-to-square"></i>
                                             </a>
                                             <button type="button" class="btn bg-danger-subtle text-danger  py-1 px-3 " data-action="live#action"
-                                                    data-live-action-param="delete" data-live-id-param="{{ event.id }}">
+                                                    data-live-action-param="delete" data-live-id-param="{{ event.id }}" data-bs-toggle="tooltip" title="Supprimer">
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                         </div>
@@ -82,9 +125,9 @@
                             <div class="col-12">
                                 <div class="d-sm-flex align-items-center justify-content-between">
                                     {% if event.dateBegin == event.dateEnd %}
-                                    <b>Date: {{ event.date|date('d/m/Y') }}</b>
+                                        <b>Date: {{ event.date|date('d/m/Y') }}</b>
                                     {% else %}
-                                    <b>du {{ event.dateBegin|date('d/m/Y') }} au {{ event.dateEnd|date('d/m/Y') }}</b>
+                                        <b>du {{ event.dateBegin|date('d/m/Y') }} au {{ event.dateEnd|date('d/m/Y') }}</b>
                                     {% endif %}
                                 </div>
                             </div>
@@ -125,14 +168,14 @@
                             <div class="d-sm-flex align-items-center justify-content-between">
                                 <h2 class="mb-4 mb-md-0 card-title">Packages VIP</h2>
                                 <div class="col-md-6">
-                                    <input type="text" value="" name="search" class="form-control col-md-6" placeholder="Recherche">
+                                    <input type="text" value="" name="search" class="form-control col-md-6" placeholder="Recherche" data-model="queryPackage">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            {% for package in project.productPackage|sort((a, b) => a.date|date('Ymd') <= b.date|date('Ymd')) %}
+            {% for package in this.packages %}
                 <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-3">
                     <div class="card w-100">
                         <div class="card-body {% if package.quantityMax is empty  or package.QuantitySales != package.quantityMax %}bg-success-subtle{% endif %}">
@@ -141,21 +184,30 @@
                                     <h3 class="mb-4 mb-md-0 card-title">{{ package.name }}</h3>
                                     <div>
                                         <div class="btn-group mb-2" role="group" aria-label="Basic example">
-                                            <button type="button" class="btn bg-info-subtle text-black py-1 px-3">
+                                            <button type="button" class="btn bg-info-subtle text-black py-1 px-3" data-bs-toggle="tooltip" title="Clone">
                                                 <i class="fa fa-clone"></i>
                                             </button>
-                                            <button type="button" class="btn bg-warning-subtle text-black py-1 px-3">
+                                            <a href="{{ ea_url()
+                                                .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                .setController('App\\Controller\\Admin\\SalesCrudController')
+                                                .setAction('new')
+                                                .set('entityFqcn', 'App\\Entity\\Sales')
+                                                .set('productId', package.id)
+                                                .set('projectId', project.id)
+                                                .setEntityId(null)
+
+                                            }}"  class="btn bg-warning-subtle text-black py-1 px-3" data-bs-toggle="tooltip" title="Créer une vente">
                                                 <i class="fa fa-euro-sign"></i>
-                                            </button>
+                                            </a>
                                             <a href="{{ ea_url()
                                                 .setDashboard('App\\Controller\\Admin\\DashboardController')
                                                 .setController('App\\Controller\\Admin\\ProductPackageVipCrudController')
                                                 .setAction('edit')
-                                                .setEntityId(package.id) }}" class="btn bg-primary-subtle text-primary  py-1 px-3 ">
+                                                .setEntityId(package.id) }}" class="btn bg-primary-subtle text-primary  py-1 px-3 " data-bs-toggle="tooltip" title="Modifier">
                                                 <i class="fa fa-pen-to-square"></i>
                                             </a>
                                             <button type="button" class="btn bg-danger-subtle text-danger  py-1 px-3 " data-action="live#action"
-                                                    data-live-action-param="delete" data-live-id-param="{{ package.id }}">
+                                                    data-live-action-param="delete" data-live-id-param="{{ package.id }}" data-bs-toggle="tooltip" title="Supprimer">
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                         </div>
@@ -185,23 +237,23 @@
                             {% endif %}
 
                             {% if package.description is not empty %}
-                            <div class="col-12 mt-3 position-relative mt-3 p-3 border overflow-auto" style="height: 150px;">
-                                {{ package.description|raw }}
-                            </div>
+                                <div class="col-12 mt-3 position-relative mt-3 p-3 border overflow-auto" style="height: 150px;">
+                                    {{ package.description|raw }}
+                                </div>
                             {% endif %}
                         </div>
                         {% if package.doc is not null %}
-                        <div class="card-footer pt-1">
-                            <ul class="list-unstyled d-flex align-items-center justify-content-center mb-0 mt-0">
-                                <li class="position-relative">
-                                    <a class="text-primary d-flex align-items-center justify-content-center p-2 fs-5 rounded-circle fw-semibold" href="javascript:void(0)">
-                                        <a href="/files/products/{{ package.doc }}" target="_blank" class="d-inline-flex align-items-center justify-content-center btn btn-danger rounded-circle btn-lg round-48">
-                                            <i class="fa-solid fa-download" style="width: 20px; height: 25px;"></i>
+                            <div class="card-footer pt-1">
+                                <ul class="list-unstyled d-flex align-items-center justify-content-center mb-0 mt-0">
+                                    <li class="position-relative">
+                                        <a class="text-primary d-flex align-items-center justify-content-center p-2 fs-5 rounded-circle fw-semibold" href="javascript:void(0)">
+                                            <a href="/files/products/{{ package.doc }}" target="_blank" class="d-inline-flex align-items-center justify-content-center btn btn-danger rounded-circle btn-lg round-48">
+                                                <i class="fa-solid fa-download" style="width: 20px; height: 25px;"></i>
+                                            </a>
                                         </a>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+                                    </li>
+                                </ul>
+                            </div>
                         {% endif %}
                     </div>
                 </div>
@@ -217,7 +269,7 @@
                             <div class="d-sm-flex align-items-center justify-content-between">
                                 <h2 class="mb-4 mb-md-0 card-title">Sponsoring</h2>
                                 <div class="col-md-6">
-                                    <input type="text" value="" name="search" class="form-control col-md-6" placeholder="Recherche">
+                                    <input type="text" value="" name="search" class="form-control col-md-6" placeholder="Recherche" data-model="querySponsoring">
                                 </div>
                             </div>
                         </div>
@@ -225,7 +277,7 @@
                 </div>
             </div>
 
-            {% for sponsoring in project.productSponsoring|sort((a, b) => a.dateBegin|date('Ymd') <= b.dateBegin|date('Ymd')) %}
+            {% for sponsoring in this.sponsorings %}
                 <div class="col-md-4 d-flex align-items-stretch mt-3">
                     <div class="card w-100">
                         <div class="card-body {% if sponsoring.quantityMax is empty  or sponsoring.QuantitySales != sponsoring.quantityMax %}bg-success-subtle{% endif %}">
@@ -234,21 +286,30 @@
                                     <h3 class="mb-4 mb-md-0 card-title">{{ sponsoring.name }}</h3>
                                     <div>
                                         <div class="btn-group mb-2" role="group" aria-label="Basic example">
-                                            <button type="button" class="btn bg-info-subtle text-black py-1 px-3">
+                                            <button type="button" class="btn bg-info-subtle text-black py-1 px-3" data-bs-toggle="tooltip" title="Clone">
                                                 <i class="fa fa-clone"></i>
                                             </button>
-                                            <button type="button" class="btn bg-warning-subtle text-black py-1 px-3">
+                                            <a href="{{ ea_url()
+                                                .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                .setController('App\\Controller\\Admin\\SalesCrudController')
+                                                .setAction('new')
+                                                .set('entityFqcn', 'App\\Entity\\Sales')
+                                                .set('productId', sponsoring.id)
+                                                .set('projectId', project.id)
+                                                .setEntityId(null)
+
+                                            }}"  class="btn bg-warning-subtle text-black py-1 px-3" data-bs-toggle="tooltip" title="Créer une vente">
                                                 <i class="fa fa-euro-sign"></i>
-                                            </button>
+                                            </a>
                                             <a href="{{ ea_url()
                                                 .setDashboard('App\\Controller\\Admin\\DashboardController')
                                                 .setController('App\\Controller\\Admin\\ProductSponsoringCrudController')
                                                 .setAction('edit')
-                                                .setEntityId(sponsoring.id) }}" class="btn bg-primary-subtle text-primary  py-1 px-3 ">
+                                                .setEntityId(sponsoring.id) }}" class="btn bg-primary-subtle text-primary  py-1 px-3 " data-bs-toggle="tooltip" title="Modifier">
                                                 <i class="fa fa-pen-to-square"></i>
                                             </a>
                                             <button type="button" class="btn bg-danger-subtle text-danger  py-1 px-3 " data-action="live#action"
-                                                    data-live-action-param="delete" data-live-id-param="{{ sponsoring.id }}">
+                                                    data-live-action-param="delete" data-live-id-param="{{ sponsoring.id }}" data-bs-toggle="tooltip" title="Supprimer">
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                         </div>
@@ -312,7 +373,7 @@
                             <div class="d-sm-flex align-items-center justify-content-between">
                                 <h2 class="mb-4 mb-md-0 card-title">Divers</h2>
                                 <div class="col-md-6">
-                                    <input type="text" value="" name="search" class="form-control col-md-6" placeholder="Recherche">
+                                    <input type="text" value="" name="search" class="form-control col-md-6" placeholder="Recherche" data-model="queryDivers">
                                 </div>
                             </div>
                         </div>
@@ -320,7 +381,7 @@
                 </div>
             </div>
 
-            {% for divers in project.productDivers|sort((a, b) => a.dateBegin|date('Ymd') <= b.dateBegin|date('Ymd')) %}
+            {% for divers in this.divers %}
                 <div class="col-md-4 d-flex align-items-stretch mt-3">
                     <div class="card w-100">
                         <div class="card-body bg-success-subtle">
@@ -329,21 +390,30 @@
                                     <h3 class="mb-4 mb-md-0 card-title">{{ divers.name }}</h3>
                                     <div>
                                         <div class="btn-group mb-2" role="group" aria-label="Basic example">
-                                            <button type="button" class="btn bg-info-subtle text-black py-1 px-3">
+                                            <button type="button" class="btn bg-info-subtle text-black py-1 px-3" data-bs-toggle="tooltip" title="Clone">
                                                 <i class="fa fa-clone"></i>
                                             </button>
-                                            <button type="button" class="btn bg-warning-subtle text-black py-1 px-3">
+                                            <a href="{{ ea_url()
+                                                .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                .setController('App\\Controller\\Admin\\SalesCrudController')
+                                                .setAction('new')
+                                                .set('entityFqcn', 'App\\Entity\\Sales')
+                                                .set('productId', divers.id)
+                                                .set('projectId', project.id)
+                                                .setEntityId(null)
+
+                                            }}" class="btn bg-warning-subtle text-black py-1 px-3" data-bs-toggle="tooltip" title="Créer une vente">
                                                 <i class="fa fa-euro-sign"></i>
-                                            </button>
+                                            </a>
                                             <a href="{{ ea_url()
                                                 .setDashboard('App\\Controller\\Admin\\DashboardController')
                                                 .setController('App\\Controller\\Admin\\ProductDiversCrudController')
                                                 .setAction('edit')
-                                                .setEntityId(divers.id) }}" class="btn bg-primary-subtle text-primary  py-1 px-3 ">
+                                                .setEntityId(divers.id) }}" class="btn bg-primary-subtle text-primary  py-1 px-3 " data-bs-toggle="tooltip" title="Modifier">
                                                 <i class="fa fa-pen-to-square"></i>
                                             </a>
                                             <button type="button" class="btn bg-danger-subtle text-danger  py-1 px-3 " data-action="live#action"
-                                                    data-live-action-param="delete" data-live-id-param="{{ divers.id }}">
+                                                    data-live-action-param="delete" data-live-id-param="{{ divers.id }}" data-bs-toggle="tooltip" title="Supprimer">
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                         </div>
