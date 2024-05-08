@@ -385,6 +385,15 @@ class SalesCrudController extends BaseCrudController
         $contact = $this->entityManager->getRepository(CompanyContact::class)->find($request->get('contactId'));
         $projects = $this->entityManager->getRepository(Project::class)->findBy(['archive' => false], ['name' => 'ASC']);
 
+        if ($request->get('projectId') && $request->get('productId')) {
+            return $this->redirect($this->adminUrlGenerator
+                ->setAction('createSale')
+                ->set('contactId', $request->get('contactId'))
+                ->set('projectId', $request->get('projectId'))
+                ->set('productId', $request->get('productId'))
+                ->generateUrl());
+        }
+
         return $this->render('admin/sales/list_project.html.twig', [
                 'contact' => $contact,
                 'context' => $context,
