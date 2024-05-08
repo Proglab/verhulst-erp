@@ -1,14 +1,14 @@
 {% extends 'app/templates/base.html.twig' %}
 
-{% block title %}Détails du projet{% endblock %}
+{% block title %}Créer un nouveau Event pour le projet {{ project.name }}{% endblock %}
 
 {% block breadcrumb %}
-    <div class="row" style="margin-top: 50px;">
+    <div class="row">
         <div class="card card-body py-3">
             <div class="row align-items-center">
                 <div class="col-12">
                     <div class="d-sm-flex align-items-center justify-space-between">
-                        <h4 class="mb-4 mb-md-0 card-title">Détails du projet</h4>
+                        <h4 class="mb-4 mb-md-0 card-title">Créer un nouveau Event pour le projet {{ project.name }}</h4>
                         <nav aria-label="breadcrumb" class="ms-auto">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item d-flex align-items-center">
@@ -25,11 +25,17 @@
                                     </a>
                                 </li>
                                 <li class="breadcrumb-item" aria-current="page">
-                                        {{project.name}}
+                                    <a class="text-muted text-decoration-none d-flex" href="{{ ea_url()
+                                        .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                        .setController('App\\Controller\\Admin\\ProjectCrudController')
+                                        .setAction('detail')
+                                        .setEntityId(project.id) }}">
+                                        <iconify-icon icon="fa6-solid:diagram-project" class="fs-6 me-3"></iconify-icon> {{ project.name }}
+                                    </a>
                                 </li>
                                 <li class="breadcrumb-item" aria-current="page">
                                       <span class="badge fw-medium fs-2 bg-primary-subtle text-primary">
-                                        Détails du projet
+                                        Créer un nouveau Event
                                       </span>
                                 </li>
                             </ol>
@@ -42,5 +48,7 @@
 {% endblock %}
 
 {% block body %}
-    {{ component('project_detail', {'project': project, 'locale': locale}) }}
+    <div class="row">
+        {{ component('create_event_component', {locale: locale, project:project}) }}
+    </div>
 {% endblock %}

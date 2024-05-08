@@ -27,8 +27,7 @@ class Product
     #[Assert\Length(max: 255)]
     protected ?string $name = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
-    #[Assert\Length(max: 6)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 20, scale: 18, nullable: true)]
     #[Assert\PositiveOrZero]
     protected ?float $percent_vr = 0.0;
 
@@ -42,17 +41,17 @@ class Product
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
     #[Assert\Length(max: 6)]
     #[Assert\PositiveOrZero]
-    protected ?float $percent_freelance = 0.0;
+    protected ?float $percent_freelance = 10.0;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
     #[Assert\Length(max: 6)]
     #[Assert\PositiveOrZero]
-    protected ?float $percent_salarie = 0.0;
+    protected ?float $percent_salarie = 5.0;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
     #[Assert\Length(max: 6)]
     #[Assert\PositiveOrZero]
-    protected ?float $percent_tv = 0.0;
+    protected ?float $percent_tv = 3.0;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     protected ?\DateTimeInterface $date_begin = null;
@@ -227,6 +226,16 @@ class Product
         return __DIR__ . '/../../../../shared/public/files/products/' . $this->getDoc();
     }
 
+    public function getQuantitySales(): int
+    {
+        $quantity = 0;
+        foreach ($this->getSales() as $sale) {
+            $quantity += $sale->getQuantity();
+        }
+
+        return $quantity;
+    }
+
     public function getDownloadUrl(): string
     {
         if (null !== $this->getDoc()) {
@@ -283,4 +292,17 @@ class Product
 
         return $this;
     }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->getDateBegin();
+    }
+
+    public function setDate(?\DateTimeInterface $date): self
+    {
+        $this->setDateBegin($date);
+
+        return $this;
+    }
+
 }

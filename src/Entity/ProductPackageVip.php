@@ -71,16 +71,6 @@ class ProductPackageVip extends Product
         return $this;
     }
 
-    public function getQuantitySales(): int
-    {
-        $quantity = 0;
-        foreach ($this->getSales() as $sale) {
-            $quantity += $sale->getQuantity();
-        }
-
-        return $quantity;
-    }
-
     public function getQuantityAvailable(): ?int
     {
         if (null !== $this->getQuantityMax() && $this->getQuantityMax() > 0) {
@@ -88,18 +78,6 @@ class ProductPackageVip extends Product
         }
 
         return null;
-    }
-
-    public function getDate(): ?\DateTimeInterface
-    {
-        return $this->getDateBegin();
-    }
-
-    public function setDate(?\DateTimeInterface $date): self
-    {
-        parent::setDateBegin($date);
-
-        return $this;
     }
 
     public function setDateBegin(?\DateTimeInterface $date): self

@@ -1,13 +1,8 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
-{% block content_title %}
-{% endblock %}
+{% block content_title %}Créer un event pour le projet {{ project.name }}{% endblock %}
 {% block page_title %}Verhulst & Friends - ERP - {{ block('content_title') }}{% endblock %}
 
-{% block page_actions %}
-
-{% endblock %}
-
 {% block main %}
-    {{ component('project_detail', {'project': project, 'locale': app.request.locale }) }}
+{{ component('create_event_component', {'project': project }) }}
 {% endblock %}

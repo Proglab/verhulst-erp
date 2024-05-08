@@ -1,4 +1,7 @@
 {
+    "arkounay/ux-collection": {
+        "version": "4.0.0"
+    },
     "behat/transliterator": {
         "version": "v1.3.0"
     },

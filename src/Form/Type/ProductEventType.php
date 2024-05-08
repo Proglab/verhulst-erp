@@ -6,6 +6,7 @@ namespace App\Form\Type;
 use App\Entity\ProductEvent;
 use App\Entity\Project;
 use App\Enum\ProjectType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -26,6 +27,13 @@ class ProductEventType extends AbstractType
                 'label' => 'Nom de l\'event',
                 'attr' => [
                     'class' => 'col-md-6 mb-3'
+                ],
+                'required' => true,
+            ])
+            ->add('description', CKEditorType::class, [
+                'label' => 'Description',
+                'attr' => [
+                    'class' => 'col-md-12'
                 ],
                 'required' => true,
             ])

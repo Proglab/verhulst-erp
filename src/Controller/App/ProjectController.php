@@ -33,4 +33,12 @@ class ProjectController extends AbstractController
             'project' => $project,
         ]);
     }
+    #[Route('/app/{_locale}/projects/{project}/addEvent', name: 'project_add_event')]
+    public function project_add_event(Request $request, $_locale, Project $project): Response
+    {
+        return $this->render('app/projects/add_event.html.twig', [
+            'locale' => $_locale,
+            'project' => $project,
+        ]);
+    }
 }

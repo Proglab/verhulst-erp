@@ -125,9 +125,13 @@ class ProjectCrudController extends BaseCrudController
         $archive = Action::new('archiveProject', 'Archive project')
             ->linkToCrudAction('archiveProject');
 
+        $createEvent = Action::new('createEvent', 'Créer un event')
+            ->linkToCrudAction('createEvent');
+
         $actions
             ->setPermission('cloneProject', 'ROLE_ENCODE')
             ->setPermission('archiveProject', 'ROLE_COMMERCIAL')
+            ->setPermission('createEvent', 'ROLE_COMMERCIAL')
             ->setPermission(Action::NEW, 'ROLE_ENCODE')
             ->setPermission(Action::EDIT, 'ROLE_ENCODE')
             ->setPermission(Action::DELETE, 'ROLE_ADMIN')
@@ -275,6 +279,14 @@ class ProjectCrudController extends BaseCrudController
         $project = $context->getEntity();
 
         return $this->render('admin/project/detail.html.twig', [
+            'project' => $project->getInstance(),
+        ]);
+    }
+
+    public function createEvent(AdminContext $context)
+    {
+        $project = $context->getEntity();
+        return $this->render('admin/project/create_event_page.html.twig', [
             'project' => $project->getInstance(),
         ]);
     }

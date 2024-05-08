@@ -1,0 +1,369 @@
+<div {{ attributes }}>
+    <div class="row">
+        <div class="card card-body py-3">
+            <div class="row align-items-center">
+                <div class="col-12">
+                    <div class="d-sm-flex align-items-center justify-content-between">
+                        <h3 class="mb-4 mb-md-0 card-title">{{project.name}}</h3>
+                        <div>
+                            <div class="btn-group mb-2" role="group" aria-label="Basic example">
+                                <a href="{{ ea_url()
+                                    .setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\ProjectCrudController').setAction('createEvent').setEntityId(project.id) }}" class="btn bg-primary-subtle text-primary ">
+                                    Créer un event
+                                </a>
+                                <button type="button" class="btn bg-primary-subtle text-primary ">
+                                    Créer un package VIP
+                                </button>
+                                <button type="button" class="btn bg-primary-subtle text-primary ">
+                                    Créer un sponsoring
+                                </button>
+                                <button type="button" class="btn bg-primary-subtle text-primary ">
+                                    Créer un divers
+                                </button>
+                            </div>
+                            <div class="btn-group mb-2" role="group" aria-label="Basic example">
+                                <a href="{{ ea_url()
+                                .setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\ProjectCrudController').setAction('archiveProject').setEntityId(project.id) }}" class="btn bg-danger-subtle text-danger ">
+                                    Archiver le projet
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if project.productEvent is not empty %}
+        <div class="row mt-3">
+            <div class="col-md-12 d-flex align-items-stretch">
+                <div class="card card-body py-3">
+                    <div class="row align-items-center">
+                        <div class="col-12">
+                            <div class="d-sm-flex align-items-center justify-content-between">
+                                <h2 class="mb-4 mb-md-0 card-title">Events à la carte</h2>
+                                <div class="col-md-6">
+                                    <input type="text" value="" name="search" class="form-control col-md-6" placeholder="Recherche">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% for event in project.productEvent|sort((a, b) => a.date|date('Ymd') <= b.date|date('Ymd')) %}
+                <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-3">
+                    <div class="card w-100">
+                        <div class="card-body bg-success-subtle">
+                            <div class="col-12">
+                                <div class="d-sm-flex align-items-center justify-content-between">
+                                    <h3 class="mb-4 mb-md-0 card-title">{{ event.name }}</h3>
+                                    <div>
+                                        <div class="btn-group mb-2" role="group" aria-label="Basic example">
+                                            <button type="button" class="btn bg-info-subtle text-black py-1 px-3">
+                                                <i class="fa fa-clone"></i>
+                                            </button>
+                                            <button type="button" class="btn bg-warning-subtle text-black py-1 px-3">
+                                                <i class="fa fa-euro-sign"></i>
+                                            </button>
+                                            <button type="button" class="btn bg-primary-subtle text-primary  py-1 px-3 ">
+                                                <i class="fa fa-pen-to-square"></i>
+                                            </button>
+                                            <button type="button" class="btn bg-danger-subtle text-danger  py-1 px-3 ">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-sm-flex align-items-center justify-content-between">
+                                    {% if event.dateBegin == event.dateEnd %}
+                                    <b>Date: {{ event.date|date('d/m/Y') }}</b>
+                                    {% else %}
+                                    <b>du {{ event.dateBegin|date('d/m/Y') }} au {{ event.dateEnd|date('d/m/Y') }}</b>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <span class="badge bg-info-subtle text-black">Vendu : {{ event.QuantitySales }} places</span>
+                            </div>
+
+                            {% if event.description is not empty %}
+                                <div class="col-12 mt-3 position-relative mt-3 p-3 border overflow-auto" style="height: 150px;">
+                                    {{ event.description }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        {% if event.doc is not null %}
+                            <div class="card-footer pt-1">
+                                <ul class="list-unstyled d-flex align-items-center justify-content-center mb-0 mt-0">
+                                    <li class="position-relative">
+                                        <a class="text-primary d-flex align-items-center justify-content-center p-2 fs-5 rounded-circle fw-semibold" href="javascript:void(0)">
+                                            <a href="/files/products/{{ event.doc }}" target="_blank" class="d-inline-flex align-items-center justify-content-center btn btn-danger rounded-circle btn-lg round-48">
+                                                <i class="fa-solid fa-download" style="width: 20px; height: 25px;"></i>
+                                            </a>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% if project.productPackage is not empty %}
+        <div class="row mt-3">
+            <div class="col-md-12 d-flex align-items-stretch">
+                <div class="card card-body py-3">
+                    <div class="row align-items-center">
+                        <div class="col-12">
+                            <div class="d-sm-flex align-items-center justify-content-between">
+                                <h2 class="mb-4 mb-md-0 card-title">Packages VIP</h2>
+                                <div class="col-md-6">
+                                    <input type="text" value="" name="search" class="form-control col-md-6" placeholder="Recherche">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% for package in project.productPackage|sort((a, b) => a.date|date('Ymd') <= b.date|date('Ymd')) %}
+                <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-3">
+                    <div class="card w-100">
+                        <div class="card-body {% if package.quantityMax is empty  or package.QuantitySales != package.quantityMax %}bg-success-subtle{% endif %}">
+                            <div class="col-12">
+                                <div class="d-sm-flex align-items-center justify-content-between">
+                                    <h3 class="mb-4 mb-md-0 card-title">{{ package.name }}</h3>
+                                    <div>
+                                        <div class="btn-group mb-2" role="group" aria-label="Basic example">
+                                            <button type="button" class="btn bg-info-subtle text-black py-1 px-3">
+                                                <i class="fa fa-clone"></i>
+                                            </button>
+                                            <button type="button" class="btn bg-warning-subtle text-black py-1 px-3">
+                                                <i class="fa fa-euro-sign"></i>
+                                            </button>
+                                            <button type="button" class="btn bg-primary-subtle text-primary  py-1 px-3 ">
+                                                <i class="fa fa-pen-to-square"></i>
+                                            </button>
+                                            <button type="button" class="btn bg-danger-subtle text-danger  py-1 px-3 ">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="d-sm-flex align-items-center justify-content-between">
+                                    {% if package.dateBegin == package.dateEnd %}
+                                        <b>Date: {{ package.date|date('d/m/Y') }}</b>
+                                        <span class="badge bg-primary-subtle text-primary">Prix de vente : {{ package.ca|number_format(2, ',', '.') }} €</span>
+                                    {% else %}
+                                        <b>du {{ package.dateBegin|date('d/m/Y') }} au {{ package.dateEnd|date('d/m/Y') }}</b>
+                                        <span class="badge bg-primary-subtle text-primary">Prix de vente : {{ package.ca|number_format(2, ',', '.') }} €</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% if package.quantityMax is not empty %}
+                                <div class="col-12">
+                                    <span class="badge bg-warning-subtle text-black">Vendu : {{ package.QuantitySales }} / {{ package.quantityMax }} places</span>
+                                </div>
+                            {% else %}
+                                <div class="col-12">
+                                    <span class="badge bg-info-subtle text-black">Vendu : {{ package.QuantitySales }} places</span>
+                                </div>
+                            {% endif %}
+
+                            {% if package.description is not empty %}
+                            <div class="col-12 mt-3 position-relative mt-3 p-3 border overflow-auto" style="height: 150px;">
+                                {{ package.description|raw }}
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% if package.doc is not null %}
+                        <div class="card-footer pt-1">
+                            <ul class="list-unstyled d-flex align-items-center justify-content-center mb-0 mt-0">
+                                <li class="position-relative">
+                                    <a class="text-primary d-flex align-items-center justify-content-center p-2 fs-5 rounded-circle fw-semibold" href="javascript:void(0)">
+                                        <a href="/files/products/{{ package.doc }}" target="_blank" class="d-inline-flex align-items-center justify-content-center btn btn-danger rounded-circle btn-lg round-48">
+                                            <i class="fa-solid fa-download" style="width: 20px; height: 25px;"></i>
+                                        </a>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% if project.productSponsoring is not empty %}
+        <div class="row mt-3">
+            <div class="col-md-12 d-flex align-items-stretch">
+                <div class="card card-body py-3">
+                    <div class="row align-items-center">
+                        <div class="col-12">
+                            <div class="d-sm-flex align-items-center justify-content-between">
+                                <h2 class="mb-4 mb-md-0 card-title">Sponsoring</h2>
+                                <div class="col-md-6">
+                                    <input type="text" value="" name="search" class="form-control col-md-6" placeholder="Recherche">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% for sponsoring in project.productSponsoring|sort((a, b) => a.dateBegin|date('Ymd') <= b.dateBegin|date('Ymd')) %}
+                <div class="col-md-4 d-flex align-items-stretch mt-3">
+                    <div class="card w-100">
+                        <div class="card-body {% if sponsoring.quantityMax is empty  or sponsoring.QuantitySales != sponsoring.quantityMax %}bg-success-subtle{% endif %}">
+                            <div class="col-12">
+                                <div class="d-sm-flex align-items-center justify-content-between">
+                                    <h3 class="mb-4 mb-md-0 card-title">{{ sponsoring.name }}</h3>
+                                    <div>
+                                        <div class="btn-group mb-2" role="group" aria-label="Basic example">
+                                            <button type="button" class="btn bg-info-subtle text-black py-1 px-3">
+                                                <i class="fa fa-clone"></i>
+                                            </button>
+                                            <button type="button" class="btn bg-warning-subtle text-black py-1 px-3">
+                                                <i class="fa fa-euro-sign"></i>
+                                            </button>
+                                            <button type="button" class="btn bg-primary-subtle text-primary  py-1 px-3 ">
+                                                <i class="fa fa-pen-to-square"></i>
+                                            </button>
+                                            <button type="button" class="btn bg-danger-subtle text-danger  py-1 px-3 ">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="d-sm-flex align-items-center justify-content-between">
+                                    {% if sponsoring.dateBegin == sponsoring.dateEnd %}
+                                        <b>Date: {{ sponsoring.date|date('d/m/Y') }}</b>
+                                        <span class="badge bg-primary-subtle text-primary">Prix de vente : {{ sponsoring.ca|number_format(2, ',', '.') }} €</span>
+                                    {% else %}
+                                        <b>du {{ sponsoring.dateBegin|date('d/m/Y') }} au {{ sponsoring.dateEnd|date('d/m/Y') }}</b>
+                                        <span class="badge bg-primary-subtle text-primary">Prix de vente : {{ sponsoring.ca|number_format(2, ',', '.') }} €</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% if sponsoring.quantityMax is not empty %}
+                                <div class="col-12 mt-1">
+                                    <span class="badge bg-warning-subtle text-black">
+                                    Vendu : {{ sponsoring.QuantitySales }} / {{ sponsoring.quantityMax }} places
+                                    </span>
+                                </div>
+                            {% else %}
+                                <div class="col-12 mt-1">
+                                    <span class="badge bg-info-subtle text-black">
+                                    Vendu : {{ sponsoring.QuantitySales }} places
+                                    </span>
+                                </div>
+                            {% endif %}
+
+                            {% if sponsoring.description is not empty %}
+                                <div class="col-12 mt-3 position-relative mt-3 p-3 border overflow-auto" style="height: 300px;">
+                                    {{ sponsoring.description|raw }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        {% if sponsoring.doc is not null %}
+                            <div class="card-footer pt-1">
+                                <ul class="list-unstyled d-flex align-items-center justify-content-center mb-0 mt-0">
+                                    <li class="position-relative">
+                                        <a href="/files/products/{{ sponsoring.doc }}" target="_blank" class="d-inline-flex align-items-center justify-content-center btn btn-danger rounded-circle btn-lg round-48">
+                                            <i class="fa-solid fa-download" style="width: 20px; height: 25px;"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% if project.productDivers is not empty %}
+        <div class="row mt-3">
+            <div class="col-md-12 d-flex align-items-stretch">
+                <div class="card card-body py-3">
+                    <div class="row align-items-center">
+                        <div class="col-12">
+                            <div class="d-sm-flex align-items-center justify-content-between">
+                                <h2 class="mb-4 mb-md-0 card-title">Divers</h2>
+                                <div class="col-md-6">
+                                    <input type="text" value="" name="search" class="form-control col-md-6" placeholder="Recherche">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% for divers in project.productDivers|sort((a, b) => a.dateBegin|date('Ymd') <= b.dateBegin|date('Ymd')) %}
+                <div class="col-md-4 d-flex align-items-stretch mt-3">
+                    <div class="card w-100">
+                        <div class="card-body bg-success-subtle">
+                            <div class="col-12">
+                                <div class="d-sm-flex align-items-center justify-content-between">
+                                    <h3 class="mb-4 mb-md-0 card-title">{{ divers.name }}</h3>
+                                    <div>
+                                        <div class="btn-group mb-2" role="group" aria-label="Basic example">
+                                            <button type="button" class="btn bg-info-subtle text-black py-1 px-3">
+                                                <i class="fa fa-clone"></i>
+                                            </button>
+                                            <button type="button" class="btn bg-warning-subtle text-black py-1 px-3">
+                                                <i class="fa fa-euro-sign"></i>
+                                            </button>
+                                            <button type="button" class="btn bg-primary-subtle text-primary  py-1 px-3 ">
+                                                <i class="fa fa-pen-to-square"></i>
+                                            </button>
+                                            <button type="button" class="btn bg-danger-subtle text-danger  py-1 px-3 ">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-sm-flex align-items-center justify-content-between">
+                                    {% if divers.dateBegin == divers.dateEnd %}
+                                        <b>Date: {{ divers.date|date('d/m/Y') }}</b>
+                                    {% else %}
+                                        <b>du {{ divers.dateBegin|date('d/m/Y') }} au {{ divers.dateEnd|date('d/m/Y') }}</b>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <span class="badge bg-info-subtle text-black">Vendu : {{ divers.QuantitySales }} places</span>
+                            </div>
+
+                            {% if divers.description is not empty %}
+                                <div class="col-12 mt-3 position-relative mt-3 p-3 border overflow-auto" style="height: 300px;">
+                                    {{ divers.description|raw }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        {% if divers.doc is not null %}
+                            <div class="card-footer pt-1">
+                                <ul class="list-unstyled d-flex align-items-center justify-content-center mb-0 mt-0">
+                                    <li class="position-relative">
+                                        <a href="/files/products/{{ divers.doc }}" target="_blank" class="d-inline-flex align-items-center justify-content-center btn btn-danger rounded-circle btn-lg round-48">
+                                            <i class="fa-solid fa-download" style="width: 20px; height: 25px;"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>

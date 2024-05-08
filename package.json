@@ -1,5 +1,6 @@
 {
     "devDependencies": {
+        "@arkounay/ux-collection": "file:vendor/arkounay/ux-collection/assets",
         "@babel/core": "^7.17.0",
         "@babel/preset-env": "^7.16.0",
         "@hotwired/stimulus": "^3.0.0",
@@ -13,6 +14,7 @@
         "regenerator-runtime": "^0.13.9",
         "sass": "^1.49.0",
         "sass-loader": "^13.0.0",
+        "sortablejs": "^1.14.0",
         "ts-loader": "^9.0.0",
         "typescript": "^4.5.5",
         "webpack": "^5.74.0",

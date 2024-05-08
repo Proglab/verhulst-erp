@@ -15,15 +15,8 @@ class ProductEvent extends Product
         return $this->getName();
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function addDate2(\DateTimeInterface $date): self
     {
-        return $this->getDateBegin();
-    }
-
-    public function setDate(?\DateTimeInterface $date): self
-    {
-        $this->setDateBegin($date);
-
-        return $this;
+        dd($date);
     }
 }

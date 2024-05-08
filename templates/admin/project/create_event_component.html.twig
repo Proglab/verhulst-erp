@@ -1,0 +1,113 @@
+<div {{ attributes }}>
+    {{ form_start(form, {
+        attr: {
+            'data-action': 'live#action:prevent',
+            'data-live-action-param': 'save',
+        }
+    }) }}
+<div class="row form-group">
+    <div class="col-8">
+    {{ form_label(form.name) }}
+    {{ form_widget(form.name) }}
+    {{ form_errors(form.name) }}
+    </div>
+    <div class="col-12">
+        {{ form_label(form.description) }}
+        {{ form_widget(form.description) }}
+        {{ form_errors(form.description) }}
+    </div>
+    <div class="col-4 mt-3">
+        {{ form_label(form.percentFreelance) }}
+        {{ form_widget(form.percentFreelance) }}
+        {{ form_errors(form.percentFreelance) }}
+    </div>
+    <div class="col-4 mt-3">
+        {{ form_label(form.percentSalarie) }}
+        {{ form_widget(form.percentSalarie) }}
+        {{ form_errors(form.percentSalarie) }}
+    </div>
+    <div class="col-4 mt-3">
+        {{ form_label(form.percentTv) }}
+        {{ form_widget(form.percentTv) }}
+        {{ form_errors(form.percentTv) }}
+    </div>
+
+    <div class="col-6">
+        <div class="col-4 mt-3">
+            {{ form_label(form.type_date) }}
+            {{ form_widget(form.type_date) }}
+            {{ form_errors(form.type_date) }}
+        </div>
+
+        {% if form.dates is defined %}
+        <div class="col-5 mt-3">
+            {% for widget in form.dates %}
+                {{ form_label(widget) }}
+                {{ form_widget(widget, {'type': 'date'}) }}
+                {{ form_errors(widget, {'type': 'date'}) }}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if form.dates2 is defined %}
+        <div class="col-5 mt-3">
+            <table>
+            {% for key, itemForm in form.dates2 %}
+                <tr>
+                    <td>
+                        {{ form_row(itemForm, {
+                            label: false,
+                            row_attr: {class: 'mb-1'},
+                            attr: {
+                                placeholder: 'Walk the pygmy hippo'
+                            }
+                        }) }}
+                    </td>
+                    <td>
+                        {{ form_row(itemForm.vars.button_delete, {label: 'X', attr: {class: 'btn btn-outline-danger'}}) }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </table>
+            {{ form_widget(form.dates2.vars.button_add, {label: '+ Add Item', attr: {class: 'btn btn-outline-primary'}}) }}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="col-6">
+    <div class="col-5 mt-3">
+        {{ form_label(form.type_com) }}
+        {{ form_widget(form.type_com) }}
+        {{ form_errors(form.type_com) }}
+    </div>
+
+    {% if form.com1 is defined %}
+        <div class="col-4 mt-3">
+            {{ form_label(form.com1) }}
+            {{ form_widget(form.com1) }}
+            {{ form_errors(form.com1) }}
+        </div>
+    {% endif %}
+
+        {% if form.com2 is defined %}
+            {% for widget in form.com2 %}
+            <div class="col-4 mt-3">
+                {{ form_label(widget) }}
+                {{ form_widget(widget) }}
+                {{ form_errors(widget) }}
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+
+
+
+</div>
+
+    <button type="submit" class="btn btn-primary mt-3" data-action="submit->collection#getCollectionValues">Créer</button>
+
+
+
+    {{ form_end(form) }}
+</div>
