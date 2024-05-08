@@ -94,9 +94,6 @@ class CreateEventComponent extends AbstractController
             $this->productEventRepository->save($event, true);
         }
 
-
-
-
         $this->addFlash('success', 'Evènement créé avec succès !');
 
         return $this->redirectToRoute('project_details', ['project' => $event->getProject()->getId()]);

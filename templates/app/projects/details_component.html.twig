@@ -64,10 +64,15 @@
                                             <button type="button" class="btn bg-warning-subtle text-black py-1 px-3">
                                                 <i class="fa fa-euro-sign"></i>
                                             </button>
-                                            <button type="button" class="btn bg-primary-subtle text-primary  py-1 px-3 ">
+                                            <a href="{{ ea_url()
+                                                .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                .setController('App\\Controller\\Admin\\ProductEventCrudController')
+                                                .setAction('edit')
+                                                .setEntityId(event.id) }}" class="btn bg-primary-subtle text-primary  py-1 px-3 ">
                                                 <i class="fa fa-pen-to-square"></i>
-                                            </button>
-                                            <button type="button" class="btn bg-danger-subtle text-danger  py-1 px-3 ">
+                                            </a>
+                                            <button type="button" class="btn bg-danger-subtle text-danger  py-1 px-3 " data-action="live#action"
+                                                    data-live-action-param="delete" data-live-id-param="{{ event.id }}">
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                         </div>
@@ -142,10 +147,15 @@
                                             <button type="button" class="btn bg-warning-subtle text-black py-1 px-3">
                                                 <i class="fa fa-euro-sign"></i>
                                             </button>
-                                            <button type="button" class="btn bg-primary-subtle text-primary  py-1 px-3 ">
+                                            <a href="{{ ea_url()
+                                                .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                .setController('App\\Controller\\Admin\\ProductPackageVipCrudController')
+                                                .setAction('edit')
+                                                .setEntityId(package.id) }}" class="btn bg-primary-subtle text-primary  py-1 px-3 ">
                                                 <i class="fa fa-pen-to-square"></i>
-                                            </button>
-                                            <button type="button" class="btn bg-danger-subtle text-danger  py-1 px-3 ">
+                                            </a>
+                                            <button type="button" class="btn bg-danger-subtle text-danger  py-1 px-3 " data-action="live#action"
+                                                    data-live-action-param="delete" data-live-id-param="{{ package.id }}">
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                         </div>
@@ -230,10 +240,15 @@
                                             <button type="button" class="btn bg-warning-subtle text-black py-1 px-3">
                                                 <i class="fa fa-euro-sign"></i>
                                             </button>
-                                            <button type="button" class="btn bg-primary-subtle text-primary  py-1 px-3 ">
+                                            <a href="{{ ea_url()
+                                                .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                .setController('App\\Controller\\Admin\\ProductSponsoringCrudController')
+                                                .setAction('edit')
+                                                .setEntityId(sponsoring.id) }}" class="btn bg-primary-subtle text-primary  py-1 px-3 ">
                                                 <i class="fa fa-pen-to-square"></i>
-                                            </button>
-                                            <button type="button" class="btn bg-danger-subtle text-danger  py-1 px-3 ">
+                                            </a>
+                                            <button type="button" class="btn bg-danger-subtle text-danger  py-1 px-3 " data-action="live#action"
+                                                    data-live-action-param="delete" data-live-id-param="{{ sponsoring.id }}">
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                         </div>
@@ -320,10 +335,15 @@
                                             <button type="button" class="btn bg-warning-subtle text-black py-1 px-3">
                                                 <i class="fa fa-euro-sign"></i>
                                             </button>
-                                            <button type="button" class="btn bg-primary-subtle text-primary  py-1 px-3 ">
+                                            <a href="{{ ea_url()
+                                                .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                .setController('App\\Controller\\Admin\\ProductDiversCrudController')
+                                                .setAction('edit')
+                                                .setEntityId(divers.id) }}" class="btn bg-primary-subtle text-primary  py-1 px-3 ">
                                                 <i class="fa fa-pen-to-square"></i>
-                                            </button>
-                                            <button type="button" class="btn bg-danger-subtle text-danger  py-1 px-3 ">
+                                            </a>
+                                            <button type="button" class="btn bg-danger-subtle text-danger  py-1 px-3 " data-action="live#action"
+                                                    data-live-action-param="delete" data-live-id-param="{{ divers.id }}">
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                         </div>
@@ -366,4 +386,26 @@
             {% endfor %}
         </div>
     {% endif %}
+
+
+    <div class="modal hide" id="modalTodo" data-bs-backdrop="static" aria-hidden="true"  {{ stimulus_controller('bootstrap-modal') }}>
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header d-flex align-items-center bg-primary text-white">
+                    <h4 class="modal-title  text-white" id="myLargeModalLabel">
+                        Supprimer le produit
+                    </h4>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Êtes-vous sûr de vouloir supprimer <b></b> ?
+                    </p>
+                    <button type="submit" name="submitbtn" class="btn btn-danger mt-3" data-action="live#action" data-live-action-param="deleteConfirm">
+                        {{ 'Supprimer'|trans }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
