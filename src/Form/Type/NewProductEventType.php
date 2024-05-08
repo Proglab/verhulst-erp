@@ -4,17 +4,11 @@ declare(strict_types=1);
 namespace App\Form\Type;
 
 use App\Entity\ProductEvent;
-use Arkounay\Bundle\UxCollectionBundle\Form\UxCollectionType;
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\PercentType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -153,8 +147,8 @@ class NewProductEventType extends AbstractType
                     return;
                 }
                 if ($date_type === 'percent') {
-                    $field->add(PercentType::class, [
-                        'label' => 'Pourcentage Verhulst',
+                    $field->add(PercentsType::class, [
+                        'label' => false,
                         'attr' => [
                             'class' => 'col-md-3 mb-3',
                             'type' => 'date',
@@ -179,13 +173,7 @@ class NewProductEventType extends AbstractType
                         'mapped' => false,
                     ]);
                 }
-            })
-
-
-
-        ;
-
-
+            });
     }
 
     public function configureOptions(OptionsResolver $resolver): void
