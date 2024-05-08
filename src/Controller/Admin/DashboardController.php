@@ -92,7 +92,11 @@ class DashboardController extends AbstractDashboardController
 
         return [
             MenuItem::section('Raccourcis')->setPermission('ROLE_COMMERCIAL'),
-            MenuItem::linkToCrud('admin.menu.contact.create', 'fas fa-address-book', CompanyContact::class)->setPermission('ROLE_COMMERCIAL')->setAction(Crud::PAGE_NEW),
+            MenuItem::linkToCrud('admin.menu.contact.create', 'fas fa-address-book', CompanyContact::class)
+                ->setPermission('ROLE_COMMERCIAL')
+                ->setAction(Crud::PAGE_NEW)
+                ->setController(CompanyContactCrudController::class)
+                ->setQueryParameter('entityFqcn', CompanyContact::class),
             MenuItem::linkToCrud('admin.menu.sales.create', 'fas fa-comments-dollar', Sales::class)->setController(SalesCrudController::class)->setPermission('ROLE_COMMERCIAL')->setAction(Crud::PAGE_NEW),
             //MenuItem::linkToCrud('admin.menu.event.create', 'fa fa-calendar', ProductEvent::class)->setPermission('ROLE_COMMERCIAL')->setAction(Crud::PAGE_NEW),
 
