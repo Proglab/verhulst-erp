@@ -310,6 +310,14 @@ class ProjectCrudController extends BaseCrudController
         ]);
     }
 
+    public function createDivers(AdminContext $context)
+    {
+        $project = $context->getEntity();
+        return $this->render('admin/project/create_divers_page.html.twig', [
+            'project' => $project->getInstance(),
+        ]);
+    }
+
     public function cloneProject(AdminContext $context): RedirectResponse
     {
         /** @var Project $project */

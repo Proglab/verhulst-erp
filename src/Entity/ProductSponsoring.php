@@ -12,15 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ProductSponsoringRepository::class)]
 class ProductSponsoring extends Product
 {
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    #[Assert\Length(max: 11)]
-    #[Assert\PositiveOrZero]
-    private ?float $ca = null;
-
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    #[Assert\Length(max: 11)]
-    #[Assert\PositiveOrZero]
-    private ?float $pa = null;
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     #[Assert\PositiveOrZero]
@@ -29,30 +20,6 @@ class ProductSponsoring extends Product
     public function __toString()
     {
         return $this->getName();
-    }
-
-    public function getCa(): ?float
-    {
-        return $this->ca;
-    }
-
-    public function setCa(?float $ca): self
-    {
-        $this->ca = $ca;
-
-        return $this;
-    }
-
-    public function getPa(): ?float
-    {
-        return $this->pa;
-    }
-
-    public function setPa(?float $pa): self
-    {
-        $this->pa = $pa;
-
-        return $this;
     }
 
     public function getQuantityMax(): ?int

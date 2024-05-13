@@ -15,8 +15,4 @@ class ProductEvent extends Product
         return $this->getName();
     }
 
-    public function addDate2(\DateTimeInterface $date): self
-    {
-        dd($date);
-    }
 }

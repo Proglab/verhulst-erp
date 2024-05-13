@@ -69,6 +69,17 @@ class Product
     #[ORM\JoinColumn(nullable: false)]
     protected ?Project $project = null;
 
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    #[Assert\Length(max: 11)]
+    #[Assert\PositiveOrZero]
+    private ?float $ca = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    #[Assert\Length(max: 11)]
+    #[Assert\PositiveOrZero]
+    private ?float $pa = null;
+
+
     public function __construct()
     {
         $this->sales = new ArrayCollection();
@@ -301,6 +312,30 @@ class Product
     public function setDate(?\DateTimeInterface $date): self
     {
         $this->setDateBegin($date);
+
+        return $this;
+    }
+
+    public function getCa(): ?float
+    {
+        return $this->ca;
+    }
+
+    public function setCa(?float $ca): self
+    {
+        $this->ca = $ca;
+
+        return $this;
+    }
+
+    public function getPa(): ?float
+    {
+        return $this->pa;
+    }
+
+    public function setPa(?float $pa): self
+    {
+        $this->pa = $pa;
 
         return $this;
     }

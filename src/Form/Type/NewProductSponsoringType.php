@@ -8,6 +8,7 @@ use App\Entity\ProductSponsoring;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PercentType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -75,6 +76,14 @@ class NewProductSponsoringType extends AbstractType
                     new NotBlank()
                 ],
             ])
+            ->add('quantityMax', NumberType::class, [
+                'label' => 'Quantité maximale',
+                'attr' => [
+                    'class' => 'col-md-4'
+                ],
+                'required' => true,
+            ])
+
             ->add('type_date', ChoiceType::class, [
                 'label' => 'Type de date',
                 'attr' => [
