@@ -1,0 +1,47 @@
+<div {{ attributes }} class="row">
+    <div class="col-6">
+        <div class="card p-3">
+            <h4 class="card-title">Cherchez une société ou créez la</h4>
+            <div class="card-body">
+                <div class="form-group">
+                    <input type="text́" class="form-control" placeholder="Recherchez" data-model="debounce(500)|queryCompany">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            {% for society in this.societies %}
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <b>{{ society.name }}</b>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-6">
+        <div class="card p-3">
+            <h4 class="card-title">Cherchez un contact ou créez le</h4>
+            <div class="card-body">
+                <div class="form-group">
+                    <input type="text́" class="form-control" placeholder="Recherchez" data-model="debounce(500)|queryContact">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            {% for contact in this.contacts %}
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body">
+                        <b>{{ contact.fullname }}</b><br>
+                        <small>{{ contact.email }}</small><br>
+                        {% if contact.company is not empty %}<i>{{ contact.company.name }}</i>{% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

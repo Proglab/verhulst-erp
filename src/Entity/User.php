@@ -109,6 +109,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     #[ORM\OneToMany(mappedBy: 'validated_user', targetEntity: Invoice::class, orphanRemoval: true)]
     private Collection $invoices;
 
+    /**
+     * @var Collection<int, FastSales>
+     */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: FastSales::class, orphanRemoval: true)]
+    private Collection $fastSales;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -121,6 +127,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         $this->salesBdcs = new ArrayCollection();
         $this->notes = new ArrayCollection();
         $this->invoices = new ArrayCollection();
+        $this->fastSales = new ArrayCollection();
     }
 
     public function __toString()
@@ -575,6 +582,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
             // set the owning side to null (unless already changed)
             if ($invoice->getValidatedUser() === $this) {
                 $invoice->setValidatedUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FastSales>
+     */
+    public function getFastSales(): Collection
+    {
+        return $this->fastSales;
+    }
+
+    public function addFastSale(FastSales $fastSale): static
+    {
+        if (!$this->fastSales->contains($fastSale)) {
+            $this->fastSales->add($fastSale);
+            $fastSale->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFastSale(FastSales $fastSale): static
+    {
+        if ($this->fastSales->removeElement($fastSale)) {
+            // set the owning side to null (unless already changed)
+            if ($fastSale->getUser() === $this) {
+                $fastSale->setUser(null);
             }
         }
 

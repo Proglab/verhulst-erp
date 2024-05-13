@@ -1,54 +1,52 @@
 <div {{ attributes }}>
     <div class="row">
-        <div class="card card-body py-3">
-            <div class="row align-items-center">
-                <div class="col-12">
-                    <div class="d-sm-flex align-items-center justify-content-between">
-                        <div>
-                            <h3 class="mb-4 mb-md-0 card-title">{{project.name}}</h3>
-                            {% if project.dateBegin == project.dateEnd %}
-                                <b>Date: {{ project.dateBegin|date('d/m/Y') }}</b>
-                            {% else %}
-                                <b>du {{ project.dateBegin|date('d/m/Y') }} au {{ project.dateEnd|date('d/m/Y') }}</b>
-                            {% endif %}
-                        </div>
-                        <div>
-                            <div class="btn-group mb-2" role="group" aria-label="Basic example">
-                                <a href="{{ ea_url()
-                                    .setDashboard('App\\Controller\\Admin\\DashboardController')
-                                    .setController('App\\Controller\\Admin\\ProjectCrudController')
-                                    .setAction('createEvent')
-                                    .setEntityId(project.id) }}"
-                                   class="btn bg-primary-subtle text-primary ">
-                                    Créer un event
-                                </a>
-                                <a href="{{ ea_url()
-                                    .setDashboard('App\\Controller\\Admin\\DashboardController')
-                                    .setController('App\\Controller\\Admin\\ProjectCrudController')
-                                    .setAction('createPackage')
-                                    .setEntityId(project.id) }}" class="btn bg-primary-subtle text-primary ">
-                                    Créer un package VIP
-                                </a>
-                                <a href="{{ ea_url()
-                                    .setDashboard('App\\Controller\\Admin\\DashboardController')
-                                    .setController('App\\Controller\\Admin\\ProjectCrudController')
-                                    .setAction('createSponsoring')
-                                    .setEntityId(project.id) }}" class="btn bg-primary-subtle text-primary ">
-                                    Créer un sponsoring
-                                </a>
-                                <a href="{{ ea_url()
-                                    .setDashboard('App\\Controller\\Admin\\DashboardController')
-                                    .setController('App\\Controller\\Admin\\ProjectCrudController')
-                                    .setAction('createDivers')
-                                    .setEntityId(project.id) }}"  class="btn bg-primary-subtle text-primary ">
-                                    Créer un divers
-                                </a>
+        <div class="col-12">
+            <div class="card card-body py-3">
+                <div class="row align-items-center">
+                    <div class="col-12">
+                        <div class="d-sm-flex align-items-center justify-content-between">
+                            <div>
+                                <h3 class="mb-4 mb-md-0 card-title">{{project.name}}</h3>
+                                {% if project.dateBegin == project.dateEnd %}
+                                    <b>Date: {{ project.dateBegin|date('d/m/Y') }}</b>
+                                {% else %}
+                                    <b>du {{ project.dateBegin|date('d/m/Y') }} au {{ project.dateEnd|date('d/m/Y') }}</b>
+                                {% endif %}
                             </div>
-                            <div class="btn-group mb-2" role="group" aria-label="Basic example">
-                                <a href="{{ ea_url()
-                                    .setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\ProjectCrudController').setAction('archiveProject').setEntityId(project.id) }}" class="btn bg-danger-subtle text-danger ">
-                                    Archiver le projet
-                                </a>
+                            <div>
+                                <div class="btn-group mb-2" role="group" aria-label="Basic example">
+                                    <a href="{{ path('project_add_event',{locale: app.locale, project: project.id}) }}"
+                                       class="btn bg-primary-subtle text-primary ">
+                                        Créer un event
+                                    </a>
+                                    <a href="{{ ea_url()
+                                        .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                        .setController('App\\Controller\\Admin\\ProjectCrudController')
+                                        .setAction('createPackage')
+                                        .setEntityId(project.id) }}" class="btn bg-primary-subtle text-primary ">
+                                        Créer un package VIP
+                                    </a>
+                                    <a href="{{ ea_url()
+                                        .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                        .setController('App\\Controller\\Admin\\ProjectCrudController')
+                                        .setAction('createSponsoring')
+                                        .setEntityId(project.id) }}" class="btn bg-primary-subtle text-primary ">
+                                        Créer un sponsoring
+                                    </a>
+                                    <a href="{{ ea_url()
+                                        .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                        .setController('App\\Controller\\Admin\\ProjectCrudController')
+                                        .setAction('createDivers')
+                                        .setEntityId(project.id) }}"  class="btn bg-primary-subtle text-primary ">
+                                        Créer un divers
+                                    </a>
+                                </div>
+                                <div class="btn-group mb-2" role="group" aria-label="Basic example">
+                                    <a href="{{ ea_url()
+                                        .setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\ProjectCrudController').setAction('archiveProject').setEntityId(project.id) }}" class="btn bg-danger-subtle text-danger ">
+                                        Archiver le projet
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -20,7 +20,7 @@ use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\LiveComponent\LiveCollectionTrait;
 
-#[AsLiveComponent('create_event_component', template: 'admin/project/create_event_component.html.twig')]
+#[AsLiveComponent('create_event_component', template: 'app/projects/create_event_component.html.twig')]
 class CreateEventComponent extends AbstractController
 {
     use DefaultActionTrait;

@@ -55,4 +55,15 @@ class CompanyContactRepository extends ServiceEntityRepository
 
         return $contacts;
     }
+
+    public function search(string $query): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.email LIKE :query')
+            ->orWhere('c.firstname LIKE :query')
+            ->orWhere('c.lastname LIKE :query')
+            ->setParameter('query', "%$query%")
+            ->getQuery()
+            ->getResult();
+    }
 }

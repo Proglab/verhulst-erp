@@ -27,7 +27,7 @@ class Product
     #[Assert\Length(max: 255)]
     protected ?string $name = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 20, scale: 18, nullable: true)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 17, scale: 14, nullable: true)]
     #[Assert\PositiveOrZero]
     protected ?float $percent_vr = 0.0;
 

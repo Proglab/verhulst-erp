@@ -43,9 +43,6 @@ class NewProductEventType extends AbstractType
             ])
             ->add('percentFreelance', PercentType::class, [
                 'label' => '% Freelance',
-                'attr' => [
-                    'class' => 'col-md-4 mb-3'
-                ],
                 'required' => true,
                 'data' => 0.1,
                 'constraints' => [
@@ -54,9 +51,6 @@ class NewProductEventType extends AbstractType
             ])
             ->add('percentSalarie', PercentType::class, [
                 'label' => '% Salarié',
-                'attr' => [
-                    'class' => 'col-md-4 mb-3'
-                ],
                 'required' => true,
                 'data' => 0.05,
                 'constraints' => [
@@ -65,9 +59,6 @@ class NewProductEventType extends AbstractType
             ])
             ->add('percentTv', PercentType::class, [
                 'label' => '% Thierry',
-                'attr' => [
-                    'class' => 'col-md-4 mb-3'
-                ],
                 'required' => true,
                 'data' => 0.03,
                 'constraints' => [
@@ -76,9 +67,6 @@ class NewProductEventType extends AbstractType
             ])
             ->add('type_date', ChoiceType::class, [
                 'label' => 'Type de date',
-                'attr' => [
-                    'class' => 'col-md-4 mb-3'
-                ],
                 'choices' => [
                     'Début/fin' => 'date',
                     'Multiple' => 'date_multiple',
@@ -97,10 +85,6 @@ class NewProductEventType extends AbstractType
                 if ($date_type === 'date') {
                     $field->add(DatesType::class, [
                         'label' => 'Dates',
-                        'attr' => [
-                            'class' => 'col-md-6 mb-3',
-                                'type' => 'date',
-                        ],
                         'required' => true,
                         'mapped' => false,
                     ]);

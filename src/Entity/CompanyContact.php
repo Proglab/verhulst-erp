@@ -103,11 +103,18 @@ class CompanyContact
     #[ORM\Column]
     private ?bool $mailing = true;
 
+    /**
+     * @var Collection<int, FastSales>
+     */
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: FastSales::class, orphanRemoval: true)]
+    private Collection $fastSales;
+
     public function __construct()
     {
         $this->sales = new ArrayCollection();
         $this->todos = new ArrayCollection();
         $this->notes = new ArrayCollection();
+        $this->fastSales = new ArrayCollection();
     }
 
     public function __toString()
@@ -429,6 +436,36 @@ class CompanyContact
     public function setMailing(bool $mailing): static
     {
         $this->mailing = $mailing;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FastSales>
+     */
+    public function getFastSales(): Collection
+    {
+        return $this->fastSales;
+    }
+
+    public function addFastSale(FastSales $fastSale): static
+    {
+        if (!$this->fastSales->contains($fastSale)) {
+            $this->fastSales->add($fastSale);
+            $fastSale->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFastSale(FastSales $fastSale): static
+    {
+        if ($this->fastSales->removeElement($fastSale)) {
+            // set the owning side to null (unless already changed)
+            if ($fastSale->getClient() === $this) {
+                $fastSale->setClient(null);
+            }
+        }
 
         return $this;
     }
