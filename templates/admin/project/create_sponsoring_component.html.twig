@@ -34,6 +34,14 @@
         {{ form_errors(form.percentTv) }}
     </div>
 
+    <div class="col-12">
+        <div class="col-4">
+            {{ form_label(form.quantityMax) }}
+            {{ form_widget(form.quantityMax) }}
+            {{ form_errors(form.quantityMax) }}
+        </div>
+    </div>
+
     <div class="col-6">
         <div class="col-4 mt-3">
             {{ form_label(form.type_date) }}
@@ -109,7 +117,11 @@
 
     <button type="submit" class="btn btn-primary mt-3" data-action="submit->collection#getCollectionValues">Créer</button>
 
-
+    <a href="{{ ea_url()
+        .setDashboard('App\\Controller\\Admin\\DashboardController')
+        .setController('App\\Controller\\Admin\\ProjectCrudController')
+        .setAction('detail')
+        .setEntityId(project.id) }}" class="btn btn-primary mt-3" data-action="submit->collection#getCollectionValues">Annuler</a>
 
     {{ form_end(form) }}
 </div>
