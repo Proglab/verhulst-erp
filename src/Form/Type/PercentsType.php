@@ -27,11 +27,19 @@ class PercentsType extends AbstractType
                 'label' => 'Pourcentage Verhulst',
                 'required' => true,
                 'mapped' => true,
+                'constraints' => [
+                    new NotBlank()
+                ],
+                'scale' => 2,
+                'type' => 'fractional',
             ])
             ->add('pv', MoneyType::class,  [
                 'label' => 'Prix de vente',
                 'required' => true,
                 'mapped' => true,
+                'constraints' => [
+                    new NotBlank()
+                ],
             ])
         ;
     }

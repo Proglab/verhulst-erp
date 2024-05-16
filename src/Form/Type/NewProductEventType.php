@@ -41,30 +41,102 @@ class NewProductEventType extends AbstractType
                 ],
                 'required' => true,
             ])
-            ->add('percentFreelance', PercentType::class, [
+            ->add('percentFreelance', ChoiceType::class, [
                 'label' => '% Freelance',
                 'required' => true,
-                'data' => 0.1,
+                'choices' => [
+                    '10%' => 0.1,
+                    '7.5%' => 0.075,
+                    '4%' => 0.04,
+                    '3.5%' => 0.035,
+                    '3%' => 0.03,
+                    'Autre' => 'other',
+                ],
+                'mapped' => false,
                 'constraints' => [
                     new NotBlank()
                 ],
+                'placeholder' => 'Sélectionnez un %',
             ])
-            ->add('percentSalarie', PercentType::class, [
+            ->addDependent('percentFreelanceCustom', 'percentFreelance', function (DependentField $field, ?string $date_type) {
+                if ($date_type !== 'other') {
+                    return;
+                }
+                $field->add(PercentType::class, [
+                    'label' => '% Freelance',
+                    'required' => true,
+                    'mapped' => false,
+                    'constraints' => [
+                        new NotBlank()
+                    ],
+                    'scale' => 2,
+                    'type' => 'fractional',
+                ]);
+            })
+            ->add('percentSalarie', ChoiceType::class, [
                 'label' => '% Salarié',
                 'required' => true,
-                'data' => 0.05,
+                'choices' => [
+                    '10%' => 0.1,
+                    '7.5%' => 0.075,
+                    '4%' => 0.04,
+                    '3.5%' => 0.035,
+                    '3%' => 0.03,
+                    'Autre' => 'other',
+                ],
+                'mapped' => false,
+                'placeholder' => 'Sélectionnez un %',
                 'constraints' => [
                     new NotBlank()
                 ],
             ])
-            ->add('percentTv', PercentType::class, [
+            ->addDependent('percentSalarieCustom', 'percentSalarie', function (DependentField $field, ?string $date_type) {
+                if ($date_type !== 'other') {
+                    return;
+                }
+                $field->add(PercentType::class, [
+                    'label' => '% Salarié',
+                    'required' => true,
+                    'mapped' => false,
+                    'constraints' => [
+                        new NotBlank()
+                    ],
+                    'scale' => 2,
+                    'type' => 'fractional',
+                ]);
+            })
+            ->add('percentTv', ChoiceType::class, [
                 'label' => '% Thierry',
                 'required' => true,
-                'data' => 0.03,
+                'choices' => [
+                    '10%' => 0.1,
+                    '7.5%' => 0.075,
+                    '4%' => 0.04,
+                    '3.5%' => 0.035,
+                    '3%' => 0.03,
+                    'Autre' => 'other',
+                ],
+                'placeholder' => 'Sélectionnez un %',
+                'mapped' => false,
                 'constraints' => [
                     new NotBlank()
                 ],
             ])
+            ->addDependent('percentTvCustom', 'percentTv', function (DependentField $field, ?string $date_type) {
+                if ($date_type !== 'other') {
+                    return;
+                }
+                $field->add(PercentType::class, [
+                    'label' => '% Thierry',
+                    'required' => true,
+                    'mapped' => false,
+                    'constraints' => [
+                        new NotBlank()
+                    ],
+                    'scale' => 2,
+                    'type' => 'fractional',
+                ]);
+            })
             ->add('type_date', ChoiceType::class, [
                 'label' => 'Type de date',
                 'choices' => [
@@ -114,13 +186,13 @@ class NewProductEventType extends AbstractType
                 }
             })
             ->add('type_com', ChoiceType::class, [
-                'label' => 'Type de commission',
+                'label' => 'Type de commission Verhulst',
                 'attr' => [
                     'class' => 'col-md-4 mb-3'
                 ],
                 'choices' => [
-                    'Pourcentage Verhulst' => 'percent',
-                    'Prix d\'achat' => 'price',
+                    'Pourcentage' => 'percent',
+                    'Prix d\'achat:Prix de vente' => 'price',
                 ],
                 'required' => true,
                 'placeholder' => "Sélectionnez un type de date",
@@ -135,7 +207,6 @@ class NewProductEventType extends AbstractType
                         'label' => false,
                         'attr' => [
                             'class' => 'col-md-3 mb-3',
-                            'type' => 'date',
                         ],
                         'required' => true,
                         'mapped' => false,
@@ -151,7 +222,6 @@ class NewProductEventType extends AbstractType
                         'label' => 'Prix',
                         'attr' => [
                             'class' => 'col-md-3 mb-3',
-                            'type' => 'date',
                         ],
                         'required' => true,
                         'mapped' => false,

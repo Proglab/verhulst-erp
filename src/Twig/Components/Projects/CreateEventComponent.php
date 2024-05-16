@@ -49,6 +49,7 @@ class CreateEventComponent extends AbstractController
 
         $events = [];
 
+        // dates
         if ($typeDAte === 'date') {
             if ($form->get('dates')->get('create_all_date')->getData() === true) {
                 for ($date = $form->get('dates')->get('date_begin')->getData(); $form->get('dates')->get('date_end')->getData() >= $date; $date->modify('+1 day')) {
@@ -73,11 +74,34 @@ class CreateEventComponent extends AbstractController
         }
 
         foreach ($events as $event) {
+            // percents commerciaux
+            if ($form->get('percentFreelance')->getData() === 'other') {
+                $event->setPercentFreelance($form->get('percentFreelanceCustom')->getData() * 100);
+            } else {
+                $event->setPercentFreelance($form->get('percentFreelance')->getData() * 100);
+            }
+            if ($form->get('percentSalarie')->getData() === 'other') {
+                $event->setPercentSalarie($form->get('percentSalarieCustom')->getData() * 100);
+            } else {
+                $event->setPercentSalarie($form->get('percentSalarie')->getData() * 100);
+            }
+            if ($form->get('percentTv')->getData() === 'other') {
+                $event->setPercentTv($form->get('percentTvCustom')->getData() * 100);
+            } else {
+                $event->setPercentTv($form->get('percentTv')->getData() * 100);
+            }
+
+            // prices
             if($form->get('type_com')->getData() === 'percent') {
-                $event->setPercentVr($form->get('com1')->getData() * 100);
+                $event->setPercentVr($form->get('com1')->get('percent_vr')->getData() * 100);
+                $event->setCa($form->get('com1')->get('pv')->getData());
+                $event->setPa($form->get('com1')->get('pv')->getData() - $form->get('com1')->get('pv')->getData() * $form->get('com1')->get('percent_vr')->getData());
             } else {
                 $event->setPercentVr( ($form->get('com2')->get('pv')->getData() - $form->get('com2')->get('pa')->getData() )/ $form->get('com2')->get('pa')->getData() * 100);
+                $event->setCa($form->get('com2')->get('pv')->getData());
+                $event->setPa($form->get('com2')->get('pa')->getData());
             }
+
             $this->productEventRepository->save($event, true);
         }
 
@@ -92,9 +116,6 @@ class CreateEventComponent extends AbstractController
     {
         $event = new ProductEvent();
         $event->setProject($this->project);
-        $event->setPercentFreelance($this->form->get('percentFreelance')->getData() * 100);
-        $event->setPercentTv($this->form->get('percentTv')->getData() * 100);
-        $event->setPercentSalarie($this->form->get('percentSalarie')->getData() * 100);
         $event->setName($this->form->get('name')->getData());
         $event->setDescription($this->form->get('description')->getData());
         return $event;
