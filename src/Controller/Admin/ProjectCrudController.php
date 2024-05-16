@@ -279,11 +279,7 @@ class ProjectCrudController extends BaseCrudController
      */
     public function detail(AdminContext $context)
     {
-        $project = $context->getEntity();
-
-        return $this->render('admin/project/detail.html.twig', [
-            'project' => $project->getInstance(),
-        ]);
+        return $this->redirect($this->generateUrl('project_details', ['project' => $context->getEntity()->getPrimaryKeyValue()]));
     }
 
     public function createEvent(AdminContext $context)

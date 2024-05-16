@@ -447,7 +447,6 @@
         </div>
     {% endif %}
 
-
     <div class="modal hide" id="modalTodo" data-bs-backdrop="static" aria-hidden="true"  {{ stimulus_controller('bootstrap-modal') }}>
         <div class="modal-dialog modal-dialog-scrollable modal-lg">
             <div class="modal-content">
@@ -459,7 +458,10 @@
                 </div>
                 <div class="modal-body">
                     <p>
-                        Êtes-vous sûr de vouloir supprimer <b></b> ?
+                        Êtes-vous sûr de vouloir supprimer {% if this.toDelete is not empty %}<b>{{ this.toDelete.name }}</b>{% endif %} ?
+                    </p>
+                    <p class="alert alert-danger text-danger">
+                        cette action est irréversible
                     </p>
                     <button type="submit" name="submitbtn" class="btn btn-danger mt-3" data-action="live#action" data-live-action-param="deleteConfirm">
                         {{ 'Supprimer'|trans }}
