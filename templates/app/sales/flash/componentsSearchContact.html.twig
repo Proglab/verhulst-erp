@@ -1,10 +1,15 @@
 <div {{ attributes }} class="row">
+    {% if this.contact_create %}
     <div class="col-6">
+    <div class="card bg-primary p-3">
+        <h3 class="card-title text-white h3">Création d'un contact</h3>
+    </div>
+
         <div class="card p-3">
             <h4 class="card-title">Cherchez une société ou créez la</h4>
             <div class="card-body">
                 <div class="form-group">
-                    <input type="text́" class="form-control" placeholder="Recherchez" data-model="debounce(500)|queryCompany">
+                    <input type="text́" class="form-control" placeholder="Recherchez le nom de la société" data-model="debounce(500)|queryCompany">
                 </div>
             </div>
         </div>
@@ -13,35 +18,143 @@
                 <div class="col-4">
                     <div class="card">
                         <div class="card-body">
-                            <b>{{ society.name }}</b>
+                            <div class="justify-content-between w-100 d-flex align-items-center">
+                                <b>{{ society.name }}</b>
+                                <button class="btn" data-action="live#action" data-live-action-param="selectCompany" data-live-id-param="{{ society.id }}">
+                                    <iconify-icon icon="gala:select" width="25" height="25"></iconify-icon>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             {% endfor %}
+
+            {% if this.queryContact is not empty %}
+                <div class="col-4">
+                    <a href="#" data-action="live#action" data-live-action-param="createCompany">
+                        <div class="card bg-dark mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title text-white">Créer une société</h5>
+                                <p class="card-text">Vous ne trouvez pas la société ? Créez la !</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-4">
+                    <a href="#" data-action="live#action" data-live-action-param="noCompany">
+                        <div class="card bg-dark mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title text-white">Ce contact n'a pas de société</h5>
+                                <p class="card-text">Créer un contact sans société</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endif %}
         </div>
     </div>
-
-    <div class="col-6">
-        <div class="card p-3">
-            <h4 class="card-title">Cherchez un contact ou créez le</h4>
-            <div class="card-body">
-                <div class="form-group">
-                    <input type="text́" class="form-control" placeholder="Recherchez" data-model="debounce(500)|queryContact">
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            {% for contact in this.contacts %}
-                <div class="col-4">
-                    <div class="card">
-                        <div class="card-body">
-                        <b>{{ contact.fullname }}</b><br>
-                        <small>{{ contact.email }}</small><br>
-                        {% if contact.company is not empty %}<i>{{ contact.company.name }}</i>{% endif %}
-                        </div>
+    {% else %}
+        <div class="col-6">
+            <div class="card p-3">
+                <h4 class="card-title">Cherchez un contact ou créez le</h4>
+                <div class="card-body">
+                    <div class="form-group">
+                        <input type="text́" class="form-control" placeholder="Entrez le nom, prénom, email ou le nom de la société d'une personne" data-model="debounce(500)|queryContact">
                     </div>
                 </div>
-            {% endfor %}
+            </div>
+            <div class="row">
+                {% for contact in this.contacts %}
+                    <div class="col-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="justify-content-between w-100 d-flex align-items-center">
+                                    <b>{{ contact.fullname }}</b>
+                                    <button class="btn" data-action="live#action" data-live-action-param="selectContact" data-live-id-param="{{ contact.id }}">
+                                        <iconify-icon icon="gala:select" width="25" height="25"></iconify-icon>
+                                    </button>
+                                </div>
+                                <small>{{ contact.email }}</small><br>
+                                {% if contact.company is not empty %}<i>{{ contact.company.name }}</i>{% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                {% if this.queryContact is not empty %}
+                    <div class="col-4">
+                        <a href="#" data-action="live#action" data-live-action-param="createContact">
+                            <div class="card bg-dark mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title text-white">Créer un contact</h5>
+                                    <p class="card-text">Vous ne trouvez pas le contact ? Créez le !</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+    {% endif %}
+
+    <div class="modal hide" id="modalTodo" data-bs-backdrop="static" aria-hidden="true"  {{ stimulus_controller('bootstrap-modal') }}>
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header d-flex align-items-center bg-primary text-white">
+                    <h4 class="modal-title  text-white" id="myLargeModalLabel">
+                        Créez un contact
+                    </h4>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    {{ form_start(form, {
+                        attr: {
+                            'data-action': 'live#action:prevent',
+                            'data-live-action-param': 'save'
+                        }
+                    }) }}
+                    {% if form.vars.company_create and form.vars.company is empty %}
+                        <div class="col-12">
+                            {{ form_row(form.company.name) }}
+                        </div>
+                    {% else %}
+                        {% if form.vars.company is empty %}
+                        <div class="col-12">
+                            Pas de société
+                        </div>
+                        {% else %}
+                            <div class="col-12">
+                                <b>{{ form.vars.company.name }}</b>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                    <hr>
+                    <div class="col-12">
+                        {{ form_row(form.email) }}
+                        {% if (form.mailing is defined) %}
+                            {{ form_row(form.mailing) }}
+                        {% endif %}
+                    </div>
+                    <div class="col-12">
+                        {{ form_row(form.firstname) }}
+                    </div>
+                    <div class="col-12">
+                        {{ form_row(form.lastname) }}
+                    </div>
+
+                    <div class="col-12">
+                        {{ form_row(form.lang) }}
+                    </div>
+
+                    <button name="submitbtn" class="btn btn-primary mt-3" type="submit">
+                        {{ 'Créer'|trans }}
+                    </button>
+
+                    {{ form_end(form) }}
+
+                </div>
+            </div>
         </div>
     </div>
 </div>

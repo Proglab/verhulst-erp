@@ -38,7 +38,6 @@ class CompanyContact
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
     #[Assert\Email]
-    #[Assert\NotBlank]
     private ?string $email = null;
 
     #[ORM\Column(length: 30, nullable: true)]
