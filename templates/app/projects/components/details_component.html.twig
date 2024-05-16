@@ -15,29 +15,17 @@
                             </div>
                             <div>
                                 <div class="btn-group mb-2" role="group" aria-label="Basic example">
-                                    <a href="{{ path('project_add_event',{locale: app.locale, project: project.id}) }}"
+                                    <a href="{{ path('project_add_event',{_locale: app.locale, project: project.id}) }}"
                                        class="btn bg-primary-subtle text-primary ">
                                         Créer un event
                                     </a>
-                                    <a href="{{ ea_url()
-                                        .setDashboard('App\\Controller\\Admin\\DashboardController')
-                                        .setController('App\\Controller\\Admin\\ProjectCrudController')
-                                        .setAction('createPackage')
-                                        .setEntityId(project.id) }}" class="btn bg-primary-subtle text-primary ">
+                                    <a href="{{ path('project_add_package',{_locale: app.locale, project: project.id}) }}" class="btn bg-primary-subtle text-primary ">
                                         Créer un package VIP
                                     </a>
-                                    <a href="{{ ea_url()
-                                        .setDashboard('App\\Controller\\Admin\\DashboardController')
-                                        .setController('App\\Controller\\Admin\\ProjectCrudController')
-                                        .setAction('createSponsoring')
-                                        .setEntityId(project.id) }}" class="btn bg-primary-subtle text-primary ">
+                                    <a href="{{ path('project_add_sponsoring',{_locale: app.locale, project: project.id}) }}" class="btn bg-primary-subtle text-primary ">
                                         Créer un sponsoring
                                     </a>
-                                    <a href="{{ ea_url()
-                                        .setDashboard('App\\Controller\\Admin\\DashboardController')
-                                        .setController('App\\Controller\\Admin\\ProjectCrudController')
-                                        .setAction('createDivers')
-                                        .setEntityId(project.id) }}"  class="btn bg-primary-subtle text-primary ">
+                                    <a href="{{ path('project_add_divers',{_locale: app.locale, project: project.id}) }}"  class="btn bg-primary-subtle text-primary ">
                                         Créer un divers
                                     </a>
                                 </div>

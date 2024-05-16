@@ -1,18 +1,12 @@
 <?php
 
-namespace App\Twig\Components\Projects;
+namespace App\Twig\Components\Projects\Products;
 
 use App\Controller\Admin\DashboardController;
 use App\Controller\Admin\ProjectCrudController;
-use App\Entity\ProductDivers;
-use App\Entity\ProductPackageVip;
 use App\Entity\ProductSponsoring;
 use App\Entity\Project;
-use App\Form\Type\NewProductDiversType;
-use App\Form\Type\NewProductPackageType;
 use App\Form\Type\NewProductSponsoringType;
-use App\Repository\ProductDiversRepository;
-use App\Repository\ProductPackageVipRepository;
 use App\Repository\ProductSponsoringRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
@@ -26,8 +20,8 @@ use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\LiveComponent\LiveCollectionTrait;
 
-#[AsLiveComponent('create_divers_component', template: 'admin/project/create_divers_component.html.twig')]
-class CreateDiversComponent extends AbstractController
+#[AsLiveComponent('create_sponsoring_component', template: 'app/projects/products/components/create_sponsoring_component.html.twig')]
+class CreateSponsoringComponent extends AbstractController
 {
     use DefaultActionTrait;
     use ComponentWithFormTrait;
@@ -36,13 +30,13 @@ class CreateDiversComponent extends AbstractController
     #[LiveProp]
     public Project $project;
 
-    public function __construct(private ProductDiversRepository $productEventRepository, private RequestStack $requestStack, private AdminUrlGenerator $adminUrlGenerator)
+    public function __construct(private ProductSponsoringRepository $productSponsoringRepository, private RequestStack $requestStack, private AdminUrlGenerator $adminUrlGenerator)
     {
     }
 
     protected function instantiateForm(): FormInterface
     {
-        return $this->createForm(NewProductDiversType::class);
+        return $this->createForm(NewProductSponsoringType::class);
     }
 
     #[LiveAction]
@@ -79,28 +73,48 @@ class CreateDiversComponent extends AbstractController
         }
 
         foreach ($events as $event) {
+            //quantity max
+            $event->setQuantityMax($form->get('quantityMax')->getData());
+            // percents commerciaux
+            if ($form->get('percentFreelance')->getData() === 'other') {
+                $event->setPercentFreelance($form->get('percentFreelanceCustom')->getData() * 100);
+            } else {
+                $event->setPercentFreelance($form->get('percentFreelance')->getData() * 100);
+            }
+            if ($form->get('percentSalarie')->getData() === 'other') {
+                $event->setPercentSalarie($form->get('percentSalarieCustom')->getData() * 100);
+            } else {
+                $event->setPercentSalarie($form->get('percentSalarie')->getData() * 100);
+            }
+            if ($form->get('percentTv')->getData() === 'other') {
+                $event->setPercentTv($form->get('percentTvCustom')->getData() * 100);
+            } else {
+                $event->setPercentTv($form->get('percentTv')->getData() * 100);
+            }
+
+            // prices
             if($form->get('type_com')->getData() === 'percent') {
-                $event->setPercentVr($form->get('com1')->getData() * 100);
+                $event->setPercentVr($form->get('com1')->get('percent_vr')->getData() * 100);
+                $event->setCa($form->get('com1')->get('pv')->getData());
+                $event->setPa($form->get('com1')->get('pv')->getData() - $form->get('com1')->get('pv')->getData() * $form->get('com1')->get('percent_vr')->getData());
             } else {
                 $event->setPercentVr( ($form->get('com2')->get('pv')->getData() - $form->get('com2')->get('pa')->getData() )/ $form->get('com2')->get('pa')->getData() * 100);
+                $event->setCa($form->get('com2')->get('pv')->getData());
+                $event->setPa($form->get('com2')->get('pa')->getData());
             }
-            $this->productEventRepository->save($event, true);
-        }
 
-        $this->addFlash('success', 'Evènement créé avec succès !');
+            $this->productSponsoringRepository->save($event, true);
+        }
+        $this->addFlash('success', 'Sponsoring créé avec succès !');
 
         return $this->redirect(
-            $this->adminUrlGenerator->setDashboard(DashboardController::class)->setController(ProjectCrudController::class)->setAction(Action::DETAIL)->setEntityId($this->project->getId())->generateUrl())
-        ;
+            $this->generateUrl('project_details', ['project' => $this->project->getId()]));
     }
 
-    private function getNewProductEvent(): ProductDivers
+    private function getNewProductEvent(): ProductSponsoring
     {
-        $event = new ProductDivers();
+        $event = new ProductSponsoring();
         $event->setProject($this->project);
-        $event->setPercentFreelance($this->form->get('percentFreelance')->getData() * 100);
-        $event->setPercentTv($this->form->get('percentTv')->getData() * 100);
-        $event->setPercentSalarie($this->form->get('percentSalarie')->getData() * 100);
         $event->setName($this->form->get('name')->getData());
         $event->setDescription($this->form->get('description')->getData());
         return $event;

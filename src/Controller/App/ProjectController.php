@@ -20,7 +20,7 @@ class ProjectController extends AbstractController
     #[Route('/app/{_locale}/projects/new', name: 'project_new')]
     public function project_new(Request $request, $_locale): Response
     {
-        return $this->render('app/projects/new.html.twig', [
+        return $this->render('app/projects/pages/new.html.twig', [
             'locale' => $_locale,
         ]);
     }
@@ -28,15 +28,7 @@ class ProjectController extends AbstractController
     #[Route('/app/{_locale}/projects/{project}', name: 'project_details')]
     public function project_details(Request $request, $_locale, Project $project): Response
     {
-        return $this->render('app/projects/details.html.twig', [
-            'locale' => $_locale,
-            'project' => $project,
-        ]);
-    }
-    #[Route('/app/{_locale}/projects/{project}/addEvent', name: 'project_add_event')]
-    public function project_add_event(Request $request, $_locale, Project $project): Response
-    {
-        return $this->render('app/projects/add_event.html.twig', [
+        return $this->render('app/projects/pages/details.html.twig', [
             'locale' => $_locale,
             'project' => $project,
         ]);

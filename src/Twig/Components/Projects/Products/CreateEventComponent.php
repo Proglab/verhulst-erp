@@ -1,14 +1,11 @@
 <?php
 
-namespace App\Twig\Components\Projects;
+namespace App\Twig\Components\Projects\Products;
 
-use App\Controller\Admin\DashboardController;
-use App\Controller\Admin\ProjectCrudController;
 use App\Entity\ProductEvent;
 use App\Entity\Project;
 use App\Form\Type\NewProductEventType;
 use App\Repository\ProductEventRepository;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -20,7 +17,7 @@ use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\LiveComponent\LiveCollectionTrait;
 
-#[AsLiveComponent('create_event_component', template: 'app/projects/create_event_component.html.twig')]
+#[AsLiveComponent('create_event_component', template: 'app/projects/products/components/create_event_component.html.twig')]
 class CreateEventComponent extends AbstractController
 {
     use DefaultActionTrait;
@@ -107,9 +104,9 @@ class CreateEventComponent extends AbstractController
 
         $this->addFlash('success', 'Evènement créé avec succès !');
 
+
         return $this->redirect(
-            $this->adminUrlGenerator->setDashboard(DashboardController::class)->setController(ProjectCrudController::class)->setAction(Action::DETAIL)->setEntityId($this->project->getId())->generateUrl())
-        ;
+            $this->generateUrl('project_details', ['project' => $this->project->getId()]));
     }
 
     private function getNewProductEvent(): ProductEvent

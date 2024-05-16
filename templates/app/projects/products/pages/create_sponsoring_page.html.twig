@@ -1,0 +1,52 @@
+{% extends 'app/templates/base.html.twig' %}
+
+{% block title %}Créer un nouveau Sponsoring pour le projet {{ project.name }}{% endblock %}
+
+{% block breadcrumb %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-body py-3">
+                <div class="row align-items-center">
+                    <div class="col-12">
+                        <div class="d-sm-flex align-items-center justify-space-between">
+                            <h4 class="mb-4 mb-md-0 card-title">Créer un nouveau Sponsoring pour le projet {{ project.name }}</h4>
+                            <nav aria-label="breadcrumb" class="ms-auto">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item d-flex align-items-center">
+                                        <a class="text-muted text-decoration-none d-flex" href="{{ path('app') }}">
+                                            <iconify-icon icon="solar:home-2-line-duotone" class="fs-6"></iconify-icon>
+                                        </a>
+                                    </li>
+                                    <li class="breadcrumb-item" aria-current="page">
+                                        <a class="text-muted text-decoration-none d-flex" href="{{ ea_url()
+                                            .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                            .setController('App\\Controller\\Admin\\ProjectCrudController')
+                                            .setAction('index') }}">
+                                            <iconify-icon icon="fa6-solid:diagram-project" class="fs-6 me-3"></iconify-icon> Projets
+                                        </a>
+                                    </li>
+                                    <li class="breadcrumb-item" aria-current="page">
+                                        <a class="text-muted text-decoration-none d-flex" href="{{ path('project_details',{_locale: app.locale, project: project.id}) }}">
+                                            <iconify-icon icon="fa6-solid:diagram-project" class="fs-6 me-3"></iconify-icon> {{ project.name }}
+                                        </a>
+                                    </li>
+                                    <li class="breadcrumb-item" aria-current="page">
+                                          <span class="badge fw-medium fs-2 bg-primary-subtle text-primary">
+                                            Créer un nouveau Sponsoring
+                                          </span>
+                                    </li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        {{ component('create_sponsoring_component', {locale: locale, project:project}) }}
+    </div>
+{% endblock %}

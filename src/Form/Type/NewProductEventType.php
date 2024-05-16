@@ -39,7 +39,7 @@ class NewProductEventType extends AbstractType
                 'attr' => [
                     'class' => 'col-md-12'
                 ],
-                'required' => true,
+                'required' => false,
             ])
             ->add('percentFreelance', ChoiceType::class, [
                 'label' => '% Freelance',

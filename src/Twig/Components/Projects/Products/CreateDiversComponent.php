@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Twig\Components\Projects;
+namespace App\Twig\Components\Projects\Products;
 
 use App\Controller\Admin\DashboardController;
 use App\Controller\Admin\ProjectCrudController;
-use App\Entity\ProductPackageVip;
+use App\Entity\ProductDivers;
 use App\Entity\Project;
-use App\Form\Type\NewProductPackageType;
-use App\Repository\ProductPackageVipRepository;
+use App\Form\Type\NewProductDiversType;
+use App\Repository\ProductDiversRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,8 +20,8 @@ use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\LiveComponent\LiveCollectionTrait;
 
-#[AsLiveComponent('create_package_component', template: 'admin/project/create_package_component.html.twig')]
-class CreatePackageComponent extends AbstractController
+#[AsLiveComponent('create_divers_component', template: 'app/projects/products/components/create_divers_component.html.twig')]
+class CreateDiversComponent extends AbstractController
 {
     use DefaultActionTrait;
     use ComponentWithFormTrait;
@@ -30,13 +30,13 @@ class CreatePackageComponent extends AbstractController
     #[LiveProp]
     public Project $project;
 
-    public function __construct(private ProductPackageVipRepository $productEventRepository, private RequestStack $requestStack, private AdminUrlGenerator $adminUrlGenerator)
+    public function __construct(private ProductDiversRepository $productEventRepository, private RequestStack $requestStack, private AdminUrlGenerator $adminUrlGenerator)
     {
     }
 
     protected function instantiateForm(): FormInterface
     {
-        return $this->createForm(NewProductPackageType::class);
+        return $this->createForm(NewProductDiversType::class);
     }
 
     #[LiveAction]
@@ -88,9 +88,9 @@ class CreatePackageComponent extends AbstractController
         ;
     }
 
-    private function getNewProductEvent(): ProductPackageVip
+    private function getNewProductEvent(): ProductDivers
     {
-        $event = new ProductPackageVip();
+        $event = new ProductDivers();
         $event->setProject($this->project);
         $event->setPercentFreelance($this->form->get('percentFreelance')->getData() * 100);
         $event->setPercentTv($this->form->get('percentTv')->getData() * 100);

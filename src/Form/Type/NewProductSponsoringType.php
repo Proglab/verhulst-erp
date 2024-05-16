@@ -43,52 +43,111 @@ class NewProductSponsoringType extends AbstractType
                 ],
                 'required' => true,
             ])
-            ->add('percentFreelance', PercentType::class, [
-                'label' => '% Freelance',
-                'attr' => [
-                    'class' => 'col-md-4 mb-3'
-                ],
-                'required' => true,
-                'data' => 0.1,
-                'constraints' => [
-                    new NotBlank()
-                ],
-            ])
-            ->add('percentSalarie', PercentType::class, [
-                'label' => '% Salarié',
-                'attr' => [
-                    'class' => 'col-md-4 mb-3'
-                ],
-                'required' => true,
-                'data' => 0.05,
-                'constraints' => [
-                    new NotBlank()
-                ],
-            ])
-            ->add('percentTv', PercentType::class, [
-                'label' => '% Thierry',
-                'attr' => [
-                    'class' => 'col-md-4 mb-3'
-                ],
-                'required' => true,
-                'data' => 0.03,
-                'constraints' => [
-                    new NotBlank()
-                ],
-            ])
             ->add('quantityMax', NumberType::class, [
                 'label' => 'Quantité maximale',
                 'attr' => [
                     'class' => 'col-md-4'
                 ],
-                'required' => true,
+                'required' => false,
             ])
-
+            ->add('percentFreelance', ChoiceType::class, [
+                'label' => '% Freelance',
+                'required' => true,
+                'choices' => [
+                    '10%' => 0.1,
+                    '7.5%' => 0.075,
+                    '4%' => 0.04,
+                    '3.5%' => 0.035,
+                    '3%' => 0.03,
+                    'Autre' => 'other',
+                ],
+                'mapped' => false,
+                'constraints' => [
+                    new NotBlank()
+                ],
+                'placeholder' => 'Sélectionnez un %',
+            ])
+            ->addDependent('percentFreelanceCustom', 'percentFreelance', function (DependentField $field, ?string $date_type) {
+                if ($date_type !== 'other') {
+                    return;
+                }
+                $field->add(PercentType::class, [
+                    'label' => '% Freelance',
+                    'required' => true,
+                    'mapped' => false,
+                    'constraints' => [
+                        new NotBlank()
+                    ],
+                    'scale' => 2,
+                    'type' => 'fractional',
+                ]);
+            })
+            ->add('percentSalarie', ChoiceType::class, [
+                'label' => '% Salarié',
+                'required' => true,
+                'choices' => [
+                    '10%' => 0.1,
+                    '7.5%' => 0.075,
+                    '4%' => 0.04,
+                    '3.5%' => 0.035,
+                    '3%' => 0.03,
+                    'Autre' => 'other',
+                ],
+                'mapped' => false,
+                'placeholder' => 'Sélectionnez un %',
+                'constraints' => [
+                    new NotBlank()
+                ],
+            ])
+            ->addDependent('percentSalarieCustom', 'percentSalarie', function (DependentField $field, ?string $date_type) {
+                if ($date_type !== 'other') {
+                    return;
+                }
+                $field->add(PercentType::class, [
+                    'label' => '% Salarié',
+                    'required' => true,
+                    'mapped' => false,
+                    'constraints' => [
+                        new NotBlank()
+                    ],
+                    'scale' => 2,
+                    'type' => 'fractional',
+                ]);
+            })
+            ->add('percentTv', ChoiceType::class, [
+                'label' => '% Thierry',
+                'required' => true,
+                'choices' => [
+                    '10%' => 0.1,
+                    '7.5%' => 0.075,
+                    '4%' => 0.04,
+                    '3.5%' => 0.035,
+                    '3%' => 0.03,
+                    'Autre' => 'other',
+                ],
+                'placeholder' => 'Sélectionnez un %',
+                'mapped' => false,
+                'constraints' => [
+                    new NotBlank()
+                ],
+            ])
+            ->addDependent('percentTvCustom', 'percentTv', function (DependentField $field, ?string $date_type) {
+                if ($date_type !== 'other') {
+                    return;
+                }
+                $field->add(PercentType::class, [
+                    'label' => '% Thierry',
+                    'required' => true,
+                    'mapped' => false,
+                    'constraints' => [
+                        new NotBlank()
+                    ],
+                    'scale' => 2,
+                    'type' => 'fractional',
+                ]);
+            })
             ->add('type_date', ChoiceType::class, [
                 'label' => 'Type de date',
-                'attr' => [
-                    'class' => 'col-md-4 mb-3'
-                ],
                 'choices' => [
                     'Début/fin' => 'date',
                     'Multiple' => 'date_multiple',
@@ -107,10 +166,6 @@ class NewProductSponsoringType extends AbstractType
                 if ($date_type === 'date') {
                     $field->add(DatesType::class, [
                         'label' => 'Dates',
-                        'attr' => [
-                            'class' => 'col-md-6 mb-3',
-                                'type' => 'date',
-                        ],
                         'required' => true,
                         'mapped' => false,
                     ]);
@@ -161,7 +216,6 @@ class NewProductSponsoringType extends AbstractType
                         'label' => false,
                         'attr' => [
                             'class' => 'col-md-3 mb-3',
-                            'type' => 'date',
                         ],
                         'required' => true,
                         'mapped' => false,
@@ -177,7 +231,6 @@ class NewProductSponsoringType extends AbstractType
                         'label' => 'Prix',
                         'attr' => [
                             'class' => 'col-md-3 mb-3',
-                            'type' => 'date',
                         ],
                         'required' => true,
                         'mapped' => false,
