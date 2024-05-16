@@ -1,35 +1,60 @@
 <div class="col-lg-12" {{ attributes }}>
-    <!-- -------------------------------------------- -->
-    <!-- Mes ventes -->
-    <!-- -------------------------------------------- -->
-    <div class="card">
-        <div class="card-body">
-            {{ form_start(form, {
-                attr: {
-                    'data-action': 'live#action:prevent',
-                    'data-live-action-param': 'save'
-                }
-            }) }}
-            <div class="row">
-                <div class="col-md-6">
-                    {{ form_label(form.name) }}
-                    {{ form_widget(form.name) }}
+    <div class="row">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    {% if this.errorFile is not empty %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ this.errorFile }}
+                        </div>
+                    {% endif %}
+
+                    {{ form_start(form, {
+                        attr: {
+                            'data-action': 'live#action:prevent',
+                            'data-live-action-param': 'save'
+                        }
+                    }) }}
+                    <div class="row">
+                        <div class="col-md-12">
+                            {{ form_label(form.name) }}
+                            {{ form_widget(form.name) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form_label(form.date_begin) }}
+                            {{ form_widget(form.date_begin, {'type': 'date'}) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form_label(form.date_end) }}
+                            {{ form_widget(form.date_end, {'type': 'date'}) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="new_project_date_end" class="form-label">Fichier</label>
+                            <input type="file" name="my_file" />
+                            <a data-action="live#action" data-live-action-param="files|uploadFile" class="btn btn-warning">Uploader le fichier</a>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Sauvegarder</button>
+                    {{ form_end(form) }}
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-3">
-                    {{ form_label(form.date_begin) }}
-                    {{ form_widget(form.date_begin, {'type': 'date'}) }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3">
-                    {{ form_label(form.date_end) }}
-                    {{ form_widget(form.date_end, {'type': 'date'}) }}
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary mt-3">Sauvegarder</button>
-            {{ form_end(form) }}
         </div>
+        {% if this.filename is not null %}
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <label for="new_project_date_end" class="form-label">Fichier uploadé</label><br>
+                    <b>Type de fichier : </b> {{ this.fileDetails.mime }}<br>
+                    <b>Taille du fichier : </b> {{ this.fileDetails.size|readable_filesize() }} <br>
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
 </div>

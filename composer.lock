@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3c0158c9e931ac8854806314a79e2f7b",
+    "content-hash": "238381fbb327b9cd21a852f752d8b51d",
     "packages": [
         {
             "name": "arkounay/ux-collection",
@@ -4298,6 +4298,60 @@
                 "source": "https://github.com/open-telemetry/opentelemetry-php"
             },
             "time": "2024-04-09T23:31:35+00:00"
+        },
+        {
+            "name": "oskarstark/readable-filesize-extension",
+            "version": "1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/OskarStark/readable-filesize-extension.git",
+                "reference": "83391db1480b75519dfb25335ab85f49dcce2172"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/OskarStark/readable-filesize-extension/zipball/83391db1480b75519dfb25335ab85f49dcce2172",
+                "reference": "83391db1480b75519dfb25335ab85f49dcce2172",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0",
+                "twig/twig": "^2.6 || ^3.0",
+                "webmozart/assert": "^1.11"
+            },
+            "require-dev": {
+                "ergebnis/test-util": "^1.4",
+                "friendsofphp/php-cs-fixer": "^2.18.3",
+                "phpstan/phpstan": "^0.12.82",
+                "phpunit/phpunit": "^8.5 || ^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "OskarStark\\Twig\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Oskar Stark",
+                    "email": "oskarstark@googlemail.com"
+                }
+            ],
+            "description": "A Twig extension to convert filesize to human readable string",
+            "keywords": [
+                "filesize",
+                "human-readable",
+                "twig",
+                "twig-extension"
+            ],
+            "support": {
+                "issues": "https://github.com/OskarStark/readable-filesize-extension/issues",
+                "source": "https://github.com/OskarStark/readable-filesize-extension/tree/1.2.1"
+            },
+            "time": "2022-10-28T11:50:45+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",
@@ -16306,9 +16360,10 @@
     "platform": {
         "php": ">=8.1.2",
         "ext-ctype": "*",
+        "ext-fileinfo": "*",
         "ext-iconv": "*",
         "ext-imap": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }

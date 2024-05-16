@@ -8,6 +8,7 @@
     "require": {
         "php": ">=8.1.2",
         "ext-ctype": "*",
+        "ext-fileinfo": "*",
         "ext-iconv": "*",
         "ext-imap": "*",
         "arkounay/ux-collection": "^4.0",
@@ -23,6 +24,7 @@
         "gedmo/doctrine-extensions": "^3.5",
         "knplabs/knp-paginator-bundle": "*",
         "microsoft/microsoft-graph-beta": "^2.4",
+        "oskarstark/readable-filesize-extension": "^1.2",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpoffice/phpspreadsheet": "^2.0",
         "proglab/monolog-discord-handler": "^1.0",
