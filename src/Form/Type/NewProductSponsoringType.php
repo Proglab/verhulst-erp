@@ -41,7 +41,7 @@ class NewProductSponsoringType extends AbstractType
                 'attr' => [
                     'class' => 'col-md-12'
                 ],
-                'required' => true,
+                'required' => false,
             ])
             ->add('quantityMax', NumberType::class, [
                 'label' => 'Quantité maximale',

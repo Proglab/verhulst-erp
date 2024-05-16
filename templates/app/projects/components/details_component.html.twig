@@ -112,8 +112,10 @@
                                 <div class="d-sm-flex align-items-center justify-content-between">
                                     {% if event.dateBegin == event.dateEnd %}
                                         <b>Date: {{ event.date|date('d/m/Y') }}</b>
+                                        <span class="badge bg-primary-subtle text-primary">Prix de vente : {{ event.ca|number_format(2, ',', '.') }} €</span>
                                     {% else %}
                                         <b>du {{ event.dateBegin|date('d/m/Y') }} au {{ event.dateEnd|date('d/m/Y') }}</b>
+                                        <span class="badge bg-primary-subtle text-primary">Prix de vente : {{ event.ca|number_format(2, ',', '.') }} €</span>
                                     {% endif %}
                                 </div>
                             </div>
@@ -410,8 +412,10 @@
                                 <div class="d-sm-flex align-items-center justify-content-between">
                                     {% if divers.dateBegin == divers.dateEnd %}
                                         <b>Date: {{ divers.date|date('d/m/Y') }}</b>
+                                        <span class="badge bg-primary-subtle text-primary">Prix de vente : {{ divers.ca|number_format(2, ',', '.') }} €</span>
                                     {% else %}
                                         <b>du {{ divers.dateBegin|date('d/m/Y') }} au {{ divers.dateEnd|date('d/m/Y') }}</b>
+                                        <span class="badge bg-primary-subtle text-primary">Prix de vente : {{ divers.ca|number_format(2, ',', '.') }} €</span>
                                     {% endif %}
                                 </div>
                             </div>
