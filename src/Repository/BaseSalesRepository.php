@@ -19,29 +19,11 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Sales[]    findAll()
  * @method Sales[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SalesRepository extends ServiceEntityRepository
+class BaseSalesRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Sales::class);
-    }
-
-    public function save(Sales $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
-
-    public function remove(Sales $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
     }
 
     public function getQuantitySaleByProduct(Product $product): int
@@ -125,8 +107,8 @@ class SalesRepository extends ServiceEntityRepository
             ->setParameter('end', $year . '-12-31')
             ->andWhere('s.user = :user')
             ->setParameter('user', $user)
-            ->getQuery()
-            ->getResult();
+        ->getQuery()
+        ->getResult();
 
         $datas = [];
         foreach ($sales as $sale) {

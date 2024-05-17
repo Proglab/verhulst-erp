@@ -17,11 +17,11 @@
                                             <iconify-icon icon="solar:home-2-line-duotone" class="fs-6"></iconify-icon></a>
                                     </li>
                                     <li class="breadcrumb-item" aria-current="page">
-                                            Ventes flash
+                                        Ventes flash
                                     </li>
                                     <li class="breadcrumb-item" aria-current="page">
                                           <span class="badge fw-medium fs-2 bg-primary-subtle text-primary">
-                                            Choisir le contact
+                                            Créer la vente
                                           </span>
                                     </li>
                                 </ol>
@@ -36,6 +36,27 @@
 
 {% block body %}
     <div class="row">
-        {{ component('society_choice', { locale: app.locale }) }}
+        <div class="col-12">
+            <div class="card w-100 border position-relative overflow-hidden mb-0">
+                <div class="card-body p-4">
+                    <div class="d-md-flex align-items-center justify-content-between mb-4">
+                        <div>
+                            <h4 class="card-title">{{ contact.fullName }}</h4>
+                            <p class="card-subtitle mb-4">
+                                {% if contact.company is not empty %}{{ contact.company.name }}{% else %}Pas de société{% endif %}
+                            </p>
+                        </div>
+                        <a href="{{ path('sales_flash_create') }}"><iconify-icon icon="tabler:edit" width="25" height="25"></iconify-icon></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 mt-3">
+            <div class="card w-100 border position-relative overflow-hidden mb-0">
+                <div class="card-body p-4">
+                    {{ component('create_flash_sale', {contact: contact}) }}
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
