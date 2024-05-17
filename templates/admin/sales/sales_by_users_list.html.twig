@@ -246,13 +246,10 @@
                                             {% set total_marge2 = total_marge2 + sale.diffCa + sale.euroVr  %}
                                             <tr>
                                                 <th scope="row">
-                                                    {% if sale.contact.id == 1652 %}
-                                                    {{ dump(sale.contact) }}
-                                                        {% else %}
-                                                            {{ sale.contact.firstname }}  {{ sale.contact.lastname }} ({{ sale.contact.company.name }}) #}
+                                                    {{ sale.contact.firstname }}  {{ sale.contact.lastname }}
+                                                        {% if sale.contact.company is not empty %}
+                                                            ({{ sale.contact.company.name }})
                                                         {% endif %}
-
-
                                                 </th>
                                                 <th scope="row">
                                                     {{ sale.product.project.name }}
