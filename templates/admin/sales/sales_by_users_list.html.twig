@@ -65,7 +65,10 @@
                                             {% set total_discount = total_discount + sale.discount %}
                                             <tr>
                                                 <th scope="row">
-                                                    {{ sale.contact.firstname }} {{ sale.contact.lastname }} ({{ sale.contact.company.name }})
+                                                    {{ sale.contact.firstname }}  {{ sale.contact.lastname }}
+                                                    {% if sale.contact.company is not empty %}
+                                                        ({{ sale.contact.company.name }})
+                                                    {% endif %}
                                                 </th>
                                                 <th scope="row">
                                                     {{ sale.product.project.name }}
@@ -150,7 +153,10 @@
                                             {% set total_marge = total_marge + sale.marge  %}
                                             <tr>
                                                 <th scope="row">
-                                                    {{ sale.contact.firstname }} {{ sale.contact.lastname }} ({{ sale.contact.company.name }})
+                                                    {{ sale.contact.firstname }}  {{ sale.contact.lastname }}
+                                                    {% if sale.contact.company is not empty %}
+                                                        ({{ sale.contact.company.name }})
+                                                    {% endif %}
                                                 </th>
                                                 <th scope="row">
                                                     {{ sale.product.project.name }}
@@ -343,7 +349,10 @@
                                             {% set total_marge = total_marge + sale.marge  %}
                                             <tr>
                                                 <th scope="row">
-                                                    {{ sale.contact.firstname }} {{ sale.contact.lastname }} ({{ sale.contact.company.name }})
+                                                    {{ sale.contact.firstname }}  {{ sale.contact.lastname }}
+                                                    {% if sale.contact.company is not empty %}
+                                                        ({{ sale.contact.company.name }})
+                                                    {% endif %}
                                                 </th>
                                                 <th scope="row">
                                                     {{ sale.product.project.name }}
