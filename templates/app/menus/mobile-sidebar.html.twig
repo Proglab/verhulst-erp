@@ -1,0 +1,316 @@
+
+<aside class="side-mini-panel with-vertical">
+    <!-- ---------------------------------- -->
+    <!-- Start Vertical Layout Sidebar -->
+    <!-- ---------------------------------- -->
+    <div class="iconbar">
+        <div>
+            <div class="mini-nav">
+                <div class="brand-logo d-flex align-items-center justify-content-center">
+                    <a class="nav-link sidebartoggler" id="headerCollapse" href="javascript:void(0)">
+                        <iconify-icon icon="solar:hamburger-menu-line-duotone" class="fs-7"></iconify-icon>
+                    </a>
+                </div>
+                <ul class="mini-nav-ul" data-simplebar="init"><div class="simplebar-wrapper" style="margin: 0px;">
+                        <div class="simplebar-height-auto-observer-wrapper">
+                            <div class="simplebar-height-auto-observer"></div>
+                        </div>
+                        <div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+                                <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden;">
+                                    <div class="simplebar-content" style="padding: 0px;">
+
+                                        <!-- --------------------------------------------------------------------------------------------------------- -->
+                                        <!-- Dashboards -->
+                                        <!-- --------------------------------------------------------------------------------------------------------- -->
+                                        <li class="mini-nav-item selected" id="mini-1">
+                                            <a href="javascript:void(0)" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-placement="right" data-bs-title="Menu">
+                                                <iconify-icon icon="solar:layers-line-duotone" class="fs-7"></iconify-icon>
+                                            </a>
+                                        </li>
+
+                                    </div></div></div></div><div class="simplebar-placeholder" style="width: 80px; height: 537px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: hidden;"><div class="simplebar-scrollbar" style="height: 0px; display: none;"></div></div></ul>
+
+            </div>
+            <div class="sidebarmenu close">
+                <div class="brand-logo d-flex align-items-center nav-logo">
+                    <a href="{{ path('app') }}" class="text-nowrap logo-img">
+                        <img src="{{ asset('app-logo.png') }}" alt="Logo" width="200">
+                    </a>
+
+                </div>
+                <!-- ---------------------------------- -->
+                <!-- Pages -->
+                <!-- ---------------------------------- -->
+                <nav class="sidebar-nav scroll-sidebar d-block" id="menu-right-mini-3" data-simplebar="init"><div class="simplebar-wrapper" style="margin: 0px -20px -24px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;"><div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden;"><div class="simplebar-content" style="padding: 0px 20px 24px;">
+                                        <ul class="sidebar-menu" id="sidebarnav">
+                                            <li class="sidebar-item">
+                                                <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
+                                                    <iconify-icon icon="mingcute:dashboard-fill" width="25" height="25"></iconify-icon>
+                                                    <span class="hide-menu">Dashboards</span>
+                                                </a>
+                                                <ul aria-expanded="false" class="collapse first-level">
+                                                    <li class="sidebar-item">
+                                                        <a href="{{ path('app') }}" class="sidebar-link">
+                                                            <iconify-icon icon="material-symbols:dashboard" width="25" height="25"></iconify-icon>
+                                                            <span class="hide-menu">Mon dashboard</span>
+                                                        </a>
+                                                    </li>
+                                                    {% if is_granted('ROLE_ADMIN') %}
+                                                        {#
+                                                        <li class="sidebar-item">
+                                                            <a href="#" class="sidebar-link">
+                                                                <iconify-icon icon="fluent-mdl2:b-i-dashboard" width="25" height="25"></iconify-icon>
+                                                                <span class="hide-menu">{{ 'app.menus.top.dashboard.general'|trans }}</span>
+                                                            </a>
+                                                        </li> #}
+                                                        <li class="sidebar-item">
+                                                            <a href="{{ ea_url()
+                                                                .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                                .setController('App\\Controller\\Admin\\SalesCrudController')
+                                                                .setAction('sales_by_users_list') }}" class="sidebar-link">
+                                                                <iconify-icon icon="carbon:dashboard" width="25" height="25"></iconify-icon>
+                                                                <span class="hide-menu">{{ 'app.menus.top.dashboard.commercial'|trans }}</span>
+                                                            </a>
+                                                        </li>
+                                                        <li class="sidebar-item">
+                                                            <a href="{{ ea_url()
+                                                                .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                                .setController('App\\Controller\\Admin\\SalesRecapCrudController')
+                                                                .setAction('index') }}" class="sidebar-link">
+                                                                <iconify-icon icon="streamline:graph-solid" width="25" height="25"></iconify-icon>
+                                                                <span class="hide-menu">{{ 'app.menus.top.dashboard.sales'|trans }}</span>
+                                                            </a>
+                                                        </li>
+                                                    {% endif %}
+                                                </ul>
+                                            </li>
+                                            <li class="sidebar-item">
+                                                <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
+                                                    <iconify-icon icon="fa6-solid:diagram-project" width="25" height="25"></iconify-icon>
+                                                    <span class="hide-menu">Projets</span>
+                                                </a>
+                                                <ul aria-expanded="false" class="collapse first-level">
+                                                    <li class="sidebar-item">
+                                                        <a href="{{ ea_url()
+                                                            .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                            .setController('App\\Controller\\Admin\\ProjectCrudController')
+                                                            .setAction('index') }}" class="sidebar-link">
+                                                            <iconify-icon icon="fa6-solid:diagram-project" width="25" height="25"></iconify-icon>
+                                                            <span class="hide-menu">Projets</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="sidebar-item">
+                                                        <a href="{{ ea_url()
+                                                            .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                            .setController('App\\Controller\\Admin\\ProductEventCrudController')
+                                                            .setAction('index') }}" class="sidebar-link">
+                                                            <iconify-icon icon="material-symbols:event" width="25" height="25"></iconify-icon>
+                                                            <span class="hide-menu">Events</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="sidebar-item">
+                                                        <a href="{{ ea_url()
+                                                            .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                            .setController('App\\Controller\\Admin\\ProductPackageVipCrudController')
+                                                            .setAction('index') }}" class="sidebar-link">
+                                                            <iconify-icon icon="ri:vip-fill" width="25" height="25"></iconify-icon>
+                                                            <span class="hide-menu">Package VIP</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="sidebar-item">
+                                                        <a href="{{ ea_url()
+                                                            .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                            .setController('App\\Controller\\Admin\\ProductSponsoringCrudController')
+                                                            .setAction('index') }}" class="sidebar-link">
+                                                            <iconify-icon icon="octicon:sponsor-tiers-16" width="25" height="25"></iconify-icon>
+                                                            <span class="hide-menu">Sponsoring</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="sidebar-item">
+                                                        <a class="sidebar-link" href="{{ ea_url()
+                                                            .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                            .setController('App\\Controller\\Admin\\ProductDiversCrudController')
+                                                            .setAction('index') }}" aria-expanded="false">
+                                                              <span>
+                                                                <iconify-icon icon="arcticons:nothing-x" width="25" height="25"></iconify-icon>
+                                                              </span>
+                                                            <span class="hide-menu">Divers</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="sidebar-item">
+                                                        <a href="{{ ea_url()
+                                                            .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                            .setController('App\\Controller\\Admin\\ProjectArchiveCrudController')
+                                                            .setAction('index') }}" class="sidebar-link">
+                                                            <iconify-icon icon="ph:archive-bold" width="25" height="25"></iconify-icon>
+                                                            <span class="hide-menu">Archives</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="sidebar-item">
+                                                <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
+                                                    <iconify-icon icon="carbon:customer" width="25" height="25"></iconify-icon>
+                                                    <span class="hide-menu">Clients</span>
+                                                </a>
+                                                <ul aria-expanded="false" class="collapse first-level">
+                                                    <li class="sidebar-item">
+                                                        <a href="{{ ea_url()
+                                                            .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                            .setController('App\\Controller\\Admin\\CompanyCrudController')
+                                                            .setAction('index') }}" class="sidebar-link">
+                                                            <iconify-icon icon="mdi:company" width="25" height="25"></iconify-icon>
+                                                            <span class="hide-menu">Société</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="sidebar-item">
+                                                        <a href="{{ ea_url()
+                                                            .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                            .setController('App\\Controller\\Admin\\CompanyContactCrudController')
+                                                            .setAction('index')
+                                                            .set('entityFqcn', 'App\\Entity\\CompanyContact') }}" class="sidebar-link">
+                                                            <iconify-icon icon="teenyicons:contact-solid" width="25" height="25"></iconify-icon>
+                                                            <span class="hide-menu">Contact</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="sidebar-item">
+                                                        <a href="{{ ea_url()
+                                                            .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                            .setController('App\\Controller\\Admin\\TempCompanyContactCrudController')
+                                                            .setAction('index')
+                                                            .set('entityFqcn', 'App\\Entity\\Sales')}}" class="sidebar-link">
+                                                            <iconify-icon icon="solar:import-bold" width="25" height="25"></iconify-icon>
+                                                            <span class="hide-menu">Import</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="sidebar-item">
+                                                        <a href="{{ ea_url()
+                                                            .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                            .setController('App\\Controller\\Admin\\CompanyContactMailCrudController')
+                                                            .setAction('index')
+                                                            .set('entityFqcn', 'App\\Entity\\CompanyContact')}}" class="sidebar-link">
+                                                            <iconify-icon icon="material-symbols:mail" width="25" height="25"></iconify-icon>
+                                                            <span class="hide-menu">Mailing</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="sidebar-item">
+                                                <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
+                                                    <iconify-icon icon="fa6-solid:diagram-project" width="25" height="25"></iconify-icon>
+                                                    <span class="hide-menu">Ventes</span>
+                                                </a>
+                                                <ul aria-expanded="false" class="collapse first-level">
+                                                    <li class="sidebar-item">
+                                                        <a href="{{ ea_url()
+                                                            .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                            .setController('App\\Controller\\Admin\\SalesCrudController')
+                                                            .setAction('index')
+                                                            .set('entityFqcn', 'App\\Entity\\Sales')}}" class="sidebar-link">
+                                                            <iconify-icon icon="material-symbols:event" width="25" height="25"></iconify-icon>
+                                                            <span class="hide-menu">Events</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="sidebar-item">
+                                                        <a href="{{ ea_url()
+                                                            .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                            .setController('App\\Controller\\Admin\\SalesCrudController')
+                                                            .setAction('index')
+                                                            .set('entityFqcn', 'App\\Entity\\Sales')}}" class="sidebar-link">
+                                                            <iconify-icon icon="ri:vip-fill" width="25" height="25"></iconify-icon>
+                                                            <span class="hide-menu">Package VIP</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="sidebar-item">
+                                                        <a href="{{ ea_url()
+                                                            .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                            .setController('App\\Controller\\Admin\\SalesCrudController')
+                                                            .setAction('index')
+                                                            .set('entityFqcn', 'App\\Entity\\Sales')}}" class="sidebar-link">
+                                                            <iconify-icon icon="octicon:sponsor-tiers-16" width="25" height="25"></iconify-icon>
+                                                            <span class="hide-menu">Sponsoring</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="sidebar-item">
+                                                        <a class="sidebar-link" href="{{ ea_url()
+                                                            .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                            .setController('App\\Controller\\Admin\\SalesCrudController')
+                                                            .setAction('index')
+                                                            .set('entityFqcn', 'App\\Entity\\Sales')}}" aria-expanded="false">
+                      <span>
+                        <iconify-icon icon="arcticons:nothing-x" width="25" height="25"></iconify-icon>
+                      </span>
+                                                            <span class="hide-menu">Divers</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+
+                                            <li class="sidebar-item">
+                                                <a href="{{ ea_url()
+                                                    .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                    .setController('App\\Controller\\Admin\\SalesBdcCrudController')
+                                                    .setAction('index')}}" class="sidebar-link">
+                                                    <iconify-icon icon="solar:accessibility-line-duotone"></iconify-icon>
+                                                    <span class="hide-menu">Bon de commande</span>
+                                                </a>
+                                            </li>
+                                            <li class="sidebar-item">
+                                                <a href="{{ ea_url()
+                                                    .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                    .setController('App\\Controller\\Admin\\TodoCrudController')
+                                                    .setAction('index')
+                                                }}" class="sidebar-link">
+                                                    <iconify-icon icon="solar:card-search-line-duotone"></iconify-icon>
+                                                    <span class="hide-menu">To Do</span>
+                                                </a>
+                                            </li>
+                                            {% if is_granted('ROLE_ADMIN') %}
+                                            <li class="sidebar-item">
+                                                <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
+                                                    <iconify-icon icon="fa6-solid:diagram-project" width="25" height="25"></iconify-icon>
+                                                    <span class="hide-menu">Admin</span>
+                                                </a>
+                                                <ul aria-expanded="false" class="collapse first-level">
+                                                    <li class="sidebar-item">
+                                                        <a class="sidebar-link" href="{{ ea_url()
+                                                            .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                            .setController('App\\Controller\\Admin\\UserCrudController')
+                                                            .setAction('index') }}">
+                                                              <span>
+                                                                <iconify-icon icon="mdi:users" width="25" height="25"></iconify-icon>
+                                                              </span>
+                                                            <span class="hide-menu">Utilisateurs</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="sidebar-item">
+                                                        <a class="sidebar-link" href="{{ ea_url()
+                                                            .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                            .setController('App\\Controller\\Admin\\CommissionCrudController')
+                                                            .setAction('index') }}">
+                                                              <span>
+                                                                <iconify-icon icon="solar:sale-bold" width="25" height="25"></iconify-icon>
+                                                              </span>
+                                                            <span class="hide-menu">Commissions</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="sidebar-item">
+                                                        <a class="sidebar-link" href="{{ ea_url()
+                                                            .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                            .setController('App\\Controller\\Admin\\TodoTypeCrudController')
+                                                            .setAction('index') }}">
+                                                              <span>
+                                                                  <iconify-icon icon="dashicons:admin-tools" width="25" height="25"></iconify-icon>
+                                                              </span>
+                                                            <span class="hide-menu">Type de to do</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            {% endif %}
+                                        </ul>
+                                    </div></div></div></div><div class="simplebar-placeholder" style="width: 240px; height: 1119px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: hidden;"><div class="simplebar-scrollbar" style="height: 0px; display: none;"></div></div></nav>
+                </div>
+        </div>
+    </div>
+</aside>

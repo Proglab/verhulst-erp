@@ -1,0 +1,53 @@
+<div class="with-vertical">
+    <!-- ---------------------------------- -->
+    <!-- Start Vertical Layout Header -->
+    <!-- ---------------------------------- -->
+    <nav class="navbar navbar-expand-lg p-0">
+        <ul class="navbar-nav">
+            <li class="nav-item d-flex d-xl-none">
+                <a class="nav-link nav-icon-hover-bg rounded-circle  sidebartoggler " id="headerCollapse" href="javascript:void(0)">
+                    <iconify-icon icon="solar:hamburger-menu-line-duotone" class="fs-6"></iconify-icon>
+                </a>
+            </li>
+            <li class="nav-item d-none d-xl-flex nav-icon-hover-bg rounded-circle">
+                <a class="nav-link" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <iconify-icon icon="solar:magnifer-linear" class="fs-6"></iconify-icon>
+                </a>
+            </li>
+        </ul>
+
+        <div class="d-block d-lg-none py-9 py-xl-0">
+            <img src="{{ asset('app-logo.png') }}" alt="matdash-img" width="200">
+        </div>
+        <a class="navbar-toggler p-0 border-0 nav-icon-hover-bg rounded-circle" href="javascript:void(0)" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <iconify-icon icon="solar:menu-dots-bold-duotone" class="fs-6"></iconify-icon>
+        </a>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <div class="d-flex align-items-center justify-content-between">
+                <ul class="navbar-nav flex-row mx-auto ms-lg-auto align-items-center justify-content-center">
+
+                    <!-- ------------------------------- -->
+                    <!-- start language Dropdown -->
+                    <!-- ------------------------------- -->
+                    {{ include('app/menus/shortcuts.html.twig') }}
+                    <!-- ------------------------------- -->
+                    <!-- end language Dropdown -->
+                    <!-- ------------------------------- -->
+
+                    <!-- ------------------------------- -->
+                    <!-- start profile Dropdown -->
+                    <!-- ------------------------------- -->
+                    {{ include('app/menus/profile.html.twig') }}
+                    <!-- ------------------------------- -->
+                    <!-- end profile Dropdown -->
+                    <!-- ------------------------------- -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- ---------------------------------- -->
+    <!-- End Vertical Layout Header -->
+    <!-- ---------------------------------- -->
+
+
+</div>

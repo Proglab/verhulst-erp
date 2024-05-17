@@ -44,11 +44,12 @@
     <img src="{{ asset('build/favicon/favicon.ico') }}" alt="loader" class="lds-ripple img-fluid"/>
 </div>
 <div id="main-wrapper">
+    {{ include('app/menus/mobile-sidebar.html.twig') }}
     <!--  Sidebar End -->
     <div class="page-wrapper">
         <!--  Header Start -->
         <header class="topbar">
-
+            {{ include('app/menus/mobile-topbar.html.twig') }}
             <div class="app-header with-horizontal">
                 <nav class="navbar navbar-expand-xl container-fluid p-0">
                     <ul class="navbar-nav align-items-center">
@@ -292,6 +293,7 @@
 <script src="{{ asset('build/matdash/assets/js/theme/app.init.js') }}"></script>
 <script src="{{ asset('build/matdash/assets/js/theme/theme.js') }}"></script>
 <script src="{{ asset('build/matdash/assets/js/theme/app.min.js') }}"></script>
+<script src="{{ asset('build/matdash/assets/js/theme/sidebarmenu.js') }}"></script>
 <script src="{{ asset('build/matdash/assets/js/dashboards/dashboard1.js') }}"></script>
 
 <!-- solar icons -->

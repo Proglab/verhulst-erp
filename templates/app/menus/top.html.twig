@@ -3,7 +3,7 @@
     <div>
         <!-- Sidebar navigation-->
         <nav id="sidebarnavh" class="sidebar-nav scroll-sidebar container-fluid">
-            <ul id="sidebarnav">
+            <ul class="sidebar-menu" id="sidebarnav">
                 <!-- =================== -->
                 <!-- Dashboard -->
                 <!-- =================== -->
@@ -58,16 +58,25 @@
                     <span class="hide-menu">Projets</span>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link has-arrow" href="{{ ea_url()
-                        .setDashboard('App\\Controller\\Admin\\DashboardController')
-                        .setController('App\\Controller\\Admin\\ProjectCrudController')
-                        .setAction('index') }}" aria-expanded="false">
+                    <a class="sidebar-link has-arrow" href="" aria-expanded="false">
                   <span>
                     <iconify-icon icon="fa6-solid:diagram-project" width="25" height="25"></iconify-icon>
                   </span>
                         <span class="hide-menu">Projets</span>
                     </a>
                     <ul aria-expanded="false" class="collapse first-level">
+                        <li class="sidebar-item">
+                            <a href="{{ ea_url()
+                                .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                .setController('App\\Controller\\Admin\\ProjectCrudController')
+                                .setAction('index') }}" class="sidebar-link">
+                                <iconify-icon icon="eos-icons:project" width="25" height="25"></iconify-icon>
+                                <span class="hide-menu">Tous les projets</span>
+                            </a>
+                        </li>
+                        <li>
+                            <span class="sidebar-divider"></span>
+                        </li>
                         <li class="sidebar-item">
                             <a href="{{ ea_url()
                                 .setDashboard('App\\Controller\\Admin\\DashboardController')
