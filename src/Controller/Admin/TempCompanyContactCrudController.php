@@ -212,8 +212,12 @@ class TempCompanyContactCrudController extends BaseCrudController
         $form->handleRequest($context->getRequest());
         if ($form->isSubmitted() && $form->isValid()) {
             $this->companyContactRepository->save($form->getData(), true);
+            $url = $context->getReferrer();
+            if (empty($url)) {
+                $url = $this->adminUrlGenerator->setAction(Crud::PAGE_INDEX)->setEntityId(null)->generateUrl();
+            }
 
-            return $this->redirect($context->getReferrer());
+            return $this->redirect($url);
         }
 
         if ($form->isSubmitted() && !$form->isValid()) {
@@ -221,8 +225,12 @@ class TempCompanyContactCrudController extends BaseCrudController
             $client = $form->getData();
             if (!empty($client->getAddedBy())) {
                 $this->companyContactRepository->save($form->getData(), true);
+                $url = $context->getReferrer();
+                if (empty($url)) {
+                    $url = $this->adminUrlGenerator->setAction(Crud::PAGE_INDEX)->setEntityId(null)->generateUrl();
+                }
 
-                return $this->redirect($context->getReferrer());
+                return $this->redirect($url);
             }
         }
 

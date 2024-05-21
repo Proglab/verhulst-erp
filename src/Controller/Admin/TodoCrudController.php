@@ -119,7 +119,7 @@ class TodoCrudController extends BaseCrudController
         $dateReminder = DateField::new('date_reminder')->setLabel('Date rappel')->setRequired(true)->setFormat('dd/MM/yy');
         $hourReminder = TimeField::new('hour_reminder')->setLabel('Heure de rappel')->setRequired(false)->setFormat('hh:mm');
         $contact = AssociationField::new('client')->setLabel('Client')->setRequired(false);
-        $todo = TextEditorField::new('todo')->setLabel('TodoComponent')->setRequired(true);
+        $todo = TextEditorField::new('todo')->setLabel('TodoComponent')->setRequired(true)->setPermission('ROLE_COMMERCIAL');
         $done = BooleanField::new('done')->setLabel('Fait ?');
         $user = AssociationField::new('user')->setLabel('Sales')->setRequired(false);
         $dateDone = DateTimeField::new('date_done')->setLabel('Date de réalisation');
