@@ -78,6 +78,13 @@
                                         %}
                                         <a class=" action-detail" href="{{url}}" title="Modifier"><i class="text-black fa fa-edit ms-2"></i> </a>
                                     {% endif %}
+                                    {% set url = ea_url()
+                                        .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                        .setController('App\\Controller\\Admin\\CompanyContactCrudController')
+                                        .setAction('flashsale')
+                                        .setEntityId(contact.id)
+                                    %}
+                                    <a class=" action-detail" href="{{url}}" title="Créer une vente flash"><i class="text-black fa fa-euro-sign ms-2"></i></a>
 
                                 {% endif %}
 

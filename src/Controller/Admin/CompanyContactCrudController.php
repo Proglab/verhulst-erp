@@ -261,6 +261,10 @@ class CompanyContactCrudController extends BaseCrudController
                     ->linkToCrudAction('search')->createAsGlobalAction();
         */
 
+        $flashSale = Action::new('flashsale', 'Créer une version flash')
+            ->linkToCrudAction('flashsale');
+
+
         $retour = Action::new('backCompany', 'Retour à la fiche société')
             ->linkToCrudAction('backtocompany');
 
@@ -286,6 +290,8 @@ class CompanyContactCrudController extends BaseCrudController
             })
             ->add(Crud::PAGE_INDEX, $export)
             ->add(Crud::PAGE_INDEX, $import)
+            ->add(Crud::PAGE_INDEX, $flashSale)
+            ->setPermission('flashsale', 'ROLE_COMMERCIAL')
           //  ->add(Crud::PAGE_INDEX, $search)
             ->add(Crud::PAGE_DETAIL, Action::EDIT)
             ->update(Crud::PAGE_INDEX, 'export', function (Action $action) {
@@ -293,6 +299,9 @@ class CompanyContactCrudController extends BaseCrudController
             })
             ->update(Crud::PAGE_INDEX, 'import', function (Action $action) {
                 return $action->setIcon('fa fa-file-import')->setHtmlAttributes(['title' => 'Importer']);
+            })
+            ->update(Crud::PAGE_INDEX, 'flashsale', function (Action $action) {
+                return $action->setIcon('fa fa-file-import')->setHtmlAttributes(['title' => 'Créer une version flash']);
             })
            /* ->update(Crud::PAGE_INDEX, 'search', function (Action $action) {
                 return $action->setIcon('fa-solid fa-magnifying-glass')->setHtmlAttributes(['title' => 'Exporter']);
@@ -523,6 +532,11 @@ class CompanyContactCrudController extends BaseCrudController
     public function createTodo(AdminContext $context): RedirectResponse|Response
     {
         return $this->redirect($this->adminUrlGenerator->setController(TodoCrudController::class)->setAction(Crud::PAGE_NEW)->setEntityId(null)->set('client_id', $context->getEntity()->getInstance()->getId())->generateUrl());
+    }
+
+    public function flashsale(AdminContext $context): RedirectResponse|Response
+    {
+        return $this->redirect($this->generateUrl('sales_flash_create_sale', ['contact' => $context->getEntity()->getInstance()->getId()]));
     }
 
     public function backtocompany(AdminContext $context): RedirectResponse|Response

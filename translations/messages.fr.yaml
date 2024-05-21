@@ -128,6 +128,7 @@ admin.menu.email: Mails
 admin.menu.contact.create: 'Créer un contact'
 admin.menu.sales.create: 'Créer une vente'
 admin.menu.event.create: 'Créer un event'
+admin.menu.flashsale.create: 'Créer une vente flash'
 app.menus.profile.dropdown.my_profile: 'Mon profil'
 app.menus.profile.dropdown.update_password: 'Modifier mon mot de passe'
 app.menus.profile.dropdown.add_twofactor_auth: 'Activer la double authentification'
