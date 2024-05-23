@@ -58,7 +58,7 @@
                     <span class="hide-menu">Projets</span>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link has-arrow" href="" aria-expanded="false">
+                    <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
                   <span>
                     <iconify-icon icon="fa6-solid:diagram-project" width="25" height="25"></iconify-icon>
                   </span>
@@ -201,6 +201,15 @@
                         <span class="hide-menu">Ventes</span>
                     </a>
                     <ul aria-expanded="false" class="collapse first-level">
+                        <li class="sidebar-item">
+                            <a href="{{ path('sales_flash_index') }}" class="sidebar-link">
+                                <iconify-icon icon="material-symbols:event" width="25" height="25"></iconify-icon>
+                                <span class="hide-menu">Ventes flash</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <hr>
+                        </li>
                         <li class="sidebar-item">
                             <a href="{{ ea_url()
                                 .setDashboard('App\\Controller\\Admin\\DashboardController')

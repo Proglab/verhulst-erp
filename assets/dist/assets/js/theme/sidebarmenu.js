@@ -89,9 +89,6 @@ if ((at = "vertical")) {
       var menuid = (closestNav && closestNav.id) || "menu-right-mini-1";
       var menu = menuid[menuid.length - 1];
 
-      document.getElementById("menu-right-mini-" + menu).classList.add("d-block");
-      document.getElementById("mini-" + menu).classList.add("selected");
-
       //****************************
       // This is for mini sidebar
       //****************************

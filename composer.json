@@ -147,7 +147,7 @@
             "docker run --init --rm -v \"%CD%:/project\" -w /project jakzal/phpqa phpstan analyse src"
         ],
         "share": [
-            "ngrok start verhulst"
+            "ngrok http --domain=worm-direct-sheepdog.ngrok-free.app 80"
         ]
     },
     "conflict": {

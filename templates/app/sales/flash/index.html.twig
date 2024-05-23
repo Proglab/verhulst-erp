@@ -1,0 +1,73 @@
+{% extends 'app/templates/base.html.twig' %}
+
+{% block title %}Ventes flash{% endblock %}
+
+{% block breadcrumb %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-body py-3">
+                <div class="row align-items-center">
+                    <div class="col-12">
+                        <div class="d-sm-flex align-items-center justify-space-between">
+                            <h4 class="mb-4 mb-md-0 card-title">Liste de mes ventes flash</h4>
+                            <nav aria-label="breadcrumb" class="ms-auto">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item d-flex align-items-center">
+                                        <a class="text-muted text-decoration-none d-flex" href="{{ path('app') }}">
+                                            <iconify-icon icon="solar:home-2-line-duotone" class="fs-6"></iconify-icon></a>
+                                    </li>
+                                    <li class="breadcrumb-item" aria-current="page">
+                                          <span class="badge fw-medium fs-2 bg-primary-subtle text-primary">
+                                            Mes ventes flash
+                                          </span>
+                                    </li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-body py-3">
+                <table class="table table-striped" {{ stimulus_controller('datatable') }} data-ajax="/api/sales">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Position</th>
+                        <th>Office</th>
+                        <th>Age</th>
+                        <th>Start date</th>
+                        <th>Salary</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>Name</th>
+                        <th>Position</th>
+                        <th>Office</th>
+                        <th>Age</th>
+                        <th>Start date</th>
+                        <th>Salary</th>
+                    </tr>
+                    </tfoot>
+
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript_footer %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"/>
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"/>
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.js"/>
+    <script>
+        new DataTable('#example');
+    </script>
+{% endblock %}
