@@ -46,13 +46,23 @@ class FlashSalesController extends AbstractController
 
         /** @var FastSales $sale */
         foreach ($sales as $sale) {
+            $price = empty($sale->getPrice()) ? $sale->getForecastPrice() : $sale->getPrice();
+            $tempPrice = empty($sale->getForecastPrice()) ? '-' : $sale->getForecastPrice();
+
+            $validateButton = $sale->isValidate() ? '' : '<a href="'.$this->generateUrl('sales_flash_create').'" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Tooltip on top"><i class="fa-solid fa-check"></i></a>';
+            $editButton = $sale->isValidate() ? '' : '<a href="'.$this->generateUrl('sales_flash_create').'" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Tooltip on top"><i class="fa-solid fa-pen-to-square"></i></a>';
+
+
             $data->data[] = [
-                $sale->getId(),
-                $sale->getName(),
+                '<b>'.$sale->getName().'</b><br><i>PO : '.$sale->getPo().'</i>',
+                'Prix unitaire : '.$price.'€<br><i>Quantité : '.$sale->getQuantity().'</i>',
+                ($price * $sale->getQuantity() * $sale->getPercentVr() / 100) .'€'.'<br>'.$sale->getPercentVr().'%',
+                ($price * $sale->getQuantity() * $sale->getPercentCom() / 100) .'€'.'<br>'.$sale->getPercentCom().'%',
+                'Prix temporaire : '.($sale->getForecastPrice() * $sale->getQuantity()).'€'.'<br>Prix final : '.($sale->getPrice() * $sale->getQuantity()).'€',
                 $sale->getDate()->format('d/m/Y'),
-                $sale->getContact()->getFullName(),
-                $sale->getContact()->getFullName(),
-                $sale->isValidate() ? '<iconify-icon icon="el:ok" class="text-success" width="25" height="25"></iconify-icon>' : '<iconify-icon icon="svg-spinners:clock" class="text-danger" width="25" height="25"></iconify-icon>',
+                $sale->isValidate() ? '<i class="fa-solid fa-check text-success"></i>' : '<i class="fa-solid fa-xmark text-danger"></i>',
+                '<div class="text-end">'.$editButton.' '.$validateButton.'
+                <a href="'.$this->generateUrl('sales_flash_create').'" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Tooltip on top"><i class="fa-solid fa-trash"></i></a></div>',
             ];
         }
 

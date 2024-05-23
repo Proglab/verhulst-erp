@@ -28,7 +28,6 @@ class CreateFlashSale extends AbstractController
     {
     }
 
-
     #[LiveAction]
     public function save()
     {
@@ -64,7 +63,7 @@ class CreateFlashSale extends AbstractController
 
 
         $this->fastSalesRepository->save($flashSale, true);
-        return $this->redirectToRoute('sales_flash_create');
+        return $this->redirectToRoute('sales_flash_index');
 
 
     }

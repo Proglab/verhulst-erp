@@ -35,25 +35,38 @@
     <div class="row">
         <div class="col-12">
             <div class="card card-body py-3">
+                <div class="d-flex justify-content-between bd-highlight mb-3 border p-3">
+                    <div>
+                        Du : <input type="date" id="min" name="min" class="me-3">
+                        Au : <input type="date" id="max" name="max">
+                    </div>
+                    <div>
+                        <a href="{{ path('sales_flash_create') }}" class="btn btn-primary">Créer une vente flash</a>
+                    </div>
+                </div>
                 <table class="table table-striped" {{ stimulus_controller('datatable') }} data-ajax="/api/sales">
                     <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Position</th>
-                        <th>Office</th>
-                        <th>Age</th>
-                        <th>Start date</th>
-                        <th>Salary</th>
+                        <th>Produit</th>
+                        <th>Quantité</th>
+                        <th>Total Verhulst</th>
+                        <th>Total Sales</th>
+                        <th>Total Prix vente</th>
+                        <th>Date</th>
+                        <th>Validée ?</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tfoot>
                     <tr>
-                        <th>Name</th>
-                        <th>Position</th>
-                        <th>Office</th>
-                        <th>Age</th>
-                        <th>Start date</th>
-                        <th>Salary</th>
+                        <th>Produit</th>
+                        <th>Quantité</th>
+                        <th>Total Verhulst</th>
+                        <th>Total Sales</th>
+                        <th>Total Prix vente</th>
+                        <th>Date</th>
+                        <th>Validée ?</th>
+                        <th></th>
                     </tr>
                     </tfoot>
 
@@ -67,7 +80,4 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"/>
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"/>
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.js"/>
-    <script>
-        new DataTable('#example');
-    </script>
 {% endblock %}
