@@ -23,13 +23,19 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UserCrudController extends BaseCrudController
 {
-    public function __construct(private UserService $userService, private UserRepository $userRepository, protected SecurityChecker $securityChecker)
+    public function __construct(
+        private UserService $userService,
+        private UserRepository $userRepository,
+        protected SecurityChecker $securityChecker,
+        private AdminUrlGenerator $adminUrlGenerator
+    )
     {
         parent::__construct($securityChecker);
     }
@@ -93,7 +99,7 @@ class UserCrudController extends BaseCrudController
         $this->userService->processSendingPasswordResetEmail($user);
         $this->addFlash('success', 'Mot de passe réinitialisé');
 
-        return $this->redirect($context->getReferrer());
+        return $this->redirect($this->adminUrlGenerator->setAction(Action::INDEX)->setEntityId(null)->generateUrl());
     }
 
     public function switchUser(AdminContext $context): RedirectResponse
