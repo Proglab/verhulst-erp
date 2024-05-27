@@ -367,7 +367,11 @@ class CompanyCrudController extends BaseCrudController
 
     public function createContact(AdminContext $adminContext): RedirectResponse
     {
-        $url = $this->adminUrlGenerator->setController(CompanyContactCrudController::class)->setAction(Crud::PAGE_NEW)->set('company_id', $adminContext->getEntity()->getInstance()->getId())->generateUrl();
+        $url = $this->adminUrlGenerator
+            ->setController(CompanyContactCrudController::class)
+            ->setAction(Crud::PAGE_NEW)->set('company_id', $adminContext->getEntity()->getInstance()->getId())
+            ->setEntityId(null)
+            ->generateUrl();
 
         return $this->redirect($url);
     }
