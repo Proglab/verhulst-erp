@@ -433,10 +433,11 @@ class CompanyContactCrudController extends BaseCrudController
         $form = $this->createForm(TransfertContact::class, $context->getEntity()->getInstance());
 
         $form->handleRequest($context->getRequest());
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
             /** @var CompanyContact $data */
             $data = $form->getData();
             $data->setUpdatedDt(new \DateTime());
+            
             $this->companyContactRepository->save($data, true);
 
             $url = $context->getReferrer();
