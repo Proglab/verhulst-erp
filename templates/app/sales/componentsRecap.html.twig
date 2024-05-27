@@ -1,0 +1,90 @@
+<div {{ attributes }} class="row">
+    <div class="col-12">
+        <div class="card card-body py-3">
+            {{ dump(from) }}
+            {{ dump(to) }}
+            {{ dump(project) }}
+            {{ dump(product) }}
+
+
+
+
+            {{ form_start(form, {'attr': {'data-model': '*'}}) }}
+            <div class="d-flex justify-content-between bd-highlight mb-3 p-3">
+                <div>
+                    <div>
+                        {{ form_label(form.from) }} {{ form_widget(form.from) }}
+
+                    </div>
+                    <div class="mt-2">
+                        {{ form_label(form.to) }} {{ form_widget(form.to) }}
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        {{ form_label(form.project) }} {{ form_widget(form.project) }}
+                    </div>
+                    <div class="mt-2">
+                        {% if form.product is defined %}
+                            {{ form_label(form.product) }} {{ form_widget(form.product) }}
+                        {% endif %}
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        Société : <input type="text" id="min" name="min" class="me-3">
+                    </div>
+                    <div class="mt-2">
+                        Client : <input type="text" id="max" name="max">
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        Commercial : <input type="text" id="min" name="min" class="me-3">
+                    </div>
+                </div>
+            </div>
+            {{ form_end(form) }}
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Date de la vente</th>
+                    <th>Projet/produit</th>
+                    <th>Client</th>
+                    <th>Vendeur</th>
+                    <th>Quantité</th>
+                    <th>Prix final</th>
+                    <th>Com Sales</th>
+                    <th>Com VR</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for sale in this.sales %}
+                        <tr>
+                            <td>{{ sale.date|date('d/m/Y') }}</td>
+                            <td>{{ sale.product.name }}<br>{{ sale.product.project.name }}</td>
+                            <td>{{ sale.contact.fullname }}<br>{{ sale.contact.company.name }}</td>
+                            <td>{{ sale.user.fullname }}</td>
+                            <td>{{ sale.quantity }}</td>
+                            <td>{{ sale.price }}</td>
+                            <td>{{ sale.percentCom }}</td>
+                            <td>{{ sale.percentVr }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th>Date de la vente</th>
+                    <th>Projet/produit</th>
+                    <th>Client</th>
+                    <th>Vendeur</th>
+                    <th>Quantité</th>
+                    <th>Prix final</th>
+                    <th>Com Sales</th>
+                    <th>Com VR</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
