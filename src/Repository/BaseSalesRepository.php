@@ -4,26 +4,30 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\BaseSales;
+use App\Entity\Company;
 use App\Entity\CompanyContact;
+use App\Entity\FastSales;
 use App\Entity\Product;
+use App\Entity\Project;
 use App\Entity\Sales;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Sales>
+ * @extends ServiceEntityRepository<BaseSales>
  *
- * @method Sales|null find($id, $lockMode = null, $lockVersion = null)
- * @method Sales|null findOneBy(array $criteria, array $orderBy = null)
- * @method Sales[]    findAll()
- * @method Sales[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method BaseSales|null find($id, $lockMode = null, $lockVersion = null)
+ * @method BaseSales|null findOneBy(array $criteria, array $orderBy = null)
+ * @method BaseSales[]    findAll()
+ * @method BaseSales[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class BaseSalesRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Sales::class);
+        parent::__construct($registry, BaseSales::class);
     }
 
     public function getQuantitySaleByProduct(Product $product): int
@@ -186,5 +190,246 @@ class BaseSalesRepository extends ServiceEntityRepository
             ->addOrderBy('co.name', 'ASC')
             ->getQuery()
             ->getResult();
+    }
+
+
+    public function search(?\DateTime $from, ?\DateTime $to, ?Project $project, ?Product $product, ?Company $company, ?CompanyContact $contact, ?User $user, ?bool $archive): array
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->addSelect('c')
+            ->leftJoin('s.contact', 'c')
+            ->leftJoin('s.product', 'product')
+            ->leftJoin('product.project', 'project');
+
+
+        if (null !== $archive) {
+            $qb
+                ->andWhere('project.archive = :archive')
+                ->orWhere('project.archive IS NULL')
+                ->setParameter('archive', $archive);
+        }
+
+        if ($from) {
+            $qb->andWhere('s.date >= :from')
+                ->setParameter('from', $from);
+        }
+
+        if ($to) {
+            $qb->andWhere('s.date <= :to')
+                ->setParameter('to', $to);
+        }
+
+        if ($product) {
+            $qb
+                ->andWhere('s.product = :product')
+                ->setParameter('product', $product);
+        }
+
+        if ($project) {
+            $qb
+                ->andWhere('product.project = :project')
+                ->setParameter('project', $project);
+        }
+
+        if ($company) {
+            $qb->andWhere('c.company = :company')
+                ->setParameter('company', $company);
+        }
+
+        if ($contact) {
+            $qb->andWhere('s.contact = :contact')
+                ->setParameter('contact', $contact);
+        }
+
+        if ($user) {
+            $qb->andWhere('s.user = :user')
+                ->setParameter('user', $user);
+        }
+
+        return $qb
+            ->orderBy('s.date', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
+    public function searchTotal(?\DateTime $from, ?\DateTime $to, ?Project $project, ?Product $product, ?Company $company, ?CompanyContact $contact, ?User $user, ?bool $archive): float
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->select('SUM(s.quantity * s.price) as total')
+            ->leftJoin('s.contact', 'c')
+            ->leftJoin('s.product', 'product')
+            ->leftJoin('product.project', 'project');
+
+
+        if (null !== $archive) {
+            $qb
+                ->andWhere('project.archive = :archive')
+                ->orWhere('project.archive IS NULL')
+                ->setParameter('archive', $archive);
+        }
+
+        if ($from) {
+            $qb->andWhere('s.date >= :from')
+                ->setParameter('from', $from);
+        }
+
+        if ($to) {
+            $qb->andWhere('s.date <= :to')
+                ->setParameter('to', $to);
+        }
+
+        if ($product) {
+            $qb
+                ->andWhere('s.product = :product')
+                ->setParameter('product', $product);
+        }
+
+        if ($project) {
+            $qb
+                ->andWhere('product.project = :project')
+                ->setParameter('project', $project);
+        }
+
+        if ($company) {
+            $qb->andWhere('c.company = :company')
+                ->setParameter('company', $company);
+        }
+
+        if ($contact) {
+            $qb->andWhere('s.contact = :contact')
+                ->setParameter('contact', $contact);
+        }
+
+        if ($user) {
+            $qb->andWhere('s.user = :user')
+                ->setParameter('user', $user);
+        }
+
+        return (float) $qb
+            ->orderBy('s.date', 'DESC')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function searchTotalCom(?\DateTime $from, ?\DateTime $to, ?Project $project, ?Product $product, ?Company $company, ?CompanyContact $contact, ?User $user, ?bool $archive): float
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->select('SUM(s.quantity * s.price * s.percent_com / 100) as total')
+            ->leftJoin('s.contact', 'c')
+            ->leftJoin('s.product', 'product')
+            ->leftJoin('product.project', 'project');
+
+
+
+        if (null !== $archive) {
+            $qb
+                ->andWhere('project.archive = :archive')
+                ->orWhere('project.archive IS NULL')
+                ->setParameter('archive', $archive);
+        }
+
+        if ($from) {
+            $qb->andWhere('s.date >= :from')
+                ->setParameter('from', $from);
+        }
+
+        if ($to) {
+            $qb->andWhere('s.date <= :to')
+                ->setParameter('to', $to);
+        }
+
+        if ($product) {
+            $qb
+                ->andWhere('s.product = :product')
+                ->setParameter('product', $product);
+        }
+
+        if ($project) {
+            $qb
+                ->andWhere('product.project = :project')
+                ->setParameter('project', $project);
+        }
+
+        if ($company) {
+            $qb->andWhere('c.company = :company')
+                ->setParameter('company', $company);
+        }
+
+        if ($contact) {
+            $qb->andWhere('s.contact = :contact')
+                ->setParameter('contact', $contact);
+        }
+
+        if ($user) {
+            $qb->andWhere('s.user = :user')
+                ->setParameter('user', $user);
+        }
+
+        return (float) $qb
+            ->orderBy('s.date', 'DESC')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function searchTotalVr(?\DateTime $from, ?\DateTime $to, ?Project $project, ?Product $product, ?Company $company, ?CompanyContact $contact, ?User $user, ?bool $archive): float
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->select('SUM(s.quantity * s.price * s.percent_vr / 100) as total')
+            ->leftJoin('s.contact', 'c')
+            ->leftJoin('s.product', 'product')
+            ->leftJoin('product.project', 'project');
+
+
+
+        if (null !== $archive) {
+            $qb
+
+                ->andWhere('project.archive = :archive')
+                ->orWhere('project.archive IS NULL')
+                ->setParameter('archive', $archive);
+        }
+
+        if ($from) {
+            $qb->andWhere('s.date >= :from')
+                ->setParameter('from', $from);
+        }
+
+        if ($to) {
+            $qb->andWhere('s.date <= :to')
+                ->setParameter('to', $to);
+        }
+
+        if ($product) {
+            $qb
+                ->andWhere('s.product = :product')
+                ->setParameter('product', $product);
+        }
+
+        if ($project) {
+            $qb
+                ->andWhere('product.project = :project')
+                ->setParameter('project', $project);
+        }
+
+        if ($company) {
+            $qb->andWhere('c.company = :company')
+                ->setParameter('company', $company);
+        }
+
+        if ($contact) {
+            $qb->andWhere('s.contact = :contact')
+                ->setParameter('contact', $contact);
+        }
+
+        if ($user) {
+            $qb->andWhere('s.user = :user')
+                ->setParameter('user', $user);
+        }
+
+        return (float) $qb
+            ->orderBy('s.date', 'DESC')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 }

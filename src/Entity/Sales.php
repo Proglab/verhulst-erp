@@ -32,11 +32,6 @@ class Sales extends BaseSales
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $invoiced_dt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'sales')]
-    #[ORM\JoinColumn(nullable: true)]
-    #[Assert\NotBlank]
-    private ?Product $product = null;
-
 
     #[ORM\ManyToMany(targetEntity: SalesBdc::class, mappedBy: 'sales')]
     private Collection $salesBdcs;
@@ -44,18 +39,6 @@ class Sales extends BaseSales
     public function __construct()
     {
         $this->salesBdcs = new ArrayCollection();
-    }
-
-    public function getProduct(): ?Product
-    {
-        return $this->product;
-    }
-
-    public function setProduct(?Product $product): self
-    {
-        $this->product = $product;
-
-        return $this;
     }
 
     public function getDiscount(): float

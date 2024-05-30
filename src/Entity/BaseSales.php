@@ -64,6 +64,12 @@ class BaseSales
     #[Assert\NotBlank]
     protected ?CompanyContact $contact = null;
 
+    #[ORM\ManyToOne(inversedBy: 'sales')]
+    #[ORM\JoinColumn(nullable: true)]
+    #[Assert\NotBlank]
+    private ?Product $product = null;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -186,6 +192,18 @@ class BaseSales
     public function setContact(?CompanyContact $contact): self
     {
         $this->contact = $contact;
+
+        return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): self
+    {
+        $this->product = $product;
 
         return $this;
     }

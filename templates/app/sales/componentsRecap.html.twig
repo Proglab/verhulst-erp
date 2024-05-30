@@ -1,16 +1,74 @@
 <div {{ attributes }} class="row">
+ <div class="col-12 fixed-top bg-white pb-0" style="margin-top: 140px;">
+     <div class="row">
+         <div class="col-3">
+             <div class="card bg-success-subtle overflow-hidden shadow-none">
+                 <div class="card-body py-3">
+                     <div class="row justify-content-between align-items-center">
+                         <div class="col-sm-6">
+                             <p class="mb-0 fw-semibold">Total vendu</p>
+                             <p class="h5 text-success">{{ this.TotalSales|number_format(2, ',', '.') }}€</p>
+                         </div>
+                         <div class="col-sm-5">
+                             <iconify-icon icon="tabler:sum" width="50" height="50"></iconify-icon>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+         <div class="col-3">
+             <div class="card bg-warning-subtle overflow-hidden shadow-none">
+                 <div class="card-body py-3">
+                     <div class="row justify-content-between align-items-center">
+                         <div class="col-sm-6">
+                             <p class="mb-0 fw-semibold">Total Commerciaux</p>
+                             <p class="h5 text-warning">{{ this.TotalSalesCom|number_format(2, ',', '.') }}€</p>
+                         </div>
+                         <div class="col-sm-5">
+                             <iconify-icon icon="fa6-solid:hand-holding-dollar" width="50" height="50"></iconify-icon>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+         <div class="col-3">
+             <div class="card bg-info-subtle overflow-hidden shadow-none">
+                 <div class="card-body py-3">
+                     <div class="row justify-content-between align-items-center">
+                         <div class="col-sm-6">
+                             <p class="mb-0 fw-semibold">Total Verhulst</p>
+                             <p class="h5 text-info">{{ this.TotalSalesVr|number_format(2, ',', '.') }}€</p>
+                         </div>
+                         <div class="col-sm-5">
+                             <iconify-icon icon="iconoir:home-sale" width="50" height="50"></iconify-icon>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+         <div class="col-3">
+             <div class="card bg-danger-subtle overflow-hidden shadow-none">
+                 <div class="card-body py-3">
+                     <div class="row justify-content-between align-items-center">
+                         <div class="col-sm-6">
+                             <p class="mb-0 fw-semibold">Total Verhulst Net</p>
+                             <p class="h5 text-danger">{{ (this.TotalSalesVr - this.TotalSalesCom)|number_format(2, ',', '.') }}€</p>
+                         </div>
+                         <div class="col-sm-5">
+                             <iconify-icon icon="ri:money-euro-box-line" width="50" height="50"></iconify-icon>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+
+     </div>
+ </div>
+
     <div class="col-12">
         <div class="card card-body py-3">
-            {{ dump(from) }}
-            {{ dump(to) }}
-            {{ dump(project) }}
-            {{ dump(product) }}
-
-
-
-
             {{ form_start(form, {'attr': {'data-model': '*'}}) }}
-            <div class="d-flex justify-content-between bd-highlight mb-3 p-3">
+            <div class="d-flex justify-content-between bd-highlight mb-3 p-3 border">
                 <div>
                     <div>
                         {{ form_label(form.from) }} {{ form_widget(form.from) }}
@@ -32,20 +90,29 @@
                 </div>
                 <div>
                     <div>
-                        Société : <input type="text" id="min" name="min" class="me-3">
+                        {{ form_label(form.company) }} {{ form_widget(form.company) }}
                     </div>
                     <div class="mt-2">
-                        Client : <input type="text" id="max" name="max">
+                        {% if form.contact is defined %}
+                            {{ form_label(form.contact) }} {{ form_widget(form.contact) }}
+                        {% endif %}
                     </div>
                 </div>
                 <div>
                     <div>
-                        Commercial : <input type="text" id="min" name="min" class="me-3">
+                        {{ form_label(form.user) }} {{ form_widget(form.user) }}
+                    </div>
+                    <div>
+                        {{ form_label(form.archive) }} {{ form_widget(form.archive) }}
                     </div>
                 </div>
             </div>
             {{ form_end(form) }}
-            <table class="table table-striped">
+            <div class="text-end">
+                <button class="btn btn-danger" data-action="live#action" data-live-action-param="initForm">Réinistialser le formulaire</button>
+                <button class="btn btn-primary" data-action="live#action" data-live-action-param="export">Exporter les données</button>
+            </div>
+            <table class="table table-striped" {{ stimulus_controller('datatable-simple') }}>
                 <thead>
                 <tr>
                     <th>Date de la vente</th>
@@ -62,13 +129,13 @@
                     {% for sale in this.sales %}
                         <tr>
                             <td>{{ sale.date|date('d/m/Y') }}</td>
-                            <td>{{ sale.product.name }}<br>{{ sale.product.project.name }}</td>
+                            <td>{% if sale.product is not empty %}{{ sale.product.name }}<br>{{ sale.product.project.name }}{% else %}{{ sale.name }}{% endif %}</td>
                             <td>{{ sale.contact.fullname }}<br>{{ sale.contact.company.name }}</td>
                             <td>{{ sale.user.fullname }}</td>
                             <td>{{ sale.quantity }}</td>
-                            <td>{{ sale.price }}</td>
-                            <td>{{ sale.percentCom }}</td>
-                            <td>{{ sale.percentVr }}</td>
+                            <td>{{ sale.price }}€</td>
+                            <td>{{ sale.percentCom / 100 * sale.price * sale.quantity }}€<br>{{ sale.percentCom }}%</td>
+                            <td>{{ sale.percentVr / 100 * sale.price * sale.quantity }}€<br>{{ sale.percentVr }}%</td>
                         </tr>
                     {% endfor %}
                 </tbody>

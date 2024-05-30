@@ -15,4 +15,11 @@ class SalesController extends AbstractController
     {
         return $this->render('app/sales/recap.html.twig');
     }
+
+    #[Route('/app/{_locale}/sales/recap/download/{filename}', name: 'download_file')]
+    public function download_file($filename)
+    {
+        $file = $this->getParameter('kernel.project_dir') . '/public/' . $filename;
+        return  $this->file($file);
+    }
 }

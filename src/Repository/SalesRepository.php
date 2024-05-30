@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\Company;
 use App\Entity\CompanyContact;
 use App\Entity\Product;
 use App\Entity\Project;
@@ -203,37 +204,6 @@ class SalesRepository extends ServiceEntityRepository
             ->setParameter('year', $year)
             ->orderBy('pr.name', 'ASC')
             ->addOrderBy('co.name', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function search(?\DateTime $from, ?\DateTime $to, ?Project $project, ?Product $product): array
-    {
-        $qb = $this->createQueryBuilder('s')
-            ->addSelect('product')
-            ->leftJoin('s.product', 'product');
-
-        if ($from) {
-            $qb->where('s.date >= :from')
-                ->setParameter('from', $from);
-        }
-
-        if ($to) {
-            $qb->andWhere('s.date <= :to')
-                ->setParameter('to', $to);
-        }
-
-        if ($product) {
-            $qb->andWhere('s.product = :product')
-                ->setParameter('product', $product);
-        }
-
-        if ($project) {
-            $qb->andWhere('product.project = :project')
-                ->setParameter('project', $project);
-        }
-
-        return $qb
             ->getQuery()
             ->getResult();
     }

@@ -4,29 +4,28 @@ declare(strict_types=1);
 
 namespace App\Form\Type;
 
+use App\Entity\Company;
+use App\Entity\CompanyContact;
 use App\Entity\Product;
 use App\Entity\Project;
-use App\Form\Model\ResetPasswordModel;
+use App\Entity\User;
+use App\Repository\CompanyContactRepository;
+use App\Repository\CompanyRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ProjectRepository;
-use App\Validator\Constraints\SecurePassword;
+use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
 use Symfonycasts\DynamicForms\DependentField;
 use Symfonycasts\DynamicForms\DynamicFormBuilder;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class SalesRecapFilters extends AbstractType
 {
-    public function __construct(private ProjectRepository $projectRepository)
-    {
-    }
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder = new DynamicFormBuilder($builder);
@@ -35,12 +34,26 @@ class SalesRecapFilters extends AbstractType
                     'html5' => true,
                     'widget' => 'single_text',
                     'label' => 'Du',
+                    'attr' => [
+                        'data-model' => 'on(change)|from',
+                        'data-controller' => 'flatpickr',
+                    ],
+                    'constraints' => [
+                        new Assert\Date(),
+                    ],
                 ]
             )
             ->add('to', DateType::class, [
                     'html5' => true,
                     'widget' => 'single_text',
                     'label' => 'Au',
+                    'attr' => [
+                        'data-model' => 'to',
+                        'data-controller' => 'flatpickr',
+                    ],
+                    'constraints' => [
+                        new Assert\Date(),
+                    ],
                 ]
             )
             ->add('project', EntityType::class, [
@@ -48,6 +61,7 @@ class SalesRecapFilters extends AbstractType
                     'multiple' => false,
                     'expanded' => false,
                     'placeholder' => '',
+                    'label' => 'Projet',
                     'required' => false,
                     'query_builder' => function (ProjectRepository $er) {
                         return $er->createQueryBuilder('p')
@@ -77,8 +91,72 @@ class SalesRecapFilters extends AbstractType
                     'label' => 'Produit',
                     'required' => false,
                 ]);
-            });
-        ;
+            })
+            ->add('company', EntityType::class, [
+                    'class' => Company::class,
+                    'multiple' => false,
+                    'expanded' => false,
+                    'placeholder' => '',
+                    'required' => false,
+                    'query_builder' => function (CompanyRepository $er) {
+                        return $er->createQueryBuilder('c')
+                            ->orderBy('c.name', 'ASC');
+                    },
+                    'label' => 'Société',
+                ]
+            )
+            ->addDependent('contact', ['company'], function (DependentField $field, ?Company $company) {
+                if (empty($company)) {
+                    return;
+                }
+                $field->add(EntityType::class, [
+                    'class' => CompanyContact::class,
+                    'choice_label' => 'lastname',
+                    'attr' => [
+                        'data-model' => 'contact',
+                    ],
+                    'query_builder' => function (CompanyContactRepository $er) use ($company) {
+                        return $er->createQueryBuilder('c')
+                            ->join('c.company', 'company')
+                            ->where('company.id = :company')
+                            ->setParameter('company', $company)
+                            ->orderBy('c.lastname', 'ASC');
+                    },
+                    'label' => 'Contact',
+                    'required' => false,
+                ]);
+            })
+            ->add('user', EntityType::class, [
+                    'class' => User::class,
+                    'multiple' => false,
+                    'expanded' => false,
+                    'placeholder' => '',
+                    'required' => false,
+                    'query_builder' => function (UserRepository $er) {
+                        return $er->getCommercialsQb();
+                    },
+                    'label' => 'Commercial',
+                    'attr' => [
+                        'data-model' => 'user',
+                    ],
+                ]
+            )
+            ->add('archive', ChoiceType::class, [
+                    'choices'  => [
+                        'Tous' => 'all',
+                        'Non' => '0',
+                        'Oui' => '1',
+                    ],
+                    'multiple' => false,
+                    'expanded' => false,
+                    'required' => true,
+                    'label' => 'Archivé ?',
+                    'attr' => [
+                        'data-model' => 'archive',
+                    ],
+                ]
+            );
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void
