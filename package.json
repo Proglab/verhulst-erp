@@ -40,6 +40,8 @@
         "foundation-emails": "^2.3.1",
         "handsontable": "^14.2.0",
         "hyperformula": "^2.6.2",
+        "select2": "^4.1.0-rc.0",
+        "select2-bootstrap-theme": "^0.1.0-beta.10",
         "stimulus-flatpickr": "^1.4.0",
         "tinymce": "^7.0.1",
         "toastr": "^2.1.4",

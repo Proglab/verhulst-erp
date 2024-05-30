@@ -1,5 +1,5 @@
 <div {{ attributes }} class="row">
- <div class="col-12 fixed-top bg-white pb-0" style="margin-top: 140px;">
+ <div class="col-12 {# fixed-top bg-white pb-0" style="margin-top: 140px; z-index: 1 #}">
      <div class="row">
          <div class="col-3">
              <div class="card bg-success-subtle overflow-hidden shadow-none">
@@ -116,39 +116,55 @@
                 <thead>
                 <tr>
                     <th>Date de la vente</th>
-                    <th>Projet/produit</th>
-                    <th>Client</th>
+                    <th>Projet<br><i>Produit</i></th>
+                    <th>Client<br><i>Société</i></th>
                     <th>Vendeur</th>
-                    <th>Quantité</th>
-                    <th>Prix final</th>
+                    <th>Prix unitaire</th>
+                    <th>Prix de vente</th>
                     <th>Com Sales</th>
-                    <th>Com VR</th>
+                    <th>Com The Friends</th>
                 </tr>
                 </thead>
                 <tbody>
                     {% for sale in this.sales %}
                         <tr>
-                            <td>{{ sale.date|date('d/m/Y') }}</td>
-                            <td>{% if sale.product is not empty %}{{ sale.product.name }}<br>{{ sale.product.project.name }}{% else %}{{ sale.name }}{% endif %}</td>
-                            <td>{{ sale.contact.fullname }}<br>{{ sale.contact.company.name }}</td>
-                            <td>{{ sale.user.fullname }}</td>
-                            <td>{{ sale.quantity }}</td>
-                            <td>{{ sale.price }}€</td>
-                            <td>{{ sale.percentCom / 100 * sale.price * sale.quantity }}€<br>{{ sale.percentCom }}%</td>
-                            <td>{{ sale.percentVr / 100 * sale.price * sale.quantity }}€<br>{{ sale.percentVr }}%</td>
+                            <td><h6 class="mb-0">{{ sale.date|date('d/m/Y') }}</h6></td>
+                            <td>
+                                {% if sale.product is not empty %}
+                                    <h6 class="mb-0">{{ sale.product.name }}</h6>
+                                    <i>{{ sale.product.project.name }}</i>
+                                {% else %}
+                                    {{ sale.name }} - PO {{ sale.po }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                <h6 class="mb-0">{{ sale.contact.fullname }}</h6>
+                                <i>{{ sale.contact.company.name }}</i>
+                            </td>
+                            <td><h6 class="mb-0">{{ sale.user.fullname }}</h6></td>
+                            <td><h6 class="mb-0">{{ sale.price|number_format(2, ',', '') }}€</h6><i>Quantité : {{ sale.quantity }}</i></td>
+                            <td><h6 class="mb-0">{{ (sale.price * sale.quantity)|number_format(2, ',', '') }}€</h6></td>
+                            <td>
+                                <h6 class="mb-0">{{ (sale.percentCom / 100 * sale.price * sale.quantity)|number_format(2, ',', '') }}€</h6>
+                                <i>{{ sale.percentCom }}%</i>
+                            </td>
+                            <td>
+                                <h6 class="mb-0">{{ (sale.percentVr / 100 * sale.price * sale.quantity)|number_format(2, ',', '') }}€</h6>
+                                <i>{{ sale.percentVr }}%</i>
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>
                 <tfoot>
                 <tr>
                     <th>Date de la vente</th>
-                    <th>Projet/produit</th>
-                    <th>Client</th>
+                    <th>Projet<br><i>Produit</i></th>
+                    <th>Client<br><i>Société</i></th>
                     <th>Vendeur</th>
-                    <th>Quantité</th>
-                    <th>Prix final</th>
+                    <th>Prix unitaire</th>
+                    <th>Prix de vente</th>
                     <th>Com Sales</th>
-                    <th>Com VR</th>
+                    <th>Com The Friends</th>
                 </tr>
                 </tfoot>
             </table>

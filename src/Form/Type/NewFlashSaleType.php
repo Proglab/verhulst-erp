@@ -58,7 +58,7 @@ class NewFlashSaleType extends AbstractType
             ],
         ])
         ->add('po', TextType::class, [
-            'label' => 'Po',
+            'label' => 'Numéro de Po',
             'required' => true,
             'constraints' => [
                 new NotBlank()

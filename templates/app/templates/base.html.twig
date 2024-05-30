@@ -12,6 +12,9 @@
 
     <!-- Core Css -->
     <link rel="stylesheet" href="{{ asset('build/matdash/assets/css/styles.css') }}"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" />
+
 
     <title>Jonafas - {% block title %}{% endblock %}</title>
 
@@ -288,6 +291,7 @@
 </div>
 <div class="dark-transparent sidebartoggler"></div>
 <!-- Import Js Files -->
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
 <script src="{{ asset('build/matdash/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('build/matdash/assets/libs/simplebar/dist/simplebar.min.js') }}"></script>
 <script src="{{ asset('build/matdash/assets/js/theme/app.init.js') }}"></script>
@@ -295,6 +299,8 @@
 <script src="{{ asset('build/matdash/assets/js/theme/app.min.js') }}"></script>
 <script src="{{ asset('build/matdash/assets/js/theme/sidebarmenu.js') }}"></script>
 <script src="{{ asset('build/matdash/assets/js/dashboards/dashboard1.js') }}"></script>
+<script src="/tinymce/tinymce.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
 {% block javascript_footer %}
@@ -303,8 +309,6 @@
 
 
 <!-- solar icons -->
-<script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
-<script src="/tinymce/tinymce.min.js"></script>
 </body>
 
 </html>
