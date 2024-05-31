@@ -46,7 +46,7 @@ class StatsSalesProjectsMonthFilterType extends AbstractType
                     'query_builder' => function (UserRepository $er) {
                         return $er->getCommercialsQb();
                     },
-                    'label' => 'Commercial',
+                    'label' => 'Commercial'
                 ]
             )
             ->add('project', EntityType::class, [
