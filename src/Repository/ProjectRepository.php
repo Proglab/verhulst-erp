@@ -59,4 +59,21 @@ class ProjectRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findAllByYear(int $year): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p')
+            ->addSelect('event, package, sponsoring, divers')
+            ->leftJoin('p.product_event', 'event')
+            ->leftJoin('p.product_package', 'package')
+            ->leftJoin('p.product_sponsoring', 'sponsoring')
+            ->leftJoin('p.product_divers', 'divers')
+            ->where('p.date_begin >= :dateBegin')
+            ->setParameter('dateBegin', new \DateTime($year . '-01-01'))
+            ->andWhere('p.date_end <= :dateEnd')
+            ->setParameter('dateEnd', new \DateTime($year . '-12-31'))
+            ->getQuery()
+            ->getResult();
+    }
 }

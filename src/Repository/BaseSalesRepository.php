@@ -168,6 +168,42 @@ class BaseSalesRepository extends ServiceEntityRepository
         return $return;
     }
 
+    public function getSalesStatsByYearByUser(int $year, User $user, ?array $projects): array
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->leftJoin('s.product', 'p')
+            ->leftJoin('p.project', 'project')
+            ->where('project.date_begin >= :dateBegin')
+            ->setParameter('dateBegin', new \DateTime($year . '-01-01'))
+            ->andWhere('project.date_end <= :dateEnd')
+            ->setParameter('dateEnd', new \DateTime($year . '-12-31'))
+            ->andWhere('s.user = :user')
+            ->setParameter('user', $user);
+
+        /** @var Sales[] $sales */
+        $sales = $qb->getQuery()
+            ->getResult();
+
+        $datas = [];
+        foreach ($sales as $sale) {
+            $project = $sale->getProduct()->getProject()->getName();
+            if (!isset($datas[$project])) {
+                $datas[$project] = $sale->getPrice() * $sale->getQuantity();
+            } else {
+                $datas[$project] += $sale->getPrice() * $sale->getQuantity();
+            }
+        }
+
+
+
+        $return = [];
+
+        foreach ($datas as $project => $price) {
+            $return[] = ['project' => $project, 'price' => number_format($price, 2, '.', '')];
+        }
+        return $return;
+    }
+
 
     public function findLastSale(User $user, CompanyContact $companyContact): ?Sales
     {

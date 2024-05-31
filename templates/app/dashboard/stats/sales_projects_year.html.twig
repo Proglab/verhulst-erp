@@ -4,7 +4,7 @@
     <!-- -------------------------------------------- -->
     <div class="card">
         <div class="card-header">
-            <h2 class="card-title">Statistiques de vente par mois</h2>
+            <h2 class="card-title">Statistiques de vente par an</h2>
         </div>
         <div class="card-body">
             {{ form_start(form) }}
@@ -13,28 +13,25 @@
                     {{ form_label(form.date)}}
                     {{ form_widget(form.date)}}
                 </div>
-                <div class="col-lg-5">
-                    {{ form_label(form.project)}}
-                    {{ form_widget(form.project)}}
-                </div>
-            </div>
-            <div class="col-lg-12 d-flex justify-content-start">
-                <div class="row mt-3">
-                    <label class="form-label">Sales</label>
-                    {% for user in form.users %}
-                    <div class="col-2">
-                        {{ form_label(user)}}
-                        {{ form_widget(user, {'attr': {'data-model': 'users[]'}}) }}
+                <div class="col-lg-9 d-flex justify-content-start">
+                    <div class="row mt-3">
+                        <label class="form-label">Sales</label>
+                        {% for user in form.users %}
+                            <div class="col-2">
+                                {{ form_label(user)}}
+                                {{ form_widget(user, {'attr': {'data-model': 'users[]'}}) }}
+                            </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
                 </div>
             </div>
+
             {{ form_end(form) }}
         </div>
     </div>
     {% if this.graph is not null %}
     <div class="card">
-        <h3 class="text-center mt-3">{{ this.date }} - {{ this.project.name }}</h3>
+        <h3 class="text-center mt-3">{{ this.date }}</h3>
                 <div  style="height: 285px;">
                     {{ render_chart(this.graph) }}
                 </div>
