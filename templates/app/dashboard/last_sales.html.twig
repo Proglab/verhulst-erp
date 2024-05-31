@@ -33,11 +33,11 @@
                     <tbody>
                     {% for sale in this.lastSales %}
                     <tr>
-                        <td class="ps-0">
+                        <td class="ps-0 pe-0">
                             {% if sale.product is not empty %}
-                                <iconify-icon icon="foundation:burst-sale" width="40" height="40" class="text-primary"></iconify-icon>
+                                <iconify-icon icon="foundation:burst-sale" width="30" height="30" class="text-primary"></iconify-icon>
                             {% else %}
-                                <iconify-icon icon="mdi:flash" width="40" height="40" class="text-warning"></iconify-icon>
+                                <iconify-icon icon="mdi:flash" width="30" height="30" class="text-warning"></iconify-icon>
                             {% endif %}
                         </td>
                         <td class="ps-0">

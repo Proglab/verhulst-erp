@@ -164,6 +164,11 @@ class ProjectCrudController extends BaseCrudController
         return $actions;
     }
 
+    public function new(AdminContext $context)
+    {
+        return $this->redirectToRoute('project_new');
+    }
+
     /**
      * @param EntityManagerInterface $entityManager
      * @param Project $entityInstance

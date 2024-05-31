@@ -139,3 +139,4 @@ app.menus.top.dashboard.main: Mon tableau de bord
 app.menus.top.dashboard.general: Tableau de bord général
 app.menus.top.dashboard.commercial: Récapitulatif commerciaux
 app.menus.top.dashboard.sales: Récapitulatif ventes
+app.menus.top.dashboard.stats: Statistiques
