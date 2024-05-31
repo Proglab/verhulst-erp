@@ -207,7 +207,7 @@ class NewProductPackageType extends AbstractType
                     'class' => 'col-md-4 mb-3'
                 ],
                 'choices' => [
-                    'Pourcentage Verhulst' => 'percent',
+                    '% The Friends' => 'percent',
                     'Prix d\'achat' => 'price',
                 ],
                 'required' => true,

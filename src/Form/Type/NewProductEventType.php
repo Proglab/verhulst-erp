@@ -186,13 +186,13 @@ class NewProductEventType extends AbstractType
                 }
             })
             ->add('type_com', ChoiceType::class, [
-                'label' => 'Type de commission Verhulst',
+                'label' => 'Type de commission The Friends',
                 'attr' => [
                     'class' => 'col-md-4 mb-3'
                 ],
                 'choices' => [
-                    'Pourcentage' => 'percent',
-                    'Prix d\'achat:Prix de vente' => 'price',
+                    '%' => 'percent',
+                    'Prix d\'achat/Prix de vente' => 'price',
                 ],
                 'required' => true,
                 'placeholder' => "Sélectionnez un type de date",

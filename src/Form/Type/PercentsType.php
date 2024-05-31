@@ -24,7 +24,7 @@ class PercentsType extends AbstractType
     {
         $builder
             ->add('percent_vr', PercentType::class, [
-                'label' => 'Pourcentage Verhulst',
+                'label' => '% The Friends',
                 'required' => true,
                 'mapped' => true,
                 'constraints' => [
