@@ -10,6 +10,7 @@ use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,30 +22,31 @@ class StatsSalesProjectsMonthFilterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $choices = [];
+        for ($i = date('Y'); $i >=  2022; $i--) {
+            $choices[$i] = $i;
+        }
+
+
         $builder
-            ->add('date', DateType::class, [
-                    'html5' => true,
-                    'widget' => 'single_text',
-                    'label' => 'Du',
+            ->add('date', ChoiceType::class, [
+                    'label' => 'Année',
                     'attr' => [
-                        'data-model' => 'on(change)|date',
-                        'data-controller' => 'flatpickrmonth',
+                        'data-model' => 'date',
                     ],
+                    'choices' => $choices,
                 ]
             )
-            ->add('user', EntityType::class, [
+            ->add('users', EntityType::class, [
                     'class' => User::class,
-                    'multiple' => false,
-                    'expanded' => false,
+                    'multiple' => true,
+                    'expanded' => true,
                     'placeholder' => '',
                     'required' => true,
                     'query_builder' => function (UserRepository $er) {
                         return $er->getCommercialsQb();
                     },
                     'label' => 'Commercial',
-                    'attr' => [
-                        'data-model' => 'user',
-                    ],
                 ]
             )
             ->add('project', EntityType::class, [

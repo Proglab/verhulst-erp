@@ -4,7 +4,7 @@
     <!-- -------------------------------------------- -->
     <div class="card">
         <div class="card-body">
-            {{ form_start(form, {'attr': {'data-model': '*'}}) }}
+            {{ form_start(form) }}
             <div class="row">
                 <div class="col-lg-3">
                     {{ form_label(form.date)}}
@@ -15,8 +15,10 @@
                     {{ form_widget(form.project)}}
                 </div>
                 <div class="col-lg-4">
-                    {{ form_label(form.user)}}
-                    {{ form_widget(form.user)}}
+                    {% for user in form.users %}
+                    {{ form_label(user)}}
+                    {{ form_widget(user, {'attr': {'data-model': 'users[]'}}) }}
+                    {% endfor %}
                 </div>
             </div>
             {{ form_end(form) }}
