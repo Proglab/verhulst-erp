@@ -1,6 +1,6 @@
 <div {{ attributes }} class="row">
     {% if this.contact_create %}
-    <div class="col-6">
+    <div class="col-12">
     <div class="card bg-primary p-3">
         <h3 class="card-title text-white h3">Création d'un contact</h3>
     </div>
@@ -15,7 +15,7 @@
         </div>
         <div class="row">
             {% for society in this.societies %}
-                <div class="col-4">
+                <div class="col-3">
                     <div class="card">
                         <div class="card-body">
                             <div class="justify-content-between w-100 d-flex align-items-center">
@@ -30,7 +30,7 @@
             {% endfor %}
 
             {% if this.queryContact is not empty %}
-                <div class="col-4">
+                <div class="col-3">
                     <a href="#" data-action="live#action" data-live-action-param="createCompany">
                         <div class="card bg-dark mb-3">
                             <div class="card-body">
@@ -40,7 +40,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-4">
+                <div class="col-3">
                     <a href="#" data-action="live#action" data-live-action-param="noCompany">
                         <div class="card bg-dark mb-3">
                             <div class="card-body">
@@ -54,7 +54,7 @@
         </div>
     </div>
     {% else %}
-        <div class="col-6">
+        <div class="col-12">
             <div class="card p-3">
                 <h4 class="card-title">Cherchez un contact ou créez le</h4>
                 <div class="card-body">
@@ -65,7 +65,7 @@
             </div>
             <div class="row">
                 {% for contact in this.contacts %}
-                    <div class="col-4">
+                    <div class="col-3">
                         <div class="card">
                             <div class="card-body">
                                 <div class="justify-content-between w-100 d-flex align-items-center">
@@ -81,7 +81,7 @@
                     </div>
                 {% endfor %}
                 {% if this.queryContact is not empty %}
-                    <div class="col-4">
+                    <div class="col-3">
                         <a href="#" data-action="live#action" data-live-action-param="createContact">
                             <div class="card bg-dark mb-3">
                                 <div class="card-body">

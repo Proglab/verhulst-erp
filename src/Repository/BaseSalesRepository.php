@@ -130,35 +130,6 @@ class BaseSalesRepository extends ServiceEntityRepository
         return $return;
     }
 
-    /**
-     * @return Sales[]
-     */
-    public function get10LastSalesByUser(User $user): array
-    {
-        return $this->createQueryBuilder('s')
-            ->addSelect('p')
-            ->join('s.product', 'p')
-            ->andWhere('s.user = :user')
-            ->setParameter('user', $user)
-            ->setMaxResults(10)
-            ->orderBy('s.date', 'DESC')
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * @return Sales[]
-     */
-    public function get10LastSales(): array
-    {
-        return $this->createQueryBuilder('s')
-            ->addSelect('p')
-            ->join('s.product', 'p')
-            ->setMaxResults(10)
-            ->orderBy('s.date', 'DESC')
-            ->getQuery()
-            ->getResult();
-    }
 
     public function findLastSale(User $user, CompanyContact $companyContact): ?Sales
     {
@@ -431,5 +402,21 @@ class BaseSalesRepository extends ServiceEntityRepository
             ->orderBy('s.date', 'DESC')
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    /**
+     * @return BaseSales[]
+     */
+    public function get10LastSalesByUser(User $user): array
+    {
+        return $this->createQueryBuilder('s')
+            ->addSelect('p')
+            ->leftJoin('s.product', 'p')
+            ->andWhere('s.user = :user')
+            ->setParameter('user', $user)
+            ->setMaxResults(10)
+            ->orderBy('s.date', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 }

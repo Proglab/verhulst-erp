@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PercentType;
@@ -58,7 +59,7 @@ class NewFlashSaleType extends AbstractType
             ],
         ])
         ->add('po', TextType::class, [
-            'label' => 'Numéro de Po',
+            'label' => 'Numéro de PO',
             'required' => true,
             'constraints' => [
                 new NotBlank()
@@ -73,7 +74,7 @@ class NewFlashSaleType extends AbstractType
             'data' => 1
         ])
         ->add('percent_com', PercentType::class, [
-            'label' => 'Pourcentage Vendeur',
+            'label' => '% Sales',
             'required' => true,
             'mapped' => true,
             'constraints' => [
@@ -83,16 +84,16 @@ class NewFlashSaleType extends AbstractType
             'type' => 'fractional',
         ])
         ->add('type_com', ChoiceType::class, [
-            'label' => 'Pourcentage Verhulst',
+            'label' => '% The Friends',
             'attr' => [
                 'class' => 'col-md-4 mb-3'
             ],
             'choices' => [
-                'Pourcentage Verhulst' => 'percent',
+                '% The Friends' => 'percent',
                 'Prix d\'achat' => 'price',
             ],
             'required' => true,
-            'placeholder' => "Sélectionnez un type de commission pour Verhulst",
+            'placeholder' => "Sélectionnez un type de commission pour The Friends",
             'mapped' => false,
             'constraints' => [
                 new NotBlank()
@@ -104,7 +105,7 @@ class NewFlashSaleType extends AbstractType
             }
             if ($date_type === 'percent') {
                 $field->add(PercentType::class, [
-                    'label' => 'Pourcentage Verhulst',
+                    'label' => '% The Friends',
                     'required' => true,
                     'mapped' => false,
                     'constraints' => [
@@ -123,16 +124,48 @@ class NewFlashSaleType extends AbstractType
                 ]);
             }
         })
-        ->add('forecast_price', MoneyType::class,  [
-            'label' => 'Prix de vente unitaire prévisionnel',
-            'required' => false,
-            'mapped' => true,
+        ->add('type_vente', ChoiceType::class, [
+            'label' => 'Connaissez-vous le prix définitif ?',
+            'attr' => [
+                'class' => 'col-md-4 mb-3'
+            ],
+            'choices' => [
+                'Oui' => '1',
+                'Non' => '0',
+            ],
+            'required' => true,
+            'placeholder' => "Sélectionnez une option",
+            'mapped' => false,
+            'constraints' => [
+                new NotBlank()
+            ],
         ])
-        ->add('price', MoneyType::class,  [
-            'label' => 'Prix de vente unitaire définitif',
-            'required' => false,
-            'mapped' => true,
-        ])
+        ->addDependent('forecast_price', 'type_vente', function (DependentField $field, ?string $sale_type) {
+            if ($sale_type === '1' || $sale_type === null) {
+                return;
+            }
+            $field->add(MoneyType::class, [
+                'label' => 'Prix de vente unitaire prévisionnel',
+                'constraints' => [
+                    new NotBlank()
+                ],
+                'mapped' => true,
+                'required' => true,
+            ]);
+        })
+        ->addDependent('price', 'type_vente', function (DependentField $field, ?string $sale_type) {
+            if ($sale_type !== '1' || $sale_type === null) {
+                return;
+            }
+            $field->add(MoneyType::class, [
+                'label' => 'Prix de vente unitaire définitif',
+                'constraints' => [
+                    new NotBlank()
+                ],
+                'mapped' => true,
+                'required' => true,
+            ]);
+        })
         ->addDependent('validate', 'price', function (DependentField $field, ?string $money) {
             if ($money === null) {
                 return;
@@ -157,7 +190,6 @@ class NewFlashSaleType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => FastSales::class,
         ]);
     }
 

@@ -18,13 +18,15 @@
                 <table class="table table-sm mb-0">
                     <thead class="text-dark fs-4">
                     <tr>
+                        <th scope="col" class="fs-4 fw-semibold mb-0"></th>
                         <th scope="col" class="fs-4 fw-semibold mb-0">Client</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0">Produit</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0">Date</th>
-                        <th scope="col" class="fs-4 fw-semibold mb-0">PU</th>
-                        <th scope="col" class="fs-4 fw-semibold mb-0">Total</th>
-                        <th scope="col" class="fs-4 fw-semibold mb-0">PV</th>
-                        <th scope="col" class="fs-4 fw-semibold mb-0">Sales</th>
+                        <th scope="col" class="fs-4 fw-semibold mb-0">Prix unitaire</th>
+                        <th scope="col" class="fs-4 fw-semibold mb-0">Prix de vente</th>
+                        <th scope="col" class="fs-4 fw-semibold mb-0">Com TF</th>
+                        <th scope="col" class="fs-4 fw-semibold mb-0">Com Sales</th>
+                        <th scope="col" class="fs-4 fw-semibold mb-0">Marge net TF</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0"></th>
                     </tr>
                     </thead>
@@ -32,38 +34,54 @@
                     {% for sale in this.lastSales %}
                     <tr>
                         <td class="ps-0">
+                            {% if sale.product is not empty %}
+                                <iconify-icon icon="foundation:burst-sale" width="40" height="40" class="text-primary"></iconify-icon>
+                            {% else %}
+                                <iconify-icon icon="mdi:flash" width="40" height="40" class="text-warning"></iconify-icon>
+                            {% endif %}
+                        </td>
+                        <td class="ps-0">
                             <div class="d-flex align-items-center gap-6">
                                 <div>
                                     <h6 class="mb-0">{{ sale.contact.fullname }}</h6>
-                                    <span><i>{{ sale.contact.company.name }}</i></span>
+                                    {% if sale.contact.company is not empty %}
+                                        <span><i>{{ sale.contact.company.name }}</i></span>
+                                    {% endif %}
                                 </div>
                             </div>
                         </td>
                         <td>
-                            <h6 class="mb-0">{{ sale.product.name }}</h6>
-                            <span><i>{{ sale.product.project.name }}</i></span>
+                            {% if sale.product is not empty %}
+                                <h6 class="mb-0">{{ sale.product.name }}</h6>
+                                <span><i>{{ sale.product.project.name }}</i></span>
+                            {% else %}
+                                <h6 class="mb-0">{{ sale.name }}</h6>
+                            {% endif %}
                         </td>
                         <td>
-                            {{ sale.date|date('d/m/y') }}
+                            <h6 class="mb-0">{{ sale.date|date('d/m/y') }}</h6>
                         </td>
 
                         <td>
-                            <span class="mb-0">{{ (sale.price)|number_format(2, ',', '.') }} €</span><br>
-                            <span><i>Quantité : {{ (sale.quantity) }}</i></span>
+                            <h6 class="mb-0">{{ (sale.price)|number_format(2, ',', '') }} €</h6>
+                            <i>Quantité : {{ (sale.quantity) }}</i>
                         </td>
                         <td>
-                            <span class="mb-0">{{ (sale.totalPrice)|number_format(2, ',', '.') }} €</span><br>
-                            <span><i>Réduction : {{ (sale.discount)|number_format(2, ',', '.') }} €</i></span>
+                            <h6 class="mb-0">{{ (sale.price * sale.quantity)|number_format(2, ',', '') }} €</h6>
                         </td>
                         <td>
-                            <h6 class="nm-0">{{ (sale.marge)|number_format(2, ',', '.') }} €</h6>
+                            <h6 class="nm-0">{{ (sale.price * sale.quantity * sale.percentVr / 100)|number_format(2, ',', '') }} €</h6>
+                            <i>{{ sale.percentVr }} %</i>
                         </td>
                         <td>
-                            <h6 class="mb-0">{{ sale.euroCom|number_format(2, ',', '.') }}  €</h6>
+                            <h6 class="mb-0">{{ (sale.price * sale.quantity * sale.percentCom / 100)|number_format(2, ',', '') }} €</h6>
                             <i>{{ sale.percentCom }} %</i>
                         </td>
                         <td>
+                            <h6 class="mb-0">{{ ((sale.price * sale.quantity * sale.percentVr / 100) - (sale.price * sale.quantity * sale.percentCom / 100))|number_format(2, ',', '') }} €</h6>
+                        </td>
                         <td>
+                            {% if sale.product is not empty %}
                             <div class="dropdown dropstart">
                                 <a href="javascript:void(0)" class="text-muted" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                     <iconify-icon icon="solar:menu-dots-bold"></iconify-icon>
@@ -88,6 +106,11 @@
                                     </li>
                                 </ul>
                             </div>
+                            {% else %}
+                                <div class="">
+
+                                </div>
+                            {% endif %}
                         </td>
                     </tr>
                     {% endfor %}

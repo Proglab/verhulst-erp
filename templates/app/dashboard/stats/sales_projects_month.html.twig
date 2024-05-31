@@ -1,0 +1,29 @@
+<div class="col-lg-12" {{ attributes }}>
+    <!-- -------------------------------------------- -->
+    <!-- Mes ventes -->
+    <!-- -------------------------------------------- -->
+    <div class="card">
+        <div class="card-body">
+            {{ form_start(form, {'attr': {'data-model': '*'}}) }}
+            <div class="row">
+                <div class="col-lg-3">
+                    {{ form_label(form.date)}}
+                    {{ form_widget(form.date)}}
+                </div>
+                <div class="col-lg-5">
+                    {{ form_label(form.project)}}
+                    {{ form_widget(form.project)}}
+                </div>
+                <div class="col-lg-4">
+                    {{ form_label(form.user)}}
+                    {{ form_widget(form.user)}}
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+    <div class="card" style="height: 285px;">
+        {% if this.graph is not null %}{{ render_chart(this.graph) }}{% endif %}
+    </div>
+</div>

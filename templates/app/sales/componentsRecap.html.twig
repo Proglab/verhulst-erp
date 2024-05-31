@@ -5,11 +5,11 @@
              <div class="card bg-success-subtle overflow-hidden shadow-none">
                  <div class="card-body py-3">
                      <div class="row justify-content-between align-items-center">
-                         <div class="col-sm-6">
+                         <div class="col-sm-9">
                              <p class="mb-0 fw-semibold">Total vendu</p>
                              <p class="h5 text-success">{{ this.TotalSales|number_format(2, ',', '.') }}€</p>
                          </div>
-                         <div class="col-sm-5">
+                         <div class="col-sm-3">
                              <iconify-icon icon="tabler:sum" width="50" height="50"></iconify-icon>
                          </div>
                      </div>
@@ -20,11 +20,11 @@
              <div class="card bg-warning-subtle overflow-hidden shadow-none">
                  <div class="card-body py-3">
                      <div class="row justify-content-between align-items-center">
-                         <div class="col-sm-6">
+                         <div class="col-sm-9">
                              <p class="mb-0 fw-semibold">Total Commerciaux</p>
                              <p class="h5 text-warning">{{ this.TotalSalesCom|number_format(2, ',', '.') }}€</p>
                          </div>
-                         <div class="col-sm-5">
+                         <div class="col-sm-3">
                              <iconify-icon icon="fa6-solid:hand-holding-dollar" width="50" height="50"></iconify-icon>
                          </div>
                      </div>
@@ -35,11 +35,11 @@
              <div class="card bg-info-subtle overflow-hidden shadow-none">
                  <div class="card-body py-3">
                      <div class="row justify-content-between align-items-center">
-                         <div class="col-sm-6">
-                             <p class="mb-0 fw-semibold">Total Verhulst</p>
+                         <div class="col-sm-9">
+                             <p class="mb-0 fw-semibold">Total The Friends</p>
                              <p class="h5 text-info">{{ this.TotalSalesVr|number_format(2, ',', '.') }}€</p>
                          </div>
-                         <div class="col-sm-5">
+                         <div class="col-sm-3">
                              <iconify-icon icon="iconoir:home-sale" width="50" height="50"></iconify-icon>
                          </div>
                      </div>
@@ -50,11 +50,11 @@
              <div class="card bg-danger-subtle overflow-hidden shadow-none">
                  <div class="card-body py-3">
                      <div class="row justify-content-between align-items-center">
-                         <div class="col-sm-6">
-                             <p class="mb-0 fw-semibold">Total Verhulst Net</p>
+                         <div class="col-sm-9">
+                             <p class="mb-0 fw-semibold">Marge The Friends Net</p>
                              <p class="h5 text-danger">{{ (this.TotalSalesVr - this.TotalSalesCom)|number_format(2, ',', '.') }}€</p>
                          </div>
-                         <div class="col-sm-5">
+                         <div class="col-sm-3">
                              <iconify-icon icon="ri:money-euro-box-line" width="50" height="50"></iconify-icon>
                          </div>
                      </div>
@@ -69,7 +69,7 @@
         <div class="card card-body py-3">
             {{ form_start(form, {'attr': {'data-model': '*'}}) }}
             <div class="d-flex justify-content-between bd-highlight mb-3 p-3 border">
-                <div>
+                <div class="p-1">
                     <div>
                         {{ form_label(form.from) }} {{ form_widget(form.from) }}
 
@@ -78,7 +78,7 @@
                         {{ form_label(form.to) }} {{ form_widget(form.to) }}
                     </div>
                 </div>
-                <div>
+                <div class="p-1">
                     <div>
                         {{ form_label(form.project) }} {{ form_widget(form.project) }}
                     </div>
@@ -88,7 +88,7 @@
                         {% endif %}
                     </div>
                 </div>
-                <div>
+                <div class="p-1">
                     <div>
                         {{ form_label(form.company) }} {{ form_widget(form.company) }}
                     </div>
@@ -98,11 +98,11 @@
                         {% endif %}
                     </div>
                 </div>
-                <div>
+                <div class="p-1">
                     <div>
                         {{ form_label(form.user) }} {{ form_widget(form.user) }}
                     </div>
-                    <div>
+                    <div class="mt-2">
                         {{ form_label(form.archive) }} {{ form_widget(form.archive) }}
                     </div>
                 </div>
@@ -122,7 +122,7 @@
                     <th>Prix unitaire</th>
                     <th>Prix de vente</th>
                     <th>Com Sales</th>
-                    <th>Com The Friends</th>
+                    <th>Com TF</th>
                 </tr>
                 </thead>
                 <tbody>

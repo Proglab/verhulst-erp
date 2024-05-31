@@ -9,13 +9,13 @@
 
 
     <div class="row">
-        <div class="col-6">
+        <div class="col-8">
             {{ form_label(form.name) }}
             {{ form_widget(form.name) }}
             {{ form_errors(form.name) }}
         </div>
 
-        <div class="col-4">
+        <div class="col-2">
             {{ form_label(form.po) }}
             {{ form_widget(form.po) }}
             {{ form_errors(form.po) }}
@@ -28,13 +28,13 @@
     </div>
 
     <div class="row mt-3">
-        <div class="col-6">
+        <div class="col-2">
             {{ form_label(form.percent_com) }}
             {{ form_widget(form.percent_com) }}
             {{ form_errors(form.percent_com) }}
         </div>
 
-        <div class="col-6">
+        <div class="col-2">
             {{ form_label(form.type_com) }}
             {{ form_widget(form.type_com) }}
             {{ form_errors(form.type_com) }}
@@ -46,26 +46,28 @@
                 </div>
             {% endif %}
         </div>
-
-    </div>
-    <div class="row">
         <div class="col-4">
-            {{ form_label(form.forecast_price) }}
-            {{ form_widget(form.forecast_price) }}
-            {{ form_errors(form.forecast_price) }}
-        </div>
-        <div class="col-4">
-            {{ form_label(form.price) }}
-            {{ form_widget(form.price) }}
-            {{ form_errors(form.price) }}
+            {{ form_label(form.type_vente) }}
+            {{ form_widget(form.type_vente) }}
+            {{ form_errors(form.type_vente) }}
+            {% if form.forecast_price is defined %}
+                    {{ form_label(form.forecast_price) }}
+                    {{ form_widget(form.forecast_price) }}
+                    {{ form_errors(form.forecast_price) }}
+            {% endif %}
+            {% if form.price is defined %}
+                    {{ form_label(form.price) }}
+                    {{ form_widget(form.price) }}
+                    {{ form_errors(form.price) }}
 
 
-            {% if form.validate is defined %}
-            <div class="col-12 mt-3">
-            {{ form_label(form.validate) }}
-            {{ form_widget(form.validate) }}
-            {{ form_errors(form.validate) }}
-            </div>
+                    {% if form.validate is defined %}
+                        <div class="col-12 mt-3">
+                            {{ form_label(form.validate) }}
+                            {{ form_widget(form.validate) }}
+                            {{ form_errors(form.validate) }}
+                        </div>
+                    {% endif %}
             {% endif %}
         </div>
         <div class="col-4">
@@ -74,7 +76,6 @@
             {{ form_errors(form.date) }}
         </div>
     </div>
-
 
     <button name="submitbtn" class="btn btn-primary mt-3" type="submit">
         {{ 'Créer la vente'|trans }}
