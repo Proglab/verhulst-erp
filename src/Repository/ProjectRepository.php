@@ -73,6 +73,7 @@ class ProjectRepository extends ServiceEntityRepository
             ->setParameter('dateBegin', new \DateTime($year . '-01-01'))
             ->andWhere('p.date_end <= :dateEnd')
             ->setParameter('dateEnd', new \DateTime($year . '-12-31'))
+            ->orderBy('p.name', 'ASC')
             ->getQuery()
             ->getResult();
     }

@@ -70,7 +70,7 @@ class SalesProjectsByYear extends AbstractController
         $projects = $this->projectRepository->findAllByYear((int) $this->date);
         $labels = [];
         foreach ($projects as $project) {
-            $labels[] = $project->getName();
+            $labels[] = strtolower($project->getName());
         }
 
         $datasets = [];
@@ -79,12 +79,19 @@ class SalesProjectsByYear extends AbstractController
         if (empty($this->users)) {
             foreach ($this->userRepository->getCommercials() as $user) {
                 $i++;
+
                 $data = $this->getDatas((int) $this->date, $user, $projects);
+                $dataset = [];
+                foreach ($data as $d) {
+                    $dataset[] = $d['price'];
+                }
+
+
                 $datasets[] = [
                     'label' => $user->getFullName(),
                     'backgroundColor' => $this->color($i),
                     'borderColor' => $this->color($i),
-                    'data' => $data,
+                    'data' => $dataset,
                 ];
             }
         } else {
@@ -92,15 +99,19 @@ class SalesProjectsByYear extends AbstractController
                 $user = $this->userRepository->find($user);
                 $i++;
                 $data = $this->getDatas((int) $this->date, $user, $projects);
-
+                $dataset = [];
+                foreach ($data as $d) {
+                    $dataset[] = $d['price'];
+                }
                 $datasets[] = [
                     'label' => $user->getFullName(),
                     'backgroundColor' => $this->color($i),
                     'borderColor' => $this->color($i),
-                    'data' => $data,
+                    'data' => $dataset,
                 ];
             }
         }
+
 
         $chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
 
@@ -134,14 +145,7 @@ class SalesProjectsByYear extends AbstractController
 
     protected function getDatas(int $date, User $user, array $projects): array
     {
-        $sales = $this->salesRepository->getSalesStatsByYearByUser((int) $this->date, $user, $this->project);
-        foreach ($projects as $project) {
-            if (!isset($sales[$project->getName()])) {
-                $sales[] = ['project' => $project->getName(), 'price' => 0];
-            }
-        }
-        ksort($sales);
-
+        $sales = $this->salesRepository->getSalesStatsByYearByUser((int) $this->date, $user, $projects);
         return $sales;
     }
 

@@ -178,7 +178,8 @@ class BaseSalesRepository extends ServiceEntityRepository
             ->andWhere('project.date_end <= :dateEnd')
             ->setParameter('dateEnd', new \DateTime($year . '-12-31'))
             ->andWhere('s.user = :user')
-            ->setParameter('user', $user);
+            ->setParameter('user', $user)
+            ->orderBy('project.name', 'ASC');
 
         /** @var Sales[] $sales */
         $sales = $qb->getQuery()
@@ -186,7 +187,7 @@ class BaseSalesRepository extends ServiceEntityRepository
 
         $datas = [];
         foreach ($sales as $sale) {
-            $project = $sale->getProduct()->getProject()->getName();
+            $project = strtolower($sale->getProduct()->getProject()->getName());
             if (!isset($datas[$project])) {
                 $datas[$project] = $sale->getPrice() * $sale->getQuantity();
             } else {
@@ -194,7 +195,13 @@ class BaseSalesRepository extends ServiceEntityRepository
             }
         }
 
+        foreach ($projects as $project) {
+            if (!isset($datas[strtolower($project->getName())])) {
+                $datas[strtolower($project->getName())] = 0;
+            }
+        }
 
+        ksort($datas, CASE_LOWER);
 
         $return = [];
 
