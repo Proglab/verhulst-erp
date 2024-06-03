@@ -30,17 +30,12 @@ class Project
     #[Assert\Length(max: 255)]
     protected ?string $doc = null;
 
-    #[ORM\OneToMany(mappedBy: 'project', targetEntity: ProductEvent::class, cascade: ['persist'], orphanRemoval: true)]
-    private Collection $product_event;
-
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: ProductPackageVip::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $product_package;
 
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: ProductSponsoring::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $product_sponsoring;
 
-    #[ORM\OneToMany(mappedBy: 'project', targetEntity: ProductDivers::class, cascade: ['persist'], orphanRemoval: true)]
-    private Collection $product_divers;
 
     #[ORM\Column]
     private ?bool $archive = false;
@@ -56,10 +51,8 @@ class Project
 
     public function __construct()
     {
-        $this->product_event = new ArrayCollection();
         $this->product_package = new ArrayCollection();
         $this->product_sponsoring = new ArrayCollection();
-        $this->product_divers = new ArrayCollection();
         $this->todos = new ArrayCollection();
     }
 
@@ -73,8 +66,6 @@ class Project
         if ($this->id) {
             $this->id = null;
             $this->name .= ' (clone)';
-            $this->product_divers = new ArrayCollection();
-            $this->product_event = new ArrayCollection();
             $this->product_package = new ArrayCollection();
             $this->product_sponsoring = new ArrayCollection();
         }
@@ -93,36 +84,6 @@ class Project
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, ProductEvent>
-     */
-    public function getProductEvent(): Collection
-    {
-        return $this->product_event;
-    }
-
-    public function addProductEvent(ProductEvent $productEvent): self
-    {
-        if (!$this->product_event->contains($productEvent)) {
-            $this->product_event->add($productEvent);
-            $productEvent->setProject($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProductEvent(ProductEvent $productEvent): self
-    {
-        if ($this->product_event->removeElement($productEvent)) {
-            // set the owning side to null (unless already changed)
-            if ($productEvent->getProject() === $this) {
-                $productEvent->setProject(null);
-            }
-        }
 
         return $this;
     }
@@ -181,36 +142,6 @@ class Project
             // set the owning side to null (unless already changed)
             if ($productSponsoring->getProject() === $this) {
                 $productSponsoring->setProject(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, ProductDivers>
-     */
-    public function getProductDivers(): Collection
-    {
-        return $this->product_divers;
-    }
-
-    public function addProductDiver(ProductDivers $productDiver): self
-    {
-        if (!$this->product_divers->contains($productDiver)) {
-            $this->product_divers->add($productDiver);
-            $productDiver->setProject($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProductDiver(ProductDivers $productDiver): self
-    {
-        if ($this->product_divers->removeElement($productDiver)) {
-            // set the owning side to null (unless already changed)
-            if ($productDiver->getProject() === $this) {
-                $productDiver->setProject(null);
             }
         }
 

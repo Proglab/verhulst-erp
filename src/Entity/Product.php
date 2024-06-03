@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
-#[ORM\DiscriminatorMap(['package' => ProductPackageVip::class, 'event' => ProductEvent::class, 'sponsor' => ProductSponsoring::class, 'divers' => ProductDivers::class])]
+#[ORM\DiscriminatorMap(['package' => ProductPackageVip::class, 'sponsor' => ProductSponsoring::class])]
 class Product
 {
     #[ORM\Id]
