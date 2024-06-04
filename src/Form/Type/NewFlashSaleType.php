@@ -70,6 +70,23 @@ class NewFlashSaleType extends AbstractType
             ],
             'data' => 1
         ])
+        ->add('type_com', ChoiceType::class, [
+            'label' => 'Type de commission',
+            'required' => true,
+            'mapped' => false,
+            'choices' => [
+                '% sur la com TF' => 'percent_com',
+                '% sur le PV' => 'percent_pv',
+                'Prix fixe' => 'percent_pv',
+            ],
+        ])
+
+
+
+
+
+
+
         ->add('percent_com', PercentType::class, [
             'label' => '% Sales',
             'required' => true,
@@ -80,6 +97,13 @@ class NewFlashSaleType extends AbstractType
             'scale' => 2,
             'type' => 'fractional',
         ])
+
+
+
+
+
+
+
         ->add('type_com', ChoiceType::class, [
             'label' => '% The Friends',
             'attr' => [
@@ -175,7 +199,7 @@ class NewFlashSaleType extends AbstractType
             ]);
         })
         ->add('date', DateType::class,  [
-            'label' => 'Date de la vente',
+            'label' => 'Date d\'encodage',
             'required' => false,
             'mapped' => true,
             'data' => new \DateTime(),

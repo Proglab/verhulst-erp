@@ -28,10 +28,29 @@
     </div>
 
     <div class="row mt-3">
-        <div class="col-2">
-            {{ form_label(form.percent_com) }}
-            {{ form_widget(form.percent_com) }}
-            {{ form_errors(form.percent_com) }}
+        <div class="col-4">
+            {{ form_label(form.type_vente) }}
+            {{ form_widget(form.type_vente) }}
+            {{ form_errors(form.type_vente) }}
+            {% if form.forecast_price is defined %}
+                {{ form_label(form.forecast_price) }}
+                {{ form_widget(form.forecast_price) }}
+                {{ form_errors(form.forecast_price) }}
+            {% endif %}
+            {% if form.price is defined %}
+                {{ form_label(form.price) }}
+                {{ form_widget(form.price) }}
+                {{ form_errors(form.price) }}
+
+
+                {% if form.validate is defined %}
+                    <div class="col-12 mt-3">
+                        {{ form_label(form.validate) }}
+                        {{ form_widget(form.validate) }}
+                        {{ form_errors(form.validate) }}
+                    </div>
+                {% endif %}
+            {% endif %}
         </div>
 
         <div class="col-2">
@@ -46,30 +65,12 @@
                 </div>
             {% endif %}
         </div>
-        <div class="col-4">
-            {{ form_label(form.type_vente) }}
-            {{ form_widget(form.type_vente) }}
-            {{ form_errors(form.type_vente) }}
-            {% if form.forecast_price is defined %}
-                    {{ form_label(form.forecast_price) }}
-                    {{ form_widget(form.forecast_price) }}
-                    {{ form_errors(form.forecast_price) }}
-            {% endif %}
-            {% if form.price is defined %}
-                    {{ form_label(form.price) }}
-                    {{ form_widget(form.price) }}
-                    {{ form_errors(form.price) }}
-
-
-                    {% if form.validate is defined %}
-                        <div class="col-12 mt-3">
-                            {{ form_label(form.validate) }}
-                            {{ form_widget(form.validate) }}
-                            {{ form_errors(form.validate) }}
-                        </div>
-                    {% endif %}
-            {% endif %}
+        <div class="col-2">
+            {{ form_label(form.percent_com) }}
+            {{ form_widget(form.percent_com) }}
+            {{ form_errors(form.percent_com) }}
         </div>
+
         <div class="col-4">
             {{ form_label(form.date) }}
             {{ form_widget(form.date) }}
