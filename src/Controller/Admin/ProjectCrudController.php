@@ -82,34 +82,26 @@ class ProjectCrudController extends BaseCrudController
 
 
         if ($this->isGranted('ROLE_ENCODE')) {
-            $projectEvent = CollectionField::new('product_event')->setLabel('Event à la carte')->allowAdd(true)->allowDelete(true)->setEntryIsComplex()->useEntryCrudForm(ProductEventCrudController::class)->setRequired(true);
             $projectPackage = CollectionField::new('product_package')->setLabel('Package VIP')->allowAdd(true)->allowDelete(true)->setEntryIsComplex()->useEntryCrudForm(ProductPackageVipCrudController::class)->setRequired(true);
             $projectSponsor = CollectionField::new('product_sponsoring')->setLabel('Sponsoring')->allowAdd(true)->allowDelete(true)->setEntryIsComplex()->useEntryCrudForm(ProductSponsoringCrudController::class)->setRequired(true);
-            $projectDivers = CollectionField::new('product_divers')->setLabel('Divers')->allowAdd(true)->allowDelete(true)->setEntryIsComplex()->useEntryCrudForm(ProductDiversCrudController::class)->setRequired(true);
         } else {
-            $projectEvent = CollectionField::new('product_event')->setLabel('Event à la carte')->allowAdd(true)->allowDelete(false)->setEntryIsComplex()->useEntryCrudForm(ProductEventCrudController::class)->setRequired(true);
             $projectPackage = CollectionField::new('product_package')->setLabel('Package VIP')->allowAdd(false)->allowDelete(false)->setEntryIsComplex()->useEntryCrudForm(ProductPackageVipCrudController::class)->setRequired(true);
             $projectSponsor = CollectionField::new('product_sponsoring')->setLabel('Sponsoring')->allowAdd(false)->allowDelete(false)->setEntryIsComplex()->useEntryCrudForm(ProductSponsoringCrudController::class)->setRequired(true);
-            $projectDivers = CollectionField::new('product_divers')->setLabel('Divers')->allowAdd(true)->allowDelete(false)->setEntryIsComplex()->useEntryCrudForm(ProductDiversCrudController::class)->setRequired(true);
         }
 
         if ($this->isGranted('ROLE_ENCODE')) {
-            $projectEventIndex = AssociationField::new('product_event')->setLabel('Event à la carte')->setRequired(true);
             $projectPackageIndex = AssociationField::new('product_package')->setLabel('Package VIP')->setRequired(true);
             $projectSponsorIndex = AssociationField::new('product_sponsoring')->setLabel('Sponsoring')->setRequired(true);
-            $projectDiversIndex = AssociationField::new('product_divers')->setLabel('Divers')->setRequired(true);
         } else {
-            $projectEventIndex = AssociationField::new('product_event')->setLabel('Event à la carte')->setRequired(true);
             $projectPackageIndex = AssociationField::new('product_package')->setLabel('Package VIP')->setRequired(true);
             $projectSponsorIndex = AssociationField::new('product_sponsoring')->setLabel('Sponsoring')->setRequired(true);
-            $projectDiversIndex = AssociationField::new('product_divers')->setLabel('Divers')->setRequired(true);
         }
 
         $response = match ($pageName) {
-            Crud::PAGE_INDEX => [$name, $dateBegin, $dateEnd, $projectEventIndex, $projectSponsorIndex, $projectPackageIndex, $projectDiversIndex, $imageDwonload],
-            Crud::PAGE_DETAIL => [$name, $dateBegin, $dateEnd, $projectEventIndex, $projectSponsorIndex, $projectPackageIndex, $projectDiversIndex, $imageDwonload],
-            Crud::PAGE_NEW, Crud::PAGE_EDIT => [$name, $dateBegin, $dateEnd, $projectEvent, $projectSponsor, $projectPackage, $projectDivers, $image],
-            default => [$name, $dateBegin, $dateEnd, $projectEvent, $projectSponsor, $projectPackage, $projectDivers],
+            Crud::PAGE_INDEX => [$name, $dateBegin, $dateEnd, $projectSponsorIndex, $projectPackageIndex, $imageDwonload],
+            Crud::PAGE_DETAIL => [$name, $dateBegin, $dateEnd,  $projectSponsorIndex, $projectPackageIndex,  $imageDwonload],
+            Crud::PAGE_NEW, Crud::PAGE_EDIT => [$name, $dateBegin, $dateEnd,  $projectSponsor, $projectPackage,  $image],
+            default => [$name, $dateBegin, $dateEnd,  $projectSponsor, $projectPackage],
         };
 
         return $response;
@@ -287,14 +279,6 @@ class ProjectCrudController extends BaseCrudController
         return $this->redirect($this->generateUrl('project_details', ['project' => $context->getEntity()->getPrimaryKeyValue()]));
     }
 
-    public function createEvent(AdminContext $context)
-    {
-        $project = $context->getEntity();
-        return $this->render('admin/project/create_event_page.html.twig', [
-            'project' => $project->getInstance(),
-        ]);
-    }
-
     public function createPackage(AdminContext $context)
     {
         $project = $context->getEntity();
@@ -311,14 +295,6 @@ class ProjectCrudController extends BaseCrudController
         ]);
     }
 
-    public function createDivers(AdminContext $context)
-    {
-        $project = $context->getEntity();
-        return $this->render('admin/project/create_divers_page.html.twig', [
-            'project' => $project->getInstance(),
-        ]);
-    }
-
     public function cloneProject(AdminContext $context): RedirectResponse
     {
         /** @var Project $project */
@@ -326,18 +302,6 @@ class ProjectCrudController extends BaseCrudController
 
         $project_new = clone $project;
 
-        foreach ($project->getProductEvent() as $event) {
-            $doc = $event->getDoc();
-            $eventClone = clone $event;
-            if (null !== $doc) {
-                $url = realpath($event->getUrl());
-                $newName = uniqid('-') . '.pdf';
-                $newUrl = str_replace('.pdf', $newName, $url);
-                copy($url, $newUrl);
-                $eventClone->setDoc(basename($newUrl));
-            }
-            $project_new->addProductEvent($eventClone);
-        }
         foreach ($project->getProductPackage() as $event) {
             $doc = $event->getDoc();
             $eventClone = clone $event;
@@ -361,18 +325,6 @@ class ProjectCrudController extends BaseCrudController
                 $eventClone->setDoc(basename($newUrl));
             }
             $project_new->addProductSponsoring($eventClone);
-        }
-        foreach ($project->getProductDivers() as $event) {
-            $doc = $event->getDoc();
-            $eventClone = clone $event;
-            if (null !== $doc) {
-                $url = realpath($event->getUrl());
-                $newName = uniqid('-') . '.pdf';
-                $newUrl = str_replace('.pdf', $newName, $url);
-                copy($url, $newUrl);
-                $eventClone->setDoc(basename($newUrl));
-            }
-            $project_new->addProductDiver($eventClone);
         }
         $project_new->setArchive(false);
         $this->projectRepository->save($project_new, true);

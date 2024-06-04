@@ -166,14 +166,8 @@ class CommissionCrudController extends BaseCrudController
 
         /** @var Project $project */
         foreach ($projects as $project) {
-            foreach ($project->getProductEvent() as $productEvent) {
-                $productsEvent[] = $productEvent;
-            }
             foreach ($project->getProductPackage() as $productPackage) {
                 $productsPackage[] = $productPackage;
-            }
-            foreach ($project->getProductDivers() as $productDivers) {
-                $productsDivers[] = $productDivers;
             }
             foreach ($project->getProductSponsoring() as $productSponsor) {
                 $productsSponsor[] = $productSponsor;
@@ -182,18 +176,21 @@ class CommissionCrudController extends BaseCrudController
 
         /** @var Commission $com */
         foreach ($comsData as $com) {
-            /** @var ProductEvent|ProductPackageVip|ProductDivers|ProductSponsoring $product */
+
+
+            /** @var ProductPackageVip|ProductSponsoring $product */
             $product = $com->getProduct();
-            $commissions[$product->getProject()->getId()][$product->getId()][$com->getUser()->getId()] = $com->getPercentCom();
+            if (!empty($product))
+            {
+                $commissions[$product->getProject()->getId()][$product->getId()][$com->getUser()->getId()] = $com->getPercentCom();
+            }
         }
 
         return $this->render('admin/commission/index.html.twig', [
             'locale' => $adminContext->getRequest()->getLocale(),
             'users' => $users,
             'commissions' => $commissions,
-            'productsEvent' => $productsEvent,
             'productsPackage' => $productsPackage,
-            'productsDivers' => $productsDivers,
             'productsSponsor' => $productsSponsor,
         ]);
     }

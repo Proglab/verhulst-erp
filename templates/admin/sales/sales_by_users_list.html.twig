@@ -18,99 +18,11 @@
 
                         <nav>
                             <div class="nav nav-pills flex-column flex-sm-row" id="nav-tab" role="tablist{{ user.id }}">
-                                <button class="flex-sm-fill text-sm-center nav-link active" id="nav-event-tab{{ user.id }}" data-bs-toggle="tab" data-bs-target="#nav-event{{ user.id }}" type="button" role="tab" aria-controls="nav-event{{ user.id }}" aria-selected="true">Field Events</button>
                                 <button class="flex-sm-fill text-sm-center nav-link" id="nav-sponsoring-tab{{ user.id }}" data-bs-toggle="tab" data-bs-target="#nav-sponsoring{{ user.id }}" type="button" role="tab" aria-controls="nav-sponsoring{{ user.id }}" aria-selected="false">Sponsoring</button>
                                 <button class="flex-sm-fill text-sm-center nav-link" id="nav-package-tab{{ user.id }}" data-bs-toggle="tab" data-bs-target="#nav-package{{ user.id }}" type="button" role="tab" aria-controls="nav-package{{ user.id }}" aria-selected="false">Package VIP</button>
-                                <button class="flex-sm-fill text-sm-center nav-link" id="nav-divers-tab{{ user.id }}" data-bs-toggle="tab" data-bs-target="#nav-divers{{ user.id }}" type="button" role="tab" aria-controls="nav-divers{{ user.id }}" aria-selected="false">Divers</button>
                             </div>
                         </nav>
                         <div class="tab-content" id="nav-tabContent">
-                            <div class="tab-pane fade show active mt-3" id="nav-event{{ user.id }}" role="tabpanel" aria-labelledby="nav-event-tab{{ user.id }}">
-                                <h3 class="text-uppercase text-center font-weight-bolder verhulst">Field Events</h3>
-                                <table class="table table-hover">
-                                    <thead class="table-primary">
-                                    <tr>
-                                        <th scope="col" style="color: #FFFFFF">Société</th>
-                                        <th scope="col" style="color: #FFFFFF">Projet</th>
-                                        <th scope="col" style="color: #FFFFFF">Produit</th>
-                                        <th scope="col" style="color: #FFFFFF">Date</th>
-                                        <th scope="col" class="text-right" style="color: #FFFFFF">PU</th>
-                                        <th scope="col" class="text-right" style="color: #FFFFFF">Réduc</th>
-                                        <th scope="col" class="text-right" style="color: #FFFFFF">PV</th>
-                                        <th scope="col" class="text-center" style="color: #FFFFFF">%S</th>
-                                        <th scope="col" class="text-right" style="color: #FFFFFF">€S</th>
-                                        <th scope="col" class="text-center" style="color: #FFFFFF">%V</th>
-                                        <th scope="col" class="text-right" style="color: #FFFFFF">€V</th>
-                                        <th scope="col" class="text-right" style="color: #FFFFFF">Marge net</th>
-                                        <th scope="col"></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-
-                                    {% set total_price = 0 %}
-                                    {% set total_pa = 0 %}
-                                    {% set total_marge = 0 %}
-                                    {% set total_euroCom = 0 %}
-                                    {% set total_eurovr = 0 %}
-                                    {% set total_margevr = 0 %}
-                                    {% set total_discount = 0 %}
-
-                                    {% for sale in user.sales %}
-                                        {% if get_class(sale.product) == 'ProductEvent' %}
-                                            {% set total_price = total_price + sale.price %}
-                                            {% set total_marge = total_marge + sale.marge %}
-                                            {% set total_euroCom = total_euroCom + sale.euroCom %}
-                                            {% set total_eurovr = total_eurovr + sale.euroVr %}
-                                            {% set total_margevr = total_margevr + sale.diffCa %}
-                                            {% set total_discount = total_discount + sale.discount %}
-                                            <tr>
-                                                <th scope="row">
-                                                    {{ sale.contact.firstname }}  {{ sale.contact.lastname }}
-                                                    {% if sale.contact.company is not empty %}
-                                                        ({{ sale.contact.company.name }})
-                                                    {% endif %}
-                                                </th>
-                                                <th scope="row">
-                                                    {{ sale.product.project.name }}
-                                                </th>
-                                                <th scope="row">{{ sale.product.name }}</th>
-                                                <td>{{ sale.date|date('d/m/y') }}</td>
-                                                <td class="text-right">{{ (sale.price)|number_format(2, ',', '.') }}€</td>
-                                                <td class="text-right">{{ (sale.discount)|number_format(2, ',', '.') }}€</td>
-                                                <td class="text-right">{{ sale.marge|number_format(2, ',', '.') }}€</td>
-                                                <td class="text-center">{{ sale.percentCom }}%</td>
-                                                <td class="text-right">{{ sale.euroCom|number_format(2, ',', '.') }}€</td>
-                                                <td class="text-center">{{ sale.percentVr }}%</td>
-                                                <td class="text-right">{{ sale.euroVr|number_format(2, ',', '.') }}€</td>
-                                                <td class="text-right">{{ (sale.diffCa)|number_format(2, ',', '.') }}€</td>
-                                                <td class="action">
-                                                    {% set url_edit = ea_url()
-                                                        .setAction('edit')
-                                                        .setController('App\\Controller\\Admin\\SalesCrudController')
-                                                        .setEntityId(sale.id)
-                                                    %}
-                                                    <a class=" action-edit" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i></a>
-                                                </td>
-                                            </tr>
-                                        {% endif %}
-                                    {% endfor %}
-                                    <tr class="table-primary">
-                                        <th scope="row" colspan="4" style="color: #FFFFFF">
-                                            Totaux
-                                        </th>
-                                        <th class="text-right" style="color: #FFFFFF">{{ total_price|number_format(2, ',', '.') }}€</th>
-                                        <th class="text-right" style="color: #FFFFFF">{{ total_discount|number_format(2, ',', '.') }}€</th>
-                                        <th class="text-right" style="color: #FFFFFF">{{ total_marge|number_format(2, ',', '.') }}€</th>
-                                        <th></th>
-                                        <th class="text-right" style="color: #FFFFFF">{{ total_euroCom|number_format(2, ',', '.') }}€</th>
-                                        <th></th>
-                                        <th class="text-right" style="color: #FFFFFF">{{ total_eurovr|number_format(2, ',', '.') }}€</th>
-                                        <th class="text-right" style="color: #FFFFFF">{{ total_margevr|number_format(2, ',', '.') }}€</th>
-                                        <th></th>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
 
                             <div class="tab-pane fade mt-3" id="nav-sponsoring{{ user.id }}" role="tabpanel" aria-labelledby="nav-sponsoring-tab{{ user.id }}">
                                 <h3 class="text-uppercase text-center font-weight-bolder verhulst">Sponsoring</h3>
@@ -144,7 +56,7 @@
                                     {% set total_marge = 0 %}
 
                                     {% for sale in user.sales %}
-                                        {% if get_class(sale.product) == 'ProductSponsoring' %}
+                                        {% if sale.product is not empty and get_class(sale.product) == 'ProductSponsoring' %}
                                             {% set total_price = total_price + sale.totalPrice %}
                                             {% set total_euroCom = total_euroCom + sale.euroCom %}
                                             {% set total_eurovr = total_eurovr + sale.euroVr %}
@@ -242,7 +154,7 @@
                                     {% set total_marge2 = 0 %}
 
                                     {% for sale in user.sales %}
-                                        {% if get_class(sale.product) == 'ProductPackageVip' %}
+                                        {% if sale.product is not empty and get_class(sale.product) == 'ProductPackageVip' %}
                                             {% set total_price = total_price + sale.totalPrice %}
                                             {% set total_euroCom = total_euroCom + sale.euroCom %}
                                             {% set total_eurovr = total_eurovr + sale.euroVr %}
@@ -310,93 +222,6 @@
                                     </tbody>
                                 </table>
                             </div>
-
-                            <div class="tab-pane fade mt-3" id="nav-divers{{ user.id }}" role="tabpanel" aria-labelledby="nav-divers-tab{{ user.id }}">
-                                <h3 class="text-uppercase text-center font-weight-bolder verhulst">Divers</h3>
-                                <table class="table table-hover">
-                                    <thead class="table-primary">
-                                    <tr>
-                                        <th scope="col" style="color: #FFFFFF">Société</th>
-                                        <th scope="col" style="color: #FFFFFF">Projet</th>
-                                        <th scope="col" style="color: #FFFFFF">Produit</th>
-                                        <th scope="col" style="color: #FFFFFF">Date</th>
-                                        <th scope="col" class="text-right" style="color: #FFFFFF">PU</th>
-                                        <th scope="col" class="text-right" style="color: #FFFFFF">Réduc</th>
-                                        <th scope="col" class="text-right" style="color: #FFFFFF">PV</th>
-                                        <th scope="col" class="text-center" style="color: #FFFFFF">%S</th>
-                                        <th scope="col" class="text-right" style="color: #FFFFFF">€S</th>
-                                        <th scope="col" class="text-center" style="color: #FFFFFF">%V</th>
-                                        <th scope="col" class="text-right" style="color: #FFFFFF">€V</th>
-                                        <th scope="col" class="text-right" style="color: #FFFFFF">Marge net</th>
-                                        <th scope="col"></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% set total_price = 0 %}
-                                    {% set total_euroCom = 0 %}
-                                    {% set total_eurovr = 0 %}
-                                    {% set total_margevr = 0 %}
-                                    {% set total_discount = 0 %}
-                                    {% set total_marge = 0 %}
-
-                                    {% for sale in user.sales %}
-                                        {% if get_class(sale.product) == 'ProductDivers' %}
-                                            {% set total_price = total_price + sale.price %}
-                                            {% set total_euroCom = total_euroCom + sale.euroCom %}
-                                            {% set total_eurovr = total_eurovr + sale.euroVr %}
-                                            {% set total_margevr = total_margevr + sale.diffCa  %}
-                                            {% set total_discount = total_discount + sale.discount  %}
-                                            {% set total_marge = total_marge + sale.marge  %}
-                                            <tr>
-                                                <th scope="row">
-                                                    {{ sale.contact.firstname }}  {{ sale.contact.lastname }}
-                                                    {% if sale.contact.company is not empty %}
-                                                        ({{ sale.contact.company.name }})
-                                                    {% endif %}
-                                                </th>
-                                                <th scope="row">
-                                                    {{ sale.product.project.name }}
-                                                </th>
-                                                <th scope="row">{{ sale.product.name }}</th>
-                                                <td>{{ sale.date|date('d/m/y') }}</td>
-                                                <td class="text-right">{{ (sale.price)|number_format(2, ',', '.') }}€</td>
-                                                <td class="text-right">{{ (sale.discount)|number_format(2, ',', '.') }}€</td>
-                                                <td class="text-right">{{ (sale.marge)|number_format(2, ',', '.') }}€</td>
-                                                <td class="text-center">{{ sale.percentCom }}%</td>
-                                                <td class="text-right">{{ sale.euroCom|number_format(2, ',', '.') }}€</td>
-                                                <td class="text-center">{{ sale.percentVr }}%</td>
-                                                <td class="text-right">{{ sale.euroVr|number_format(2, ',', '.') }}€</td>
-                                                <td class="text-right">{{ sale.diffCa|number_format(2, ',', '.') }}€</td>
-                                                <td class="action">
-                                                    {% set url_edit = ea_url()
-                                                        .setAction('edit')
-                                                        .setController('App\\Controller\\Admin\\SalesCrudController')
-                                                        .setEntityId(sale.id)
-                                                    %}
-                                                    <a class=" action-edit" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i></a>
-                                                </td>
-                                            </tr>
-                                        {% endif %}
-                                    {% endfor %}
-                                    <tr class="table-primary">
-                                        <th scope="row" colspan="4" style="color: #FFFFFF">
-                                            Totaux
-                                        </th>
-                                        <th class="text-right" style="color: #FFFFFF">{{ total_price|number_format(2, ',', '.') }}€</th>
-                                        <th class="text-right" style="color: #FFFFFF">{{ total_discount|number_format(2, ',', '.') }}€</th>
-                                        <th class="text-right" style="color: #FFFFFF">{{ total_marge|number_format(2, ',', '.') }}€</th>
-                                        <th></th>
-                                        <th class="text-right" style="color: #FFFFFF">{{ total_euroCom|number_format(2, ',', '.') }}€</th>
-                                        <th></th>
-                                        <th class="text-right" style="color: #FFFFFF">{{ total_eurovr|number_format(2, ',', '.') }}€</th>
-                                        <th class="text-right" style="color: #FFFFFF">{{ total_margevr|number_format(2, ',', '.') }}€</th>
-                                        <th></th>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-
                         </div>
                 </div>
             </div>
