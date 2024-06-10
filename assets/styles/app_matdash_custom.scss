@@ -1,0 +1,11 @@
+.sidebarmenu {
+  .brand-logo,
+  .sidebar-nav {
+    width: 340px !important;
+  }
+}
+@media (max-width: 1299.98px) {
+  .side-mini-panel {
+    left: -430px;
+  }
+}
