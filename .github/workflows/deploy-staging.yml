@@ -1,17 +1,18 @@
-name: deploy
+name: deploy staging
 
-concurrency: production
+concurrency: staging
 
 on:
   push:
-    tags: v[0-9]+.[0-9]+.[0-9]+
+    branches:
+      - staging
   workflow_dispatch:
 
 jobs:
   deployment:
     name: Deployment
     runs-on: ubuntu-latest
-    environment: production
+    environment: development
 
     steps:
       - uses: actions/checkout@v3
@@ -42,4 +43,4 @@ jobs:
         with:
           private-key: ${{ secrets.PRIVATE_KEY }}
           known-hosts: ${{ secrets.KNOWN_HOSTS }}
-          dep: deploy -v
+          dep: deploy --file=deploy-staging.php -v
