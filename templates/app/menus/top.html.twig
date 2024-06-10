@@ -1,3 +1,4 @@
+{% set current_route = app.request.attributes.get("_route") %}
 <aside class="left-sidebar with-horizontal">
     <!-- Sidebar scroll-->
     <div>
@@ -72,7 +73,7 @@
                             <a href="{{ ea_url()
                                 .setDashboard('App\\Controller\\Admin\\DashboardController')
                                 .setController('App\\Controller\\Admin\\ProjectCrudController')
-                                .setAction('index') }}" class="sidebar-link">
+                                .setAction('index') }}" class="sidebar-link{% if current_route == 'project_details' %} active{% endif %}">
                                 <iconify-icon icon="eos-icons:project" width="25" height="25"></iconify-icon>
                                 <span class="hide-menu">Tous les projets</span>
                             </a>
@@ -205,7 +206,7 @@
                     </a>
                     <ul aria-expanded="false" class="collapse first-level">
                         <li class="sidebar-item">
-                            <a href="{{ path('sales_flash_index') }}" class="sidebar-link">
+                            <a href="{{ path('sales_flash_index') }}" class="sidebar-link{% if current_route in ['sales_flash_create', 'sales_flash_create_sale'] %} active{% endif %}">
                                 <iconify-icon icon="material-symbols:event" width="25" height="25"></iconify-icon>
                                 <span class="hide-menu">Ventes flash</span>
                             </a>

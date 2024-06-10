@@ -1,3 +1,21 @@
+.sidebar-nav {
+  ul {
+    ul {
+      .sidebar-item {
+        &.selected > .sidebar-link.active,
+        &.selected > .sidebar-link,
+        > .sidebar-link.active {
+          iconify-icon {
+            color: var(--bs-primary);
+          }
+          &.has-arrow::after {
+            border-color: var(--bs-primary);
+          }
+        }
+      }
+    }
+  }
+}
 .sidebarmenu {
   .brand-logo,
   .sidebar-nav {
