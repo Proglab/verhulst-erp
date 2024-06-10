@@ -26,7 +26,6 @@
 </head>
 
 <body>
-
 {% for type, messages in app.session.flashbag.all() %}
     {% for message in messages %}
         <div class="toast toast-onload align-items-center text-bg-{{ type }} border-0" role="alert"
@@ -68,6 +67,11 @@
                                 <img src="/app-logo.png" alt="matdash-img" width="200"/>
                             </a>
                         </li>
+                        {% if app.environment == 'dev' %}
+                        <li>
+                            {% include 'partials/_staging.html.twig' %}
+                        </li>
+                        {% endif %}
                     </ul>
                     <div class="d-block d-xl-none">
                         <a href="{{ path('app') }}" class="text-nowrap nav-link">
@@ -113,6 +117,11 @@
 
         <div class="body-wrapper">
             <div class="container-fluid mw-100">
+                {% if app.environment == 'dev' %}
+                    <div class="d-xl-none mb-3">
+                    {% include 'partials/_staging.html.twig' %}
+                    </div>
+                {% endif %}
                 {% block breadcrumb %}{% endblock %}
                 {% block body %}{% endblock %}
             </div>

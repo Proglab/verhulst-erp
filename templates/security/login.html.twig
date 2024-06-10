@@ -13,7 +13,12 @@
                         </div>
                     </div>
                     <div class="mt-2 mb-4">{{ component('locale_choice') }}</div>
-                    <h2 class="auth-heading text-center mb-5">{{ 'login.page_title'|trans }} {{ 'layout.site_name'|trans }}</h2>
+                    <h2 class="auth-heading text-center mb-4">{{ 'login.page_title'|trans }} {{ 'layout.site_name'|trans }}</h2>
+                    {% if app.environment == 'dev' %}
+                        <div class="mb-3">
+                        {% include 'partials/_staging.html.twig' %}
+                        </div>
+                    {% endif %}
                     <div class="auth-form-container text-start">
                         <form method="post" class="auth-form login-form">
                             {% for type, options in app.flashes %}

@@ -270,6 +270,11 @@
                         {% endblock content_top_header %}
                     </aside>
 
+                    {% if app.environment == 'dev' %}
+                        <div class="mb-3">
+                        {% include 'partials/_staging.html.twig' %}
+                        </div>
+                    {% endif %}
                     <div class="content-wrapper">
                         {% block content %}
                             <article class="content">
