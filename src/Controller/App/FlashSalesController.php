@@ -63,7 +63,7 @@ class FlashSalesController extends AbstractController
                         <iconify-icon icon="solar:menu-dots-bold"></iconify-icon>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="">
-                        '.(($sale->isValidate())?'<li>
+                        '.(!($sale->isValidate())?'<li>
                             <a href="'.$this->generateUrl('sales_flash_create').'" class="dropdown-item d-flex align-items-center gap-3">
                                 <i class="fa-solid fa-pen-to-square"></i> Modifier
                             </a>
