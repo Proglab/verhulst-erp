@@ -70,40 +70,56 @@ class NewFlashSaleType extends AbstractType
             ],
             'data' => 1
         ])
-        ->add('type_com', ChoiceType::class, [
-            'label' => 'Type de commission',
+        ->add('type_com_sale', ChoiceType::class, [
+            'label' => 'Commission sales',
             'required' => true,
             'mapped' => false,
+            'placeholder' => 'Sélectionnez un type de commission',
             'choices' => [
                 '% sur la com TF' => 'percent_com',
                 '% sur le PV' => 'percent_pv',
-                'Prix fixe' => 'percent_pv',
+                'Prix fixe' => 'fixed',
             ],
         ])
+        ->addDependent('percent_com', 'type_com_sale', function (DependentField $field, ?string $com_type) {
+            if ($com_type === null) {
+                return;
+            }
+            if ($com_type === 'percent_com') {
+                $field->add(PercentType::class, [
+                    'label' => '% sur la com TF',
+                    'required' => true,
+                    'mapped' => false,
+                    'constraints' => [
+                        new NotBlank()
+                    ],
+                    'scale' => 2,
+                    'type' => 'fractional',
+                ]);
+            }
+            if ($com_type === 'percent_pv') {
+                $field->add(PercentType::class, [
+                    'label' => '% sur le PV',
+                    'required' => true,
+                    'mapped' => false,
+                    'constraints' => [
+                        new NotBlank()
+                    ],
+                    'scale' => 2,
+                    'type' => 'fractional',
+                ]);
+            }
+            if ($com_type === 'fixed') {
+                $field->add(MoneyType::class, [
+                    'label' => 'Prix fixe',
+                    'constraints' => [
+                        new NotBlank()
+                    ],
+                    'mapped' => false,
+                ]);
+            }
 
-
-
-
-
-
-
-        ->add('percent_com', PercentType::class, [
-            'label' => '% Sales',
-            'required' => true,
-            'mapped' => true,
-            'constraints' => [
-                new NotBlank()
-            ],
-            'scale' => 2,
-            'type' => 'fractional',
-        ])
-
-
-
-
-
-
-
+        })
         ->add('type_com', ChoiceType::class, [
             'label' => '% The Friends',
             'attr' => [
@@ -114,7 +130,7 @@ class NewFlashSaleType extends AbstractType
                 'Prix d\'achat' => 'price',
             ],
             'required' => true,
-            'placeholder' => "Sélectionnez un type de commission pour The Friends",
+            'placeholder' => "Sélectionnez un type de commission",
             'mapped' => false,
             'constraints' => [
                 new NotBlank()
