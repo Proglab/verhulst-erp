@@ -24,35 +24,88 @@ class BaseSales
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $name = null;
 
+    /**
+     * @var string|null $po Numéro de PO
+     */
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $po = null;
 
+    /**
+     * @var string|null $price Prix de vente
+     */
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     #[Assert\Length(max: 11)]
     protected ?string $price = null;
 
+    /**
+     * @var string|null $forecast_price Prix de vente prévisionnel
+     */
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    #[Assert\Length(max: 11)]
+    #[Assert\PositiveOrZero]
+    protected ?string $forecast_price = null;
+
+    /**
+     * @var string|null $pa Prix d'achat
+     */
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: false)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 11)]
     #[Assert\PositiveOrZero]
     protected ?string $pa = '0';
 
+    /**
+     * @var string|null $percent_vr % de commission VR
+     */
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: false)]
     #[Assert\Length(max: 6)]
     #[Assert\PositiveOrZero]
     protected ?string $percent_vr = null;
 
+    /**
+     * @var string|null $percent_vr_eur commission VR en euros
+     */
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    #[Assert\Length(max: 11)]
+    protected ?string $percent_vr_eur = null;
+
+    /**
+     * @var string $percent_com_type Type de commission (sales)
+     */
+    #[ORM\Column(nullable: false)]
+    protected string $percent_com_type = '';
+
+
+    /**
+     * @var string $percent_vr_type Type de commission (Verhulst)
+     */
+    #[ORM\Column(nullable: false)]
+    protected string $percent_vr_type = '';
+
+    /**
+     * @var string|null $percent_com % de commission sales
+     */
     #[ORM\Column(type: Types::DECIMAL, precision: 4, scale: 2, nullable: false)]
     #[Assert\Length(max: 5)]
     #[Assert\PositiveOrZero]
     protected ?string $percent_com = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    protected ?\DateTimeInterface $date = null;
+    /**
+     * @var string|null $percent_com_eur commission sales en euros
+     */
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    #[Assert\Length(max: 11)]
+    protected ?string $percent_com_eur = null;
 
     #[ORM\Column(nullable: false)]
     #[Assert\Positive]
     protected int $quantity = 1;
+
+    /**
+     * @var \DateTimeInterface|null $date date d'encodage
+     */
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    protected ?\DateTimeInterface $date = null;
 
     #[ORM\ManyToOne(inversedBy: 'sales')]
     #[ORM\JoinColumn(nullable: false)]
@@ -208,6 +261,56 @@ class BaseSales
         return $this;
     }
 
+    public function getForecastPrice(): ?float
+    {
+        return (float) $this->forecast_price;
+    }
+
+    public function setForecastPrice(string|float|null $forecastPrice): self
+    {
+        $this->forecast_price = (string) str_replace(',', '.', (string) $forecastPrice);
+
+        return $this;
+    }
 
 
+    public function getPercentVrEur(): ?string
+    {
+        return $this->percent_vr_eur;
+    }
+
+    public function setPercentVrEur(?string $percent_vr_eur): void
+    {
+        $this->percent_vr_eur = (string) str_replace(',', '.', (string) $percent_vr_eur);
+    }
+
+    public function getPercentComType(): string
+    {
+        return $this->percent_com_type;
+    }
+
+    public function setPercentComType(string $percent_com_type): void
+    {
+        $this->percent_com_type = $percent_com_type;
+    }
+
+    public function getPercentComEur(): ?string
+    {
+        return $this->percent_com_eur;
+    }
+
+    public function setPercentComEur(?string $percent_com_eur): void
+    {
+        $this->percent_com_eur =  (string) str_replace(',', '.', (string) $percent_com_eur);
+    }
+
+    public function getPercentVrType(): string
+    {
+        return $this->percent_vr_type;
+    }
+
+    public function setPercentVrType(string $percent_vr_type): void
+    {
+        $this->percent_vr_type = $percent_vr_type;
+    }
 }

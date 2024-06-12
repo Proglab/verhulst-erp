@@ -81,7 +81,7 @@ class CompanyContact
     #[ORM\ManyToOne(inversedBy: 'companyContacts')]
     private ?User $added_by = null;
 
-    #[ORM\OneToMany(mappedBy: 'contact', targetEntity: Sales::class)]
+    #[ORM\OneToMany(mappedBy: 'contact', targetEntity: BaseSales::class)]
     private Collection $sales;
 
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Todo::class, orphanRemoval: true)]
@@ -101,12 +101,6 @@ class CompanyContact
 
     #[ORM\Column]
     private ?bool $mailing = true;
-
-    /**
-     * @var Collection<int, FastSales>
-     */
-    #[ORM\OneToMany(mappedBy: 'client', targetEntity: FastSales::class, orphanRemoval: true)]
-    private Collection $fastSales;
 
     public function __construct()
     {

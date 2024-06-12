@@ -82,7 +82,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isTotpEnabled = false;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Sales::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: BaseSales::class, orphanRemoval: true)]
     private Collection $sales;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Commission::class, orphanRemoval: true)]
@@ -108,12 +108,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
 
     #[ORM\OneToMany(mappedBy: 'validated_user', targetEntity: Invoice::class, orphanRemoval: true)]
     private Collection $invoices;
-
-    /**
-     * @var Collection<int, FastSales>
-     */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: FastSales::class, orphanRemoval: true)]
-    private Collection $fastSales;
 
     public function __construct()
     {
