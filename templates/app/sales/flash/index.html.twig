@@ -9,7 +9,7 @@
                 <div class="row align-items-center">
                     <div class="col-12">
                         <div class="d-sm-flex align-items-center justify-space-between">
-                            <h4 class="mb-4 mb-md-0 card-title">Liste de mes ventes flash</h4>
+                            <h4 class="mb-4 mb-md-0 card-title">Liste des ventes flash</h4>
                             <nav aria-label="breadcrumb" class="ms-auto">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item d-flex align-items-center">
@@ -18,7 +18,7 @@
                                     </li>
                                     <li class="breadcrumb-item" aria-current="page">
                                           <span class="badge fw-medium fs-2 bg-primary-subtle text-primary">
-                                            Mes ventes flash
+                                            Les ventes flash
                                           </span>
                                     </li>
                                 </ol>
@@ -32,48 +32,5 @@
 {% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="col-12">
-            <div class="card card-body py-3">
-                <div class="d-flex justify-content-between bd-highlight mb-3 border p-3">
-                    <div>
-                        Du : <input type="date" id="min" name="min" class="me-3">
-                        Au : <input type="date" id="max" name="max">
-                    </div>
-                    <div>
-                        <a href="{{ path('sales_flash_create') }}" class="btn btn-primary">Créer une vente flash</a>
-                    </div>
-                </div>
-                <table class="table table-striped" {{ stimulus_controller('datatable') }} data-ajax="/api/sales">
-                    <thead>
-                    <tr>
-                        <th>Produit</th>
-                        <th>Client</th>
-                        <th>Prix unitaire</th>
-                        <th>Prix total </th>
-                        <th>Com TF</th>
-                        <th>Com Sales</th>
-                        <th>Date</th>
-                        <th>Validée ?</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tfoot>
-                    <tr>
-                        <th>Produit</th>
-                        <th>Client</th>
-                        <th>Prix unitaire</th>
-                        <th>Prix total </th>
-                        <th>Com TF</th>
-                        <th>Com Sales</th>
-                        <th>Date</th>
-                        <th>Validée ?</th>
-                        <th></th>
-                    </tr>
-                    </tfoot>
-
-                </table>
-            </div>
-        </div>
-    </div>
+    {{ component('flash-sale-index') }}
 {% endblock %}

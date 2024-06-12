@@ -22,7 +22,7 @@
         "endroid/qr-code": "^4.6",
         "friendsofsymfony/ckeditor-bundle": "^2.5",
         "gedmo/doctrine-extensions": "^3.5",
-        "knplabs/knp-paginator-bundle": "*",
+        "knplabs/knp-paginator-bundle": "^6.4",
         "microsoft/microsoft-graph-beta": "^2.4",
         "oskarstark/readable-filesize-extension": "^1.2",
         "phpdocumentor/reflection-docblock": "^5.3",
