@@ -14,6 +14,7 @@ use App\Form\Type\SalesRecapFilters;
 use App\Repository\BaseSalesRepository;
 use App\Repository\CompanyRepository;
 use App\Repository\ProjectRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,6 +22,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
+use Symfony\UX\LiveComponent\Attribute\LiveArg;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
@@ -62,13 +64,34 @@ class SalesRecap extends AbstractController
     #[LiveProp(writable: true)]
     public ?string $archive = '0';
 
-    public function __construct(private BaseSalesRepository $salesRepository, private ProjectRepository $projectRepository, private CompanyRepository $companyRepository)
+    #[LiveProp(writable: true, url: true)]
+    public int $page = 1;
+
+    public function __construct(private BaseSalesRepository $salesRepository, private ProjectRepository $projectRepository, private CompanyRepository $companyRepository, private PaginatorInterface $paginator)
     {
     }
 
-    public function getSales(): array
+    #[LiveAction]
+    public function previousPage(): void
     {
-        return $this->salesRepository->search(
+        $this->page--;
+    }
+
+    #[LiveAction]
+    public function nextPage(): void
+    {
+        $this->page++;
+    }
+
+    #[LiveAction]
+    public function gotoPage(#[LiveArg] int $page): void
+    {
+        $this->page = $page;
+    }
+
+    public function getSales()
+    {
+        $qb = $this->salesRepository->searchQb(
             from : $this->from,
             to : $this->to,
             project : empty($this->formValues['project']) ? null : $this->projectRepository->find($this->formValues['project']),
@@ -78,6 +101,11 @@ class SalesRecap extends AbstractController
             user : $this->user,
             archive : 'all' === $this->archive ? null : (bool) $this->archive,
         );
+
+        $paginator = $this->paginator->paginate($qb, $this->page, 10);
+        return $paginator;
+
+
     }
 
     public function getTotalSales(): float

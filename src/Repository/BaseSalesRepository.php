@@ -13,6 +13,7 @@ use App\Entity\Project;
 use App\Entity\Sales;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -245,7 +246,7 @@ class BaseSalesRepository extends ServiceEntityRepository
     }
 
 
-    public function search(?\DateTime $from, ?\DateTime $to, ?Project $project, ?Product $product, ?Company $company, ?CompanyContact $contact, ?User $user, ?bool $archive): array
+    public function searchQb(?\DateTime $from, ?\DateTime $to, ?Project $project, ?Product $product, ?Company $company, ?CompanyContact $contact, ?User $user, ?bool $archive): QueryBuilder
     {
         $qb = $this->createQueryBuilder('s')
             ->addSelect('c')
@@ -297,6 +298,15 @@ class BaseSalesRepository extends ServiceEntityRepository
             $qb->andWhere('s.user = :user')
                 ->setParameter('user', $user);
         }
+
+        return $qb
+            ->orderBy('s.date', 'DESC');
+    }
+
+
+    public function search(?\DateTime $from, ?\DateTime $to, ?Project $project, ?Product $product, ?Company $company, ?CompanyContact $contact, ?User $user, ?bool $archive): array
+    {
+        $qb = $this->searchQb($from, $to, $project, $product, $company, $contact, $user, $archive);
 
         return $qb
             ->orderBy('s.date', 'DESC')
