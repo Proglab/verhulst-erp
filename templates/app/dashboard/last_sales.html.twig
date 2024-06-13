@@ -67,18 +67,18 @@
                             <i>Quantité : {{ (sale.quantity) }}</i>
                         </td>
                         <td>
-                            <h6 class="mb-0">{{ (sale.price * sale.quantity)|number_format(2, ',', '') }} €</h6>
+                            <h6 class="mb-0">{{ (sale.totalPrice)|number_format(2, ',', '') }} €</h6>
                         </td>
                         <td>
-                            <h6 class="nm-0">{{ (sale.price * sale.quantity * sale.percentVr / 100)|number_format(2, ',', '') }} €</h6>
+                            <h6 class="nm-0">{{ sale.totalVr|number_format(2, ',', '') }} €</h6>
                             <i>{{ sale.percentVr }} %</i>
                         </td>
                         <td>
-                            <h6 class="mb-0">{{ (sale.price * sale.quantity * sale.percentCom / 100)|number_format(2, ',', '') }} €</h6>
+                            <h6 class="mb-0">{{ sale.totalCom|number_format(2, ',', '') }} €</h6>
                             <i>{{ sale.percentCom }} %</i>
                         </td>
                         <td>
-                            <h6 class="mb-0">{{ ((sale.price * sale.quantity * sale.percentVr / 100) - (sale.price * sale.quantity * sale.percentCom / 100))|number_format(2, ',', '') }} €</h6>
+                            <h6 class="mb-0">{{ sale.totalVrNet|number_format(2, ',', '') }} €</h6>
                         </td>
                         <td>
                             {% if sale.product is not empty %}
