@@ -30,12 +30,8 @@ class Project
     #[Assert\Length(max: 255)]
     protected ?string $doc = null;
 
-    #[ORM\OneToMany(mappedBy: 'project', targetEntity: ProductPackageVip::class, cascade: ['persist'], orphanRemoval: true)]
-    private Collection $product_package;
-
-    #[ORM\OneToMany(mappedBy: 'project', targetEntity: ProductSponsoring::class, cascade: ['persist'], orphanRemoval: true)]
-    private Collection $product_sponsoring;
-
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: Product::class, cascade: ['persist'], orphanRemoval: true)]
+    private Collection $products;
 
     #[ORM\Column]
     private ?bool $archive = false;
@@ -51,8 +47,7 @@ class Project
 
     public function __construct()
     {
-        $this->product_package = new ArrayCollection();
-        $this->product_sponsoring = new ArrayCollection();
+        $this->products = new ArrayCollection();
         $this->todos = new ArrayCollection();
     }
 
@@ -89,59 +84,29 @@ class Project
     }
 
     /**
-     * @return Collection<int, ProductPackageVip>
-     */
-    public function getProductPackage(): Collection
-    {
-        return $this->product_package;
-    }
-
-    public function addProductPackage(ProductPackageVip $productPackage): self
-    {
-        if (!$this->product_package->contains($productPackage)) {
-            $this->product_package->add($productPackage);
-            $productPackage->setProject($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProductPackage(ProductPackageVip $productPackage): self
-    {
-        if ($this->product_package->removeElement($productPackage)) {
-            // set the owning side to null (unless already changed)
-            if ($productPackage->getProject() === $this) {
-                $productPackage->setProject(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, ProductSponsoring>
      */
-    public function getProductSponsoring(): Collection
+    public function getProducts(): Collection
     {
-        return $this->product_sponsoring;
+        return $this->products;
     }
 
-    public function addProductSponsoring(ProductSponsoring $productSponsoring): self
+    public function addProduct(Product $product): self
     {
-        if (!$this->product_sponsoring->contains($productSponsoring)) {
-            $this->product_sponsoring->add($productSponsoring);
-            $productSponsoring->setProject($this);
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
+            $product->setProject($this);
         }
 
         return $this;
     }
 
-    public function removeProductSponsoring(ProductSponsoring $productSponsoring): self
+    public function removeProductSponsoring(Product $product): self
     {
-        if ($this->product_sponsoring->removeElement($productSponsoring)) {
+        if ($this->products->removeElement($product)) {
             // set the owning side to null (unless already changed)
-            if ($productSponsoring->getProject() === $this) {
-                $productSponsoring->setProject(null);
+            if ($product->getProject() === $this) {
+                $product->setProject(null);
             }
         }
 

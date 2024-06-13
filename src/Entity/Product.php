@@ -65,7 +65,7 @@ class Product
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Sales::class, orphanRemoval: true)]
     protected Collection $sales;
 
-    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'product_divers')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
     protected ?Project $project = null;
 
