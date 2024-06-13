@@ -73,6 +73,7 @@ class BaseSales
      * @var string $percent_com_type Type de commission (sales)
      */
     #[ORM\Column(nullable: false)]
+    #[Assert\Choice(choices: ['percent_com', 'percent_pv', 'fixed'])]
     protected string $percent_com_type = '';
 
 
@@ -80,6 +81,7 @@ class BaseSales
      * @var string $percent_vr_type Type de commission (Verhulst)
      */
     #[ORM\Column(nullable: false)]
+    #[Assert\Choice(choices: ['percent', 'fixed'])]
     protected string $percent_vr_type = '';
 
     /**
@@ -122,6 +124,62 @@ class BaseSales
     #[Assert\NotBlank]
     private ?Product $product = null;
 
+    public function totalPrice()
+    {
+        return $this->getPrice() * $this->getQuantity();
+    }
+
+    public function totalForecastPrice()
+    {
+        return $this->getForecastPrice() * $this->getQuantity();
+    }
+
+    public function totalPa()
+    {
+        switch ($this->percent_vr_type) {
+            case 'percent':
+                return $this->totalPrice() - ($this->totalPrice() * $this->getPercentVr() / 100);
+            case 'fixed':
+                return $this->getPercentComEur() * $this->getQuantity();
+            default:
+                return $this->getPercentComEur() * $this->getQuantity();
+        }
+    }
+
+    public function totalVr()
+    {
+        switch ($this->percent_vr_type) {
+            case 'percent':
+                return $this->totalPrice() * $this->getPercentVr() / 100;
+            case 'fixed':
+                return $this->getPercentVrEur() * $this->getQuantity();
+            default:
+                return $this->totalPrice() * $this->getPercentVr() / 100;
+        }
+    }
+
+    public function totalCom()
+    {
+        switch ($this->percent_com_type) {
+            case 'percent_com':
+                return $this->totalPrice() * $this->getPercentCom() / 100;
+            case 'percent_vr':
+                return $this->totalVr() * $this->getPercentCom() / 100;
+            case 'fixed':
+                return $this->getPercentComEur() * $this->getQuantity();
+            default:
+        }       return $this->totalPrice() * $this->getPercentCom() / 100;
+    }
+
+    public function totalVrNet()
+    {
+        return $this->totalVr() - $this->totalCom();
+    }
+
+    public function marge()
+    {
+        return $this->totalPrice() - $this->totalPa() - $this->totalVr();
+    }
 
     public function getId(): ?int
     {

@@ -127,7 +127,7 @@ class NewFlashSaleType extends AbstractType
             ],
             'choices' => [
                 '% The Friends' => 'percent',
-                'Prix d\'achat' => 'price',
+                'Prix d\'achat' => 'fixed',
             ],
             'required' => true,
             'placeholder' => "Sélectionnez un type de commission",
