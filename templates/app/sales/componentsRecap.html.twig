@@ -121,8 +121,8 @@
                     <th>Sales</th>
                     <th>Prix unitaire</th>
                     <th>Prix de vente</th>
-                    <th>Com Sales</th>
                     <th>Com TF</th>
+                    <th>Com Sales</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -134,7 +134,7 @@
                                     <h6 class="mb-0">{{ sale.product.name }}</h6>
                                     <i>{{ sale.product.project.name }}</i>
                                 {% else %}
-                                    {{ sale.name }} - PO {{ sale.po }}
+                                    <h6 class="mb-0">{{ sale.name }} - PO {{ sale.po }}</h6>
                                 {% endif %}
                             </td>
                             <td>
@@ -143,15 +143,10 @@
                             </td>
                             <td><h6 class="mb-0">{{ sale.user.fullname }}</h6></td>
                             <td><h6 class="mb-0">{{ sale.price|number_format(2, ',', '') }}€</h6><i>Quantité : {{ sale.quantity }}</i></td>
-                            <td><h6 class="mb-0">{{ (sale.price * sale.quantity)|number_format(2, ',', '') }}€</h6></td>
-                            <td>
-                                <h6 class="mb-0">{{ (sale.percentCom / 100 * sale.price * sale.quantity)|number_format(2, ',', '') }}€</h6>
-                                <i>{{ sale.percentCom }}%</i>
-                            </td>
-                            <td>
-                                <h6 class="mb-0">{{ (sale.percentVr / 100 * sale.price * sale.quantity)|number_format(2, ',', '') }}€</h6>
-                                <i>{{ sale.percentVr }}%</i>
-                            </td>
+                            <td><h6 class="mb-0">Prix final : {{ sale.totalPrice|number_format(2, ',', '') }}€</h6><i>Prix temporaire : {{ sale.totalForecastPrice|number_format(2, ',', '') }}€</i></td>
+                            <td><h6 class="mb-0">{{ sale.totalVr|number_format(2, ',', '') }}€</h6><i>{% if sale.percentVrType != 'fixed' %}{{ sale.percentVr }}%{% else %}Prix fixe{% endif %}</i></td>
+                            <td><h6 class="mb-0">{{ sale.totalCom|number_format(2, ',', '') }}€</h6><i>{% if sale.percentComType != 'fixed' %}{{ sale.percentCom }}%{% endif%} {% if sale.percentComType == 'percent_pv' %}du PV{% elseif sale.percentComType == 'percent_com' %} de la marge TF{% else %}Prix fixe{% endif %}</i></td>
+
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -163,8 +158,8 @@
                     <th>Sales</th>
                     <th>Prix unitaire</th>
                     <th>Prix de vente</th>
-                    <th>Com Sales</th>
                     <th>Com TF</th>
+                    <th>Com Sales</th>
                 </tr>
                 </tfoot>
             </table>

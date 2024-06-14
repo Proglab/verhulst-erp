@@ -22,8 +22,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -80,27 +78,11 @@ class ProjectCrudController extends BaseCrudController
             ->setLabel('Document (PDF)');
         $imageDwonload = TextField::new('download_url')->renderAsHtml()->setLabel('Document (PDF)');
 
-        if ($this->isGranted('ROLE_ENCODE')) {
-            $projectPackage = CollectionField::new('product_package')->setLabel('Package VIP')->allowAdd(true)->allowDelete(true)->setEntryIsComplex()->useEntryCrudForm(ProductPackageVipCrudController::class)->setRequired(true);
-            $projectSponsor = CollectionField::new('product_sponsoring')->setLabel('Sponsoring')->allowAdd(true)->allowDelete(true)->setEntryIsComplex()->useEntryCrudForm(ProductSponsoringCrudController::class)->setRequired(true);
-        } else {
-            $projectPackage = CollectionField::new('product_package')->setLabel('Package VIP')->allowAdd(false)->allowDelete(false)->setEntryIsComplex()->useEntryCrudForm(ProductPackageVipCrudController::class)->setRequired(true);
-            $projectSponsor = CollectionField::new('product_sponsoring')->setLabel('Sponsoring')->allowAdd(false)->allowDelete(false)->setEntryIsComplex()->useEntryCrudForm(ProductSponsoringCrudController::class)->setRequired(true);
-        }
-
-        if ($this->isGranted('ROLE_ENCODE')) {
-            $projectPackageIndex = AssociationField::new('product_package')->setLabel('Package VIP')->setRequired(true);
-            $projectSponsorIndex = AssociationField::new('product_sponsoring')->setLabel('Sponsoring')->setRequired(true);
-        } else {
-            $projectPackageIndex = AssociationField::new('product_package')->setLabel('Package VIP')->setRequired(true);
-            $projectSponsorIndex = AssociationField::new('product_sponsoring')->setLabel('Sponsoring')->setRequired(true);
-        }
-
         $response = match ($pageName) {
-            Crud::PAGE_INDEX => [$name, $dateBegin, $dateEnd, $projectSponsorIndex, $projectPackageIndex, $imageDwonload],
-            Crud::PAGE_DETAIL => [$name, $dateBegin, $dateEnd,  $projectSponsorIndex, $projectPackageIndex,  $imageDwonload],
-            Crud::PAGE_NEW, Crud::PAGE_EDIT => [$name, $dateBegin, $dateEnd,  $projectSponsor, $projectPackage,  $image],
-            default => [$name, $dateBegin, $dateEnd,  $projectSponsor, $projectPackage],
+            Crud::PAGE_INDEX => [$name, $dateBegin, $dateEnd, $imageDwonload],
+            Crud::PAGE_DETAIL => [$name, $dateBegin, $dateEnd,  $imageDwonload],
+            Crud::PAGE_NEW, Crud::PAGE_EDIT => [$name, $dateBegin, $dateEnd,  $image],
+            default => [$name, $dateBegin, $dateEnd],
         };
 
         return $response;
@@ -193,7 +175,7 @@ class ProjectCrudController extends BaseCrudController
                         $date->add(new \DateInterval('P1D'));
                         $packageNew->setDateBegin(clone $date);
                         $packageNew->setDateEnd(clone $date);
-                        $entityInstance->addProductPackage($packageNew);
+                        $entityInstance->addProduct($packageNew);
                     }
                 }
             }
@@ -234,10 +216,10 @@ class ProjectCrudController extends BaseCrudController
                 }
                 $packageNew->setDateBegin(clone $date);
                 $packageNew->setDateEnd(clone $date);
-                $entityInstance->addProductPackage($packageNew);
+                $entityInstance->addProduct($packageNew);
             }
 
-            $entityInstance->removeProductPackage($package);
+            $entityInstance->removeProduct($package);
         }
 
         if (true === $entityInstance->isMail()) {
@@ -307,7 +289,7 @@ class ProjectCrudController extends BaseCrudController
                 copy($url, $newUrl);
                 $eventClone->setDoc(basename($newUrl));
             }
-            $project_new->addProductPackage($eventClone);
+            $project_new->addProduct($eventClone);
         }
         foreach ($project->getProductSponsoring() as $event) {
             $doc = $event->getDoc();
@@ -319,7 +301,7 @@ class ProjectCrudController extends BaseCrudController
                 copy($url, $newUrl);
                 $eventClone->setDoc(basename($newUrl));
             }
-            $project_new->addProductSponsoring($eventClone);
+            $project_new->addProduct($eventClone);
         }
         $project_new->setArchive(false);
         $this->projectRepository->save($project_new, true);

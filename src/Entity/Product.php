@@ -78,7 +78,6 @@ class Product
     #[ORM\ManyToOne(inversedBy: 'products')]
     protected ?Project $project = null;
 
-
     public function __construct()
     {
         $this->sales = new ArrayCollection();

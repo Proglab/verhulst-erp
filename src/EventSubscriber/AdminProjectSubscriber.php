@@ -104,8 +104,7 @@ class AdminProjectSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->deleteDocs($entity->getProductSponsoring());
-        $this->deleteDocs($entity->getProductPackage());
+        $this->deleteDocs($entity->getProducts());
     }
 
     /**

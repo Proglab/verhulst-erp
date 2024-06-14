@@ -17,6 +17,12 @@ class Project
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
     protected ?string $doc = null;
+
+    /**
+     * @var Collection<int, Product>
+     */
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: Product::class)]
+    protected Collection $products;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -39,12 +45,6 @@ class Project
 
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: Todo::class)]
     private Collection $todos;
-
-    /**
-     * @var Collection<int, Product>
-     */
-    #[ORM\OneToMany(mappedBy: 'project', targetEntity: Product::class)]
-    protected Collection $products;
 
     public function __construct()
     {
@@ -214,5 +214,29 @@ class Project
         }
 
         return $this;
+    }
+
+    public function getProductSponsoring(): array
+    {
+        $return = [];
+        foreach ($this->getProducts() as $product) {
+            if ($product instanceof ProductSponsoring) {
+                $return[] = $product;
+            }
+        }
+
+        return $return;
+    }
+
+    public function getProductPackage(): array
+    {
+        $return = [];
+        foreach ($this->getProducts() as $product) {
+            if ($product instanceof ProductPackageVip) {
+                $return[] = $product;
+            }
+        }
+
+        return $return;
     }
 }

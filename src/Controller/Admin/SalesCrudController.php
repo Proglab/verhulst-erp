@@ -455,6 +455,10 @@ class SalesCrudController extends BaseCrudController
         $product = $this->entityManager->getRepository(Product::class)->find($context->getRequest()->get('productId'));
         $entity->setProduct($product);
         $entity->setContact($contact);
+
+        $entity->setPercentComType('percent_pv');
+        $entity->setPercentVrType('percent');
+
         $entity->setUser($this->getUser());
         if ($product instanceof ProductPackageVip || $product instanceof ProductSponsoring) {
             $entity->setPrice((string) $product->getCa());
@@ -472,6 +476,7 @@ class SalesCrudController extends BaseCrudController
 
             $event = new BeforeEntityPersistedEvent($entityInstance);
             $this->container->get('event_dispatcher')->dispatch($event);
+            /** @var Sales $entityInstance */
             $entityInstance = $event->getEntityInstance();
 
             $this->persistEntity($this->container->get('doctrine')->getManagerForClass($context->getEntity()->getFqcn()), $entityInstance);

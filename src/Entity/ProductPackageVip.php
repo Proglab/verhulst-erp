@@ -53,5 +53,4 @@ class ProductPackageVip extends Product
 
         return $this;
     }
-
 }

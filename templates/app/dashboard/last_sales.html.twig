@@ -24,8 +24,8 @@
                         <th scope="col" class="fs-4 fw-semibold mb-0">Date</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0">Prix unitaire</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0">Prix de vente</th>
-                        <th scope="col" class="fs-4 fw-semibold mb-0">Com Sales</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0">Com TF</th>
+                        <th scope="col" class="fs-4 fw-semibold mb-0">Com Sales</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0"></th>
                     </tr>
                     </thead>
@@ -66,9 +66,9 @@
                             <i>Quantité : {{ (sale.quantity) }}</i>
                         </td>
                         <td><h6 class="mb-0">Prix final : {{ sale.totalPrice|number_format(2, ',', '') }}€</h6><i>Prix temporaire : {{ sale.totalForecastPrice|number_format(2, ',', '') }}€</i></td>
+                        <td><h6 class="mb-0">{{ sale.totalVr|number_format(2, ',', '') }}€</h6><i>{% if sale.percentVrType != 'fixed' %}{{ sale.percentVr }}%{% else %}Prix fixe{% endif %}</i></td>
 
                         <td><h6 class="mb-0">{{ sale.totalCom|number_format(2, ',', '') }}€</h6><i>{% if sale.percentComType != 'fixed' %}{{ sale.percentCom }}%{% endif%} {% if sale.percentComType == 'percent_pv' %}du PV{% elseif sale.percentComType == 'percent_com' %} de la marge TF{% else %}Prix fixe{% endif %}</i></td>
-                        <td><h6 class="mb-0">{{ sale.totalVr|number_format(2, ',', '') }}€</h6><i>{% if sale.percentVrType != 'fixed' %}{{ sale.percentVr }}%{% else %}Prix fixe{% endif %}</i></td>
                         <td>
                             {% if sale.product is not empty %}
                             <div class="dropdown dropstart">
@@ -112,8 +112,8 @@
                         <th scope="col" class="fs-4 fw-semibold mb-0">Date</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0">Prix unitaire</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0">Prix de vente</th>
-                        <th scope="col" class="fs-4 fw-semibold mb-0">Com Sales</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0">Com TF</th>
+                        <th scope="col" class="fs-4 fw-semibold mb-0">Com Sales</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0"></th>
                     </tr>
                     </tfoot>

@@ -49,6 +49,7 @@ class TwigExtraExtension extends AbstractExtension
             new TwigFunction('encore_entry_css_source', $this->getEncoreEntryCssSource(...)),
             new TwigFunction('login_target_path', $this->loginTargetPath(...)),
             new TwigFunction('getLocales', $this->getLocales(...)),
+            new TwigFunction('instanceOf', $this->instanceOf(...)),
         ];
     }
 
@@ -155,5 +156,10 @@ class TwigExtraExtension extends AbstractExtension
         }
 
         return $locales;
+    }
+
+    public function instanceOf(mixed $entity, string $class): bool
+    {
+        return $entity instanceof $class;
     }
 }
