@@ -6,7 +6,7 @@ namespace App\Helper;
 
 class MoneyHelper
 {
-    public static function format(null|float|int $number): ?string
+    public static function format(float|int|null $number): ?string
     {
         if (null === $number) {
             return null;

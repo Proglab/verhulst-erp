@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Twig\Components\Projects\Products;
 
 use App\Entity\ProductEvent;
@@ -20,8 +22,8 @@ use Symfony\UX\LiveComponent\LiveCollectionTrait;
 #[AsLiveComponent('create_event_component', template: 'app/projects/products/components/create_event_component.html.twig')]
 class CreateEventComponent extends AbstractController
 {
-    use DefaultActionTrait;
     use ComponentWithFormTrait;
+    use DefaultActionTrait;
     use LiveCollectionTrait;
 
     #[LiveProp]
@@ -29,11 +31,6 @@ class CreateEventComponent extends AbstractController
 
     public function __construct(private ProductEventRepository $productEventRepository, private RequestStack $requestStack, private AdminUrlGenerator $adminUrlGenerator)
     {
-    }
-
-    protected function instantiateForm(): FormInterface
-    {
-        return $this->createForm(NewProductEventType::class);
     }
 
     #[LiveAction]
@@ -47,8 +44,8 @@ class CreateEventComponent extends AbstractController
         $events = [];
 
         // dates
-        if ($typeDAte === 'date') {
-            if ($form->get('dates')->get('create_all_date')->getData() === true) {
+        if ('date' === $typeDAte) {
+            if (true === $form->get('dates')->get('create_all_date')->getData()) {
                 for ($date = $form->get('dates')->get('date_begin')->getData(); $form->get('dates')->get('date_end')->getData() >= $date; $date->modify('+1 day')) {
                     $event = $this->getNewProductEvent();
                     $event->setDateBegin(new \DateTime($date->format('Y-m-d')));
@@ -72,29 +69,29 @@ class CreateEventComponent extends AbstractController
 
         foreach ($events as $event) {
             // percents commerciaux
-            if ($form->get('percentFreelance')->getData() === 'other') {
+            if ('other' === $form->get('percentFreelance')->getData()) {
                 $event->setPercentFreelance($form->get('percentFreelanceCustom')->getData() * 100);
             } else {
                 $event->setPercentFreelance($form->get('percentFreelance')->getData() * 100);
             }
-            if ($form->get('percentSalarie')->getData() === 'other') {
+            if ('other' === $form->get('percentSalarie')->getData()) {
                 $event->setPercentSalarie($form->get('percentSalarieCustom')->getData() * 100);
             } else {
                 $event->setPercentSalarie($form->get('percentSalarie')->getData() * 100);
             }
-            if ($form->get('percentTv')->getData() === 'other') {
+            if ('other' === $form->get('percentTv')->getData()) {
                 $event->setPercentTv($form->get('percentTvCustom')->getData() * 100);
             } else {
                 $event->setPercentTv($form->get('percentTv')->getData() * 100);
             }
 
             // prices
-            if($form->get('type_com')->getData() === 'percent') {
+            if ('percent' === $form->get('type_com')->getData()) {
                 $event->setPercentVr($form->get('com1')->get('percent_vr')->getData() * 100);
                 $event->setCa($form->get('com1')->get('pv')->getData());
                 $event->setPa($form->get('com1')->get('pv')->getData() - $form->get('com1')->get('pv')->getData() * $form->get('com1')->get('percent_vr')->getData());
             } else {
-                $event->setPercentVr( ($form->get('com2')->get('pv')->getData() - $form->get('com2')->get('pa')->getData() )/ $form->get('com2')->get('pa')->getData() * 100);
+                $event->setPercentVr(($form->get('com2')->get('pv')->getData() - $form->get('com2')->get('pa')->getData()) / $form->get('com2')->get('pa')->getData() * 100);
                 $event->setCa($form->get('com2')->get('pv')->getData());
                 $event->setPa($form->get('com2')->get('pa')->getData());
             }
@@ -104,9 +101,13 @@ class CreateEventComponent extends AbstractController
 
         $this->addFlash('success', 'Evènement créé avec succès !');
 
-
         return $this->redirect(
             $this->generateUrl('project_details', ['project' => $this->project->getId()]));
+    }
+
+    protected function instantiateForm(): FormInterface
+    {
+        return $this->createForm(NewProductEventType::class);
     }
 
     private function getNewProductEvent(): ProductEvent
@@ -115,6 +116,7 @@ class CreateEventComponent extends AbstractController
         $event->setProject($this->project);
         $event->setName($this->form->get('name')->getData());
         $event->setDescription($this->form->get('description')->getData());
+
         return $event;
     }
 }

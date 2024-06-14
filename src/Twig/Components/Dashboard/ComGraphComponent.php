@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Twig\Components\Dashboard;
 
 use App\Entity\User;
 use App\Repository\SalesRepository;
-use EasyCorp\Bundle\EasyAdminBundle\Exception\ForbiddenActionException;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
@@ -12,7 +13,6 @@ use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
-use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
 #[AsLiveComponent('coms_graph', template: 'app/dashboard/coms_graph.html.twig')]
 class ComGraphComponent
@@ -24,10 +24,10 @@ class ComGraphComponent
     #[LiveProp(writable: true)]
     public int $year;
 
-
     public function __construct(private SalesRepository $salesRepository, private Security $security, private ChartBuilderInterface $chartBuilder)
     {
     }
+
     public function getSalesGraph()
     {
         if (!$this->security->isGranted('ROLE_COMMERCIAL')) {
@@ -82,13 +82,12 @@ class ComGraphComponent
     #[LiveAction]
     public function nextYear()
     {
-        $this->year++;
+        ++$this->year;
     }
 
     #[LiveAction]
     public function prevYear()
     {
-        $this->year--;
+        --$this->year;
     }
-
 }

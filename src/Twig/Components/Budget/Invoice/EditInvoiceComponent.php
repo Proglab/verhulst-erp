@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace App\Twig\Components\Budget\Invoice;
 
 use App\Controller\Admin\Budget\DashboardController;
@@ -19,21 +22,14 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 #[AsLiveComponent('edit_invoice_component', template: 'components/budget/invoice/edit.html.twig')]
 class EditInvoiceComponent extends AbstractController
 {
-    use DefaultActionTrait;
     use ComponentWithFormTrait;
+    use DefaultActionTrait;
 
     #[LiveProp]
     public ?Invoice $invoice = null;
 
     public function __construct(private AdminUrlGenerator $adminUrlGenerator)
     {
-
-    }
-
-    protected function instantiateForm(): FormInterface
-    {
-        // we can extend AbstractController to get the normal shortcuts
-        return $this->createForm(BudgetInvoiceEditFormType::class, $this->invoice);
     }
 
     #[LiveAction]
@@ -45,16 +41,13 @@ class EditInvoiceComponent extends AbstractController
 
         /** @var Invoice $post */
         $post = $this->getForm()->getData();
-        if ($post->getEvent() === null) {
+        if (null === $post->getEvent()) {
             $post->setSupplier(null);
         }
 
-        if ($post->getSupplier() === null) {
+        if (null === $post->getSupplier()) {
             $post->resetProduct();
         }
-
-
-
 
         $entityManager->persist($post);
         $entityManager->flush();
@@ -65,8 +58,12 @@ class EditInvoiceComponent extends AbstractController
                 ->setAction(Action::INDEX)
                 ->setEntityId(null)
             ->setDashboard(DashboardController::class)
-
         );
+    }
 
+    protected function instantiateForm(): FormInterface
+    {
+        // we can extend AbstractController to get the normal shortcuts
+        return $this->createForm(BudgetInvoiceEditFormType::class, $this->invoice);
     }
 }

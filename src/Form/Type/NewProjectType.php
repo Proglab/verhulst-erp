@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Form\Type;
@@ -6,22 +7,20 @@ namespace App\Form\Type;
 use App\Entity\Project;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfonycasts\DynamicForms\DynamicFormBuilder;
-use Symfony\Component\Validator\Constraints\File;
 
 class NewProjectType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder =  new DynamicFormBuilder($builder);
+        $builder = new DynamicFormBuilder($builder);
         $builder
             ->add('name', null, [
                 'label' => 'Nom du projet',
                 'attr' => [
-                    'class' => 'col-md-6 mb-3'
+                    'class' => 'col-md-6 mb-3',
                 ],
                 'required' => true,
             ])
@@ -30,7 +29,7 @@ class NewProjectType extends AbstractType
                 'html5' => false,
                 'label' => 'Date de début',
                 'attr' => [
-                    'class' => 'col-md-3 mb-3'
+                    'class' => 'col-md-3 mb-3',
                 ],
                 'required' => true,
             ])
@@ -39,7 +38,7 @@ class NewProjectType extends AbstractType
                 'html5' => false,
                 'label' => 'Date de fin',
                 'attr' => [
-                    'class' => 'col-md-3 mb-3'
+                    'class' => 'col-md-3 mb-3',
                 ],
                 'required' => false,
             ])

@@ -21,10 +21,10 @@ final class Version20240516231352 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE sales CHANGE product_id product_id INT DEFAULT NULL');
-        $this->addSql('UPDATE sales 
-            JOIN product on (sales.product_id = product.id) 
-            JOIN project on (product.project_id = project.id) 
-            SET sales.validate = 1, sales.type = \'normal\', sales.name = CONCAT(project.name, \' || \', product.name)    
+        $this->addSql('UPDATE sales
+            JOIN product on (sales.product_id = product.id)
+            JOIN project on (product.project_id = project.id)
+            SET sales.validate = 1, sales.type = \'normal\', sales.name = CONCAT(project.name, \' || \', product.name)
             WHERE sales.product_id IS NOT NULL');
     }
 

@@ -76,7 +76,6 @@ class BaseSales
     #[Assert\Choice(choices: ['percent_com', 'percent_pv', 'fixed'])]
     protected string $percent_com_type = '';
 
-
     /**
      * @var string $percent_vr_type Type de commission (Verhulst)
      */
@@ -166,7 +165,9 @@ class BaseSales
             case 'fixed':
                 return $this->getPercentComEur() * $this->getQuantity();
             default:
-        }       return $this->totalPrice() * $this->getPercentCom() / 100;
+        }
+
+return $this->totalPrice() * $this->getPercentCom() / 100;
     }
 
     public function totalVrNet()
@@ -189,18 +190,19 @@ class BaseSales
         return $this->name;
     }
 
-    public function setName(string|null $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
+
     public function getPo(): ?string
     {
         return $this->po;
     }
 
-    public function setPo(string|null $po): self
+    public function setPo(?string $po): self
     {
         $this->po = $po;
 
@@ -230,7 +232,6 @@ class BaseSales
 
         return $this;
     }
-
 
     public function getUser(): ?User
     {
@@ -292,7 +293,6 @@ class BaseSales
         return $this;
     }
 
-
     public function getContact(): ?CompanyContact
     {
         return $this->contact;
@@ -316,7 +316,6 @@ class BaseSales
 
         return $this;
     }
-
 
     public function getPercentVrEur(): ?string
     {
@@ -345,7 +344,7 @@ class BaseSales
 
     public function setPercentComEur(?string $percent_com_eur): void
     {
-        $this->percent_com_eur =  (string) str_replace(',', '.', (string) $percent_com_eur);
+        $this->percent_com_eur = (string) str_replace(',', '.', (string) $percent_com_eur);
     }
 
     public function getPercentVrType(): string

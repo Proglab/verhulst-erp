@@ -241,7 +241,7 @@ class SalesCrudController extends BaseCrudController
                 $contact, $contactTel, $contactGsm, $contactEmail,
                 $panelProduct,
                 $project, $product, $dateBegin, $dateEnd, $user, $userMail, $description,
-                ],
+            ],
             default => [$product, $contacts, $quantity, $pa, $price, $discount_eur, $discount_percent, $date, $discount],
         };
 
@@ -340,6 +340,7 @@ class SalesCrudController extends BaseCrudController
         $year = $context->getRequest()->get('year', date('Y'));
 
         $sales = $this->salesRepository->getSalesByYear($user, (int) $year);
+
         return $this->render('admin/sales/index.html.twig', [
             'user' => $user,
             'year' => $year,
@@ -374,8 +375,8 @@ class SalesCrudController extends BaseCrudController
         $company = $repo->search($request->get('search'));
 
         return $this->render('admin/sales/ajax/search_client.html.twig', [
-                'companies' => $company,
-            ]
+            'companies' => $company,
+        ]
         );
     }
 
@@ -395,10 +396,10 @@ class SalesCrudController extends BaseCrudController
         }
 
         return $this->render('admin/sales/list_project.html.twig', [
-                'contact' => $contact,
-                'context' => $context,
-                'projects' => $projects,
-            ]
+            'contact' => $contact,
+            'context' => $context,
+            'projects' => $projects,
+        ]
         );
     }
 
@@ -411,11 +412,11 @@ class SalesCrudController extends BaseCrudController
         $products = $this->entityManager->getRepository(Product::class)->findBy(['project' => $project]);
 
         return $this->render('admin/sales/list_product.html.twig', [
-                'products' => $products,
-                'project' => $project,
-                'contact' => $contact,
-                'context' => $context,
-            ]
+            'products' => $products,
+            'project' => $project,
+            'contact' => $contact,
+            'context' => $context,
+        ]
         );
     }
 
@@ -427,9 +428,9 @@ class SalesCrudController extends BaseCrudController
         $projects = $repo->search($request->get('search'));
 
         return $this->render('admin/sales/ajax/search_product.html.twig', [
-                'projects' => $projects,
-                'contact_id' => $request->get('contactId'),
-            ]
+            'projects' => $projects,
+            'contact_id' => $request->get('contactId'),
+        ]
         );
     }
 

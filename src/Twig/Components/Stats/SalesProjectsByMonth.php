@@ -4,39 +4,26 @@ declare(strict_types=1);
 
 namespace App\Twig\Components\Stats;
 
-use App\Entity\BaseSales;
-use App\Entity\Company;
-use App\Entity\CompanyContact;
-use App\Entity\Product;
 use App\Entity\Project;
 use App\Entity\User;
-use App\Form\Type\SalesRecapFilters;
 use App\Form\Type\StatsSalesProjectsMonthFilterType;
 use App\Repository\BaseSalesRepository;
-use App\Repository\CompanyRepository;
-use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
-use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
-use Symfony\UX\LiveComponent\ValidatableComponentTrait;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[AsLiveComponent('stats_sales_projects_month', template: 'app/dashboard/stats/sales_projects_month.html.twig')]
 class SalesProjectsByMonth extends AbstractController
 {
-    use DefaultActionTrait;
     use ComponentWithFormTrait;
+    use DefaultActionTrait;
 
     #[LiveProp(writable: true)]
     public ?string $date = null;
@@ -52,13 +39,9 @@ class SalesProjectsByMonth extends AbstractController
         $this->date = (new \DateTime())->format('Y');
     }
 
-    protected function instantiateForm(): FormInterface
-    {
-        return $this->createForm(StatsSalesProjectsMonthFilterType::class);
-    }
     public function getGraph()
     {
-        if ($this->date === null || $this->project === null) {
+        if (null === $this->date || null === $this->project) {
             return null;
         }
 
@@ -68,14 +51,13 @@ class SalesProjectsByMonth extends AbstractController
 
         $months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
         /** @var User $user */
-
         $datasets = [];
 
         $i = 0;
 
         if (empty($this->users)) {
             foreach ($this->userRepository->getCommercials() as $user) {
-                $i++;
+                ++$i;
                 $data = $this->getDatas($user);
 
                 $datasets[] = [
@@ -88,7 +70,7 @@ class SalesProjectsByMonth extends AbstractController
         } else {
             foreach ($this->users as $user) {
                 $user = $this->userRepository->find($user);
-                $i++;
+                ++$i;
                 $data = $this->getDatas($user);
 
                 $datasets[] = [
@@ -119,15 +101,20 @@ class SalesProjectsByMonth extends AbstractController
         return $chart;
     }
 
+    protected function instantiateForm(): FormInterface
+    {
+        return $this->createForm(StatsSalesProjectsMonthFilterType::class);
+    }
+
     protected function color($i)
     {
         $frequency = 0.4;
 
-           $red   = sin($frequency*$i + 0) * 127 + 128;
-           $green = sin($frequency*$i + 2) * 127 + 128;
-           $blue  = sin($frequency*$i + 4) * 127 + 128;
+        $red = sin($frequency * $i + 0) * 127 + 128;
+        $green = sin($frequency * $i + 2) * 127 + 128;
+        $blue = sin($frequency * $i + 4) * 127 + 128;
 
-            return "rgb($red, $green, $blue)";
+        return "rgb($red, $green, $blue)";
     }
 
     protected function getDatas(User $user): array
@@ -149,5 +136,4 @@ class SalesProjectsByMonth extends AbstractController
 
         return $datas;
     }
-
 }

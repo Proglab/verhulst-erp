@@ -1,9 +1,9 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Form\Type;
 
-use App\Entity\ProductEvent;
 use App\Entity\ProductSponsoring;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -28,25 +28,25 @@ class NewProductSponsoringType extends AbstractType
             ->add('name', null, [
                 'label' => 'Nom du sponsoring',
                 'attr' => [
-                    'class' => 'col-md-8 mb-3'
+                    'class' => 'col-md-8 mb-3',
                 ],
                 'required' => true,
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank(),
                 ],
             ])
 
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
                 'attr' => [
-                    'class' => 'col-md-12'
+                    'class' => 'col-md-12',
                 ],
                 'required' => false,
             ])
             ->add('quantityMax', NumberType::class, [
                 'label' => 'Quantité maximale',
                 'attr' => [
-                    'class' => 'col-md-4'
+                    'class' => 'col-md-4',
                 ],
                 'required' => false,
             ])
@@ -63,12 +63,12 @@ class NewProductSponsoringType extends AbstractType
                 ],
                 'mapped' => false,
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank(),
                 ],
                 'placeholder' => 'Sélectionnez un %',
             ])
             ->addDependent('percentFreelanceCustom', 'percentFreelance', function (DependentField $field, ?string $date_type) {
-                if ($date_type !== 'other') {
+                if ('other' !== $date_type) {
                     return;
                 }
                 $field->add(PercentType::class, [
@@ -76,7 +76,7 @@ class NewProductSponsoringType extends AbstractType
                     'required' => true,
                     'mapped' => false,
                     'constraints' => [
-                        new NotBlank()
+                        new NotBlank(),
                     ],
                     'scale' => 2,
                     'type' => 'fractional',
@@ -96,11 +96,11 @@ class NewProductSponsoringType extends AbstractType
                 'mapped' => false,
                 'placeholder' => 'Sélectionnez un %',
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank(),
                 ],
             ])
             ->addDependent('percentSalarieCustom', 'percentSalarie', function (DependentField $field, ?string $date_type) {
-                if ($date_type !== 'other') {
+                if ('other' !== $date_type) {
                     return;
                 }
                 $field->add(PercentType::class, [
@@ -108,7 +108,7 @@ class NewProductSponsoringType extends AbstractType
                     'required' => true,
                     'mapped' => false,
                     'constraints' => [
-                        new NotBlank()
+                        new NotBlank(),
                     ],
                     'scale' => 2,
                     'type' => 'fractional',
@@ -128,11 +128,11 @@ class NewProductSponsoringType extends AbstractType
                 'placeholder' => 'Sélectionnez un %',
                 'mapped' => false,
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank(),
                 ],
             ])
             ->addDependent('percentTvCustom', 'percentTv', function (DependentField $field, ?string $date_type) {
-                if ($date_type !== 'other') {
+                if ('other' !== $date_type) {
                     return;
                 }
                 $field->add(PercentType::class, [
@@ -140,7 +140,7 @@ class NewProductSponsoringType extends AbstractType
                     'required' => true,
                     'mapped' => false,
                     'constraints' => [
-                        new NotBlank()
+                        new NotBlank(),
                     ],
                     'scale' => 2,
                     'type' => 'fractional',
@@ -153,17 +153,17 @@ class NewProductSponsoringType extends AbstractType
                     'Multiple' => 'date_multiple',
                 ],
                 'required' => true,
-                'placeholder' => "Sélectionnez un type de date",
+                'placeholder' => 'Sélectionnez un type de date',
                 'mapped' => false,
                 'constraints' => [
-                    new NotBlank()
+                    new NotBlank(),
                 ],
             ])
             ->addDependent('dates', 'type_date', function (DependentField $field, ?string $date_type) {
-                if ($date_type === null) {
+                if (null === $date_type) {
                     return;
                 }
-                if ($date_type === 'date') {
+                if ('date' === $date_type) {
                     $field->add(DatesType::class, [
                         'label' => 'Dates',
                         'required' => true,
@@ -172,10 +172,10 @@ class NewProductSponsoringType extends AbstractType
                 }
             })
             ->addDependent('dates2', 'type_date', function (DependentField $field, ?string $date_type) {
-                if ($date_type === null) {
+                if (null === $date_type) {
                     return;
                 }
-                if ($date_type === 'date_multiple') {
+                if ('date_multiple' === $date_type) {
                     $field->add(LiveCollectionType::class, [
                         'entry_type' => DateType::class,
                         'entry_options' => [
@@ -183,7 +183,7 @@ class NewProductSponsoringType extends AbstractType
                             'widget' => 'single_text',
                             'html5' => true,
                             'attr' => [
-                                'class' => 'col-md-3 mb-3'
+                                'class' => 'col-md-3 mb-3',
                             ],
                             'required' => true,
                             'mapped' => false,
@@ -197,21 +197,21 @@ class NewProductSponsoringType extends AbstractType
             ->add('type_com', ChoiceType::class, [
                 'label' => 'Type de commission',
                 'attr' => [
-                    'class' => 'col-md-4 mb-3'
+                    'class' => 'col-md-4 mb-3',
                 ],
                 'choices' => [
                     '% The Friends' => 'percent',
                     'Prix d\'achat' => 'price',
                 ],
                 'required' => true,
-                'placeholder' => "Sélectionnez un type de date",
+                'placeholder' => 'Sélectionnez un type de date',
                 'mapped' => false,
             ])
             ->addDependent('com1', 'type_com', function (DependentField $field, ?string $date_type) {
-                if ($date_type === null) {
+                if (null === $date_type) {
                     return;
                 }
-                if ($date_type === 'percent') {
+                if ('percent' === $date_type) {
                     $field->add(PercentsType::class, [
                         'label' => false,
                         'attr' => [
@@ -223,10 +223,10 @@ class NewProductSponsoringType extends AbstractType
                 }
             })
             ->addDependent('com2', 'type_com', function (DependentField $field, ?string $date_type) {
-                if ($date_type === null) {
+                if (null === $date_type) {
                     return;
                 }
-                if ($date_type === 'price') {
+                if ('price' === $date_type) {
                     $field->add(PricesType::class, [
                         'label' => 'Prix',
                         'attr' => [

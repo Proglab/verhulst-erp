@@ -9,13 +9,8 @@ use App\Entity\CompanyContact;
 use App\Form\Type\NewCompanyContactType;
 use App\Repository\CompanyContactRepository;
 use App\Repository\CompanyRepository;
-use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Knp\Component\Pager\Pagination\PaginationInterface;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveArg;
@@ -27,9 +22,9 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 #[AsLiveComponent('society_choice', template: 'app/sales/flash/componentsSearchContact.html.twig')]
 class SocietyChoice extends AbstractController
 {
-    use DefaultActionTrait;
-    use ComponentWithFormTrait;
     use ComponentToolsTrait;
+    use ComponentWithFormTrait;
+    use DefaultActionTrait;
 
     #[LiveProp(writable: true)]
     public ?string $queryCompany = null;
@@ -58,13 +53,16 @@ class SocietyChoice extends AbstractController
         if (empty($this->queryCompany)) {
             return [];
         }
+
         return $this->companyRepository->search($this->queryCompany);
     }
+
     public function getContacts(): array
     {
         if (empty($this->queryContact)) {
             return [];
         }
+
         return $this->companyContactRepository->search($this->queryContact);
     }
 
@@ -78,14 +76,13 @@ class SocietyChoice extends AbstractController
             'contact' => $this->contact->getId(),
         ]);
     }
+
     #[LiveAction]
     public function selectCompany(#[LiveArg('id')] int $companyId)
     {
-
         $this->company_create = false;
         $this->company = $this->companyRepository->find($companyId);
         $this->dispatchBrowserEvent('modal:open');
-
     }
 
     #[LiveAction]
@@ -94,6 +91,7 @@ class SocietyChoice extends AbstractController
         $this->contact_create = true;
         $this->contact = null;
     }
+
     #[LiveAction]
     public function createCompany()
     {
@@ -129,7 +127,7 @@ class SocietyChoice extends AbstractController
         }
 
         if (!empty($this->form->get('email')->getData())) {
-            if ($this->form->get('mailing')->getData() === true) {
+            if (true === $this->form->get('mailing')->getData()) {
                 $companyContact->setMailing(true);
             } else {
                 $companyContact->setMailing(false);
@@ -145,8 +143,6 @@ class SocietyChoice extends AbstractController
         return $this->redirectToRoute('sales_flash_create_sale', [
             'contact' => $companyContact->getId(),
         ]);
-
-
     }
 
     protected function instantiateForm(): FormInterface

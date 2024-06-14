@@ -24,5 +24,4 @@ class ProductForm extends AbstractType
             'data_class' => Product::class,
         ]);
     }
-
 }

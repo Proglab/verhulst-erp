@@ -1,14 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Twig\Components\Projects\Products;
 
-use App\Controller\Admin\DashboardController;
-use App\Controller\Admin\ProjectCrudController;
 use App\Entity\ProductDivers;
 use App\Entity\Project;
 use App\Form\Type\NewProductDiversType;
 use App\Repository\ProductDiversRepository;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -23,8 +22,8 @@ use Symfony\UX\LiveComponent\LiveCollectionTrait;
 #[AsLiveComponent('create_divers_component', template: 'app/projects/products/components/create_divers_component.html.twig')]
 class CreateDiversComponent extends AbstractController
 {
-    use DefaultActionTrait;
     use ComponentWithFormTrait;
+    use DefaultActionTrait;
     use LiveCollectionTrait;
 
     #[LiveProp]
@@ -32,11 +31,6 @@ class CreateDiversComponent extends AbstractController
 
     public function __construct(private ProductDiversRepository $productEventRepository, private RequestStack $requestStack, private AdminUrlGenerator $adminUrlGenerator)
     {
-    }
-
-    protected function instantiateForm(): FormInterface
-    {
-        return $this->createForm(NewProductDiversType::class);
     }
 
     #[LiveAction]
@@ -49,8 +43,8 @@ class CreateDiversComponent extends AbstractController
 
         $events = [];
 
-        if ($typeDAte === 'date') {
-            if ($form->get('dates')->get('create_all_date')->getData() === true) {
+        if ('date' === $typeDAte) {
+            if (true === $form->get('dates')->get('create_all_date')->getData()) {
                 for ($date = $form->get('dates')->get('date_begin')->getData(); $form->get('dates')->get('date_end')->getData() >= $date; $date->modify('+1 day')) {
                     $event = $this->getNewProductEvent();
                     $event->setDateBegin(new \DateTime($date->format('Y-m-d')));
@@ -74,29 +68,29 @@ class CreateDiversComponent extends AbstractController
 
         foreach ($events as $event) {
             // percents commerciaux
-            if ($form->get('percentFreelance')->getData() === 'other') {
+            if ('other' === $form->get('percentFreelance')->getData()) {
                 $event->setPercentFreelance($form->get('percentFreelanceCustom')->getData() * 100);
             } else {
                 $event->setPercentFreelance($form->get('percentFreelance')->getData() * 100);
             }
-            if ($form->get('percentSalarie')->getData() === 'other') {
+            if ('other' === $form->get('percentSalarie')->getData()) {
                 $event->setPercentSalarie($form->get('percentSalarieCustom')->getData() * 100);
             } else {
                 $event->setPercentSalarie($form->get('percentSalarie')->getData() * 100);
             }
-            if ($form->get('percentTv')->getData() === 'other') {
+            if ('other' === $form->get('percentTv')->getData()) {
                 $event->setPercentTv($form->get('percentTvCustom')->getData() * 100);
             } else {
                 $event->setPercentTv($form->get('percentTv')->getData() * 100);
             }
 
             // prices
-            if($form->get('type_com')->getData() === 'percent') {
+            if ('percent' === $form->get('type_com')->getData()) {
                 $event->setPercentVr($form->get('com1')->get('percent_vr')->getData() * 100);
                 $event->setCa($form->get('com1')->get('pv')->getData());
                 $event->setPa($form->get('com1')->get('pv')->getData() - $form->get('com1')->get('pv')->getData() * $form->get('com1')->get('percent_vr')->getData());
             } else {
-                $event->setPercentVr( ($form->get('com2')->get('pv')->getData() - $form->get('com2')->get('pa')->getData() )/ $form->get('com2')->get('pa')->getData() * 100);
+                $event->setPercentVr(($form->get('com2')->get('pv')->getData() - $form->get('com2')->get('pa')->getData()) / $form->get('com2')->get('pa')->getData() * 100);
                 $event->setCa($form->get('com2')->get('pv')->getData());
                 $event->setPa($form->get('com2')->get('pa')->getData());
             }
@@ -110,12 +104,18 @@ class CreateDiversComponent extends AbstractController
             $this->generateUrl('project_details', ['project' => $this->project->getId()]));
     }
 
+    protected function instantiateForm(): FormInterface
+    {
+        return $this->createForm(NewProductDiversType::class);
+    }
+
     private function getNewProductEvent(): ProductDivers
     {
         $event = new ProductDivers();
         $event->setProject($this->project);
         $event->setName($this->form->get('name')->getData());
         $event->setDescription($this->form->get('description')->getData());
+
         return $event;
     }
 }

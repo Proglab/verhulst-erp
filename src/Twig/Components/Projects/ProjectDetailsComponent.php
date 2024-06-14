@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Twig\Components\Projects;
 
 use App\Entity\Product;
@@ -20,8 +22,8 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 #[AsLiveComponent('project_detail', template: 'app/projects/components/details_component.html.twig')]
 class ProjectDetailsComponent
 {
-    use DefaultActionTrait;
     use ComponentToolsTrait;
+    use DefaultActionTrait;
 
     #[LiveProp]
     public Project $project;
@@ -39,7 +41,7 @@ class ProjectDetailsComponent
     public ?string $queryDivers = null;
 
     #[LiveProp]
-    public Product|null $toDelete = null;
+    public ?Product $toDelete = null;
 
     public function __construct(private ProjectRepository $projectRepository, private ProductRepository $productRepository, private ProductEventRepository $productEventRepository, private ProductPackageVipRepository $productPackageRepository, private ProductSponsoringRepository $productSponsoringRepository, private ProductDiversRepository $productDiversRepository)
     {
@@ -71,6 +73,7 @@ class ProjectDetailsComponent
         $this->toDelete = $this->productRepository->find($id);
         $this->dispatchBrowserEvent('modal:open');
     }
+
     #[LiveAction]
     public function deleteConfirm(): void
     {

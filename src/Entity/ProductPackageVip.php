@@ -21,11 +21,11 @@ class ProductPackageVip extends Product
 
     public function __toString()
     {
-
         if (empty($this->getDate())) {
             return $this->getName();
         }
-        return $this->getName(). ' - '. $this->getDate()->format('d/m/Y');
+
+        return $this->getName() . ' - ' . $this->getDate()->format('d/m/Y');
     }
 
     public function getQuantityMax(): ?int

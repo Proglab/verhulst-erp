@@ -6,8 +6,6 @@ namespace App\Controller\Admin;
 
 use App\Entity\Commission;
 use App\Entity\Product;
-use App\Entity\ProductDivers;
-use App\Entity\ProductEvent;
 use App\Entity\ProductPackageVip;
 use App\Entity\ProductSponsoring;
 use App\Entity\Project;
@@ -176,12 +174,9 @@ class CommissionCrudController extends BaseCrudController
 
         /** @var Commission $com */
         foreach ($comsData as $com) {
-
-
             /** @var ProductPackageVip|ProductSponsoring $product */
             $product = $com->getProduct();
-            if (!empty($product))
-            {
+            if (!empty($product)) {
                 $commissions[$product->getProject()->getId()][$product->getId()][$com->getUser()->getId()] = $com->getPercentCom();
             }
         }

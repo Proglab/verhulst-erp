@@ -61,12 +61,12 @@ class SyncCampainMonitorUnique extends AbstractCommand
                 }
                 if (!$this->checkContactExist($idList, $companyContact->getEmail())) {
                     $contact = new Subscriber($companyContact->getEmail(), $companyContact->getFullName(), [
-                       new CustomFieldValue('Langue', $companyContact->getLang()),
-                       new CustomFieldValue('Genre', $companyContact->getSex()),
-                       new CustomFieldValue('Formule de politesse', $companyContact->getGreeting()),
-                       new CustomFieldValue('Sale name', $user->getFirstName() . ' ' . $user->getLastName()),
-                       new CustomFieldValue('Sale email', $user->getEmail()),
-                       new CustomFieldValue('Sale phone', $user->getPhone()),
+                        new CustomFieldValue('Langue', $companyContact->getLang()),
+                        new CustomFieldValue('Genre', $companyContact->getSex()),
+                        new CustomFieldValue('Formule de politesse', $companyContact->getGreeting()),
+                        new CustomFieldValue('Sale name', $user->getFirstName() . ' ' . $user->getLastName()),
+                        new CustomFieldValue('Sale email', $user->getEmail()),
+                        new CustomFieldValue('Sale phone', $user->getPhone()),
                     ]);
 
                     $this->createContact($idList, $contact);

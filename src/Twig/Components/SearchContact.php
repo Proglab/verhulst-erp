@@ -36,8 +36,6 @@ class SearchContact
 
     public ?array $users = null;
 
-
-
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly UserRepository $userRepository, /** @phpstan-ignore-line */
@@ -84,7 +82,6 @@ class SearchContact
                 $result = $stmt->executeQuery();
             }
         } else {
-
             $sql = '
             SELECT \'Contact validé\' as type, company.name, company.vat_number, company_contact.id, company_contact.firstname, company_contact.lastname, company_contact.lang, company_contact.email, company_contact.phone, company_contact.gsm, user.first_name, user.last_name, company_contact.note, company_contact.added_by_id
             FROM company_contact
@@ -117,7 +114,6 @@ class SearchContact
             $result = $stmt->executeQuery(['query' => '%' . $this->query . '%', 'user' => $this->user]);
         }
         $datas = $result->fetchAllAssociative();
-
 
         /** @var PaginationInterface $paginator */
         $paginator = $this->paginator->paginate($datas, $this->page, $this->pageNbr);

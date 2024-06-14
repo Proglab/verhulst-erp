@@ -75,7 +75,6 @@ class Product
     #[Assert\PositiveOrZero]
     private ?string $pa = null;
 
-
     public function __construct()
     {
         $this->sales = new ArrayCollection();
@@ -335,5 +334,4 @@ class Product
 
         return $this;
     }
-
 }

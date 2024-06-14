@@ -7,7 +7,6 @@ namespace App\Repository;
 use App\Entity\BaseSales;
 use App\Entity\Company;
 use App\Entity\CompanyContact;
-use App\Entity\FastSales;
 use App\Entity\Product;
 use App\Entity\Project;
 use App\Entity\Sales;
@@ -133,22 +132,21 @@ class BaseSalesRepository extends ServiceEntityRepository
 
     public function getSalesStatsByMonthByUser(int $year, User $user, ?Project $project): array
     {
-         $qb = $this->createQueryBuilder('s')
-            ->addSelect('p')
-            ->leftJoin('s.product', 'p')
-            ->leftJoin('p.project', 'project')
-            ->where('s.date BETWEEN :start AND :end')
-            ->setParameter('start', $year . '-01-01')
-            ->setParameter('end', $year . '-12-31')
-            ->andWhere('s.user = :user')
-            ->setParameter('user', $user);
+        $qb = $this->createQueryBuilder('s')
+           ->addSelect('p')
+           ->leftJoin('s.product', 'p')
+           ->leftJoin('p.project', 'project')
+           ->where('s.date BETWEEN :start AND :end')
+           ->setParameter('start', $year . '-01-01')
+           ->setParameter('end', $year . '-12-31')
+           ->andWhere('s.user = :user')
+           ->setParameter('user', $user);
 
-         if (!empty($project)) {
-             $qb
-                 ->andWhere('project = :project')
-                 ->setParameter('project', $project);
-         }
-
+        if (!empty($project)) {
+            $qb
+                ->andWhere('project = :project')
+                ->setParameter('project', $project);
+        }
 
         /** @var Sales[] $sales */
         $sales = $qb->getQuery()
@@ -202,16 +200,16 @@ class BaseSalesRepository extends ServiceEntityRepository
             }
         }
 
-        ksort($datas, CASE_LOWER);
+        ksort($datas, \CASE_LOWER);
 
         $return = [];
 
         foreach ($datas as $project => $price) {
             $return[] = ['project' => $project, 'price' => number_format($price, 2, '.', '')];
         }
+
         return $return;
     }
-
 
     public function findLastSale(User $user, CompanyContact $companyContact): ?Sales
     {
@@ -245,7 +243,6 @@ class BaseSalesRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-
     public function searchQb(?\DateTime $from, ?\DateTime $to, ?Project $project, ?Product $product, ?Company $company, ?CompanyContact $contact, ?User $user, ?bool $archive): QueryBuilder
     {
         $qb = $this->createQueryBuilder('s')
@@ -253,7 +250,6 @@ class BaseSalesRepository extends ServiceEntityRepository
             ->leftJoin('s.contact', 'c')
             ->leftJoin('s.product', 'product')
             ->leftJoin('product.project', 'project');
-
 
         if (null !== $archive) {
             $qb
@@ -303,7 +299,6 @@ class BaseSalesRepository extends ServiceEntityRepository
             ->orderBy('s.date', 'DESC');
     }
 
-
     public function search(?\DateTime $from, ?\DateTime $to, ?Project $project, ?Product $product, ?Company $company, ?CompanyContact $contact, ?User $user, ?bool $archive): array
     {
         $qb = $this->searchQb($from, $to, $project, $product, $company, $contact, $user, $archive);
@@ -314,7 +309,6 @@ class BaseSalesRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-
     public function searchTotal(?\DateTime $from, ?\DateTime $to, ?Project $project, ?Product $product, ?Company $company, ?CompanyContact $contact, ?User $user, ?bool $archive): float
     {
         $qb = $this->createQueryBuilder('s')
@@ -322,7 +316,6 @@ class BaseSalesRepository extends ServiceEntityRepository
             ->leftJoin('s.contact', 'c')
             ->leftJoin('s.product', 'product')
             ->leftJoin('product.project', 'project');
-
 
         if (null !== $archive) {
             $qb
@@ -382,8 +375,6 @@ class BaseSalesRepository extends ServiceEntityRepository
             ->leftJoin('s.product', 'product')
             ->leftJoin('product.project', 'project');
 
-
-
         if (null !== $archive) {
             $qb
                 ->andWhere('project.archive = :archive')
@@ -441,8 +432,6 @@ class BaseSalesRepository extends ServiceEntityRepository
             ->leftJoin('s.contact', 'c')
             ->leftJoin('s.product', 'product')
             ->leftJoin('product.project', 'project');
-
-
 
         if (null !== $archive) {
             $qb

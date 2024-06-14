@@ -19,7 +19,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveArg;
@@ -27,13 +27,12 @@ use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\LiveComponent\ValidatableComponentTrait;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[AsLiveComponent('sales_recap', template: 'app/sales/componentsRecap.html.twig')]
 class SalesRecap extends AbstractController
 {
-    use DefaultActionTrait;
     use ComponentWithFormTrait;
+    use DefaultActionTrait;
     use ValidatableComponentTrait;
 
     #[LiveProp(writable: true, format: 'Y-m-d')]
@@ -74,13 +73,13 @@ class SalesRecap extends AbstractController
     #[LiveAction]
     public function previousPage(): void
     {
-        $this->page--;
+        --$this->page;
     }
 
     #[LiveAction]
     public function nextPage(): void
     {
-        $this->page++;
+        ++$this->page;
     }
 
     #[LiveAction]
@@ -103,9 +102,8 @@ class SalesRecap extends AbstractController
         );
 
         $paginator = $this->paginator->paginate($qb, $this->page, 10);
+
         return $paginator;
-
-
     }
 
     public function getTotalSales(): float
@@ -150,11 +148,6 @@ class SalesRecap extends AbstractController
         );
     }
 
-    protected function instantiateForm(): FormInterface
-    {
-        return $this->createForm(SalesRecapFilters::class);
-    }
-
     #[LiveAction]
     public function export()
     {
@@ -187,7 +180,7 @@ class SalesRecap extends AbstractController
         $worksheet->getCell('K1')->setValue('Marge net VR');
 
         /**
-         * @var int $key
+         * @var int       $key
          * @var BaseSales $data
          */
         foreach ($datas as $key => $data) {
@@ -206,7 +199,8 @@ class SalesRecap extends AbstractController
 
         $id = uniqid();
 
-        $writer->save( $id. '.xls');
+        $writer->save($id . '.xls');
+
         return $this->redirectToRoute('download_file', ['filename' => $id . '.xls']);
     }
 
@@ -218,5 +212,10 @@ class SalesRecap extends AbstractController
         $this->to = null;
         $this->form->get('from')->setData(null);
         $this->form->get('to')->setData(null);
+    }
+
+    protected function instantiateForm(): FormInterface
+    {
+        return $this->createForm(SalesRecapFilters::class);
     }
 }

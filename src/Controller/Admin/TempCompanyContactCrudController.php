@@ -267,7 +267,7 @@ class TempCompanyContactCrudController extends BaseCrudController
                 $this->addFlash('danger', $error->getPropertyPath() . ' : ' . $error->getMessage());
 
                 $url = $context->getReferrer();
-                if ($url === null) {
+                if (null === $url) {
                     $url = $this->adminUrlGenerator
                         ->setAction(Action::DETAIL)
                         ->generateUrl();
@@ -372,6 +372,7 @@ class TempCompanyContactCrudController extends BaseCrudController
         if (empty($url)) {
             $url = $this->adminUrlGenerator->setAction(Crud::PAGE_DETAIL)->generateUrl();
         }
+
         return new RedirectResponse($url);
     }
 }

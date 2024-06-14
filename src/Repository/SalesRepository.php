@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\Company;
 use App\Entity\CompanyContact;
 use App\Entity\Product;
-use App\Entity\Project;
 use App\Entity\Sales;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

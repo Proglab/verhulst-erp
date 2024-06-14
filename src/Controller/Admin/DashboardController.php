@@ -9,7 +9,6 @@ use App\Entity\Commission;
 use App\Entity\Company;
 use App\Entity\CompanyContact;
 use App\Entity\Css;
-use App\Entity\ProductDivers;
 use App\Entity\ProductEvent;
 use App\Entity\ProductPackageVip;
 use App\Entity\ProductSponsoring;
@@ -99,16 +98,16 @@ class DashboardController extends AbstractDashboardController
                 ->setQueryParameter('entityFqcn', CompanyContact::class),
             MenuItem::linkToCrud('admin.menu.sales.create', 'fas fa-comments-dollar', Sales::class)->setController(SalesCrudController::class)->setPermission('ROLE_COMMERCIAL')->setAction(Crud::PAGE_NEW),
             MenuItem::linkToRoute('admin.menu.flashsale.create', 'fas fa-clipboard-check', 'sales_flash_create')->setPermission('ROLE_COMMERCIAL'),
-            //MenuItem::linkToCrud('admin.menu.event.create', 'fa fa-calendar', ProductEvent::class)->setPermission('ROLE_COMMERCIAL')->setAction(Crud::PAGE_NEW),
+            // MenuItem::linkToCrud('admin.menu.event.create', 'fa fa-calendar', ProductEvent::class)->setPermission('ROLE_COMMERCIAL')->setAction(Crud::PAGE_NEW),
 
             MenuItem::section('Commercial')->setPermission('ROLE_COMMERCIAL'),
             MenuItem::linkToRoute('admin.menu.dashboard_com', 'fa fa-gauge-high', 'app')
                 ->setPermission('ROLE_COMMERCIAL'),
 
             MenuItem::linkToCrud('Projets', 'fas fa-folder-open', Project::class)->setPermission('ROLE_COMMERCIAL'),
-                MenuItem::linkToCrud('Package Vip', 'fa fa-chess-king', ProductPackageVip::class)->setCssClass('mx-2')->setPermission('ROLE_COMMERCIAL'),
-                MenuItem::linkToCrud('Sponsoring', 'fa fa-mug-hot', ProductSponsoring::class)->setCssClass('mx-2')->setPermission('ROLE_COMMERCIAL'),
-                MenuItem::linkToCrud('Archives', 'fa fa-box-archive', Project::class)->setController(ProjectArchiveCrudController::class)->setCssClass('mx-2')->setPermission('ROLE_COMMERCIAL'),
+            MenuItem::linkToCrud('Package Vip', 'fa fa-chess-king', ProductPackageVip::class)->setCssClass('mx-2')->setPermission('ROLE_COMMERCIAL'),
+            MenuItem::linkToCrud('Sponsoring', 'fa fa-mug-hot', ProductSponsoring::class)->setCssClass('mx-2')->setPermission('ROLE_COMMERCIAL'),
+            MenuItem::linkToCrud('Archives', 'fa fa-box-archive', Project::class)->setController(ProjectArchiveCrudController::class)->setCssClass('mx-2')->setPermission('ROLE_COMMERCIAL'),
 
             MenuItem::linkToUrl('admin.menu.client', 'fas fa-address-book', '#'),
             MenuItem::linkToCrud('admin.menu.company', 'fas fa-address-book', Company::class)->setCssClass('mx-2')->setPermission('ROLE_COMMERCIAL'),
@@ -477,7 +476,6 @@ class DashboardController extends AbstractDashboardController
     public function syncUpdated(KernelInterface $kernel): Response
     {
         $response = new StreamedResponse(function () use ($kernel) {
-
             $input = new ArrayInput([
                 'command' => 'app:purge-contact',
             ]);

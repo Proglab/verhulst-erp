@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Twig\Components\Dashboard;
 
 use App\Entity\User;
@@ -13,11 +15,12 @@ class LastSalesComponent
     public function __construct(private BaseSalesRepository $salesRepository, private Security $security)
     {
     }
+
     public function getLastSales()
     {
         /** @var User $me */
         $me = $this->security->getUser();
+
         return $this->salesRepository->get10LastSalesByUser($me);
     }
-
 }

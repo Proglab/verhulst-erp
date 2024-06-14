@@ -19,11 +19,12 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 #[AsLiveComponent('create_flash_sale', template: 'app/sales/flash/create_flash_sale.html.twig')]
 class CreateFlashSale extends AbstractController
 {
-    use DefaultActionTrait;
     use ComponentWithFormTrait;
+    use DefaultActionTrait;
 
     #[LiveProp]
     public ?CompanyContact $contact = null;
+
     public function __construct(private FastSalesRepository $fastSalesRepository)
     {
     }
@@ -48,7 +49,7 @@ class CreateFlashSale extends AbstractController
         $price = null;
         $forecastPrice = null;
 
-        if ($this->form->get('type_vente')->getData() === '1') {
+        if ('1' === $this->form->get('type_vente')->getData()) {
             $flashSale->setPrice($this->form->get('price')->getData());
             $price = $this->form->get('price')->getData();
         } else {
@@ -56,8 +57,7 @@ class CreateFlashSale extends AbstractController
             $forecastPrice = $this->form->get('forecast_price')->getData();
         }
 
-
-        if ($this->form->get('type_com')->getData() === 'percent') {
+        if ('percent' === $this->form->get('type_com')->getData()) {
             $flashSale->setPercentVr($this->form->get('com1')->getData() * 100);
             if (!empty($price)) {
                 $flashSale->setPa($price - ($price * $this->form->get('com1')->getData()));
@@ -78,6 +78,7 @@ class CreateFlashSale extends AbstractController
         }
 
         $this->fastSalesRepository->save($flashSale, true);
+
         return $this->redirectToRoute('sales_flash_index');
     }
 

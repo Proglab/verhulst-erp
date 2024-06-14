@@ -11,8 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Microsoft\Graph\GraphServiceClient;
-
 
 #[IsGranted(User::ROLE_USER)]
 class ProductController extends AbstractController
@@ -25,6 +23,7 @@ class ProductController extends AbstractController
             'project' => $project,
         ]);
     }
+
     #[Route('/app/{_locale}/projects/{project}/addPackage', name: 'project_add_package')]
     public function project_add_package(Request $request, $_locale, Project $project): Response
     {
@@ -33,6 +32,7 @@ class ProductController extends AbstractController
             'project' => $project,
         ]);
     }
+
     #[Route('/app/{_locale}/projects/{project}/addSponsoring', name: 'project_add_sponsoring')]
     public function project_add_sponsoring(Request $request, $_locale, Project $project): Response
     {
@@ -41,6 +41,7 @@ class ProductController extends AbstractController
             'project' => $project,
         ]);
     }
+
     #[Route('/app/{_locale}/projects/{project}/addDivers', name: 'project_add_divers')]
     public function project_add_divers(Request $request, $_locale, Project $project): Response
     {

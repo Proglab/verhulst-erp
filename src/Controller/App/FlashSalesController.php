@@ -1,12 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\App;
 
 use App\Entity\CompanyContact;
-use App\Entity\FastSales;
 use App\Entity\User;
 use App\Repository\FastSalesRepository;
-use App\Repository\SalesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;

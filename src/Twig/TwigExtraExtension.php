@@ -90,7 +90,7 @@ class TwigExtraExtension extends AbstractExtension
         return $source;
     }
 
-    public function getMoneyFormat(null|float|int $number): ?string
+    public function getMoneyFormat(float|int|null $number): ?string
     {
         return MoneyHelper::format($number);
     }
@@ -107,7 +107,7 @@ class TwigExtraExtension extends AbstractExtension
         return $class;
     }
 
-    public function equalsString(string $current, string $expected, string $onTrue = null, string $onFalse = null): ?string
+    public function equalsString(string $current, string $expected, ?string $onTrue = null, ?string $onFalse = null): ?string
     {
         if ($current === $expected) {
             return $onTrue;

@@ -137,15 +137,13 @@ class DashboardController extends AbstractDashboardController
         $data = json_decode($request->getContent());
         $datas = $data->data;
 
-
-
         $product = $productRepository->find($datas->id);
         $product->setTitle($datas->title);
-        $product->setQuantity((int)$datas->qty);
+        $product->setQuantity((int) $datas->qty);
         $product->setPrice($datas->price);
         $product->setOfferPrice((string) $datas->offerPrice);
         $product->setRealPrice($datas->realPrice);
-        
+
         if (!empty($datas->supplier)) {
             $supplier = $entityManager->getRepository(Supplier::class)->find($datas->supplier);
             $product->setSupplier($supplier);
@@ -153,6 +151,7 @@ class DashboardController extends AbstractDashboardController
 
         $entityManager->persist($product);
         $entityManager->flush();
+
         return new JsonResponse($datas);
     }
 
@@ -167,6 +166,7 @@ class DashboardController extends AbstractDashboardController
                 'name' => $data->getName(),
             ];
         }
+
         return new JsonResponse($return);
     }
 
@@ -180,15 +180,16 @@ class DashboardController extends AbstractDashboardController
 
         $entityManager->persist($supplier);
         $entityManager->flush();
+
         return new JsonResponse(['id' => $supplier->getId(), 'name' => $supplier->getName()]);
     }
-
 
     #[Route('/admin/{_locale}/budget/product/delete/{id}', name: 'delete_product')]
     public function delete_product(RequestStack $requestStack, EntityManagerInterface $entityManager, ProductRepository $productRepository, $id): JsonResponse
     {
         $product = $productRepository->find($id);
         $productRepository->remove($product, true);
+
         return new JsonResponse(true);
     }
 
@@ -198,7 +199,6 @@ class DashboardController extends AbstractDashboardController
         $request = $requestStack->getCurrentRequest();
         $data = json_decode($request->getContent());
 
-
         $vat = $vatRepository->findOneBy(['percent' => 21]);
         $subCategory = $subCategoryRepository->find($data->sub_cat);
 
@@ -206,7 +206,7 @@ class DashboardController extends AbstractDashboardController
         $product->setTitle($data->title);
         $product->setQuantity($data->qty);
         $product->setPrice($data->price);
-        $product->setOfferPrice((string)$data->offerPrice);
+        $product->setOfferPrice((string) $data->offerPrice);
         $product->setRealPrice($data->realPrice);
         $product->setSubCategory($subCategory);
         $product->setVat($vat);
@@ -214,6 +214,5 @@ class DashboardController extends AbstractDashboardController
         $entityManager->flush();
 
         return new JsonResponse(['id' => $product->getId()]);
-
     }
 }

@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace App\Twig\Components\FlashSales;
 
-use App\Entity\CompanyContact;
-use App\Entity\FastSales;
 use App\Form\Type\FlashSalesFilterType;
-use App\Form\Type\NewFlashSaleType;
 use App\Repository\FastSalesRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,8 +19,8 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 #[AsLiveComponent('flash-sale-index', template: 'app/sales/flash/flash_sale_index.html.twig')]
 class FlashSaleIndex extends AbstractController
 {
-    use DefaultActionTrait;
     use ComponentWithFormTrait;
+    use DefaultActionTrait;
 
     #[LiveProp(writable: true, format: 'Y-m-d')]
     public ?\DateTime $min = null;
@@ -34,7 +31,6 @@ class FlashSaleIndex extends AbstractController
     #[LiveProp(writable: true, url: true)]
     public int $page = 1;
 
-
     public function __construct(private FastSalesRepository $fastSalesRepository, private PaginatorInterface $paginator)
     {
     }
@@ -43,12 +39,8 @@ class FlashSaleIndex extends AbstractController
     {
         $qb = $this->fastSalesRepository->findByFilters($this->min, $this->max, $this->users);
         $paginator = $this->paginator->paginate($qb, $this->page, 10);
-        return $paginator;
-    }
 
-    protected function instantiateForm(): FormInterface
-    {
-        return $this->createForm(FlashSalesFilterType::class);
+        return $paginator;
     }
 
     #[LiveAction]
@@ -58,6 +50,7 @@ class FlashSaleIndex extends AbstractController
         $sale->setValidate(true);
         $this->fastSalesRepository->save($sale, true);
     }
+
     #[LiveAction]
     public function delete(#[LiveArg] int $id): void
     {
@@ -68,18 +61,23 @@ class FlashSaleIndex extends AbstractController
     #[LiveAction]
     public function previousPage(): void
     {
-        $this->page--;
+        --$this->page;
     }
 
     #[LiveAction]
     public function nextPage(): void
     {
-        $this->page++;
+        ++$this->page;
     }
 
     #[LiveAction]
     public function gotoPage(#[LiveArg] int $page): void
     {
         $this->page = $page;
+    }
+
+    protected function instantiateForm(): FormInterface
+    {
+        return $this->createForm(FlashSalesFilterType::class);
     }
 }

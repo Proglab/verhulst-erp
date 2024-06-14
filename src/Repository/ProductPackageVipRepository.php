@@ -53,6 +53,5 @@ class ProductPackageVipRepository extends ServiceEntityRepository
             ->orderBy('p.date_begin', 'DESC');
 
         return $qb->getQuery()->getResult();
-
     }
 }

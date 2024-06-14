@@ -32,7 +32,6 @@ class Sales extends BaseSales
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $invoiced_dt = null;
 
-
     #[ORM\ManyToMany(targetEntity: SalesBdc::class, mappedBy: 'sales')]
     private Collection $salesBdcs;
 

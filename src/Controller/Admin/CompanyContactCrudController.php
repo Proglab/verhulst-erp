@@ -103,10 +103,8 @@ class CompanyContactCrudController extends BaseCrudController
         KeyValueStore $formOptions,
         AdminContext $context
     ): FormInterface {
-
         if ($this->requestStack->getCurrentRequest()->get('company_id')) {
             $company = $this->companyRepository->find($this->requestStack->getCurrentRequest()->get('company_id'));
-
         } else {
             $company = null;
         }
@@ -204,18 +202,15 @@ class CompanyContactCrudController extends BaseCrudController
 
         $mailing = BooleanField::new('mailing');
 
-        
-
         $response = match ($pageName) {
             Crud::PAGE_EDIT => [
-
                 $panel2, $firstname, $lastname, $lang, $sex, $email, $phone, $gsm,
                 $panel6, $userStreet, $userPc, $userCity, $userCountry,
                 $panel7, $companyEntity, $mailing, $fonction, $interest, $user, $greeting],
             Crud::PAGE_NEW => [
                 $panel2, $firstname, $lastname, $lang, $sex, $email, $phone, $gsm,
                 $panel6, $userStreet, $userPc, $userCity, $userCountry->setFormTypeOption('preferred_choices', ['BE']),
-                $panel7, $companyEntity, $mailing, $fonction, $interest,],
+                $panel7, $companyEntity, $mailing, $fonction, $interest, ],
             Crud::PAGE_DETAIL => [$panel1, $company, $companyVat, $companyVatNa, $companyStreet, $companyPc, $companyCity, $companyCountry, $panel3, $billingstreet, $billingPc, $billingcity, $billingcountry, $panel2, $fullname, $fonction, $lang, $email, $phone, $gsm, $userStreet, $userPc, $userCity, $userCountry, $interest, $userName, $noteView, $panel4, $items, $panel5, $notesTxt],
             Crud::PAGE_INDEX => [$company, $companyVat, $fullname, $langListing, $email, $phone, $gsm, $userNameListing, $note],
             default => [$company, $firstname, $lastname, $lang, $email, $phone],
@@ -253,7 +248,6 @@ class CompanyContactCrudController extends BaseCrudController
         $export = Action::new('export', 'Exporter mes contacts')
             ->linkToCrudAction('export')->createAsGlobalAction();
 
-
         $import = Action::new('import', 'Importer mes contacts')
             ->linkToCrudAction('import')->createAsGlobalAction();
         /*
@@ -263,7 +257,6 @@ class CompanyContactCrudController extends BaseCrudController
 
         $flashSale = Action::new('flashsale', 'Créer une version flash')
             ->linkToCrudAction('flashsale');
-
 
         $retour = Action::new('backCompany', 'Retour à la fiche société')
             ->linkToCrudAction('backtocompany');
@@ -283,7 +276,7 @@ class CompanyContactCrudController extends BaseCrudController
             ->setPermission(Action::SAVE_AND_ADD_ANOTHER, 'ROLE_COMMERCIAL')
             ->setPermission(Action::SAVE_AND_CONTINUE, 'ROLE_COMMERCIAL')
             ->setPermission('backCompany', 'ROLE_COMMERCIAL')
-            ->remove(crud::PAGE_DETAIL, Action::EDIT)
+            ->remove(Crud::PAGE_DETAIL, Action::EDIT)
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->update(Crud::PAGE_INDEX, Action::DETAIL, function (Action $action) {
                 return $action->setIcon('fa fa-eye')->setLabel(false)->setHtmlAttributes(['title' => 'Consulter']);
@@ -446,7 +439,7 @@ class CompanyContactCrudController extends BaseCrudController
             /** @var CompanyContact $data */
             $data = $form->getData();
             $data->setUpdatedDt(new \DateTime());
-            
+
             $this->companyContactRepository->save($data, true);
 
             $url = $context->getReferrer();
@@ -485,12 +478,11 @@ class CompanyContactCrudController extends BaseCrudController
                 $tempContact = $this->tempCompanyContactRepository->findBy(['email' => $row[0]]);
 
                 if (empty($contact) && empty($tempContact)) {
-
-                    if (filter_var($row[0], FILTER_VALIDATE_EMAIL)) {
+                    if (filter_var($row[0], \FILTER_VALIDATE_EMAIL)) {
                         $cc = new CompanyContact();
                         $cc->setEmail($row[0]);
 
-                        if (!empty($row[1]) && strlen($row[1]) === 2) {
+                        if (!empty($row[1]) && 2 === \strlen($row[1])) {
                             $cc->setLang($row[1]);
                         } else {
                             $cc->setLang('fr');
@@ -499,36 +491,29 @@ class CompanyContactCrudController extends BaseCrudController
                         $cc->setUpdatedDt(new \DateTime('now'));
 
                         $this->companyContactRepository->save($cc, true);
-                        $imported++;
+                        ++$imported;
                     } else {
-                        $imported_failed++;
+                        ++$imported_failed;
                         $imported_failed_data[] = $row[0];
                     }
-
-
                 } else {
-                    $imported_failed++;
+                    ++$imported_failed;
                     $imported_failed_data[] = $row[0];
                 }
-
-
             }
 
             return $this->render('admin/contact/import_report.html.twig', [
-                'imported'  => $imported,
+                'imported' => $imported,
                 'imported_failed' => $imported_failed,
                 'imported_failed_data' => $imported_failed_data,
             ]);
-
-
         }
-
-
 
         return $this->render('admin/contact/import.html.twig', [
             'form' => $form,
         ]);
     }
+
     public function createTodo(AdminContext $context): RedirectResponse|Response
     {
         return $this->redirect($this->adminUrlGenerator->setController(TodoCrudController::class)->setAction(Crud::PAGE_NEW)->setEntityId(null)->set('client_id', $context->getEntity()->getInstance()->getId())->generateUrl());
@@ -568,7 +553,7 @@ class CompanyContactCrudController extends BaseCrudController
         $row = '2';
 
         foreach ($contacts as $contact) {
-            $activeWorksheet->setCellValue('A' . $row,  !empty($contact->getCompany()) ? $contact->getCompany()->getName() : '');
+            $activeWorksheet->setCellValue('A' . $row, !empty($contact->getCompany()) ? $contact->getCompany()->getName() : '');
             $activeWorksheet->setCellValue('B' . $row, $contact->getLastname());
             $activeWorksheet->setCellValue('C' . $row, $contact->getFirstname());
             $activeWorksheet->setCellValue('D' . $row, $contact->getEmail());

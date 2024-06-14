@@ -19,9 +19,9 @@ class BaseController extends AbstractController
     public static function getSubscribedServices(): array
     {
         return parent::getSubscribedServices() + [
-                EntityManagerInterface::class => '?' . EntityManagerInterface::class,
-                RequestStack::class => '?' . RequestStack::class,
-            ];
+            EntityManagerInterface::class => '?' . EntityManagerInterface::class,
+            RequestStack::class => '?' . RequestStack::class,
+        ];
     }
 
     /**

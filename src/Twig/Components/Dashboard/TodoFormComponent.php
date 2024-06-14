@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Twig\Components\Dashboard;
 
 use App\Entity\Todo;
@@ -10,8 +12,6 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\FormInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
-use Symfony\UX\LiveComponent\Attribute\LiveArg;
-use Symfony\UX\LiveComponent\Attribute\LiveListener;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
@@ -20,9 +20,9 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 #[AsLiveComponent('todo_form', template: 'app/dashboard/todos_form.html.twig')]
 class TodoFormComponent extends AbstractController
 {
-    use DefaultActionTrait;
     use ComponentToolsTrait;
     use ComponentWithFormTrait;
+    use DefaultActionTrait;
 
     #[LiveProp(updateFromParent: true)]
     public ?Todo $todoUpdate = null;
@@ -39,11 +39,8 @@ class TodoFormComponent extends AbstractController
         /** @var Todo $post */
         $post = $this->getForm()->getData();
 
-
         $this->todoUpdate = $post;
         $this->todoRepository->save($post, true);
-
-
 
         $this->addFlash('success', 'Todo saved!');
         $this->resetForm();

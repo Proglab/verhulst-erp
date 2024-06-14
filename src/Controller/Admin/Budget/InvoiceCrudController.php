@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\Budget;
 
 use App\Admin\Field\FileField;
@@ -50,7 +52,7 @@ class InvoiceCrudController extends AbstractCrudController
         ];
 
         switch ($pageName) {
-            case Action::INDEX :
+            case Action::INDEX:
                 $return[] = BooleanField::new('validated', 'Facture validée ?')
                     ->setDisabled(true);
                 break;
@@ -58,5 +60,4 @@ class InvoiceCrudController extends AbstractCrudController
 
         return $return;
     }
-
 }

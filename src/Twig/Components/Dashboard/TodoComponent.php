@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Twig\Components\Dashboard;
 
 use App\Entity\Todo;
@@ -10,21 +12,21 @@ use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveArg;
 use Symfony\UX\LiveComponent\Attribute\LiveListener;
-use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
 #[AsLiveComponent('todo', template: 'app/dashboard/todos.html.twig')]
 class TodoComponent extends AbstractController
 {
-    use DefaultActionTrait;
     use ComponentToolsTrait;
+    use DefaultActionTrait;
 
     public ?Todo $todo = null;
 
     public function __construct(private TodoRepository $todoRepository, private Security $security)
     {
     }
+
     public function getTodos()
     {
         return $this->todoRepository->findNext10ByUser($this->security->getUser());
@@ -59,6 +61,5 @@ class TodoComponent extends AbstractController
     #[LiveListener('refreshTodo')]
     public function refresh()
     {
-
     }
 }

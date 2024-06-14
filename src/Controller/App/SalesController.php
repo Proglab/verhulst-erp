@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\App;
 
 use App\Entity\User;
@@ -20,6 +22,7 @@ class SalesController extends AbstractController
     public function download_file($filename)
     {
         $file = $this->getParameter('kernel.project_dir') . '/public/' . $filename;
-        return  $this->file($file);
+
+        return $this->file($file);
     }
 }
