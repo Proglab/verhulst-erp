@@ -68,12 +68,16 @@ class Product
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     #[Assert\Length(max: 11)]
     #[Assert\PositiveOrZero]
-    private ?string $ca = null;
+    protected ?string $ca = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     #[Assert\Length(max: 11)]
     #[Assert\PositiveOrZero]
-    private ?string $pa = null;
+    protected ?string $pa = null;
+
+    #[ORM\ManyToOne(inversedBy: 'products')]
+    protected ?Project $project = null;
+
 
     public function __construct()
     {
@@ -319,6 +323,18 @@ class Product
     public function setPa(?float $pa): self
     {
         $this->pa = (string) $pa;
+
+        return $this;
+    }
+
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
+    public function setProject(?Project $project): static
+    {
+        $this->project = $project;
 
         return $this;
     }

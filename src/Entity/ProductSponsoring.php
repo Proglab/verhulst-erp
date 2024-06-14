@@ -5,19 +5,23 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\ProductSponsoringRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @extends ServiceEntityRepository<Product>
+ *
+ * @method Project|null getProject()
+ * @method Project|null setProject(?Project $project)
+ */
 #[ORM\Entity(repositoryClass: ProductSponsoringRepository::class)]
 class ProductSponsoring extends Product
 {
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     #[Assert\PositiveOrZero]
     private ?int $quantity_max = null;
-
-    #[ORM\ManyToOne(inversedBy: 'product_sponsoring')]
-    private ?Project $project = null;
 
     public function __toString()
     {
@@ -53,17 +57,5 @@ class ProductSponsoring extends Product
         }
 
         return null;
-    }
-
-    public function getProject(): ?Project
-    {
-        return $this->project;
-    }
-
-    public function setProject(?Project $project): static
-    {
-        $this->project = $project;
-
-        return $this;
     }
 }

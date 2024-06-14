@@ -41,22 +41,15 @@ class Project
     private Collection $todos;
 
     /**
-     * @var Collection<int, ProductPackageVip>
+     * @var Collection<int, Product>
      */
-    #[ORM\OneToMany(mappedBy: 'project', targetEntity: ProductPackageVip::class)]
-    private Collection $product_package;
-
-    /**
-     * @var Collection<int, ProductSponsoring>
-     */
-    #[ORM\OneToMany(mappedBy: 'project', targetEntity: ProductSponsoring::class)]
-    private Collection $product_sponsoring;
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: Product::class)]
+    protected Collection $products;
 
     public function __construct()
     {
         $this->todos = new ArrayCollection();
-        $this->product_package = new ArrayCollection();
-        $this->product_sponsoring = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     public function __toString()
@@ -194,59 +187,29 @@ class Project
     }
 
     /**
-     * @return Collection<int, ProductPackageVip>
+     * @return Collection<int, Product>
      */
-    public function getProductPackage(): Collection
+    public function getProducts(): Collection
     {
-        return $this->product_package;
+        return $this->products;
     }
 
-    public function addProductPackage(ProductPackageVip $productsPackage): static
+    public function addProduct(Product $product): static
     {
-        if (!$this->product_package->contains($productsPackage)) {
-            $this->product_package->add($productsPackage);
-            $productsPackage->setProject($this);
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
+            $product->setProject($this);
         }
 
         return $this;
     }
 
-    public function removeProductPackage(ProductPackageVip $productsPackage): static
+    public function removeProduct(Product $product): static
     {
-        if ($this->product_package->removeElement($productsPackage)) {
+        if ($this->products->removeElement($product)) {
             // set the owning side to null (unless already changed)
-            if ($productsPackage->getProject() === $this) {
-                $productsPackage->setProject(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, ProductSponsoring>
-     */
-    public function getProductSponsoring(): Collection
-    {
-        return $this->product_sponsoring;
-    }
-
-    public function addProductSponsoring(ProductSponsoring $productSponsoring): static
-    {
-        if (!$this->product_sponsoring->contains($productSponsoring)) {
-            $this->product_sponsoring->add($productSponsoring);
-            $productSponsoring->setProject($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProductSponsoring(ProductSponsoring $productSponsoring): static
-    {
-        if ($this->product_sponsoring->removeElement($productSponsoring)) {
-            // set the owning side to null (unless already changed)
-            if ($productSponsoring->getProject() === $this) {
-                $productSponsoring->setProject(null);
+            if ($product->getProject() === $this) {
+                $product->setProject(null);
             }
         }
 

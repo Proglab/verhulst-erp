@@ -45,9 +45,8 @@ class ProjectRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('p')
             ->select('p')
-            ->addSelect('package, sponsoring')
-            ->leftJoin('p.product_package', 'package')
-            ->leftJoin('p.product_sponsoring', 'sponsoring')
+            ->addSelect('products')
+            ->leftJoin('p.products', 'products')
             ->where('p.name LIKE :search')
             ->orWhere('event.name LIKE :search')
             ->orWhere('package.name LIKE :search')
@@ -62,9 +61,8 @@ class ProjectRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('p')
             ->select('p')
-            ->addSelect('package, sponsoring')
-            ->leftJoin('p.product_package', 'package')
-            ->leftJoin('p.product_sponsoring', 'sponsoring')
+            ->addSelect('products')
+            ->leftJoin('p.products', 'products')
             ->where('p.date_begin >= :dateBegin')
             ->setParameter('dateBegin', new \DateTime($year . '-01-01'))
             ->andWhere('p.date_end <= :dateEnd')
