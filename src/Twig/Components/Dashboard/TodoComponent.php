@@ -27,13 +27,13 @@ class TodoComponent extends AbstractController
     {
     }
 
-    public function getTodos()
+    public function getTodos(): array
     {
         return $this->todoRepository->findNext10ByUser($this->security->getUser());
     }
 
     #[LiveAction]
-    public function valid(#[LiveArg] int $id)
+    public function valid(#[LiveArg] int $id): void
     {
         $todo = $this->todoRepository->find($id);
         $todo->setDone(true);
@@ -42,7 +42,7 @@ class TodoComponent extends AbstractController
     }
 
     #[LiveAction]
-    public function unvalid(#[LiveArg] int $id)
+    public function unvalid(#[LiveArg] int $id): void
     {
         $todo = $this->todoRepository->find($id);
         $todo->setDone(false);
@@ -51,7 +51,7 @@ class TodoComponent extends AbstractController
     }
 
     #[LiveAction]
-    public function edit(#[LiveArg] int $id)
+    public function edit(#[LiveArg] int $id): void
     {
         $this->todo = $this->todoRepository->find($id);
         $this->emit('editTodo', ['id' => $id]);
@@ -59,7 +59,7 @@ class TodoComponent extends AbstractController
     }
 
     #[LiveListener('refreshTodo')]
-    public function refresh()
+    public function refresh(): void
     {
     }
 }

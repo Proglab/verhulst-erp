@@ -25,7 +25,7 @@ class ProductComponent extends AbstractController
     public ?Product $product = null;
 
     #[LiveAction]
-    public function save(EntityManagerInterface $entityManager)
+    public function save(EntityManagerInterface $entityManager): void
     {
         // Submit the form! If validation fails, an exception is thrown
         // and the component is automatically re-rendered with the errors
@@ -34,7 +34,7 @@ class ProductComponent extends AbstractController
         /** @var Product $product */
         $product = $this->getForm()->getData();
 
-        dd($product);
+       // dd($product);
 
         $entityManager->persist($product);
         $entityManager->flush();

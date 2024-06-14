@@ -8,10 +8,9 @@ use App\Entity\ProductPackageVip;
 use App\Entity\Project;
 use App\Form\Type\NewProductPackageType;
 use App\Repository\ProductPackageVipRepository;
-use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -29,12 +28,12 @@ class CreatePackageComponent extends AbstractController
     #[LiveProp]
     public Project $project;
 
-    public function __construct(private ProductPackageVipRepository $productPackageRepository, private RequestStack $requestStack, private AdminUrlGenerator $adminUrlGenerator)
+    public function __construct(private ProductPackageVipRepository $productPackageRepository)
     {
     }
 
     #[LiveAction]
-    public function save()
+    public function save(): RedirectResponse
     {
         $this->submitForm();
 
@@ -72,19 +71,19 @@ class CreatePackageComponent extends AbstractController
             $event->setQuantityMax($form->get('quantityMax')->getData());
             // percents commerciaux
             if ('other' === $form->get('percentFreelance')->getData()) {
-                $event->setPercentFreelance($form->get('percentFreelanceCustom')->getData() * 100);
+                $event->setPercentFreelance((string) $form->get('percentFreelanceCustom')->getData());
             } else {
-                $event->setPercentFreelance($form->get('percentFreelance')->getData() * 100);
+                $event->setPercentFreelance((string) $form->get('percentFreelance')->getData());
             }
             if ('other' === $form->get('percentSalarie')->getData()) {
-                $event->setPercentSalarie($form->get('percentSalarieCustom')->getData() * 100);
+                $event->setPercentSalarie((string) $form->get('percentSalarieCustom')->getData());
             } else {
-                $event->setPercentSalarie($form->get('percentSalarie')->getData() * 100);
+                $event->setPercentSalarie((string) $form->get('percentSalarie')->getData());
             }
             if ('other' === $form->get('percentTv')->getData()) {
-                $event->setPercentTv($form->get('percentTvCustom')->getData() * 100);
+                $event->setPercentTv((string) $form->get('percentTvCustom')->getData());
             } else {
-                $event->setPercentTv($form->get('percentTv')->getData() * 100);
+                $event->setPercentTv((string) $form->get('percentTv')->getData());
             }
 
             // prices

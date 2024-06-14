@@ -9,6 +9,7 @@ use App\Form\Type\NewProjectType;
 use App\Repository\ProjectRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Validator\Constraints\File;
@@ -39,7 +40,7 @@ class NewProjectComponent extends AbstractController
     }
 
     #[LiveAction]
-    public function save()
+    public function save(): RedirectResponse
     {
         $this->submitForm();
         /** @var Project $post */
@@ -57,7 +58,7 @@ class NewProjectComponent extends AbstractController
     }
 
     #[LiveAction]
-    public function uploadFile(Request $request)
+    public function uploadFile(Request $request): ?string
     {
         $file = $request->files->get('my_file');
         if ($file) {
@@ -88,6 +89,7 @@ class NewProjectComponent extends AbstractController
                 return $filename;
             }
         }
+        return null;
     }
 
     public function getFileUrl(): string

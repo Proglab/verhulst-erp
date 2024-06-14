@@ -6,11 +6,13 @@ namespace App\Twig\Components;
 
 use App\Entity\Company;
 use App\Entity\CompanyContact;
+use App\Entity\User;
 use App\Form\Type\NewCompanyContactType;
 use App\Repository\CompanyContactRepository;
 use App\Repository\CompanyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveArg;
@@ -67,7 +69,7 @@ class SocietyChoice extends AbstractController
     }
 
     #[LiveAction]
-    public function selectContact(#[LiveArg('id')] int $contactId)
+    public function selectContact(#[LiveArg('id')] int $contactId): RedirectResponse
     {
         $this->contact = $this->companyContactRepository->find($contactId);
         $this->company = $this->contact->getCompany();
@@ -78,7 +80,7 @@ class SocietyChoice extends AbstractController
     }
 
     #[LiveAction]
-    public function selectCompany(#[LiveArg('id')] int $companyId)
+    public function selectCompany(#[LiveArg('id')] int $companyId): void
     {
         $this->company_create = false;
         $this->company = $this->companyRepository->find($companyId);
@@ -86,14 +88,14 @@ class SocietyChoice extends AbstractController
     }
 
     #[LiveAction]
-    public function createContact()
+    public function createContact(): void
     {
         $this->contact_create = true;
         $this->contact = null;
     }
 
     #[LiveAction]
-    public function createCompany()
+    public function createCompany(): void
     {
         $this->company_create = true;
         $this->company = null;
@@ -101,7 +103,7 @@ class SocietyChoice extends AbstractController
     }
 
     #[LiveAction]
-    public function noCompany()
+    public function noCompany(): void
     {
         $this->company_create = false;
         $this->company = null;
@@ -109,7 +111,7 @@ class SocietyChoice extends AbstractController
     }
 
     #[LiveAction]
-    public function save()
+    public function save(): RedirectResponse
     {
         $this->submitForm();
 
@@ -135,8 +137,9 @@ class SocietyChoice extends AbstractController
         } else {
             $companyContact->setMailing(false);
         }
-
-        $companyContact->setAddedBy($this->getUser());
+        /** @var User $user */
+        $user = $this->getUser();
+        $companyContact->setAddedBy($user);
 
         $this->companyContactRepository->save($companyContact, true);
 

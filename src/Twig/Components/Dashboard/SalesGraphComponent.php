@@ -28,7 +28,7 @@ class SalesGraphComponent
     {
     }
 
-    public function getSalesGraph()
+    public function getSalesGraph(): Chart
     {
         if (!$this->security->isGranted('ROLE_COMMERCIAL')) {
             throw new \Exception('You are not allowed to access this page');
@@ -80,13 +80,13 @@ class SalesGraphComponent
     }
 
     #[LiveAction]
-    public function nextYear()
+    public function nextYear(): void
     {
         ++$this->year;
     }
 
     #[LiveAction]
-    public function prevYear()
+    public function prevYear(): void
     {
         --$this->year;
     }

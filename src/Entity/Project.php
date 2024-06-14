@@ -196,12 +196,12 @@ class Project
     /**
      * @return Collection<int, ProductPackageVip>
      */
-    public function getProductsPackage(): Collection
+    public function getProductPackage(): Collection
     {
         return $this->product_package;
     }
 
-    public function addProductsPackage(ProductPackageVip $productsPackage): static
+    public function addProductPackage(ProductPackageVip $productsPackage): static
     {
         if (!$this->product_package->contains($productsPackage)) {
             $this->product_package->add($productsPackage);
@@ -211,7 +211,7 @@ class Project
         return $this;
     }
 
-    public function removeProductsPackage(ProductPackageVip $productsPackage): static
+    public function removeProductPackage(ProductPackageVip $productsPackage): static
     {
         if ($this->product_package->removeElement($productsPackage)) {
             // set the owning side to null (unless already changed)

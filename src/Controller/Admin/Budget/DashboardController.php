@@ -185,7 +185,7 @@ class DashboardController extends AbstractDashboardController
     }
 
     #[Route('/admin/{_locale}/budget/product/delete/{id}', name: 'delete_product')]
-    public function delete_product(RequestStack $requestStack, EntityManagerInterface $entityManager, ProductRepository $productRepository, $id): JsonResponse
+    public function delete_product(RequestStack $requestStack, EntityManagerInterface $entityManager, ProductRepository $productRepository, string $id): JsonResponse
     {
         $product = $productRepository->find($id);
         $productRepository->remove($product, true);

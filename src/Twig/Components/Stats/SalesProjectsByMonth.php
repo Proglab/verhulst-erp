@@ -39,7 +39,7 @@ class SalesProjectsByMonth extends AbstractController
         $this->date = (new \DateTime())->format('Y');
     }
 
-    public function getGraph()
+    public function getGraph(): ?Chart
     {
         if (null === $this->date || null === $this->project) {
             return null;
@@ -50,7 +50,6 @@ class SalesProjectsByMonth extends AbstractController
         }
 
         $months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-        /** @var User $user */
         $datasets = [];
 
         $i = 0;
@@ -106,7 +105,7 @@ class SalesProjectsByMonth extends AbstractController
         return $this->createForm(StatsSalesProjectsMonthFilterType::class);
     }
 
-    protected function color($i)
+    protected function color(int $i): string
     {
         $frequency = 0.4;
 

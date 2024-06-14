@@ -278,11 +278,6 @@ class SalesCrudController extends BaseCrudController
         $user = $this->getUser();
         $entityInstance->setUser($user);
         $entityInstance->setPercentVr($entityInstance->getProduct()->getPercentVr());
-
-        if ($entityInstance->getProduct()->getPercentVr() > 0) {
-            $entityInstance->setPa($entityInstance->getDiffCa() / $entityInstance->getQuantity());
-        }
-
         /** @var Commission $com */
         $com = $entityManager->getRepository(Commission::class)->findOneBy(['product' => $entityInstance->getProduct(), 'user' => $this->getUser()]);
 
@@ -550,9 +545,16 @@ class SalesCrudController extends BaseCrudController
                 }
 
                 if (null === $project) {
-                    $project = $sale->getProduct()->getProject();
+                    /** @var ProductPackageVip|ProductSponsoring|null $product */
+                    $product = $sale->getProduct();
+
+                    $project = empty($product) ? '-' : $product->getProject();
                 } else {
-                    if ($project !== $sale->getProduct()->getProject()) {
+                    /** @var ProductPackageVip|ProductSponsoring|null $product */
+                    $product = $sale->getProduct();
+
+                    $project2 = empty($product) ? '-' : $product->getProject();
+                    if ($project !== $project2) {
                         $this->addFlash('danger', 'Un bon de commande doit être pour le même projet');
 
                         return $this->redirect($this->adminUrlGenerator->setAction(Action::INDEX)->generateUrl());

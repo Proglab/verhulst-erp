@@ -463,7 +463,9 @@ class CompanyContactMailCrudController extends BaseCrudController
                         } else {
                             $cc->setLang('fr');
                         }
-                        $cc->setAddedBy($this->getUser());
+                        /** @var User $user */
+                        $user = $this->getUser();
+                        $cc->setAddedBy($user);
                         $cc->setUpdatedDt(new \DateTime('now'));
 
                         $this->companyContactRepository->save($cc, true);

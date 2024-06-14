@@ -35,7 +35,7 @@ class SyncCampainMonitorUniqueUpdated extends AbstractCommand
 
     private OutputInterface $output;
 
-    public function __construct(private HttpClientInterface $client, private UserRepository $userRepository, private TempCompanyContactRepository $tempCompanyContactRepository, private CompanyContactRepository $companyContactRepository)
+    public function __construct(private HttpClientInterface $client, private UserRepository $userRepository, private CompanyContactRepository $companyContactRepository)
     {
         parent::__construct();
     }
@@ -227,7 +227,7 @@ class SyncCampainMonitorUniqueUpdated extends AbstractCommand
         return json_decode($response->getContent(false));
     }
 
-    private function unsubscribeUser(string $idList, CompanyContact $user)
+    private function unsubscribeUser(string $idList, CompanyContact $user): void
     {
         $data = new \stdClass();
         $data->EmailAddress = $user->getEmail();

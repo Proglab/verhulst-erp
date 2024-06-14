@@ -13,6 +13,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -33,7 +34,7 @@ class EditInvoiceComponent extends AbstractController
     }
 
     #[LiveAction]
-    public function save(EntityManagerInterface $entityManager)
+    public function save(EntityManagerInterface $entityManager): RedirectResponse
     {
         // Submit the form! If validation fails, an exception is thrown
         // and the component is automatically re-rendered with the errors
@@ -58,6 +59,7 @@ class EditInvoiceComponent extends AbstractController
                 ->setAction(Action::INDEX)
                 ->setEntityId(null)
             ->setDashboard(DashboardController::class)
+            ->generateUrl()
         );
     }
 

@@ -16,7 +16,7 @@ class LastSalesComponent
     {
     }
 
-    public function getLastSales()
+    public function getLastSales(): array
     {
         /** @var User $me */
         $me = $this->security->getUser();

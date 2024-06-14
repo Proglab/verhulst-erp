@@ -6,10 +6,12 @@ namespace App\Twig\Components\FlashSales;
 
 use App\Entity\CompanyContact;
 use App\Entity\FastSales;
+use App\Entity\User;
 use App\Form\Type\NewFlashSaleType;
 use App\Repository\FastSalesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -30,10 +32,12 @@ class CreateFlashSale extends AbstractController
     }
 
     #[LiveAction]
-    public function save()
+    public function save(): RedirectResponse
     {
+        /** @var User $user */
+        $user = $this->getUser();
         $this->formValues['contact'] = $this->contact->getId();
-        $this->formValues['user'] = $this->getUser()->getId();
+        $this->formValues['user'] = $user->getId();
 
         $this->submitForm();
         $flashSaleData = $this->getForm()->getData();

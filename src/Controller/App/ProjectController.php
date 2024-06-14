@@ -16,7 +16,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class ProjectController extends AbstractController
 {
     #[Route('/app/{_locale}/projects/new', name: 'project_new')]
-    public function project_new(Request $request, $_locale): Response
+    public function project_new(Request $request, string $_locale): Response
     {
         return $this->render('app/projects/pages/new.html.twig', [
             'locale' => $_locale,
@@ -24,7 +24,7 @@ class ProjectController extends AbstractController
     }
 
     #[Route('/app/{_locale}/projects/{project}', name: 'project_details')]
-    public function project_details(Request $request, $_locale, Project $project): Response
+    public function project_details(Request $request, string $_locale, Project $project): Response
     {
         return $this->render('app/projects/pages/details.html.twig', [
             'locale' => $_locale,

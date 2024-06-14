@@ -137,7 +137,7 @@ class SalesBdc
         $total = 0;
         /** @var Sales $sale */
         foreach ($this->sales as $sale) {
-            $total += $sale->getTotalPrice();
+            $total += $sale->totalPrice();
         }
 
         return $total;

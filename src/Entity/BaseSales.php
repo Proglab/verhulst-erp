@@ -121,41 +121,41 @@ class BaseSales
     #[ORM\ManyToOne(inversedBy: 'sales')]
     private ?Product $product = null;
 
-    public function totalPrice()
+    public function totalPrice(): float
     {
         return $this->getPrice() * $this->getQuantity();
     }
 
-    public function totalForecastPrice()
+    public function totalForecastPrice(): float
     {
         return $this->getForecastPrice() * $this->getQuantity();
     }
 
-    public function totalPa()
+    public function totalPa(): float
     {
         switch ($this->percent_vr_type) {
             case 'percent':
                 return $this->totalPrice() - ($this->totalPrice() * $this->getPercentVr() / 100);
             case 'fixed':
-                return $this->getPercentComEur() * $this->getQuantity();
+                return (float) $this->getPercentComEur() * $this->getQuantity();
             default:
-                return $this->getPercentComEur() * $this->getQuantity();
+                return (float) $this->getPercentComEur() * $this->getQuantity();
         }
     }
 
-    public function totalVr()
+    public function totalVr(): float
     {
         switch ($this->percent_vr_type) {
             case 'percent':
                 return $this->totalPrice() * $this->getPercentVr() / 100;
             case 'fixed':
-                return $this->getPercentVrEur() * $this->getQuantity();
+                return (float) $this->getPercentVrEur() * $this->getQuantity();
             default:
-                return $this->totalPrice() * $this->getPercentVr() / 100;
+                return (float) $this->totalPrice() * $this->getPercentVr() / 100;
         }
     }
 
-    public function totalCom()
+    public function totalCom(): float
     {
         switch ($this->percent_com_type) {
             case 'percent_com':
@@ -163,19 +163,19 @@ class BaseSales
             case 'percent_vr':
                 return $this->totalVr() * $this->getPercentCom() / 100;
             case 'fixed':
-                return $this->getPercentComEur() * $this->getQuantity();
+                return (float) $this->getPercentComEur() * $this->getQuantity();
             default:
         }
 
-return $this->totalPrice() * $this->getPercentCom() / 100;
+        return $this->totalPrice() * $this->getPercentCom() / 100;
     }
 
-    public function totalVrNet()
+    public function totalVrNet(): float
     {
         return $this->totalVr() - $this->totalCom();
     }
 
-    public function marge()
+    public function marge(): float
     {
         return $this->totalPrice() - $this->totalPa() - $this->totalVr();
     }

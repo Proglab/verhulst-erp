@@ -143,8 +143,14 @@
             "@auto-scripts"
         ],
         "ci": [
-            "docker run --init --rm -v \"%CD%:/project\" -w /project jakzal/phpqa:php8.1-alpine php-cs-fixer fix --config=\"./.php-cs-fixer.dist.php\" --verbose --using-cache=no",
+            "@phpcs",
+            "@phpstan"
+        ],
+        "phpstan": [
             "docker run --init --rm -v \"%CD%:/project\" -w /project jakzal/phpqa phpstan analyse src"
+        ],
+        "phpcs": [
+            "docker run --init --rm -v \"%CD%:/project\" -w /project jakzal/phpqa:php8.1-alpine php-cs-fixer fix --config=\"./.php-cs-fixer.dist.php\" --verbose --using-cache=no"
         ],
         "share": [
             "ngrok http --domain=worm-direct-sheepdog.ngrok-free.app 80"

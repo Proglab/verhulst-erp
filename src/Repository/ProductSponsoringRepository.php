@@ -42,7 +42,7 @@ class ProductSponsoringRepository extends ServiceEntityRepository
         }
     }
 
-    public function searchEventsByProject(Project $project, ?string $queryEvent)
+    public function searchEventsByProject(Project $project, ?string $queryEvent): ?array
     {
         $qb = $this->createQueryBuilder('p')
             ->join('p.project', 'pr')

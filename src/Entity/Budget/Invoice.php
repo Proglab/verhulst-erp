@@ -126,7 +126,7 @@ class Invoice
         return $this;
     }
 
-    public function resetProduct()
+    public function resetProduct(): void
     {
         $this->products = new ArrayCollection();
     }

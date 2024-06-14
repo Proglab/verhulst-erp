@@ -40,7 +40,7 @@ class SalesProjectsByYear extends AbstractController
         $this->date = (new \DateTime())->format('Y');
     }
 
-    public function getGraph()
+    public function getGraph(): ?Chart
     {
         if (null === $this->date) {
             return null;
@@ -118,7 +118,7 @@ class SalesProjectsByYear extends AbstractController
         return $this->createForm(StatsSalesProjectsYearFilterType::class);
     }
 
-    protected function color($i)
+    protected function color(int $i): string
     {
         $frequency = 0.4;
 

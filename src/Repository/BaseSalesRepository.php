@@ -8,6 +8,8 @@ use App\Entity\BaseSales;
 use App\Entity\Company;
 use App\Entity\CompanyContact;
 use App\Entity\Product;
+use App\Entity\ProductPackageVip;
+use App\Entity\ProductSponsoring;
 use App\Entity\Project;
 use App\Entity\Sales;
 use App\Entity\User;
@@ -57,9 +59,9 @@ class BaseSalesRepository extends ServiceEntityRepository
         $datas = [];
         foreach ($sales as $sale) {
             if (!isset($datas[$sale->getDate()->format('m-Y')])) {
-                $datas[$sale->getDate()->format('m-Y')] = $sale->getMarge();
+                $datas[$sale->getDate()->format('m-Y')] = $sale->totalPrice();
             } else {
-                $datas[$sale->getDate()->format('m-Y')] += $sale->getMarge();
+                $datas[$sale->getDate()->format('m-Y')] += $sale->totalPrice();
             }
         }
         $return = [];
@@ -87,9 +89,9 @@ class BaseSalesRepository extends ServiceEntityRepository
         $datas = [];
         foreach ($sales as $sale) {
             if (!isset($datas[$sale->getDate()->format('m-Y')])) {
-                $datas[$sale->getDate()->format('m-Y')] = $sale->getMarge();
+                $datas[$sale->getDate()->format('m-Y')] = $sale->totalPrice();
             } else {
-                $datas[$sale->getDate()->format('m-Y')] += $sale->getMarge();
+                $datas[$sale->getDate()->format('m-Y')] += $sale->totalPrice();
             }
         }
         $return = [];
@@ -117,9 +119,9 @@ class BaseSalesRepository extends ServiceEntityRepository
         $datas = [];
         foreach ($sales as $sale) {
             if (!isset($datas[$sale->getDate()->format('m-Y')])) {
-                $datas[$sale->getDate()->format('m-Y')] = $sale->getEuroCom();
+                $datas[$sale->getDate()->format('m-Y')] = $sale->totalCom();
             } else {
-                $datas[$sale->getDate()->format('m-Y')] += $sale->getEuroCom();
+                $datas[$sale->getDate()->format('m-Y')] += $sale->totalCom();
             }
         }
         $return = [];
@@ -154,9 +156,9 @@ class BaseSalesRepository extends ServiceEntityRepository
         $datas = [];
         foreach ($sales as $sale) {
             if (!isset($datas[$sale->getDate()->format('m-Y')])) {
-                $datas[$sale->getDate()->format('m-Y')] = $sale->getPrice() * $sale->getQuantity();
+                $datas[$sale->getDate()->format('m-Y')] = $sale->totalPrice();
             } else {
-                $datas[$sale->getDate()->format('m-Y')] += $sale->getPrice() * $sale->getQuantity();
+                $datas[$sale->getDate()->format('m-Y')] += $sale->totalPrice();
             }
         }
         $return = [];
@@ -186,11 +188,13 @@ class BaseSalesRepository extends ServiceEntityRepository
 
         $datas = [];
         foreach ($sales as $sale) {
-            $project = strtolower($sale->getProduct()->getProject()->getName());
+            /** @var ProductSponsoring|ProductPackageVip|null $product */
+            $product = $sale->getProduct();
+            $project = empty($product) ? '-' : strtolower($product->getProject()->getName());
             if (!isset($datas[$project])) {
-                $datas[$project] = $sale->getPrice() * $sale->getQuantity();
+                $datas[$project] = $sale->totalPrice();
             } else {
-                $datas[$project] += $sale->getPrice() * $sale->getQuantity();
+                $datas[$project] += $sale->totalPrice();
             }
         }
 

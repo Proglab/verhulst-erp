@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use IMAP\Connection;
+
 class InvoiceGetter
 {
     public function __construct(private string $hostname, private string $username, private string $password)
@@ -12,6 +14,7 @@ class InvoiceGetter
 
     public function getInvoices(): array
     {
+        /** @var Connection $inbox */
         $inbox = imap_open($this->hostname, $this->username, $this->password) || exit('Cannot connect to your mail: ' . imap_last_error());
         $emails = imap_search($inbox, 'ALL');
 
@@ -30,7 +33,7 @@ class InvoiceGetter
         return $return;
     }
 
-    public function getInfoFromEmail($inbox, $email_number): array
+    public function getInfoFromEmail(Connection $inbox, mixed $email_number): array
     {
         $overview = imap_fetch_overview($inbox, (string) $email_number, 0);
         $message = imap_fetchbody($inbox, $email_number, '1');
@@ -42,7 +45,7 @@ class InvoiceGetter
         ];
     }
 
-    public function getAttachmentFromEmail($inbox, $email_number): array
+    public function getAttachmentFromEmail(Connection $inbox, mixed $email_number): array
     {
         $structure = imap_fetchstructure($inbox, $email_number);
         if (isset($structure->parts) && \count($structure->parts)) {

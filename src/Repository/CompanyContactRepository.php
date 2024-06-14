@@ -42,7 +42,7 @@ class CompanyContactRepository extends ServiceEntityRepository
         }
     }
 
-    public function getUpdatedContact(User $user)
+    public function getUpdatedContact(User $user): ?array
     {
         $contacts = $this->createQueryBuilder('c')
             ->andWhere('c.added_by = :user')

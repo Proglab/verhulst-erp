@@ -8,7 +8,6 @@ use App\Entity\Todo;
 use App\Form\Type\TodoType;
 use App\Repository\TodoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\FormInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
@@ -27,12 +26,12 @@ class TodoFormComponent extends AbstractController
     #[LiveProp(updateFromParent: true)]
     public ?Todo $todoUpdate = null;
 
-    public function __construct(private TodoRepository $todoRepository, private Security $security)
+    public function __construct(private TodoRepository $todoRepository)
     {
     }
 
     #[LiveAction]
-    public function save()
+    public function save(): void
     {
         $this->submitForm();
 

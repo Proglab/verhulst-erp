@@ -71,9 +71,9 @@ class SalesRepository extends ServiceEntityRepository
         $datas = [];
         foreach ($sales as $sale) {
             if (!isset($datas[$sale->getDate()->format('m-Y')])) {
-                $datas[$sale->getDate()->format('m-Y')] = $sale->getMarge();
+                $datas[$sale->getDate()->format('m-Y')] = $sale->totalPrice();
             } else {
-                $datas[$sale->getDate()->format('m-Y')] += $sale->getMarge();
+                $datas[$sale->getDate()->format('m-Y')] += $sale->totalPrice();
             }
         }
         $return = [];

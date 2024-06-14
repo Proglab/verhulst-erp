@@ -6,6 +6,7 @@ namespace App\Repository;
 
 use App\Entity\FastSales;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -36,7 +37,7 @@ class FastSalesRepository extends ServiceEntityRepository
         }
     }
 
-    public function findByFilters(?\DateTime $min, ?\DateTime $max, ?array $users)
+    public function findByFilters(?\DateTime $min, ?\DateTime $max, ?array $users): QueryBuilder
     {
         $qb = $this->createQueryBuilder('fs');
 

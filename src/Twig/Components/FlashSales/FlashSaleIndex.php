@@ -6,6 +6,7 @@ namespace App\Twig\Components\FlashSales;
 
 use App\Form\Type\FlashSalesFilterType;
 use App\Repository\FastSalesRepository;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -35,7 +36,7 @@ class FlashSaleIndex extends AbstractController
     {
     }
 
-    public function getFastSales()
+    public function getFastSales(): PaginationInterface
     {
         $qb = $this->fastSalesRepository->findByFilters($this->min, $this->max, $this->users);
         $paginator = $this->paginator->paginate($qb, $this->page, 10);

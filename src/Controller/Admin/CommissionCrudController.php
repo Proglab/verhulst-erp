@@ -174,7 +174,7 @@ class CommissionCrudController extends BaseCrudController
 
         /** @var Commission $com */
         foreach ($comsData as $com) {
-            /** @var ProductPackageVip|ProductSponsoring $product */
+            /** @var ProductPackageVip|ProductSponsoring|null $product */
             $product = $com->getProduct();
             if (!empty($product)) {
                 $commissions[$product->getProject()->getId()][$product->getId()][$com->getUser()->getId()] = $com->getPercentCom();

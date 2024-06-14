@@ -190,10 +190,7 @@ class ProjectCrudController extends BaseCrudController
                         $packageNew->setCa($package->getCa());
                         $packageNew->setPa($package->getPa());
                         $packageNew->setQuantityMax($package->getQuantityMax());
-                        if ($i > 0) {
-                            /* @var \DateTime $date */
-                            $date->add(new \DateInterval('P1D'));
-                        }
+                        $date->add(new \DateInterval('P1D'));
                         $packageNew->setDateBegin(clone $date);
                         $packageNew->setDateEnd(clone $date);
                         $entityInstance->addProductPackage($packageNew);
@@ -275,7 +272,7 @@ class ProjectCrudController extends BaseCrudController
         return $this->redirect($this->generateUrl('project_details', ['project' => $context->getEntity()->getPrimaryKeyValue()]));
     }
 
-    public function createPackage(AdminContext $context)
+    public function createPackage(AdminContext $context): Response
     {
         $project = $context->getEntity();
 
@@ -284,7 +281,7 @@ class ProjectCrudController extends BaseCrudController
         ]);
     }
 
-    public function createSponsoring(AdminContext $context)
+    public function createSponsoring(AdminContext $context): Response
     {
         $project = $context->getEntity();
 

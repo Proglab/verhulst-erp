@@ -189,7 +189,7 @@ class NewFlashSaleType extends AbstractType
             ]);
         })
         ->addDependent('price', 'type_vente', function (DependentField $field, ?string $sale_type) {
-            if ('1' !== $sale_type || null === $sale_type) {
+            if ('1' !== $sale_type) {
                 return;
             }
             $field->add(MoneyType::class, [
