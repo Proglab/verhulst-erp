@@ -34,7 +34,7 @@ class ProductComponent extends AbstractController
         /** @var Product $product */
         $product = $this->getForm()->getData();
 
-       // dd($product);
+        // dd($product);
 
         $entityManager->persist($product);
         $entityManager->flush();

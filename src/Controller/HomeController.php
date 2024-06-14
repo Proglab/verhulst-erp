@@ -20,17 +20,18 @@ class HomeController extends AbstractController
     {
         return $this->redirectToRoute('admin', ['_locale' => $request->getLocale()]);
     }
-/**
-    #[Route('/dashboard', name: 'dashboard')]
-    public function test(InvoiceGetter $invoiceGetter): Response
-    {
-        $invoices = $invoiceGetter->getInvoices();
 
-        dd($invoices);
-
-        return $this->json($invoices);
-    }
-**/
+    /**
+     * #[Route('/dashboard', name: 'dashboard')]
+     * public function test(InvoiceGetter $invoiceGetter): Response
+     * {
+     * $invoices = $invoiceGetter->getInvoices();.
+     *
+     * dd($invoices);
+     *
+     * return $this->json($invoices);
+     * }
+     **/
     #[Route('/testlayout', name: 'testlayout')]
     public function testLayout(): Response
     {

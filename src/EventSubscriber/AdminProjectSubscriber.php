@@ -61,7 +61,6 @@ class AdminProjectSubscriber implements EventSubscriberInterface
         $users = $this->userRepository->getCommercials();
         /** @var User $user */
         foreach ($users as $user) {
-
             foreach ($entity->getProductPackage() as $event) {
                 if (null === $event->getId()) {
                     $this->createCom($user, $event);

@@ -79,6 +79,9 @@ class NewFlashSaleType extends AbstractType
                 '% sur le PV' => 'percent_pv',
                 'Prix fixe' => 'fixed',
             ],
+            'constraints' => [
+                new NotBlank(),
+            ],
         ])
         ->addDependent('percent_com', 'type_com_sale', function (DependentField $field, ?string $com_type) {
             if (null === $com_type) {
@@ -98,7 +101,7 @@ class NewFlashSaleType extends AbstractType
             }
             if ('percent_pv' === $com_type) {
                 $field->add(PercentType::class, [
-                    'label' => '% sur le PV',
+                    'label' => '% sur le prix de vente',
                     'required' => true,
                     'mapped' => false,
                     'constraints' => [
@@ -125,7 +128,7 @@ class NewFlashSaleType extends AbstractType
             ],
             'choices' => [
                 '% The Friends' => 'percent',
-                'Prix d\'achat' => 'fixed',
+                'Prix fixe' => 'fixed',
             ],
             'required' => true,
             'placeholder' => 'Sélectionnez un type de commission',

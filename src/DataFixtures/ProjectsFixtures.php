@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
-use App\Factory\ProductDiversFactory;
-use App\Factory\ProductEventFactory;
 use App\Factory\ProductPackageFactory;
 use App\Factory\ProductSponsorFactory;
 use App\Factory\ProjectFactory;

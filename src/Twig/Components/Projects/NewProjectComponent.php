@@ -89,6 +89,7 @@ class NewProjectComponent extends AbstractController
                 return $filename;
             }
         }
+
         return null;
     }
 

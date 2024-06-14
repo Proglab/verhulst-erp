@@ -14,7 +14,6 @@ use App\Command\Dto\Subscriber;
 use App\Entity\CompanyContact;
 use App\Entity\User;
 use App\Repository\CompanyContactRepository;
-use App\Repository\TempCompanyContactRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;

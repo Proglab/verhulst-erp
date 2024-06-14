@@ -189,7 +189,6 @@ class SalesRecap extends AbstractController
             /** @var ProductSponsoring|ProductPackageVip|null $product */
             $product = $data->getProduct();
 
-
             $worksheet->getCell('A' . ($key + 2))->setValue($data->getDate()->format('d/m/Y'));
             $worksheet->getCell('B' . ($key + 2))->setValue(!empty($product) && !empty($product->getProject()) ? $product->getProject()->getName() : '-');
             $worksheet->getCell('C' . ($key + 2))->setValue(!empty($product) ? $product->getName() : '-');
