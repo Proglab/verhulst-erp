@@ -76,8 +76,6 @@ class BaseSalesRepository extends ServiceEntityRepository
     {
         /** @var Sales[] $sales */
         $sales = $this->createQueryBuilder('s')
-            ->addSelect('p')
-            ->join('s.product', 'p')
             ->where('s.date BETWEEN :start AND :end')
             ->setParameter('start', $year . '-01-01')
             ->setParameter('end', $year . '-12-31')
@@ -106,8 +104,6 @@ class BaseSalesRepository extends ServiceEntityRepository
     {
         /** @var Sales[] $sales */
         $sales = $this->createQueryBuilder('s')
-            ->addSelect('p')
-            ->join('s.product', 'p')
             ->where('s.date BETWEEN :start AND :end')
             ->setParameter('start', $year . '-01-01')
             ->setParameter('end', $year . '-12-31')

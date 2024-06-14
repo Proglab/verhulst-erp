@@ -15,7 +15,7 @@
             </div>
 
             <div class="table-responsive">
-                <table class="table table-sm mb-0">
+                <table class="table table-striped table-sm mb-0">
                     <thead class="text-dark fs-4">
                     <tr>
                         <th scope="col" class="fs-4 fw-semibold mb-0"></th>
@@ -24,9 +24,8 @@
                         <th scope="col" class="fs-4 fw-semibold mb-0">Date</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0">Prix unitaire</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0">Prix de vente</th>
-                        <th scope="col" class="fs-4 fw-semibold mb-0">Com TF</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0">Com Sales</th>
-                        <th scope="col" class="fs-4 fw-semibold mb-0">Marge net TF</th>
+                        <th scope="col" class="fs-4 fw-semibold mb-0">Com TF</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0"></th>
                     </tr>
                     </thead>
@@ -66,20 +65,10 @@
                             <h6 class="mb-0">{{ (sale.price)|number_format(2, ',', '') }} €</h6>
                             <i>Quantité : {{ (sale.quantity) }}</i>
                         </td>
-                        <td>
-                            <h6 class="mb-0">{{ (sale.totalPrice)|number_format(2, ',', '') }} €</h6>
-                        </td>
-                        <td>
-                            <h6 class="nm-0">{{ sale.totalVr|number_format(2, ',', '') }} €</h6>
-                            <i>{{ sale.percentVr }} %</i>
-                        </td>
-                        <td>
-                            <h6 class="mb-0">{{ sale.totalCom|number_format(2, ',', '') }} €</h6>
-                            <i>{{ sale.percentCom }} %</i>
-                        </td>
-                        <td>
-                            <h6 class="mb-0">{{ sale.totalVrNet|number_format(2, ',', '') }} €</h6>
-                        </td>
+                        <td><h6 class="mb-0">Prix final : {{ sale.totalPrice|number_format(2, ',', '') }}€</h6><i>Prix temporaire : {{ sale.totalForecastPrice|number_format(2, ',', '') }}€</i></td>
+
+                        <td><h6 class="mb-0">{{ sale.totalCom|number_format(2, ',', '') }}€</h6><i>{% if sale.percentComType != 'fixed' %}{{ sale.percentCom }}%{% endif%} {% if sale.percentComType == 'percent_pv' %}du PV{% elseif sale.percentComType == 'percent_com' %} de la marge TF{% else %}Prix fixe{% endif %}</i></td>
+                        <td><h6 class="mb-0">{{ sale.totalVr|number_format(2, ',', '') }}€</h6><i>{% if sale.percentVrType != 'fixed' %}{{ sale.percentVr }}%{% else %}Prix fixe{% endif %}</i></td>
                         <td>
                             {% if sale.product is not empty %}
                             <div class="dropdown dropstart">
@@ -115,6 +104,19 @@
                     </tr>
                     {% endfor %}
                     </tbody>
+                    <tfoot class="text-dark fs-4">
+                    <tr>
+                        <th scope="col" class="fs-4 fw-semibold mb-0"></th>
+                        <th scope="col" class="fs-4 fw-semibold mb-0">Client</th>
+                        <th scope="col" class="fs-4 fw-semibold mb-0">Produit</th>
+                        <th scope="col" class="fs-4 fw-semibold mb-0">Date</th>
+                        <th scope="col" class="fs-4 fw-semibold mb-0">Prix unitaire</th>
+                        <th scope="col" class="fs-4 fw-semibold mb-0">Prix de vente</th>
+                        <th scope="col" class="fs-4 fw-semibold mb-0">Com Sales</th>
+                        <th scope="col" class="fs-4 fw-semibold mb-0">Com TF</th>
+                        <th scope="col" class="fs-4 fw-semibold mb-0"></th>
+                    </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Twig\Components\Dashboard;
 
 use App\Entity\User;
-use App\Repository\SalesRepository;
+use App\Repository\BaseSalesRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
@@ -24,7 +24,7 @@ class ComGraphComponent
     #[LiveProp(writable: true)]
     public int $year;
 
-    public function __construct(private SalesRepository $salesRepository, private Security $security, private ChartBuilderInterface $chartBuilder)
+    public function __construct(private BaseSalesRepository $salesRepository, private Security $security, private ChartBuilderInterface $chartBuilder)
     {
     }
 
