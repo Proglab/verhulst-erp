@@ -6,6 +6,7 @@ namespace App\Twig\Components\FlashSales;
 
 use App\Entity\CompanyContact;
 use App\Entity\FastSales;
+use App\Entity\Sales;
 use App\Entity\User;
 use App\Form\Type\NewFlashSaleType;
 use App\Repository\FastSalesRepository;
@@ -40,48 +41,16 @@ class CreateFlashSale extends AbstractController
         $this->formValues['user'] = $user->getId();
 
         $this->submitForm();
+        /** @var FastSales $flashSaleData */
         $flashSaleData = $this->getForm()->getData();
+        $flashSaleData->setPercentVr($flashSaleData->getPercentVr() * 100);
+        $flashSaleData->setPercentCom($flashSaleData->getPercentCom() * 100);
 
-        $flashSale = new FastSales();
-        $flashSale->setPercentCom($this->form->get('percent_com')->getData() * 100);
-        $flashSale->setName($this->form->get('name')->getData());
-        $flashSale->setPo($this->form->get('po')->getData());
-        $flashSale->setUser($this->form->get('user')->getData());
-        $flashSale->setContact($this->form->get('contact')->getData());
-        $flashSale->setDate($this->form->get('date')->getData());
-
-        $price = null;
-        $forecastPrice = null;
-
-        if ('1' === $this->form->get('type_vente')->getData()) {
-            $flashSale->setPrice($this->form->get('price')->getData());
-            $price = $this->form->get('price')->getData();
-        } else {
-            $flashSale->setForecastPrice($this->form->get('forecast_price')->getData());
-            $forecastPrice = $this->form->get('forecast_price')->getData();
+        if ($flashSaleData->getPercentVrType() === 'fixed') {
+            $flashSaleData->setPercentVrEur((string) ($flashSaleData->getPrice() - $flashSaleData->getPa()));
         }
 
-        if ('percent' === $this->form->get('type_com')->getData()) {
-            $flashSale->setPercentVr($this->form->get('com1')->getData() * 100);
-            if (!empty($price)) {
-                $flashSale->setPa($price - ($price * $this->form->get('com1')->getData()));
-            } else {
-                $flashSale->setPa($forecastPrice - ($forecastPrice * $this->form->get('com1')->getData()));
-            }
-        } else {
-            $flashSale->setPa($this->form->get('com1')->getData());
-            if (!empty($price)) {
-                $flashSale->setPercentVr(($price - $this->form->get('com1')->getData()) / $price * 100);
-            } else {
-                $flashSale->setPercentVr(($forecastPrice - $this->form->get('com1')->getData()) / $forecastPrice * 100);
-            }
-        }
-
-        if ($this->form->has('validate')) {
-            $flashSale->setValidate($this->form->get('validate')->getData());
-        }
-
-        $this->fastSalesRepository->save($flashSale, true);
+        $this->fastSalesRepository->save($flashSaleData, true);
 
         return $this->redirectToRoute('sales_flash_index');
     }

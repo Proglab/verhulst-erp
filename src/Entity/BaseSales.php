@@ -70,18 +70,18 @@ class BaseSales
     protected ?string $percent_vr_eur = null;
 
     /**
-     * @var string $percent_com_type Type de commission (sales)
+     * @var ?string $percent_com_type Type de commission (sales)
      */
     #[ORM\Column(nullable: false)]
     #[Assert\Choice(choices: ['percent_com', 'percent_pv', 'fixed'])]
-    protected string $percent_com_type = '';
+    protected ?string $percent_com_type = '';
 
     /**
-     * @var string $percent_vr_type Type de commission (Verhulst)
+     * @var ?string $percent_vr_type Type de commission (Verhulst)
      */
     #[ORM\Column(nullable: false)]
     #[Assert\Choice(choices: ['percent', 'fixed'])]
-    protected string $percent_vr_type = '';
+    protected ?string $percent_vr_type = '';
 
     /**
      * @var string|null $percent_com % de commission sales
@@ -121,6 +121,14 @@ class BaseSales
     #[ORM\ManyToOne(inversedBy: 'sales')]
     private ?Product $product = null;
 
+    public function totalCalculPrice(): float
+    {
+        if (null === $this->price || (int) $this->price == 0) {
+            return $this->getForecastPrice() * $this->getQuantity();
+        }
+        return (float) $this->totalPrice();
+    }
+
     public function totalPrice(): float
     {
         return $this->getPrice() * $this->getQuantity();
@@ -137,9 +145,9 @@ class BaseSales
             case 'percent':
                 return $this->totalPrice() - ($this->totalPrice() * $this->getPercentVr() / 100);
             case 'fixed':
-                return (float) $this->getPercentComEur() * $this->getQuantity();
+                return (float) $this->getPa() * $this->getQuantity();
             default:
-                return (float) $this->getPercentComEur() * $this->getQuantity();
+                return (float) $this->getPa() * $this->getQuantity();
         }
     }
 
@@ -147,20 +155,20 @@ class BaseSales
     {
         switch ($this->percent_vr_type) {
             case 'percent':
-                return $this->totalPrice() * $this->getPercentVr() / 100;
+                return $this->totalCalculPrice() * $this->getPercentVr() / 100;
             case 'fixed':
                 return (float) $this->getPercentVrEur() * $this->getQuantity();
             default:
-                return (float) $this->totalPrice() * $this->getPercentVr() / 100;
+                return (float) $this->totalCalculPrice() * $this->getPercentVr() / 100;
         }
     }
 
     public function totalCom(): float
     {
         switch ($this->percent_com_type) {
+            case 'percent_pv':
+                return $this->totalCalculPrice() * $this->getPercentCom() / 100;
             case 'percent_com':
-                return $this->totalPrice() * $this->getPercentCom() / 100;
-            case 'percent_vr':
                 return $this->totalVr() * $this->getPercentCom() / 100;
             case 'fixed':
                 return (float) $this->getPercentComEur() * $this->getQuantity();
@@ -177,7 +185,7 @@ class BaseSales
 
     public function marge(): float
     {
-        return $this->totalPrice() - $this->totalPa() - $this->totalVr();
+        return $this->totalCalculPrice() - $this->totalPa() - $this->totalVr();
     }
 
     public function getId(): ?int
@@ -332,7 +340,7 @@ class BaseSales
         return $this->percent_com_type;
     }
 
-    public function setPercentComType(string $percent_com_type): void
+    public function setPercentComType(?string $percent_com_type): void
     {
         $this->percent_com_type = $percent_com_type;
     }
@@ -352,7 +360,7 @@ class BaseSales
         return $this->percent_vr_type;
     }
 
-    public function setPercentVrType(string $percent_vr_type): void
+    public function setPercentVrType(?string $percent_vr_type): void
     {
         $this->percent_vr_type = $percent_vr_type;
     }

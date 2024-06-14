@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Form\Type;
 
 use App\Entity\CompanyContact;
+use App\Entity\FastSales;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -69,10 +71,10 @@ class NewFlashSaleType extends AbstractType
             ],
             'data' => 1,
         ])
-        ->add('type_com_sale', ChoiceType::class, [
+        ->add('percent_com_type', ChoiceType::class, [
             'label' => 'Commission sales',
             'required' => true,
-            'mapped' => false,
+            'mapped' => true,
             'placeholder' => 'Sélectionnez un type de commission',
             'choices' => [
                 '% sur la com TF' => 'percent_com',
@@ -83,7 +85,7 @@ class NewFlashSaleType extends AbstractType
                 new NotBlank(),
             ],
         ])
-        ->addDependent('percent_com', 'type_com_sale', function (DependentField $field, ?string $com_type) {
+        ->addDependent('percent_com', 'percent_com_type', function (DependentField $field, ?string $com_type) {
             if (null === $com_type) {
                 return;
             }
@@ -91,7 +93,7 @@ class NewFlashSaleType extends AbstractType
                 $field->add(PercentType::class, [
                     'label' => '% sur la com TF',
                     'required' => true,
-                    'mapped' => false,
+                    'mapped' => true,
                     'constraints' => [
                         new NotBlank(),
                     ],
@@ -103,7 +105,7 @@ class NewFlashSaleType extends AbstractType
                 $field->add(PercentType::class, [
                     'label' => '% sur le prix de vente',
                     'required' => true,
-                    'mapped' => false,
+                    'mapped' => true,
                     'constraints' => [
                         new NotBlank(),
                     ],
@@ -111,17 +113,22 @@ class NewFlashSaleType extends AbstractType
                     'type' => 'fractional',
                 ]);
             }
+        })
+        ->addDependent('percent_com_eur', 'percent_com_type', function (DependentField $field, ?string $com_type) {
+            if (null === $com_type) {
+                return;
+            }
             if ('fixed' === $com_type) {
                 $field->add(MoneyType::class, [
                     'label' => 'Prix fixe',
                     'constraints' => [
                         new NotBlank(),
                     ],
-                    'mapped' => false,
+                    'mapped' => true,
                 ]);
             }
         })
-        ->add('type_com', ChoiceType::class, [
+        ->add('percent_vr_type', ChoiceType::class, [
             'label' => '% The Friends',
             'attr' => [
                 'class' => 'col-md-4 mb-3',
@@ -132,12 +139,12 @@ class NewFlashSaleType extends AbstractType
             ],
             'required' => true,
             'placeholder' => 'Sélectionnez un type de commission',
-            'mapped' => false,
+            'mapped' => true,
             'constraints' => [
                 new NotBlank(),
             ],
         ])
-        ->addDependent('com1', 'type_com', function (DependentField $field, ?string $date_type) {
+        ->addDependent('percent_vr', 'percent_vr_type', function (DependentField $field, ?string $date_type) {
             if (null === $date_type) {
                 return;
             }
@@ -145,20 +152,26 @@ class NewFlashSaleType extends AbstractType
                 $field->add(PercentType::class, [
                     'label' => '% The Friends',
                     'required' => true,
-                    'mapped' => false,
+                    'mapped' => true,
                     'constraints' => [
                         new NotBlank(),
                     ],
                     'scale' => 2,
                     'type' => 'fractional',
                 ]);
-            } else {
+            }
+        })
+        ->addDependent('pa', 'percent_vr_type', function (DependentField $field, ?string $date_type) {
+            if (null === $date_type) {
+                return;
+            }
+            if ('fixed' === $date_type) {
                 $field->add(MoneyType::class, [
                     'label' => 'Prix d\'achat',
                     'constraints' => [
                         new NotBlank(),
                     ],
-                    'mapped' => false,
+                    'mapped' => true,
                 ]);
             }
         })
@@ -211,7 +224,7 @@ class NewFlashSaleType extends AbstractType
 
             $field->add(CheckboxType::class, [
                 'label' => 'Valider la vente (vous ne pourrez plus modifier les informations)',
-                'mapped' => false,
+                'mapped' => true,
                 'required' => false,
             ]);
         })
@@ -228,6 +241,7 @@ class NewFlashSaleType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
+            'data_class' => FastSales::class,
         ]);
     }
 }
