@@ -6,7 +6,6 @@ namespace App\Twig\Components\FlashSales;
 
 use App\Entity\CompanyContact;
 use App\Entity\FastSales;
-use App\Entity\Sales;
 use App\Entity\User;
 use App\Form\Type\NewFlashSaleType;
 use App\Repository\FastSalesRepository;
@@ -46,7 +45,7 @@ class CreateFlashSale extends AbstractController
         $flashSaleData->setPercentVr($flashSaleData->getPercentVr() * 100);
         $flashSaleData->setPercentCom($flashSaleData->getPercentCom() * 100);
 
-        if ($flashSaleData->getPercentVrType() === 'fixed') {
+        if ('fixed' === $flashSaleData->getPercentVrType()) {
             $flashSaleData->setPercentVrEur((string) ($flashSaleData->getPrice() - $flashSaleData->getPa()));
         }
 

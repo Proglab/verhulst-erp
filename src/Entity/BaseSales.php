@@ -123,9 +123,10 @@ class BaseSales
 
     public function totalCalculPrice(): float
     {
-        if (null === $this->price || (int) $this->price == 0) {
+        if (null === $this->price || 0 === (int) $this->price) {
             return $this->getForecastPrice() * $this->getQuantity();
         }
+
         return (float) $this->totalPrice();
     }
 
