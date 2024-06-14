@@ -12,10 +12,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ProductSponsoringRepository::class)]
 class ProductSponsoring extends Product
 {
-
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     #[Assert\PositiveOrZero]
     private ?int $quantity_max = null;
+
+    #[ORM\ManyToOne(inversedBy: 'product_sponsoring')]
+    private ?Project $project = null;
 
     public function __toString()
     {
@@ -51,5 +53,17 @@ class ProductSponsoring extends Product
         }
 
         return null;
+    }
+
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
+    public function setProject(?Project $project): static
+    {
+        $this->project = $project;
+
+        return $this;
     }
 }

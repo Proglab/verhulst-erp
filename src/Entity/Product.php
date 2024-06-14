@@ -29,7 +29,7 @@ class Product
 
     #[ORM\Column(type: Types::DECIMAL, precision: 17, scale: 14, nullable: true)]
     #[Assert\PositiveOrZero]
-    protected ?float $percent_vr = 0.0;
+    protected ?string $percent_vr = '0';
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
@@ -41,17 +41,17 @@ class Product
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
     #[Assert\Length(max: 6)]
     #[Assert\PositiveOrZero]
-    protected ?float $percent_freelance = 10.0;
+    protected ?string $percent_freelance = '10';
 
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
     #[Assert\Length(max: 6)]
     #[Assert\PositiveOrZero]
-    protected ?float $percent_salarie = 5.0;
+    protected ?string $percent_salarie = '5';
 
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
     #[Assert\Length(max: 6)]
     #[Assert\PositiveOrZero]
-    protected ?float $percent_tv = 3.0;
+    protected ?string $percent_tv = '3';
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     protected ?\DateTimeInterface $date_begin = null;
@@ -62,22 +62,18 @@ class Product
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Commission::class, orphanRemoval: true)]
     protected Collection $commissions;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Sales::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: BaseSales::class, orphanRemoval: true)]
     protected Collection $sales;
 
-    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'products')]
-    #[ORM\JoinColumn(nullable: false)]
-    protected ?Project $project = null;
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    #[Assert\Length(max: 11)]
+    #[Assert\PositiveOrZero]
+    private ?string $ca = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     #[Assert\Length(max: 11)]
     #[Assert\PositiveOrZero]
-    private ?float $ca = null;
-
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    #[Assert\Length(max: 11)]
-    #[Assert\PositiveOrZero]
-    private ?float $pa = null;
+    private ?string $pa = null;
 
 
     public function __construct()
@@ -114,48 +110,48 @@ class Product
 
     public function getPercentVr(): ?float
     {
-        return $this->percent_vr;
+        return (float) $this->percent_vr;
     }
 
     public function setPercentVr(float|string|null $percent_vr): self
     {
-        $this->percent_vr = (float) str_replace(',', '.', (string) $percent_vr);
+        $this->percent_vr = str_replace(',', '.', (string) $percent_vr);
 
         return $this;
     }
 
     public function getPercentFreelance(): ?float
     {
-        return $this->percent_freelance;
+        return (float) $this->percent_freelance;
     }
 
     public function setPercentFreelance(string $percent_freelance): self
     {
-        $this->percent_freelance = (float) str_replace(',', '.', $percent_freelance);
+        $this->percent_freelance = str_replace(',', '.', $percent_freelance);
 
         return $this;
     }
 
     public function getPercentSalarie(): ?float
     {
-        return $this->percent_salarie;
+        return (float) $this->percent_salarie;
     }
 
     public function setPercentSalarie(string $percent_salarie): self
     {
-        $this->percent_salarie = (float) str_replace(',', '.', $percent_salarie);
+        $this->percent_salarie = str_replace(',', '.', $percent_salarie);
 
         return $this;
     }
 
     public function getPercentTv(): ?float
     {
-        return $this->percent_tv;
+        return (float) $this->percent_tv;
     }
 
     public function setPercentTv(string $percent_tv): self
     {
-        $this->percent_tv = (float) str_replace(',', '.', $percent_tv);
+        $this->percent_tv = str_replace(',', '.', $percent_tv);
 
         return $this;
     }
@@ -318,24 +314,24 @@ class Product
 
     public function getCa(): ?float
     {
-        return $this->ca;
+        return (float) $this->ca;
     }
 
     public function setCa(?float $ca): self
     {
-        $this->ca = $ca;
+        $this->ca = (string) $ca;
 
         return $this;
     }
 
     public function getPa(): ?float
     {
-        return $this->pa;
+        return (float) $this->pa;
     }
 
     public function setPa(?float $pa): self
     {
-        $this->pa = $pa;
+        $this->pa = (string) $pa;
 
         return $this;
     }

@@ -16,6 +16,9 @@ class ProductPackageVip extends Product
     #[Assert\PositiveOrZero]
     private ?int $quantity_max = null;
 
+    #[ORM\ManyToOne(inversedBy: 'product_package')]
+    private ?Project $project = null;
+
     public function __toString()
     {
 
@@ -50,6 +53,18 @@ class ProductPackageVip extends Product
     {
         parent::setDateBegin($date);
         parent::setDateEnd($date);
+
+        return $this;
+    }
+
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
+    public function setProject(?Project $project): static
+    {
+        $this->project = $project;
 
         return $this;
     }

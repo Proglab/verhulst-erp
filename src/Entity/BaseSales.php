@@ -120,8 +120,6 @@ class BaseSales
     protected ?CompanyContact $contact = null;
 
     #[ORM\ManyToOne(inversedBy: 'sales')]
-    #[ORM\JoinColumn(nullable: true)]
-    #[Assert\NotBlank]
     private ?Product $product = null;
 
     public function totalPrice()
@@ -307,18 +305,6 @@ class BaseSales
         return $this;
     }
 
-    public function getProduct(): ?Product
-    {
-        return $this->product;
-    }
-
-    public function setProduct(?Product $product): self
-    {
-        $this->product = $product;
-
-        return $this;
-    }
-
     public function getForecastPrice(): ?float
     {
         return (float) $this->forecast_price;
@@ -370,5 +356,17 @@ class BaseSales
     public function setPercentVrType(string $percent_vr_type): void
     {
         $this->percent_vr_type = $percent_vr_type;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): static
+    {
+        $this->product = $product;
+
+        return $this;
     }
 }
