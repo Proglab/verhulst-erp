@@ -128,6 +128,7 @@ admin.menu.email: Mails
 admin.menu.contact.create: 'Créer un contact'
 admin.menu.sales.create: 'Créer une vente'
 admin.menu.event.create: 'Créer un event'
+admin.menu.flashsale.create: 'Créer une vente flash'
 app.menus.profile.dropdown.my_profile: 'Mon profil'
 app.menus.profile.dropdown.update_password: 'Modifier mon mot de passe'
 app.menus.profile.dropdown.add_twofactor_auth: 'Activer la double authentification'
@@ -138,3 +139,4 @@ app.menus.top.dashboard.main: Mon tableau de bord
 app.menus.top.dashboard.general: Tableau de bord général
 app.menus.top.dashboard.commercial: Récapitulatif commerciaux
 app.menus.top.dashboard.sales: Récapitulatif ventes
+app.menus.top.dashboard.stats: Statistiques
