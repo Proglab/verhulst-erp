@@ -14,7 +14,6 @@
 {% endblock %}
 
 {% block main %}
-
     <div class="d-flex justify-content-center border-bottom mb-3">
         <div class="mx-2"><a href="{{ ea_url().set('year', year - 1).generateUrl() }}"><h3>{{ year - 1 }}</h3></a></div>
         <div class="mx-2"><h3>{{ year }}</h3></div>
@@ -22,105 +21,13 @@
     </div>
     <nav>
         <div class="nav nav-pills flex-column flex-sm-row" id="nav-tab" role="tablist">
-            <button class="flex-sm-fill text-sm-center nav-link active" id="nav-event-tab" data-bs-toggle="tab" data-bs-target="#nav-event" type="button" role="tab" aria-controls="nav-event" aria-selected="true">Field Events</button>
             <button class="flex-sm-fill text-sm-center nav-link" id="nav-sponsoring-tab" data-bs-toggle="tab" data-bs-target="#nav-sponsoring" type="button" role="tab" aria-controls="nav-sponsoring" aria-selected="false">Sponsoring</button>
             <button class="flex-sm-fill text-sm-center nav-link" id="nav-package-tab" data-bs-toggle="tab" data-bs-target="#nav-package" type="button" role="tab" aria-controls="nav-package" aria-selected="false">Package VIP</button>
-            <button class="flex-sm-fill text-sm-center nav-link" id="nav-divers-tab" data-bs-toggle="tab" data-bs-target="#nav-divers" type="button" role="tab" aria-controls="nav-divers" aria-selected="false">Divers</button>
         </div>
     </nav>
 
 
     <div class="tab-content" id="nav-tabContent">
-    <div class="tab-pane fade show active mt-3" id="nav-event" role="tabpanel" aria-labelledby="nav-event-tab">
-        <h3 class="text-uppercase text-center font-weight-bolder verhulst">Field Events</h3>
-        <form action="{{ ea_url().setAction('createBdc') }}" method="post">
-            <table class="table table-hover">
-                <thead class="table-primary">
-                <tr>
-                    <th scope="col"></th>
-                    <th scope="col" style="color: #FFFFFF">Société</th>
-                    <th scope="col" style="color: #FFFFFF">Projet</th>
-                    <th scope="col" style="color: #FFFFFF">Produit</th>
-                    <th scope="col" style="color: #FFFFFF">Date</th>
-                    <th scope="col" class="text-right" style="color: #FFFFFF">PU</th>
-                    <th scope="col" class="text-right" style="color: #FFFFFF">Réduc</th>
-                    <th scope="col" class="text-right" style="color: #FFFFFF">PV</th>
-                    <th scope="col" class="text-center" style="color: #FFFFFF">%S</th>
-                    <th scope="col" class="text-right" style="color: #FFFFFF">€S</th>
-                    <th scope="col"></th>
-                </tr>
-                </thead>
-                <tbody>
-
-                {% set total_price = 0 %}
-                {% set total_marge = 0 %}
-                {% set total_euroCom = 0 %}
-
-                {% for sale in sales %}
-                    {% if get_class(sale.product) == 'ProductEvent' %}
-                        {% set total_price = total_price + sale.price %}
-                        {% set total_marge = total_marge + sale.marge %}
-                        {% set total_euroCom = total_euroCom + sale.euroCom %}
-                        <tr>
-                            <th scope="col">
-                                <input type="checkbox" value="1" name="bdc[{{ sale.id }}]">
-                            </th>
-                            <th scope="row">
-                                {{ sale.contact.company.name }} ({{ sale.contact.firstname }} {{ sale.contact.lastname }})
-                            </th>
-                            <th scope="row">
-                                {{ sale.product.project.name }}
-                            </th>
-                            <th scope="row">{{ sale.product.name }}
-                                {% if sale.product.dateBegin is not null %}
-                                    {% if sale.product.dateBegin|date('d/m/y') == sale.product.dateEnd|date('d/m/y') %}
-                                        ({{ sale.product.dateBegin|date('d/m/y') }})
-                                    {% else %}
-                                        (Du {{ sale.product.dateBegin|date('d/m/y') }} Au {{ sale.product.dateEnd|date('d/m/y') }})
-                                    {% endif %}
-                                {% endif %}
-                            </th>
-                            <td>{{ sale.date|date('d/m/y') }}</td>
-                            <td class="text-right">{{ (sale.price)|number_format(2, ',', '.') }}€</td>
-                            <td class="text-right">{{ (sale.discount)|number_format(2, ',', '.') }}€</td>
-                            <td class="text-right">{{ sale.marge|number_format(2, ',', '.') }}€</td>
-                            <td class="text-center">{{ sale.percentCom }}%</td>
-                            <td class="text-right">{{ sale.euroCom|number_format(2, ',', '.') }}€</td>
-                            <td class="action">
-                                {% set url_edit = ea_url()
-                                    .setAction('edit')
-                                    .setController('App\\Controller\\Admin\\SalesCrudController')
-                                    .setEntityId(sale.id)
-                                %}
-                                <a class=" action-edit" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i></a>
-                                {% set url_bdc = ea_url()
-                                    .setAction('createBdc')
-                                    .setController('App\\Controller\\Admin\\SalesCrudController')
-                                    .setEntityId(sale.id)
-                                %}
-                                <a class=" action-bdc" href="{{ url_bdc }}" title="Bon de commande" data-action-name="bdc"><i class="action-icon fa fa-store"></i></a>
-
-                            </td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-                <tr class="table-primary">
-                    <th></th>
-                    <th scope="row" colspan="4" style="color: #FFFFFF">
-                        Totaux
-                    </th>
-                    <th class="text-right" style="color: #FFFFFF">{{ total_price|number_format(2, ',', '.') }}€</th>
-                    <th></th>
-                    <th class="text-right" style="color: #FFFFFF">{{ total_marge|number_format(2, ',', '.') }}€</th>
-                    <th></th>
-                    <th class="text-right" style="color: #FFFFFF">{{ total_euroCom|number_format(2, ',', '.') }}€</th>
-                    <th></th>
-                </tr>
-                </tbody>
-            </table>
-            <input type="submit" class="alert alert-danger" value="Créer un BDC">
-        </form>
-    </div>
     <div class="tab-pane fade mt-3" id="nav-sponsoring" role="tabpanel" aria-labelledby="nav-sponsoring-tab">
         <h3 class="text-uppercase text-center font-weight-bolder verhulst">Sponsoring</h3>
         <form action="{{ ea_url().setAction('createBdc') }}" method="post">
@@ -151,7 +58,7 @@
                 {% for sale in sales %}
                     {% if get_class(sale.product) == 'ProductSponsoring' %}
                         {% set total_price = total_price + sale.totalPrice %}
-                        {% set total_euroCom = total_euroCom + sale.euroCom %}
+                        {% set total_euroCom = total_euroCom + sale.totalCom %}
                         {% set total_marge = total_marge + sale.marge %}
                         <tr>
 
@@ -164,7 +71,6 @@
                             <th scope="row">
                                 {{ sale.product.project.name }}
                             </th>
-                            <th scope="row">{{ sale.product.name }}</th>
                             <td>{{ sale.date|date('d/m/y') }}</td>
                             <td class="text-right">{{ (sale.price)|number_format(2, ',', '.') }}€</td>
                             <td class="text-right">{{ sale.quantity }}</td>
@@ -172,7 +78,7 @@
                             <td class="text-right">{{ (sale.discount)|number_format(2, ',', '.') }}€</td>
                             <td class="text-right">{{ (sale.marge)|number_format(2, ',', '.') }}€</td>
                             <td class="text-center">{{ sale.percentCom }}%</td>
-                            <td class="text-right">{{ sale.euroCom|number_format(2, ',', '.') }}€</td>
+                            <td class="text-right">{{ sale.totalCom|number_format(2, ',', '.') }}€</td>
                             <td class="action">
                                 {% set url_edit = ea_url()
                                     .setAction('edit')
@@ -195,7 +101,6 @@
                     <th scope="row" colspan="4" style="color: #FFFFFF">
                         Totaux
                     </th>
-                    <th></th>
                     <th></th>
                     <th class="text-right" style="color: #FFFFFF">{{ total_price|number_format(2, ',', '.') }}€</th>
                     <th></th>
@@ -238,7 +143,7 @@
                 {% for sale in sales %}
                     {% if get_class(sale.product) == 'ProductPackageVip' %}
                         {% set total_price = total_price + sale.totalPrice %}
-                        {% set total_euroCom = total_euroCom + sale.euroCom %}
+                        {% set total_euroCom = total_euroCom + sale.totalCom %}
                         {% set total_marge = total_marge + sale.marge %}
                         <tr>
                             <th scope="col">
@@ -258,7 +163,7 @@
                             <td class="text-right">{{ (sale.discount)|number_format(2, ',', '.') }}€</td>
                             <td class="text-right">{{ (sale.marge)|number_format(2, ',', '.') }}€</td>
                             <td class="text-center">{{ sale.percentCom }}%</td>
-                            <td class="text-right">{{ sale.euroCom|number_format(2, ',', '.') }}€</td>
+                            <td class="text-right">{{ sale.totalCom|number_format(2, ',', '.') }}€</td>
                             <td class="action">
                                 {% set url_edit = ea_url()
                                     .setAction('edit')
@@ -283,87 +188,6 @@
                     </th>
                     <th></th>
                     <th></th>
-                    <th class="text-right" style="color: #FFFFFF">{{ total_price|number_format(2, ',', '.') }}€</th>
-                    <th></th>
-                    <th class="text-right" style="color: #FFFFFF">{{ total_marge|number_format(2, ',', '.') }}€</th>
-                    <th></th>
-                    <th class="text-right" style="color: #FFFFFF">{{ total_euroCom|number_format(2, ',', '.') }}€</th>
-                    <th></th>
-                </tr>
-                </tbody>
-            </table>
-            <input type="submit" class="alert alert-danger" value="Créer un BDC">
-        </form>
-    </div>
-
-    <div class="tab-pane fade mt-3" id="nav-divers" role="tabpanel" aria-labelledby="nav-divers-tab">
-        <h3 class="text-uppercase text-center font-weight-bolder verhulst">Divers</h3>
-        <form action="{{ ea_url().setAction('createBdc') }}" method="post">
-            <table class="table table-hover">
-                <thead class="table-primary">
-                <tr>
-                    <th scope="col"></th>
-                    <th scope="col" style="color: #FFFFFF">Société</th>
-                    <th scope="col" style="color: #FFFFFF">Projet</th>
-                    <th scope="col" style="color: #FFFFFF">Produit</th>
-                    <th scope="col" style="color: #FFFFFF">Date</th>
-                    <th scope="col" class="text-right" style="color: #FFFFFF">PU</th>
-                    <th scope="col" class="text-right" style="color: #FFFFFF">Réduc</th>
-                    <th scope="col" class="text-right" style="color: #FFFFFF">PV</th>
-                    <th scope="col" class="text-center" style="color: #FFFFFF">%S</th>
-                    <th scope="col" class="text-right" style="color: #FFFFFF">€S</th>
-                    <th scope="col"></th>
-                </tr>
-                </thead>
-                <tbody>
-                {% set total_price = 0 %}
-                {% set total_euroCom = 0 %}
-                {% set total_marge = 0 %}
-
-                {% for sale in sales %}
-                    {% if get_class(sale.product) == 'ProductDivers' %}
-                        {% set total_price = total_price + sale.price %}
-                        {% set total_euroCom = total_euroCom + sale.euroCom %}
-                        {% set total_marge = total_marge + sale.marge %}
-                        <tr>
-                            <th scope="col">
-                                <input type="checkbox" value="1" name="bdc[{{ sale.id }}]">
-                            </th>
-                            <th scope="row">
-                                {{ sale.contact.company.name }} ({{ sale.contact.firstname }} {{ sale.contact.lastname }})
-                            </th>
-                            <th scope="row">
-                                {{ sale.product.project.name }}
-                            </th>
-                            <th scope="row">{{ sale.product.name }}</th>
-                            <td>{{ sale.date|date('d/m/y') }}</td>
-                            <td class="text-right">{{ (sale.price)|number_format(2, ',', '.') }}€</td>
-                            <td class="text-right">{{ (sale.discount)|number_format(2, ',', '.') }}€</td>
-                            <td class="text-right">{{ (sale.marge)|number_format(2, ',', '.') }}€</td>
-                            <td class="text-center">{{ sale.percentCom }}%</td>
-                            <td class="text-right">{{ sale.euroCom|number_format(2, ',', '.') }}€</td>
-                            <td class="action">
-                                {% set url_edit = ea_url()
-                                    .setAction('edit')
-                                    .setController('App\\Controller\\Admin\\SalesCrudController')
-                                    .setEntityId(sale.id)
-                                %}
-                                <a class=" action-edit" href="{{ url_edit }}" title="Edit" data-action-name="edit"><i class="action-icon fa fa-pencil-alt"></i></a>
-                                {% set url_bdc = ea_url()
-                                    .setAction('createBdc')
-                                    .setController('App\\Controller\\Admin\\SalesCrudController')
-                                    .setEntityId(sale.id)
-                                %}
-                                <a class=" action-bdc" href="{{ url_bdc }}" title="Bon de commande" data-action-name="bdc"><i class="action-icon fa fa-store"></i></a>
-                            </td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-                <tr class="table-primary">
-                    <th></th>
-                    <th scope="row" colspan="4" style="color: #FFFFFF">
-                        Totaux
-                    </th>
                     <th class="text-right" style="color: #FFFFFF">{{ total_price|number_format(2, ',', '.') }}€</th>
                     <th></th>
                     <th class="text-right" style="color: #FFFFFF">{{ total_marge|number_format(2, ',', '.') }}€</th>
