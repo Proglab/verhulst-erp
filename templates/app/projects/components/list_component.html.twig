@@ -1,0 +1,92 @@
+<div {{ attributes }}>
+    <div class="card">
+        <div class="card-body">
+            {{ form_start(form) }}
+            <div class="row">
+                <div class = "col-6" >
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name) }}
+                </div>
+                <div class = "col-2" >
+                    {{ form_label(form.from) }}
+                    {{ form_widget(form.from) }}
+                </div>
+                <div class = "col-2" >
+                    {{ form_label(form.to) }}
+                    {{ form_widget(form.to) }}
+                </div>
+                <div class = "col-1" >
+                    {{ form_label(form.archived) }}
+                    {{ form_widget(form.archived) }}
+                </div>
+                <div class = "col-1" >
+                    <a href="{{ path('project_index') }}" class="btn btn-primary">Reset</a>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-striped" data-loading="addClass(opacity-50)">
+                <thead>
+                <tr>
+                    <th class="col-8">Project</th>
+                    <th class="col-1">Du</th>
+                    <th class="col-1">Au</th>
+                    <th class="col-2"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for project in this.projects %}
+                    <tr>
+                        <td>{{ project.name }}</td>
+                        <td>{{ project.dateBegin|date('d/m/Y') }}</td>
+                        <td>{{ project.dateEnd|date('d/m/Y') }}</td>
+                        <td>
+                            <div class="btn-group mb-2" role="group" aria-label="Actions">
+                                {% if not project.archive %}
+                                    <button type="button" class="btn bg-warning-subtle text-black py-1 px-3" data-bs-toggle="tooltip" title="Archiver" data-action="live#action"
+                                            data-live-action-param="archive" data-live-id-param="{{ project.id }}">
+                                        <i class="action-icon fa-solid fa-box-archive"></i>
+                                    </button>
+                                {% else %}
+                                    <button type="button" class="btn bg-warning-subtle text-black py-1 px-3" data-bs-toggle="tooltip" title="Désarchiver" data-action="live#action"
+                                            data-live-action-param="unarchive" data-live-id-param="{{ project.id }}">
+                                        <i class="fa-solid fa-file-zipper"></i>
+                                    </button>
+                                {% endif %}
+                                <a href="#"  class="btn bg-info-subtle text-black py-1 px-3" data-bs-toggle="tooltip" title="Cloner">
+                                    <i class="action-icon fa-solid fa-clone"></i>
+                                </a>
+                                <a href="{{ path('project_details', {project: project.id})}}" class="btn bg-primary-subtle text-black py-1 px-3 " data-bs-toggle="tooltip" title="Voir">
+                                    <i class="action-icon fa-solid fa-eye"></i>
+                                </a>
+                                <button type="button" class="btn bg-primary-subtle text-black  py-1 px-3 " data-action="live#action"
+                                        data-live-action-param="delete" data-live-id-param="{{ project.id }}" data-bs-toggle="tooltip" title="Modifier">
+                                    <i class="action-icon fa-solid fa-edit"></i>
+                                </button>
+                                <button type="button" class="btn bg-danger-subtle text-danger  py-1 px-3 " data-action="live#action"
+                                        data-live-action-param="delete" data-live-id-param="{{ project.id }}" data-bs-toggle="tooltip" title="Supprimer">
+                                    <i class="action-icon fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th>Project</th>
+                    <th>Du</th>
+                    <th>Au</th>
+                    <th></th>
+                </tr>
+                </tfoot>
+            </table>
+            <div class="navigation">
+                {{ knp_pagination_render(this.projects) }}
+            </div>
+        </div>
+    </div>
+</div>

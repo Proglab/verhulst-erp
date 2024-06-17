@@ -71,4 +71,33 @@ class ProjectRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findProjectsQb(?string $query, ?\DateTime $from,  ?\DateTime $to, ?bool $archived)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->leftJoin('p.products', 'products');
+
+        if ($query) {
+            $qb->where('(p.name LIKE :query')
+                ->setParameter('query', '%' . $query . '%');
+            $qb->orWhere('products.name LIKE :query)')
+                ->setParameter('query', '%' . $query . '%');
+        }
+        if ($from) {
+            $qb->andWhere('p.date_begin >= :from')
+                ->setParameter('from', $from);
+        }
+        if ($to) {
+            $qb->andWhere('p.date_end <= :to')
+                ->setParameter('to', $to);
+        }
+        if ($archived) {
+            $qb->andWhere('p.archive = :archive')
+                ->setParameter('archive', $archived);
+        } else {
+            $qb->andWhere('p.archive = false');
+        }
+        $qb->orderBy('p.date_begin', 'ASC');
+        return $qb;
+    }
 }

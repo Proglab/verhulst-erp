@@ -15,6 +15,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted(User::ROLE_USER)]
 class ProjectController extends AbstractController
 {
+    public function __construct()
+    {
+
+    }
+
     #[Route('/app/{_locale}/projects/new', name: 'project_new')]
     public function project_new(Request $request, string $_locale): Response
     {
@@ -23,6 +28,13 @@ class ProjectController extends AbstractController
         ]);
     }
 
+    #[Route('/app/{_locale}/projects/index', name: 'project_index')]
+    public function project_index(string $_locale): Response
+    {
+        return $this->render('app/projects/pages/index.html.twig', [
+            'locale' => $_locale,
+        ]);
+    }
     #[Route('/app/{_locale}/projects/{project}', name: 'project_details')]
     public function project_details(Request $request, string $_locale, Project $project): Response
     {
@@ -31,4 +43,5 @@ class ProjectController extends AbstractController
             'project' => $project,
         ]);
     }
+
 }
