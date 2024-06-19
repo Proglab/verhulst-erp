@@ -22,6 +22,7 @@ class Project
      * @var Collection<int, Product>
      */
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: Product::class, cascade: ['remove'])]
+    #[ORM\OrderBy(["date_begin" => "ASC"])]
     protected Collection $products;
     #[ORM\Id]
     #[ORM\GeneratedValue]

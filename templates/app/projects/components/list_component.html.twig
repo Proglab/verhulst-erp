@@ -28,18 +28,10 @@
     </div>
     <div class="card">
         <div class="card-body">
-            <div class="text-end">
+            <div class="text-end mb-3">
                 <a href="{{ path('project_new') }}" class="btn btn-primary">Créer un nouveau projet</a>
             </div>
             <table class="table" data-loading="addClass(opacity-50)">
-                <thead>
-                <tr>
-                    <th class="col-8">Project</th>
-                    <th class="col-1">Du</th>
-                    <th class="col-1">Au</th>
-                    <th class="col-2"></th>
-                </tr>
-                </thead>
                 <tbody>
                 {% for project in this.projects %}
                     <tr class="table-primary">
@@ -62,10 +54,10 @@
                                 <a href="#"  class="btn bg-info-subtle text-black py-1 px-3" data-bs-toggle="tooltip" title="Cloner">
                                     <i class="action-icon fa-solid fa-clone"></i>
                                 </a>
-                                <a href="{{ path('project_details', {project: project.id})}}" class="btn bg-primary-subtle text-black py-1 px-3 " data-bs-toggle="tooltip" title="Voir">
+                                <a href="{{ path('project_details', {project: project.id})}}" class="btn bg-primary-subtle  text-primary py-1 px-3 " data-bs-toggle="tooltip" title="Voir">
                                     <i class="action-icon fa-solid fa-eye"></i>
                                 </a>
-                                <button type="button" class="btn bg-primary-subtle text-black  py-1 px-3 " data-action="live#action"
+                                <button type="button" class="btn bg-primary-subtle  text-primary  py-1 px-3 " data-action="live#action"
                                         data-live-action-param="delete" data-live-id-param="{{ project.id }}" data-bs-toggle="tooltip" title="Modifier">
                                     <i class="action-icon fa-solid fa-edit"></i>
                                 </button>
@@ -85,9 +77,9 @@
                                     <th class="col-6">Produit</th>
                                     <th class="col-1">Date début</th>
                                     <th class="col-1">Date fin</th>
-                                    <th class="col-1">Q max</th>
-                                    <th class="col-1">Q vendue</th>
-                                    <th class="col-1">Q dispo</th>
+                                    <th class="col-1">Qt max</th>
+                                    <th class="col-1">Qt vendue</th>
+                                    <th class="col-1">Qt dispo</th>
                                     <th class="col-1"></th>
                                 </tr>
                                 </thead>
@@ -158,14 +150,6 @@
                     {% endif %}
                 {% endfor %}
                 </tbody>
-                <tfoot>
-                <tr>
-                    <th>Project</th>
-                    <th>Du</th>
-                    <th>Au</th>
-                    <th></th>
-                </tr>
-                </tfoot>
             </table>
             <div class="navigation">
                 {{ knp_pagination_render(this.projects) }}
