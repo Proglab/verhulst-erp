@@ -17,7 +17,6 @@ class ProjectController extends AbstractController
 {
     public function __construct()
     {
-
     }
 
     #[Route('/app/{_locale}/projects/new', name: 'project_new')]
@@ -35,6 +34,7 @@ class ProjectController extends AbstractController
             'locale' => $_locale,
         ]);
     }
+
     #[Route('/app/{_locale}/projects/{project}', name: 'project_details')]
     public function project_details(Request $request, string $_locale, Project $project): Response
     {
@@ -43,5 +43,4 @@ class ProjectController extends AbstractController
             'project' => $project,
         ]);
     }
-
 }

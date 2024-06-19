@@ -4,18 +4,13 @@ declare(strict_types=1);
 
 namespace App\Twig\Components\Projects;
 
-use App\Entity\Product;
-use App\Entity\Project;
 use App\Form\Type\ProjectSearchFilterType;
-use App\Repository\ProductPackageVipRepository;
 use App\Repository\ProductRepository;
-use App\Repository\ProductSponsoringRepository;
 use App\Repository\ProjectRepository;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Panther\DomCrawler\Field\FormFieldTrait;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveArg;
@@ -28,8 +23,8 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 class ProjectsListComponent extends AbstractController
 {
     use ComponentToolsTrait;
-    use DefaultActionTrait;
     use ComponentWithFormTrait;
+    use DefaultActionTrait;
 
     #[LiveProp(writable: true)]
     public ?string $query = null;
@@ -68,11 +63,6 @@ class ProjectsListComponent extends AbstractController
         $this->page = $page;
     }
 
-    protected function instantiateForm(): FormInterface
-    {
-        return $this->createForm(ProjectSearchFilterType::class);
-    }
-
     public function getProjects(): PaginationInterface
     {
         $qb = $this->projectRepository->findProjectsQb($this->query, $this->from, $this->to, $this->archived);
@@ -105,5 +95,10 @@ class ProjectsListComponent extends AbstractController
     {
         $product = $this->productRepository->find($id);
         $this->productRepository->remove($product, true);
+    }
+
+    protected function instantiateForm(): FormInterface
+    {
+        return $this->createForm(ProjectSearchFilterType::class);
     }
 }

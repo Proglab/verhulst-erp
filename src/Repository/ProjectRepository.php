@@ -6,6 +6,7 @@ namespace App\Repository;
 
 use App\Entity\Project;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -72,7 +73,7 @@ class ProjectRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findProjectsQb(?string $query, ?\DateTime $from,  ?\DateTime $to, ?bool $archived)
+    public function findProjectsQb(?string $query, ?\DateTime $from, ?\DateTime $to, ?bool $archived): QueryBuilder
     {
         $qb = $this->createQueryBuilder('p');
         $qb->leftJoin('p.products', 'products');
@@ -99,6 +100,7 @@ class ProjectRepository extends ServiceEntityRepository
             $qb->andWhere('p.archive = false');
         }
         $qb->orderBy('p.date_begin', 'ASC');
+
         return $qb;
     }
 }

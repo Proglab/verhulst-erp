@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\Type;
 
-use App\Entity\Project;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -20,45 +18,45 @@ class ProjectSearchFilterType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                    'label' => 'Nom',
-                    'required' => false,
-                    'attr' => [
-                        'data-model' => 'query',
-                    ],
-                ])
+                'label' => 'Nom',
+                'required' => false,
+                'attr' => [
+                    'data-model' => 'query',
+                ],
+            ])
             ->add('from', DateType::class, [
-                    'html5' => true,
-                    'widget' => 'single_text',
-                    'label' => 'Du',
-                    'attr' => [
-                        'data-model' => 'on(change)|from',
-                        'data-controller' => 'flatpickr',
-                    ],
-                    'constraints' => [
-                        new Assert\Date(),
-                    ],
-                ]
+                'html5' => true,
+                'widget' => 'single_text',
+                'label' => 'Du',
+                'attr' => [
+                    'data-model' => 'on(change)|from',
+                    'data-controller' => 'flatpickr',
+                ],
+                'constraints' => [
+                    new Assert\Date(),
+                ],
+            ]
             )
             ->add('to', DateType::class, [
-                    'html5' => true,
-                    'widget' => 'single_text',
-                    'label' => 'Au',
-                    'attr' => [
-                        'data-model' => 'on(change)|to',
-                        'data-controller' => 'flatpickr',
-                    ],
-                    'constraints' => [
-                        new Assert\Date(),
-                    ],
-                ]
+                'html5' => true,
+                'widget' => 'single_text',
+                'label' => 'Au',
+                'attr' => [
+                    'data-model' => 'on(change)|to',
+                    'data-controller' => 'flatpickr',
+                ],
+                'constraints' => [
+                    new Assert\Date(),
+                ],
+            ]
             )
             ->add('archived', CheckboxType::class, [
-                    'label' => 'Archivé',
-                    'required' => false,
-                    'attr' => [
-                        'data-model' => 'archived',
-                    ],
-                ])
+                'label' => 'Archivé',
+                'required' => false,
+                'attr' => [
+                    'data-model' => 'archived',
+                ],
+            ])
         ;
     }
 
