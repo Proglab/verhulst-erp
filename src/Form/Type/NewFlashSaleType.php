@@ -28,29 +28,7 @@ class NewFlashSaleType extends AbstractType
     {
         $builder = new DynamicFormBuilder($builder);
 
-        $builder->add('contact', EntityType::class, [
-            'class' => CompanyContact::class,
-            'label' => false,
-            'required' => true,
-            'constraints' => [
-                new NotBlank(),
-            ],
-            'attr' => [
-                'class' => 'd-none',
-            ],
-        ])
-            ->add('user', EntityType::class, [
-                'class' => User::class,
-                'label' => false,
-                'required' => true,
-                'constraints' => [
-                    new NotBlank(),
-                ],
-                'attr' => [
-                    'class' => 'd-none',
-                ],
-            ])
-
+        $builder
         ->add('name', TextType::class, [
             'label' => 'Nom du produit vendu',
             'required' => true,
@@ -83,6 +61,7 @@ class NewFlashSaleType extends AbstractType
             'constraints' => [
                 new NotBlank(),
             ],
+            'data' => 'percent_pv',
         ])
         ->addDependent('percent_com', 'percent_com_type', function (DependentField $field, ?string $com_type) {
             if (null === $com_type) {
@@ -142,6 +121,7 @@ class NewFlashSaleType extends AbstractType
             'constraints' => [
                 new NotBlank(),
             ],
+            'data' => 'percent',
         ])
         ->addDependent('percent_vr', 'percent_vr_type', function (DependentField $field, ?string $date_type) {
             if (null === $date_type) {
@@ -189,6 +169,7 @@ class NewFlashSaleType extends AbstractType
             'constraints' => [
                 new NotBlank(),
             ],
+            'data' => '1',
         ])
         ->addDependent('forecast_price', 'type_vente', function (DependentField $field, ?string $sale_type) {
             if ('1' === $sale_type || null === $sale_type) {

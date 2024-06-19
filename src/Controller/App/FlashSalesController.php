@@ -30,10 +30,8 @@ class FlashSalesController extends AbstractController
     }
 
     #[Route('/app/{_locale}/sales/flash', name: 'sales_flash_index')]
-    public function index(FastSalesRepository $salesRepository): Response
+    public function index(): Response
     {
-        return $this->render('app/sales/flash/index.html.twig', [
-            'sales' => $salesRepository->findBy(['user' => $this->getUser()], ['date' => 'DESC']),
-        ]);
+        return $this->render('app/sales/flash/index.html.twig');
     }
 }

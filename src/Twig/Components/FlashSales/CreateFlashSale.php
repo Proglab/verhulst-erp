@@ -27,35 +27,33 @@ class CreateFlashSale extends AbstractController
     #[LiveProp]
     public ?CompanyContact $contact = null;
 
-    public function __construct(private FastSalesRepository $fastSalesRepository)
+    public function __construct(private readonly FastSalesRepository $fastSalesRepository)
     {
     }
+    protected function instantiateForm(): FormInterface
+    {
+        $flashSale = new FastSales();
+        $flashSale->setContact($this->contact);
+        $flashSale->setUser($this->getUser());
 
+        return $this->createForm(NewFlashSaleType::class, $flashSale);
+    }
     #[LiveAction]
     public function save(): RedirectResponse
     {
-        /** @var User $user */
-        $user = $this->getUser();
-        $this->formValues['contact'] = $this->contact->getId();
-        $this->formValues['user'] = $user->getId();
-
         $this->submitForm();
-        /** @var FastSales $flashSaleData */
-        $flashSaleData = $this->getForm()->getData();
-        $flashSaleData->setPercentVr($flashSaleData->getPercentVr() * 100);
-        $flashSaleData->setPercentCom($flashSaleData->getPercentCom() * 100);
+        $formData = $this->getForm()->getData();
 
-        if ('fixed' === $flashSaleData->getPercentVrType()) {
-            $flashSaleData->setPercentVrEur((string) ($flashSaleData->getPrice() - $flashSaleData->getPa()));
+        $formData->setPercentVr($formData->getPercentVr() * 100);
+        $formData->setPercentCom($formData->getPercentCom() * 100);
+
+        if ('fixed' === $formData->getPercentVrType()) {
+            $formData->setPercentVrEur((string) ($formData->getPrice() - $formData->getPa()));
         }
 
-        $this->fastSalesRepository->save($flashSaleData, true);
+        $this->fastSalesRepository->save($formData, true);
 
         return $this->redirectToRoute('sales_flash_index');
     }
 
-    protected function instantiateForm(): FormInterface
-    {
-        return $this->createForm(NewFlashSaleType::class);
-    }
 }
