@@ -19,7 +19,7 @@
                     {{ form_label(form.archived) }}
                     {{ form_widget(form.archived) }}
                 </div>
-                <div class = "col-1" >
+                <div class = "col-1 text-end" >
                     <a href="{{ path('project_index') }}" class="btn btn-primary">Reset</a>
                 </div>
             </div>
@@ -28,6 +28,9 @@
     </div>
     <div class="card">
         <div class="card-body">
+            <div class="text-end">
+                <a href="{{ path('project_new') }}" class="btn btn-primary">Créer un nouveau projet</a>
+            </div>
             <table class="table" data-loading="addClass(opacity-50)">
                 <thead>
                 <tr>
@@ -67,7 +70,7 @@
                                     <i class="action-icon fa-solid fa-edit"></i>
                                 </button>
                                 <button type="button" class="btn bg-danger-subtle text-danger  py-1 px-3 " data-action="live#action"
-                                        data-live-action-param="delete" data-live-id-param="{{ project.id }}" data-bs-toggle="tooltip" title="Supprimer">
+                                        data-live-action-param="deleteProject" data-live-id-param="{{ project.id }}" data-bs-toggle="modal" title="Supprimer" data-bs-target="#danger-header-modal">
                                     <i class="action-icon fa-solid fa-trash"></i>
                                 </button>
                             </div>
@@ -91,7 +94,17 @@
                                 <tbody>
                                 {% for product in project.products %}
                                     <tr>
-                                        <td data-bs-toggle="tooltip" data-bs-original-title="{{ product.description|striptags }}">{% if instanceOf(product, 'App\\Entity\\ProductPackageVip') %}<i class="fa-solid fa-crown me-3"></i>{% else %}<i class="fa-solid fa-trophy me-3"></i>{% endif %}{{ product.name }}</td>
+                                        <td>
+                                            {% if instanceOf(product, 'App\\Entity\\ProductPackageVip') %}
+                                                <a href="#" class="ms-3" data-bs-toggle="tooltip" data-bs-original-title="Package VIP"><i class="fa-solid fa-crown me-3"></i></a>
+                                            {% else %}
+                                                <a href="#" class="ms-3" data-bs-toggle="tooltip" data-bs-original-title="Sponsoring"><i class="fa-solid fa-trophy me-3"></i></a>
+                                            {% endif %}
+                                            {{ product.name }}
+                                            {% if product.description|striptags is not empty %}
+                                                <a href="#" class="ms-3" data-bs-toggle="tooltip" data-bs-original-title="{{ product.description|striptags }}"><i class="fa-solid fa-eye"></i></a>
+                                            {% endif %}
+                                        </td>
                                         <td>{{ product.dateBegin|date('d/m/Y') }}</td>
                                         <td>{{ product.dateEnd|date('d/m/Y') }}</td>
                                         <td>{% if product.quantityMax is empty %}-{% else %}{{ product.quantityMax }}{% endif %}</td>
@@ -111,6 +124,7 @@
                                                 }}"  class="btn bg-warning-subtle text-black py-1 px-3" data-bs-toggle="tooltip" title="Créer une vente">
                                                     <i class="fa fa-euro-sign"></i>
                                                 </a>
+                                                {% if instanceOf(product, 'App\\Entity\\ProductPackageVip') %}
                                                 <a href="{{ ea_url()
                                                     .setDashboard('App\\Controller\\Admin\\DashboardController')
                                                     .setController('App\\Controller\\Admin\\ProductPackageVipCrudController')
@@ -118,8 +132,17 @@
                                                     .setEntityId(product.id) }}" class="btn bg-primary-subtle text-primary  py-1 px-3 " data-bs-toggle="tooltip" title="Modifier">
                                                     <i class="fa fa-pen-to-square"></i>
                                                 </a>
+                                                {% else %}
+                                                    <a href="{{ ea_url()
+                                                        .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                        .setController('App\\Controller\\Admin\\ProductSponsoringCrudController')
+                                                        .setAction('edit')
+                                                        .setEntityId(product.id) }}" class="btn bg-primary-subtle text-primary  py-1 px-3 " data-bs-toggle="tooltip" title="Modifier">
+                                                        <i class="fa fa-pen-to-square"></i>
+                                                    </a>
+                                                {% endif %}
                                                 <button type="button" class="btn bg-danger-subtle text-danger  py-1 px-3 " data-action="live#action"
-                                                        data-live-action-param="deleteProduct" data-live-id-param="{{ product.id }}" data-bs-toggle="tooltip" title="Supprimer">
+                                                        data-live-action-param="deleteProduct" data-live-id-param="{{ product.id }}">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
                                             </div>
@@ -146,6 +169,37 @@
             </table>
             <div class="navigation">
                 {{ knp_pagination_render(this.projects) }}
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="danger-header-modal" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="danger-header-modalLabel" aria-modal="true" role="dialog" {{ stimulus_controller('bootstrap-modal') }}>
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header modal-colored-header bg-danger text-white">
+                    <h4 class="modal-title text-white" id="danger-header-modalLabel">
+                        Cette action est irréversible !
+                    </h4>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-action="live#action" data-live-action-param="abordDeleteProject"></button>
+                </div>
+                {% if this.projectToDelete %}
+                <div class="modal-body">
+                    <h5 class="mt-0">{{ this.projectToDelete.name }}</h5>
+                    <p>
+                        Désirez-vous vraiment supprimer cet élément ?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" data-action="live#action" data-live-action-param="abordDeleteProject">
+                        Non
+                    </button>
+                    <button type="button" class="btn bg-danger-subtle text-danger"  data-action="live#action" data-live-action-param="confirmDeleteProject" data-live-id-param="{{ this.projectToDelete.id }}">
+                        Oui
+                    </button>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>

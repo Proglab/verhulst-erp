@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Twig\Components\Projects;
 
+use App\Entity\Project;
 use App\Form\Type\ProjectSearchFilterType;
 use App\Repository\ProductRepository;
 use App\Repository\ProjectRepository;
@@ -40,6 +41,9 @@ class ProjectsListComponent extends AbstractController
 
     #[LiveProp(writable: true)]
     public int $page = 1;
+
+    #[LiveProp(writable: true)]
+    public ?Project $projectToDelete = null;
 
     public function __construct(private readonly ProjectRepository $projectRepository, private PaginatorInterface $paginator, private ProductRepository $productRepository)
     {
@@ -91,7 +95,28 @@ class ProjectsListComponent extends AbstractController
     }
 
     #[LiveAction]
-    public function deleteProduct(#[LiveArg] int $id): void
+    public function abordDeleteProject(): void
+    {
+        $this->projectToDelete = null;
+    }
+
+    #[LiveAction]
+    public function deleteProject(#[LiveArg] int $id): void
+    {
+        $this->projectToDelete = $this->projectRepository->find($id);
+    }
+
+    #[LiveAction]
+    public function confirmDeleteProject(#[LiveArg] int $id): void
+    {
+        $project = $this->projectRepository->find($id);
+        $this->projectRepository->remove($project, true);
+        $this->projectToDelete = null;
+        $this->dispatchBrowserEvent('modal:close');
+    }
+
+    #[LiveAction]
+    public function confirmDeleteProduct(#[LiveArg] int $id): void
     {
         $product = $this->productRepository->find($id);
         $this->productRepository->remove($product, true);

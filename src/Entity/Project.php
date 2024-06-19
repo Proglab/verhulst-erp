@@ -21,7 +21,7 @@ class Project
     /**
      * @var Collection<int, Product>
      */
-    #[ORM\OneToMany(mappedBy: 'project', targetEntity: Product::class)]
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: Product::class, cascade: ['remove'])]
     protected Collection $products;
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -43,7 +43,7 @@ class Project
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date_end = null;
 
-    #[ORM\OneToMany(mappedBy: 'project', targetEntity: Todo::class)]
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: Todo::class, cascade: ['remove'])]
     private Collection $todos;
 
     public function __construct()
