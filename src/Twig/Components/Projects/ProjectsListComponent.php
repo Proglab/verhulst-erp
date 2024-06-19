@@ -46,7 +46,7 @@ class ProjectsListComponent extends AbstractController
     #[LiveProp(writable: true)]
     public int $page = 1;
 
-    public function __construct(private readonly ProjectRepository $projectRepository, private PaginatorInterface $paginator)
+    public function __construct(private readonly ProjectRepository $projectRepository, private PaginatorInterface $paginator, private ProductRepository $productRepository)
     {
     }
 
@@ -98,5 +98,12 @@ class ProjectsListComponent extends AbstractController
     {
         $project = $this->projectRepository->find($id)->setArchive(false);
         $this->projectRepository->save($project, true);
+    }
+
+    #[LiveAction]
+    public function deleteProduct(#[LiveArg] int $id): void
+    {
+        $product = $this->productRepository->find($id);
+        $this->productRepository->remove($product, true);
     }
 }

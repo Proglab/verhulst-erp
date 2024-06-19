@@ -28,7 +28,7 @@
     </div>
     <div class="card">
         <div class="card-body">
-            <table class="table table-striped" data-loading="addClass(opacity-50)">
+            <table class="table" data-loading="addClass(opacity-50)">
                 <thead>
                 <tr>
                     <th class="col-8">Project</th>
@@ -39,10 +39,10 @@
                 </thead>
                 <tbody>
                 {% for project in this.projects %}
-                    <tr>
-                        <td>{{ project.name }}</td>
-                        <td>{{ project.dateBegin|date('d/m/Y') }}</td>
-                        <td>{{ project.dateEnd|date('d/m/Y') }}</td>
+                    <tr class="table-primary">
+                        <td><h6 class="mb-0">{{ project.name }}</h6></td>
+                        <td><h6 class="mb-0">{{ project.dateBegin|date('d/m/Y') }}</h6></td>
+                        <td><h6 class="mb-0">{{ project.dateEnd|date('d/m/Y') }}</h6></td>
                         <td>
                             <div class="btn-group mb-2" role="group" aria-label="Actions">
                                 {% if not project.archive %}
@@ -73,6 +73,66 @@
                             </div>
                         </td>
                     </tr>
+                    {% if project.products|length > 0 %}
+                    <tr>
+                        <td colspan="4">
+                            <table class="table table-hover table-sm">
+                                <thead>
+                                <tr>
+                                    <th class="col-6">Produit</th>
+                                    <th class="col-1">Date début</th>
+                                    <th class="col-1">Date fin</th>
+                                    <th class="col-1">Q max</th>
+                                    <th class="col-1">Q vendue</th>
+                                    <th class="col-1">Q dispo</th>
+                                    <th class="col-1"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for product in project.products %}
+                                    <tr>
+                                        <td data-bs-toggle="tooltip" data-bs-original-title="{{ product.description|striptags }}">{% if instanceOf(product, 'App\\Entity\\ProductPackageVip') %}<i class="fa-solid fa-crown me-3"></i>{% else %}<i class="fa-solid fa-trophy me-3"></i>{% endif %}{{ product.name }}</td>
+                                        <td>{{ product.dateBegin|date('d/m/Y') }}</td>
+                                        <td>{{ product.dateEnd|date('d/m/Y') }}</td>
+                                        <td>{% if product.quantityMax is empty %}-{% else %}{{ product.quantityMax }}{% endif %}</td>
+                                        <td>{{ product.quantitySales }}</td>
+                                        <td>{% if product.quantityMax is empty %}-{% else %}{{ product.quantityAvailable }}{% endif %}</td>
+                                        <td>
+                                            <div class="btn-group mb-2" role="group" aria-label="Actions">
+                                                <a href="{{ ea_url()
+                                                    .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                    .setController('App\\Controller\\Admin\\SalesCrudController')
+                                                    .setAction('new')
+                                                    .set('entityFqcn', 'App\\Entity\\Sales')
+                                                    .set('productId', product.id)
+                                                    .set('projectId', project.id)
+                                                    .setEntityId(null)
+
+                                                }}"  class="btn bg-warning-subtle text-black py-1 px-3" data-bs-toggle="tooltip" title="Créer une vente">
+                                                    <i class="fa fa-euro-sign"></i>
+                                                </a>
+                                                <a href="{{ ea_url()
+                                                    .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                    .setController('App\\Controller\\Admin\\ProductPackageVipCrudController')
+                                                    .setAction('edit')
+                                                    .setEntityId(product.id) }}" class="btn bg-primary-subtle text-primary  py-1 px-3 " data-bs-toggle="tooltip" title="Modifier">
+                                                    <i class="fa fa-pen-to-square"></i>
+                                                </a>
+                                                <button type="button" class="btn bg-danger-subtle text-danger  py-1 px-3 " data-action="live#action"
+                                                        data-live-action-param="deleteProduct" data-live-id-param="{{ product.id }}" data-bs-toggle="tooltip" title="Supprimer">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </td>
+                    </tr>
+                    {% endif %}
                 {% endfor %}
                 </tbody>
                 <tfoot>

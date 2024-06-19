@@ -254,6 +254,11 @@ class ProjectCrudController extends BaseCrudController
         return $this->redirect($this->generateUrl('project_details', ['project' => $context->getEntity()->getPrimaryKeyValue()]));
     }
 
+    public function index(AdminContext $context)
+    {
+        return $this->redirect($this->generateUrl('project_index'));
+    }
+
     public function createPackage(AdminContext $context): Response
     {
         $project = $context->getEntity();

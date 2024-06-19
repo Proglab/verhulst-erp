@@ -76,6 +76,7 @@ class ProjectRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('p');
         $qb->leftJoin('p.products', 'products');
+        $qb->addSelect('products');
 
         if ($query) {
             $qb->where('(p.name LIKE :query')
