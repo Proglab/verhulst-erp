@@ -35,6 +35,9 @@ class NewProjectComponent extends AbstractController
     #[LiveProp(writable: true)]
     public ?string $errorFile = null;
 
+    #[LiveProp(writable: true)]
+    public ?Project $project = null;
+
     public function __construct(private ProjectRepository $projectRepository, private KernelInterface $kernel, private ValidatorInterface $validator)
     {
     }
@@ -110,6 +113,6 @@ class NewProjectComponent extends AbstractController
 
     protected function instantiateForm(): FormInterface
     {
-        return $this->createForm(NewProjectType::class);
+        return $this->createForm(NewProjectType::class, $this->project);
     }
 }

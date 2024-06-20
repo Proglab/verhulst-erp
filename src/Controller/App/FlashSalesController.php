@@ -6,7 +6,6 @@ namespace App\Controller\App;
 
 use App\Entity\CompanyContact;
 use App\Entity\User;
-use App\Repository\FastSalesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

@@ -35,10 +35,10 @@
                 <tbody>
                 {% for project in this.projects %}
                     <tr class="table-primary">
-                        <td><h6 class="mb-0">{{ project.name }}</h6></td>
-                        <td><h6 class="mb-0">{{ project.dateBegin|date('d/m/Y') }}</h6></td>
-                        <td><h6 class="mb-0">{{ project.dateEnd|date('d/m/Y') }}</h6></td>
-                        <td>
+                        <td class="col-6"><h6 class="mb-0">{{ project.name }}</h6></td>
+                        <td class="col-2"><h6 class="mb-0">{{ project.dateBegin|date('d/m/Y') }}</h6></td>
+                        <td class="col-2"><h6 class="mb-0">{{ project.dateEnd|date('d/m/Y') }}</h6></td>
+                        <td class="col-2 text-end">
                             <div class="btn-group mb-2" role="group" aria-label="Actions">
                                 {% if not project.archive %}
                                     <button type="button" class="btn bg-warning-subtle text-black py-1 px-3" data-bs-toggle="tooltip" title="Archiver" data-action="live#action"
@@ -54,13 +54,18 @@
                                 <a href="#"  class="btn bg-info-subtle text-black py-1 px-3" data-bs-toggle="tooltip" title="Cloner">
                                     <i class="action-icon fa-solid fa-clone"></i>
                                 </a>
+                                <a href="{{ path('project_add_package',{_locale: app.locale, project: project.id}) }}" class="btn bg-success-subtle  py-1 px-3 " data-bs-toggle="tooltip" title="Créer un package VIP">
+                                    <iconify-icon icon="ri:vip-fill" style="font-size: 20px"></iconify-icon>
+                                </a>
+                                <a href="{{ path('project_add_sponsoring',{_locale: app.locale, project: project.id}) }}" class="btn bg-success-subtle py-1 px-3 " data-bs-toggle="tooltip" title="Créer un Sponsoring">
+                                    <iconify-icon icon="octicon:sponsor-tiers-16" style="font-size: 20px"></iconify-icon>
+                                </a>
                                 <a href="{{ path('project_details', {project: project.id})}}" class="btn bg-primary-subtle  text-primary py-1 px-3 " data-bs-toggle="tooltip" title="Voir">
                                     <i class="action-icon fa-solid fa-eye"></i>
                                 </a>
-                                <button type="button" class="btn bg-primary-subtle  text-primary  py-1 px-3 " data-action="live#action"
-                                        data-live-action-param="delete" data-live-id-param="{{ project.id }}" data-bs-toggle="tooltip" title="Modifier">
+                                <a href="{{ path('project_edit', {project: project.id})}}"  type="button" class="btn bg-primary-subtle  text-primary  py-1 px-3 "  data-bs-toggle="tooltip" title="Modifier">
                                     <i class="action-icon fa-solid fa-edit"></i>
-                                </button>
+                                </a>
                                 <button type="button" class="btn bg-danger-subtle text-danger  py-1 px-3 " data-action="live#action"
                                         data-live-action-param="deleteProject" data-live-id-param="{{ project.id }}" data-bs-toggle="modal" title="Supprimer" data-bs-target="#danger-header-modal">
                                     <i class="action-icon fa-solid fa-trash"></i>
@@ -88,9 +93,13 @@
                                     <tr>
                                         <td>
                                             {% if instanceOf(product, 'App\\Entity\\ProductPackageVip') %}
-                                                <a href="#" class="ms-3" data-bs-toggle="tooltip" data-bs-original-title="Package VIP"><i class="fa-solid fa-crown me-3"></i></a>
+                                                <a href="#" class="ms-3" data-bs-toggle="tooltip" data-bs-original-title="Package VIP">
+                                                    <iconify-icon icon="ri:vip-fill" class="me-3" style="font-size: 25px"></iconify-icon>
+                                                </a>
                                             {% else %}
-                                                <a href="#" class="ms-3" data-bs-toggle="tooltip" data-bs-original-title="Sponsoring"><i class="fa-solid fa-trophy me-3"></i></a>
+                                                <a href="#" class="ms-3" data-bs-toggle="tooltip" data-bs-original-title="Sponsoring">
+                                                    <iconify-icon icon="octicon:sponsor-tiers-16" class="me-3" style="font-size: 25px"></iconify-icon>
+                                                </a>
                                             {% endif %}
                                             {{ product.name }}
                                             {% if product.description|striptags is not empty %}
@@ -102,7 +111,7 @@
                                         <td>{% if product.quantityMax is empty %}-{% else %}{{ product.quantityMax }}{% endif %}</td>
                                         <td>{{ product.quantitySales }}</td>
                                         <td>{% if product.quantityMax is empty %}-{% else %}{{ product.quantityAvailable }}{% endif %}</td>
-                                        <td>
+                                        <td class="text-end">
                                             <div class="btn-group mb-2" role="group" aria-label="Actions">
                                                 <a href="{{ ea_url()
                                                     .setDashboard('App\\Controller\\Admin\\DashboardController')

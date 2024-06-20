@@ -30,14 +30,7 @@ class CreateFlashSale extends AbstractController
     public function __construct(private readonly FastSalesRepository $fastSalesRepository)
     {
     }
-    protected function instantiateForm(): FormInterface
-    {
-        $flashSale = new FastSales();
-        $flashSale->setContact($this->contact);
-        $flashSale->setUser($this->getUser());
 
-        return $this->createForm(NewFlashSaleType::class, $flashSale);
-    }
     #[LiveAction]
     public function save(): RedirectResponse
     {
@@ -56,4 +49,14 @@ class CreateFlashSale extends AbstractController
         return $this->redirectToRoute('sales_flash_index');
     }
 
+    protected function instantiateForm(): FormInterface
+    {
+        $flashSale = new FastSales();
+        $flashSale->setContact($this->contact);
+        if ($this->getUser() instanceof User) {
+            $flashSale->setUser($this->getUser());
+        }
+
+        return $this->createForm(NewFlashSaleType::class, $flashSale);
+    }
 }

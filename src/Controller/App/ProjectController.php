@@ -27,6 +27,15 @@ class ProjectController extends AbstractController
         ]);
     }
 
+    #[Route('/app/{_locale}/projects/edit/{project}', name: 'project_edit')]
+    public function project_edit(Request $request, string $_locale, Project $project): Response
+    {
+        return $this->render('app/projects/pages/edit.html.twig', [
+            'locale' => $_locale,
+            'project' => $project,
+        ]);
+    }
+
     #[Route('/app/{_locale}/projects/index', name: 'project_index')]
     public function project_index(string $_locale): Response
     {
