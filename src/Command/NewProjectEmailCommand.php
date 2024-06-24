@@ -49,6 +49,7 @@ class NewProjectEmailCommand extends AbstractCommand
         }
 
         $output->writeln('<info>DONE</info>');
+
         return Command::SUCCESS;
     }
 

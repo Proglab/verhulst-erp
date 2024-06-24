@@ -54,7 +54,7 @@ class CreateFlashSale extends AbstractController
 
     protected function instantiateForm(): FormInterface
     {
-        if ($this->sale !== null) {
+        if (null !== $this->sale) {
             return $this->createForm(NewFlashSaleType::class, $this->sale);
         }
         $flashSale = new FastSales();

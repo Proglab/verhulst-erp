@@ -106,7 +106,7 @@ class ProjectRepository extends ServiceEntityRepository
         if ($type) {
             $em = $this->registry->getManager();
             $qb->andWhere('products INSTANCE OF :type')
-                ->setParameter('type', $type == 1 ? $em->getClassMetadata(ProductSponsoring::class) : $em->getClassMetadata(ProductPackageVip::class));
+                ->setParameter('type', '1' === $type ? $em->getClassMetadata(ProductSponsoring::class) : $em->getClassMetadata(ProductPackageVip::class));
         }
 
         $qb->orderBy('p.date_begin', 'ASC');
