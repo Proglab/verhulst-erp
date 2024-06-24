@@ -43,6 +43,8 @@ class ProjectsListComponent extends AbstractController
     public int $page = 1;
 
     #[LiveProp(writable: true)]
+    public ?string $type = null;
+    #[LiveProp(writable: true)]
     public ?Project $projectToDelete = null;
 
     public function __construct(private readonly ProjectRepository $projectRepository, private PaginatorInterface $paginator, private ProductRepository $productRepository)
@@ -69,7 +71,7 @@ class ProjectsListComponent extends AbstractController
 
     public function getProjects(): PaginationInterface
     {
-        $qb = $this->projectRepository->findProjectsQb($this->query, $this->from, $this->to, $this->archived);
+        $qb = $this->projectRepository->findProjectsQb($this->query, $this->from, $this->to, $this->archived, $this->type);
 
         return $this->paginator->paginate($qb, $this->page, 10);
     }

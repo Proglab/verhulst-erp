@@ -61,6 +61,18 @@ class ProjectSearchFilterType extends AbstractType
                     'Oui' => 'true',
                 ],
             ])
+            ->add('type', ChoiceType::class, [
+                'label' => 'Type de produit',
+                'required' => true,
+                'attr' => [
+                    'data-model' => 'type',
+                ],
+                'choices' => [
+                    'Tous' => null,
+                    'sponsoring' => 'sponsoring',
+                    'package' => 'package',
+                ],
+            ])
         ;
     }
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\ProductPackageVip;
+use App\Entity\ProductSponsoring;
 use App\Entity\Project;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -19,7 +21,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ProjectRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(protected ManagerRegistry $registry)
     {
         parent::__construct($registry, Project::class);
     }
@@ -73,7 +75,7 @@ class ProjectRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findProjectsQb(?string $query, ?\DateTime $from, ?\DateTime $to, ?bool $archived): QueryBuilder
+    public function findProjectsQb(?string $query, ?\DateTime $from, ?\DateTime $to, ?bool $archived, ?string $type): QueryBuilder
     {
         $qb = $this->createQueryBuilder('p');
         $qb->leftJoin('p.products', 'products');
@@ -93,12 +95,20 @@ class ProjectRepository extends ServiceEntityRepository
             $qb->andWhere('p.date_end <= :to')
                 ->setParameter('to', $to);
         }
+
         if ($archived) {
             $qb->andWhere('p.archive = :archive')
                 ->setParameter('archive', $archived);
         } else {
             $qb->andWhere('p.archive = false');
         }
+
+        if ($type) {
+            $em = $this->registry->getManager();
+            $qb->andWhere('products INSTANCE OF :type')
+                ->setParameter('type', $type == 1 ? $em->getClassMetadata(ProductSponsoring::class) : $em->getClassMetadata(ProductPackageVip::class));
+        }
+
         $qb->orderBy('p.date_begin', 'ASC');
 
         return $qb;
