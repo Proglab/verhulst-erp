@@ -1,0 +1,19 @@
+{% extends "email/emailBase.html.twig" %}
+
+{% block content %}
+    <row>
+        <columns>
+            <p>
+                {{ 'email.new.project.p1'|trans }}
+            </p>
+            <p>
+                <ul>
+                    {% for project in projects %}
+                        <li>{{ project.name }}</li>
+                    {% endfor %}
+                </ul>
+            </p>
+        </columns>
+    </row>
+{% endblock %}
+

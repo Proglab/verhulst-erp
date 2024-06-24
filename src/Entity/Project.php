@@ -47,6 +47,9 @@ class Project
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: Todo::class, cascade: ['remove'])]
     private Collection $todos;
 
+    #[ORM\Column]
+    private ?bool $new = true;
+
     public function __construct()
     {
         $this->todos = new ArrayCollection();
@@ -239,5 +242,17 @@ class Project
         }
 
         return $return;
+    }
+
+    public function isNew(): ?bool
+    {
+        return $this->new;
+    }
+
+    public function setNew(bool $new): static
+    {
+        $this->new = $new;
+
+        return $this;
     }
 }

@@ -103,4 +103,13 @@ class ProjectRepository extends ServiceEntityRepository
 
         return $qb;
     }
+
+    public function findAllNewProjects(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p')
+            ->where('p.new = true')
+            ->getQuery()
+            ->getResult();
+    }
 }
