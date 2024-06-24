@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\App;
 
 use App\Entity\CompanyContact;
+use App\Entity\FastSales;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,5 +33,14 @@ class FlashSalesController extends AbstractController
     public function index(): Response
     {
         return $this->render('app/sales/flash/index.html.twig');
+    }
+
+    #[Route('/app/{_locale}/sales/flash/edit/{sale}', name: 'sales_flash_edit')]
+    public function edit(?FastSales $sale): Response
+    {
+        return $this->render('app/sales/flash/edit.html.twig', [
+            'sale' => $sale,
+            'contact' => $sale->getContact(),
+        ]);
     }
 }

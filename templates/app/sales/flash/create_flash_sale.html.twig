@@ -100,10 +100,15 @@
             {{ form_errors(form.date) }}
         </div>
     </div>
-
+        {% if this.sale == null %}
     <button name="submitbtn" class="btn btn-primary mt-3" type="submit">
         {{ 'Créer la vente'|trans }}
     </button>
+        {% else %}
+            <button name="submitbtn" class="btn btn-primary mt-3" type="submit">
+                {{ 'Modifier la vente'|trans }}
+            </button>
+        {% endif %}
 
     <a href="{{ path('sales_flash_create') }}" class="btn btn-danger mt-3">
         {{ 'Annuler'|trans }}

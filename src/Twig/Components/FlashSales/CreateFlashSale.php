@@ -27,6 +27,9 @@ class CreateFlashSale extends AbstractController
     #[LiveProp]
     public ?CompanyContact $contact = null;
 
+    #[LiveProp]
+    public ?FastSales $sale = null;
+
     public function __construct(private readonly FastSalesRepository $fastSalesRepository)
     {
     }
@@ -51,6 +54,9 @@ class CreateFlashSale extends AbstractController
 
     protected function instantiateForm(): FormInterface
     {
+        if ($this->sale !== null) {
+            return $this->createForm(NewFlashSaleType::class, $this->sale);
+        }
         $flashSale = new FastSales();
         $flashSale->setContact($this->contact);
         if ($this->getUser() instanceof User) {

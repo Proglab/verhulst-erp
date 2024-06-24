@@ -67,7 +67,7 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="">
                                     <li>
-                                        <a href="'.$this->generateUrl('sales_flash_create').'" class="dropdown-item d-flex align-items-center gap-3">
+                                        <a href="{{ path('sales_flash_edit', {sale: sale.id}) }}" class="dropdown-item d-flex align-items-center gap-3">
                                             <i class="fa-solid fa-pen-to-square"></i> Modifier
                                         </a>
                                     </li>
