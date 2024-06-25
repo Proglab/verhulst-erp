@@ -11,6 +11,7 @@ use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,19 +19,26 @@ class StatsSalesProjectsMonthFilterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $choices = [];
-        for ($i = date('Y'); $i >= 2022; --$i) {
-            $choices[$i] = $i;
-        }
-
         $builder
-            ->add('date', ChoiceType::class, [
-                'label' => 'Année',
-                'attr' => [
-                    'data-model' => 'date',
-                ],
-                'choices' => $choices,
+            ->add('date_begin', DateType::class, [
+                    'label' => 'Date de début',
+                    'html5' => true,
+                    'widget' => 'single_text',
+                    'attr' => [
+                        'data-model' => 'on(change)|date_begin',
+                        'data-controller' => 'flatpickr',
+                    ],
             ]
+            )
+            ->add('date_end', DateType::class, [
+                    'label' => 'Date de fin',
+                    'html5' => true,
+                    'widget' => 'single_text',
+                    'attr' => [
+                        'data-model' => 'on(change)|date_end',
+                        'data-controller' => 'flatpickr',
+                    ],
+                ]
             )
             ->add('users', EntityType::class, [
                 'class' => User::class,

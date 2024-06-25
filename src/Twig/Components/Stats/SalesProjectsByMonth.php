@@ -25,8 +25,11 @@ class SalesProjectsByMonth extends AbstractController
     use ComponentWithFormTrait;
     use DefaultActionTrait;
 
-    #[LiveProp(writable: true)]
-    public ?string $date = null;
+    #[LiveProp(writable: true, format: 'Y-m-d')]
+    public ?\DateTime $date_begin = null;
+
+    #[LiveProp(writable: true, format: 'Y-m-d')]
+    public ?\DateTime $date_end = null;
 
     #[LiveProp(writable: true)]
     public ?Project $project = null;
@@ -36,12 +39,13 @@ class SalesProjectsByMonth extends AbstractController
 
     public function __construct(private Security $security, private BaseSalesRepository $salesRepository, private ChartBuilderInterface $chartBuilder, private UserRepository $userRepository)
     {
-        $this->date = (new \DateTime())->format('Y');
+        $this->date_end = (new \DateTime());
+        $this->date_begin = (new \DateTime())->sub(new \DateInterval('P1Y'));
     }
 
     public function getGraph(): ?Chart
     {
-        if (null === $this->date || null === $this->project) {
+        if (null === $this->project) {
             return null;
         }
 
@@ -49,36 +53,43 @@ class SalesProjectsByMonth extends AbstractController
             throw new \Exception('You are not allowed to access this page');
         }
 
-        $months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+        $dateBegin = clone $this->date_begin;
+        $dateBegin->modify('first day of this month');
+        $dateEnd = clone $this->date_end;
+        $dateEnd->modify('last day of this month');
+        $interval = new \DateInterval('P1M');
+        $period = new \DatePeriod($dateBegin, $interval, $dateEnd);
+
+        foreach ($period as $date) {
+            $months[] = $date->format('Y-m');
+        }
+
         $datasets = [];
 
-        $i = 0;
+        $dateBegin = clone $this->date_begin;
+        $dateEnd = clone $this->date_end;
 
         if (empty($this->users)) {
-            foreach ($this->userRepository->getCommercials() as $user) {
-                ++$i;
-                $data = $this->getDatas($user);
-
-                $datasets[] = [
-                    'label' => $user->getFullName(),
-                    'backgroundColor' => $this->color($i),
-                    'borderColor' => $this->color($i),
-                    'data' => $data,
-                ];
-            }
+            $users = $this->userRepository->getCommercials();
         } else {
+            $users = [];
             foreach ($this->users as $user) {
-                $user = $this->userRepository->find($user);
-                ++$i;
-                $data = $this->getDatas($user);
-
-                $datasets[] = [
-                    'label' => $user->getFullName(),
-                    'backgroundColor' => $this->color($i),
-                    'borderColor' => $this->color($i),
-                    'data' => $data,
-                ];
+                $users[] = $this->userRepository->find($user);
             }
+        }
+
+        $sales = $this->salesRepository->getSalesStatsByDateByUser($dateBegin, $dateEnd, $this->project, $users, $months);
+
+        $i=0;
+        foreach ($sales as $user_id => $sale) {
+            $datasets[] = [
+                'label' => $this->userRepository->find($user_id)->getFullName(),
+                'backgroundColor' => $this->color($i),
+                'borderColor' => $this->color($i),
+                'data' => $sale,
+            ];
+
+            $i++;
         }
 
         $chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
@@ -114,25 +125,5 @@ class SalesProjectsByMonth extends AbstractController
         $blue = sin($frequency * $i + 4) * 127 + 128;
 
         return "rgb($red, $green, $blue)";
-    }
-
-    protected function getDatas(User $user): array
-    {
-        $sales = $this->salesRepository->getSalesStatsByMonthByUser((int) $this->date, $user, $this->project);
-        $datas = [];
-        foreach ($sales as $sale) {
-            $month_index = (int) explode('-', $sale['date'])[0];
-            $year = explode('-', $sale['date'])[1];
-            $datas[$month_index - 1] = $sale['price'];
-        }
-
-        for ($i = 0; $i < 12; ++$i) {
-            if (!isset($datas[$i])) {
-                $datas[$i] = '0.00';
-            }
-        }
-        ksort($datas);
-
-        return $datas;
     }
 }

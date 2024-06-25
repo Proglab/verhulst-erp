@@ -9,9 +9,13 @@
         <div class="card-body">
             {{ form_start(form) }}
             <div class="row">
-                <div class="col-lg-3">
-                    {{ form_label(form.date)}}
-                    {{ form_widget(form.date)}}
+                <div class="col-lg-2">
+                    {{ form_label(form.date_begin)}}
+                    {{ form_widget(form.date_begin)}}
+                </div>
+                <div class="col-lg-2">
+                    {{ form_label(form.date_end)}}
+                    {{ form_widget(form.date_end)}}
                 </div>
                 <div class="col-lg-5">
                     {{ form_label(form.project)}}
@@ -34,7 +38,8 @@
     </div>
     {% if this.graph is not null %}
     <div class="card">
-        <h3 class="text-center mt-3">{{ this.date }} - {{ this.project.name }}</h3>
+        <h3 class="text-center mt-3">{{ this.project.name }}</h3>
+        <h4 class="text-center mt-3">Du {{ this.date_begin|date('d/m/Y') }} au {{ this.date_end|date('d/m/Y') }}</h4>
                 <div  style="height: 285px;">
                     {{ render_chart(this.graph) }}
                 </div>

@@ -3,9 +3,13 @@
         <div class="card-body">
             {{ form_start(form) }}
             <div class="row">
-                <div class = "col-6" >
+                <div class = "col-4" >
                 {{ form_label(form.name) }}
                 {{ form_widget(form.name) }}
+                </div>
+                <div class = "col-2" >
+                    {{ form_label(form.type) }}
+                    {{ form_widget(form.type) }}
                 </div>
                 <div class = "col-2" >
                     {{ form_label(form.from) }}
