@@ -500,16 +500,16 @@ class BaseSalesRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function getSalesStatsByDateByUser(\DateTime $date_begin, \DateTime $date_end, Project $project, array $users, array $month)
+    public function getSalesStatsByDateByUser(\DateTime $date_begin, \DateTime $date_end, Project $project, array $users, array $month): array
     {
         $sql = "
-        SELECT SUM(sales.price * sales.quantity) as total, CONCAT(YEAR(sales.date), '-',MONTH(sales.date)) as date, sales.user_id 
-FROM sales 
-JOIN product ON (sales.product_id = product.id) 
+        SELECT SUM(sales.price * sales.quantity) as total, CONCAT(YEAR(sales.date), '-',MONTH(sales.date)) as date, sales.user_id
+FROM sales
+JOIN product ON (sales.product_id = product.id)
 JOIN project ON (product.project_id = project.id)
-WHERE project.id = ".$project->getId()." and sales.date BETWEEN '".$date_begin->format('Y-m-d')."' AND '".$date_end->format('Y-m-d')."'
-GROUP BY CONCAT(YEAR(sales.date), '-', MONTH(sales.date)), user_id  
-ORDER BY CONCAT(YEAR(sales.date), '-', MONTH(sales.date)) ASC, `sales`.`user_id` ASC 
+WHERE project.id = " . $project->getId() . " and sales.date BETWEEN '" . $date_begin->format('Y-m-d') . "' AND '" . $date_end->format('Y-m-d') . "'
+GROUP BY CONCAT(YEAR(sales.date), '-', MONTH(sales.date)), user_id
+ORDER BY CONCAT(YEAR(sales.date), '-', MONTH(sales.date)) ASC, `sales`.`user_id` ASC
         ";
 
         $query = $this->getEntityManager()->getConnection()->executeQuery($sql);
@@ -531,7 +531,7 @@ ORDER BY CONCAT(YEAR(sales.date), '-', MONTH(sales.date)) ASC, `sales`.`user_id`
                         $datas[$user->getId()][$m] = 0;
                     }
 
-                    if ($dateSearched == $dateFinded && $result['user_id'] == $user->getId()) {
+                    if ($dateSearched === $dateFinded && $result['user_id'] === $user->getId()) {
                         $datas[$user->getId()][$m] += $result['total'];
                     }
                 }

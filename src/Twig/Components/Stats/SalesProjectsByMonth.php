@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Twig\Components\Stats;
 
 use App\Entity\Project;
-use App\Entity\User;
 use App\Form\Type\StatsSalesProjectsMonthFilterType;
 use App\Repository\BaseSalesRepository;
 use App\Repository\UserRepository;
@@ -60,6 +59,8 @@ class SalesProjectsByMonth extends AbstractController
         $interval = new \DateInterval('P1M');
         $period = new \DatePeriod($dateBegin, $interval, $dateEnd);
 
+        $months = [];
+
         foreach ($period as $date) {
             $months[] = $date->format('Y-m');
         }
@@ -80,7 +81,7 @@ class SalesProjectsByMonth extends AbstractController
 
         $sales = $this->salesRepository->getSalesStatsByDateByUser($dateBegin, $dateEnd, $this->project, $users, $months);
 
-        $i=0;
+        $i = 0;
         foreach ($sales as $user_id => $sale) {
             $datasets[] = [
                 'label' => $this->userRepository->find($user_id)->getFullName(),
@@ -89,7 +90,7 @@ class SalesProjectsByMonth extends AbstractController
                 'data' => $sale,
             ];
 
-            $i++;
+            ++$i;
         }
 
         $chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);

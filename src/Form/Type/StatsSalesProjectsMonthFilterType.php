@@ -10,7 +10,6 @@ use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,24 +20,24 @@ class StatsSalesProjectsMonthFilterType extends AbstractType
     {
         $builder
             ->add('date_begin', DateType::class, [
-                    'label' => 'Date de début',
-                    'html5' => true,
-                    'widget' => 'single_text',
-                    'attr' => [
-                        'data-model' => 'on(change)|date_begin',
-                        'data-controller' => 'flatpickr',
-                    ],
+                'label' => 'Date de début',
+                'html5' => true,
+                'widget' => 'single_text',
+                'attr' => [
+                    'data-model' => 'on(change)|date_begin',
+                    'data-controller' => 'flatpickr',
+                ],
             ]
             )
             ->add('date_end', DateType::class, [
-                    'label' => 'Date de fin',
-                    'html5' => true,
-                    'widget' => 'single_text',
-                    'attr' => [
-                        'data-model' => 'on(change)|date_end',
-                        'data-controller' => 'flatpickr',
-                    ],
-                ]
+                'label' => 'Date de fin',
+                'html5' => true,
+                'widget' => 'single_text',
+                'attr' => [
+                    'data-model' => 'on(change)|date_end',
+                    'data-controller' => 'flatpickr',
+                ],
+            ]
             )
             ->add('users', EntityType::class, [
                 'class' => User::class,
