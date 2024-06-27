@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\BaseSales;
+use App\Entity\Commission;
 use App\Entity\Company;
 use App\Entity\CompanyContact;
 use App\Entity\Product;
@@ -30,6 +31,24 @@ class BaseSalesRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, BaseSales::class);
+    }
+
+    public function save(BaseSales $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(BaseSales $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
     }
 
     public function getQuantitySaleByProduct(Product $product): int
@@ -531,7 +550,7 @@ ORDER BY CONCAT(YEAR(sales.date), '-', MONTH(sales.date)) ASC, `sales`.`user_id`
                         $datas[$user->getId()][$m] = 0;
                     }
 
-                    if ($dateSearched === $dateFinded && $result['user_id'] === $user->getId()) {
+                    if ($dateSearched->format('Ym') === $dateFinded->format('Ym') && (int) $result['user_id'] === $user->getId()) {
                         $datas[$user->getId()][$m] += $result['total'];
                     }
                 }

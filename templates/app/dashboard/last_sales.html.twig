@@ -1,4 +1,4 @@
-<div class="col-lg-12">
+<div class="col-lg-12" {{ attributes }}>
     <!-- -------------------------------------------- -->
     <!-- Mes ventes -->
     <!-- -------------------------------------------- -->
@@ -26,6 +26,7 @@
                         <th scope="col" class="fs-4 fw-semibold mb-0">Prix de vente</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0">Com TF</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0">Com Sales</th>
+                        <th scope="col" class="fs-4 fw-semibold mb-0">Validée ?</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0"></th>
                     </tr>
                     </thead>
@@ -69,6 +70,7 @@
                         <td><h6 class="mb-0">{{ sale.totalVr|number_format(2, ',', '') }}€</h6><i>{% if sale.percentVrType != 'fixed' %}{{ sale.percentVr }}%{% else %}Prix fixe{% endif %}</i></td>
 
                         <td><h6 class="mb-0">{{ sale.totalCom|number_format(2, ',', '') }}€</h6><i>{% if sale.percentComType != 'fixed' %}{{ sale.percentCom }}%{% endif%} {% if sale.percentComType == 'percent_pv' %}du PV{% elseif sale.percentComType == 'percent_com' %} de la marge TF{% else %}Prix fixe{% endif %}</i></td>
+                        <td>{% if sale.validate %}<i class="fa-solid fa-check text-success"></i>{% else %}<i class="fa-solid fa-xmark text-danger"></i>{% endif %}</td>
                         <td>
                             {% if sale.product is not empty %}
                             <div class="dropdown dropstart">
@@ -96,9 +98,30 @@
                                 </ul>
                             </div>
                             {% else %}
-                                <div class="">
-
-                                </div>
+                                    {% if not sale.validate %}
+                                        <div class="dropdown dropstart">
+                                            <a href="javascript:void(0)" class="text-muted" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <iconify-icon icon="solar:menu-dots-bold"></iconify-icon>
+                                            </a>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="">
+                                                <li>
+                                                    <a href="{{ path('sales_flash_edit', {sale: sale.id}) }}" class="dropdown-item d-flex align-items-center gap-3">
+                                                        <i class="fa-solid fa-pen-to-square"></i> Modifier
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <button data-action="live#action" data-live-action-param="validate" data-live-id-param="{{ sale.id }}" class="dropdown-item d-flex align-items-center gap-3">
+                                                        <i class="fa-solid fa-check"></i> Valider
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button data-action="live#action" data-live-action-param="delete" data-live-id-param="{{ sale.id }}" class="dropdown-item d-flex align-items-center gap-3">
+                                                        <i class="fa-solid fa-trash"></i> Supprimer
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    {% endif %}
                             {% endif %}
                         </td>
                     </tr>
@@ -114,6 +137,7 @@
                         <th scope="col" class="fs-4 fw-semibold mb-0">Prix de vente</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0">Com TF</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0">Com Sales</th>
+                        <th scope="col" class="fs-4 fw-semibold mb-0">Validée ?</th>
                         <th scope="col" class="fs-4 fw-semibold mb-0"></th>
                     </tr>
                     </tfoot>

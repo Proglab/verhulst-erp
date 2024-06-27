@@ -6,6 +6,7 @@ namespace App\Twig\Components\FlashSales;
 
 use App\Form\Type\FlashSalesFilterType;
 use App\Repository\FastSalesRepository;
+use App\Service\SalesService;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,7 +33,7 @@ class FlashSaleIndex extends AbstractController
     #[LiveProp(writable: true, url: true)]
     public int $page = 1;
 
-    public function __construct(private FastSalesRepository $fastSalesRepository, private PaginatorInterface $paginator)
+    public function __construct(private FastSalesRepository $fastSalesRepository, private PaginatorInterface $paginator, private SalesService $salesService)
     {
     }
 
@@ -47,16 +48,13 @@ class FlashSaleIndex extends AbstractController
     #[LiveAction]
     public function validate(#[LiveArg] int $id): void
     {
-        $sale = $this->fastSalesRepository->find($id);
-        $sale->setValidate(true);
-        $this->fastSalesRepository->save($sale, true);
+        $this->salesService->validate($id);
     }
 
     #[LiveAction]
     public function delete(#[LiveArg] int $id): void
     {
-        $sale = $this->fastSalesRepository->find($id);
-        $this->fastSalesRepository->remove($sale, true);
+        $this->salesService->delete($id);
     }
 
     #[LiveAction]

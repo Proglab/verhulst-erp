@@ -121,6 +121,21 @@ class BaseSales
     #[ORM\ManyToOne(inversedBy: 'sales')]
     private ?Product $product = null;
 
+    #[ORM\Column]
+    private bool $validate = false;
+
+    public function isValidate(): ?bool
+    {
+        return $this->validate;
+    }
+
+    public function setValidate(bool $validate): static
+    {
+        $this->validate = $validate;
+
+        return $this;
+    }
+
     public function totalCalculPrice(): float
     {
         if (null === $this->price || 0 === (int) $this->price) {
