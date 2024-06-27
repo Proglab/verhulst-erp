@@ -43,37 +43,56 @@
                         <td class="col-2"><h6 class="mb-0">{{ project.dateBegin|date('d/m/Y') }}</h6></td>
                         <td class="col-2"><h6 class="mb-0">{{ project.dateEnd|date('d/m/Y') }}</h6></td>
                         <td class="col-2 text-end">
-                            <div class="btn-group mb-2" role="group" aria-label="Actions">
-                                {% if not project.archive %}
-                                    <button type="button" class="btn bg-warning-subtle text-black py-1 px-3" data-bs-toggle="tooltip" title="Archiver" data-action="live#action"
-                                            data-live-action-param="archive" data-live-id-param="{{ project.id }}">
-                                        <i class="action-icon fa-solid fa-box-archive"></i>
+                            <div class="dropdown dropstart">
+                                <a href="javascript:void(0)" class="text-muted" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <iconify-icon icon="solar:menu-dots-bold"></iconify-icon>
+                                </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="">
+                                <li>
+                                    {% if not project.archive %}
+                                        <button type="button" class="btn text-black py-1 px-3" data-action="live#action"
+                                                data-live-action-param="archive" data-live-id-param="{{ project.id }}">
+                                            <i class="action-icon fa-solid fa-box-archive me-3"></i> Archiver
+                                        </button>
+                                    {% else %}
+                                        <button type="button" class="btn text-black py-1 px-3" data-action="live#action"
+                                                data-live-action-param="unarchive" data-live-id-param="{{ project.id }}">
+                                            <i class="fa-solid fa-file-zipper me-3"></i> Désarchiver
+                                        </button>
+                                    {% endif %}
+                                </li>
+                                <li>
+                                    <a href="#"  class="btn text-black py-1 px-3">
+                                        <i class="action-icon fa-solid fa-clone me-3"></i> Cloner
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('project_add_package',{_locale: app.locale, project: project.id}) }}" class="btn text-black py-1 px-3 ">
+                                        <iconify-icon icon="ri:vip-fill" class="me-3"></iconify-icon> Créer un package VIP
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('project_add_sponsoring',{_locale: app.locale, project: project.id}) }}" class="btn text-black py-1 px-3 ">
+                                        <iconify-icon icon="octicon:sponsor-tiers-16" class="me-3"></iconify-icon> Créer un Sponsoring
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('project_details', {project: project.id})}}" class="btn text-black py-1 px-3 ">
+                                        <i class="action-icon fa-solid fa-eye me-3"></i> Voir
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('project_edit', {project: project.id})}}"  type="button" class="btn text-black  py-1 px-3 ">
+                                        <i class="action-icon fa-solid fa-edit me-3"></i> Modifier
+                                    </a>
+                                </li>
+                                <li>
+                                    <button type="button" class="btn text-black py-1 px-3 " data-action="live#action"
+                                            data-live-action-param="deleteProject" data-live-id-param="{{ project.id }}" data-bs-toggle="modal" data-bs-target="#danger-header-modal">
+                                        <i class="action-icon fa-solid fa-trash me-3"></i> Supprimer
                                     </button>
-                                {% else %}
-                                    <button type="button" class="btn bg-warning-subtle text-black py-1 px-3" data-bs-toggle="tooltip" title="Désarchiver" data-action="live#action"
-                                            data-live-action-param="unarchive" data-live-id-param="{{ project.id }}">
-                                        <i class="fa-solid fa-file-zipper"></i>
-                                    </button>
-                                {% endif %}
-                                <a href="#"  class="btn bg-info-subtle text-black py-1 px-3" data-bs-toggle="tooltip" title="Cloner">
-                                    <i class="action-icon fa-solid fa-clone"></i>
-                                </a>
-                                <a href="{{ path('project_add_package',{_locale: app.locale, project: project.id}) }}" class="btn bg-success-subtle  py-1 px-3 " data-bs-toggle="tooltip" title="Créer un package VIP">
-                                    <iconify-icon icon="ri:vip-fill" style="font-size: 20px"></iconify-icon>
-                                </a>
-                                <a href="{{ path('project_add_sponsoring',{_locale: app.locale, project: project.id}) }}" class="btn bg-success-subtle py-1 px-3 " data-bs-toggle="tooltip" title="Créer un Sponsoring">
-                                    <iconify-icon icon="octicon:sponsor-tiers-16" style="font-size: 20px"></iconify-icon>
-                                </a>
-                                <a href="{{ path('project_details', {project: project.id})}}" class="btn bg-primary-subtle  text-primary py-1 px-3 " data-bs-toggle="tooltip" title="Voir">
-                                    <i class="action-icon fa-solid fa-eye"></i>
-                                </a>
-                                <a href="{{ path('project_edit', {project: project.id})}}"  type="button" class="btn bg-primary-subtle  text-primary  py-1 px-3 "  data-bs-toggle="tooltip" title="Modifier">
-                                    <i class="action-icon fa-solid fa-edit"></i>
-                                </a>
-                                <button type="button" class="btn bg-danger-subtle text-danger  py-1 px-3 " data-action="live#action"
-                                        data-live-action-param="deleteProject" data-live-id-param="{{ project.id }}" data-bs-toggle="modal" title="Supprimer" data-bs-target="#danger-header-modal">
-                                    <i class="action-icon fa-solid fa-trash"></i>
-                                </button>
+                                </li>
+                            </ul>
                             </div>
                         </td>
                     </tr>
@@ -116,42 +135,52 @@
                                         <td>{{ product.quantitySales }}</td>
                                         <td>{% if product.quantityMax is empty %}-{% else %}{{ product.quantityAvailable }}{% endif %}</td>
                                         <td class="text-end">
-                                            <div class="btn-group mb-2" role="group" aria-label="Actions">
-                                                <a href="{{ ea_url()
-                                                    .setDashboard('App\\Controller\\Admin\\DashboardController')
-                                                    .setController('App\\Controller\\Admin\\SalesCrudController')
-                                                    .setAction('new')
-                                                    .set('entityFqcn', 'App\\Entity\\Sales')
-                                                    .set('productId', product.id)
-                                                    .set('projectId', project.id)
-                                                    .setEntityId(null)
+                                            <div class="dropdown dropstart">
+                                                <a href="javascript:void(0)" class="text-muted" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <iconify-icon icon="solar:menu-dots-bold"></iconify-icon>
+                                                </a>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="">
+                                                    <li>
+                                                        <a href="{{ ea_url()
+                                                            .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                            .setController('App\\Controller\\Admin\\SalesCrudController')
+                                                            .setAction('new')
+                                                            .set('entityFqcn', 'App\\Entity\\Sales')
+                                                            .set('productId', product.id)
+                                                            .set('projectId', project.id)
+                                                            .setEntityId(null)
 
-                                                }}"  class="btn bg-warning-subtle text-black py-1 px-3" data-bs-toggle="tooltip" title="Créer une vente">
-                                                    <i class="fa fa-euro-sign"></i>
-                                                </a>
-                                                {% if instanceOf(product, 'App\\Entity\\ProductPackageVip') %}
-                                                <a href="{{ ea_url()
-                                                    .setDashboard('App\\Controller\\Admin\\DashboardController')
-                                                    .setController('App\\Controller\\Admin\\ProductPackageVipCrudController')
-                                                    .setAction('edit')
-                                                    .setEntityId(product.id) }}" class="btn bg-primary-subtle text-primary  py-1 px-3 " data-bs-toggle="tooltip" title="Modifier">
-                                                    <i class="fa fa-pen-to-square"></i>
-                                                </a>
-                                                {% else %}
-                                                    <a href="{{ ea_url()
-                                                        .setDashboard('App\\Controller\\Admin\\DashboardController')
-                                                        .setController('App\\Controller\\Admin\\ProductSponsoringCrudController')
-                                                        .setAction('edit')
-                                                        .setEntityId(product.id) }}" class="btn bg-primary-subtle text-primary  py-1 px-3 " data-bs-toggle="tooltip" title="Modifier">
-                                                        <i class="fa fa-pen-to-square"></i>
-                                                    </a>
-                                                {% endif %}
-                                                <button type="button" class="btn bg-danger-subtle text-danger  py-1 px-3 " data-action="live#action"
-                                                        data-live-action-param="deleteProduct" data-live-id-param="{{ product.id }}">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
+                                                        }}"  class="btn  text-black py-1 px-3">
+                                                            <i class="fa fa-euro-sign me-3"></i> Créer une vente
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        {% if instanceOf(product, 'App\\Entity\\ProductPackageVip') %}
+                                                            <a href="{{ ea_url()
+                                                                .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                                .setController('App\\Controller\\Admin\\ProductPackageVipCrudController')
+                                                                .setAction('edit')
+                                                                .setEntityId(product.id) }}" class="btn py-1 px-3 text-black">
+                                                                <i class="fa fa-pen-to-square me-3"></i> Modifier
+                                                            </a>
+                                                        {% else %}
+                                                            <a href="{{ ea_url()
+                                                                .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                                .setController('App\\Controller\\Admin\\ProductSponsoringCrudController')
+                                                                .setAction('edit')
+                                                                .setEntityId(product.id) }}" class="btn  py-1 px-3 text-black">
+                                                                <i class="fa fa-pen-to-square me-3"></i> Modifier
+                                                            </a>
+                                                        {% endif %}
+                                                    </li>
+                                                    <li>
+                                                        <button type="button" class="btn  py-1 px-3  text-black  " data-action="live#action"
+                                                                data-live-action-param="deleteProduct" data-live-id-param="{{ product.id }}">
+                                                            <i class="fa fa-trash me-3"></i> Supprimer
+                                                        </button>
+                                                    </li>
+                                                </ul>
                                             </div>
-
                                         </td>
                                     </tr>
                                 {% endfor %}
