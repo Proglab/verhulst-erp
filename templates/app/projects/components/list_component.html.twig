@@ -105,6 +105,7 @@
                                     <th class="col-6">Produit</th>
                                     <th class="col-1">Date début</th>
                                     <th class="col-1">Date fin</th>
+                                    <th class="col-1">Prix</th>
                                     <th class="col-1">Qt max</th>
                                     <th class="col-1">Qt vendue</th>
                                     <th class="col-1">Qt dispo</th>
@@ -113,7 +114,7 @@
                                 </thead>
                                 <tbody>
                                 {% for product in project.products %}
-                                    <tr>
+                                    <tr {% if product.quantityMax is not empty and product.quantityAvailable <= 0 %}class="table-light" {% else %}class="table-success"{% endif %}>
                                         <td>
                                             {% if instanceOf(product, 'App\\Entity\\ProductPackageVip') %}
                                                 <a href="#" class="ms-3" data-bs-toggle="tooltip" data-bs-original-title="Package VIP">
@@ -126,11 +127,21 @@
                                             {% endif %}
                                             {{ product.name }}
                                             {% if product.description|striptags is not empty %}
-                                                <a href="#" class="ms-3" data-bs-toggle="tooltip" data-bs-original-title="{{ product.description|striptags }}"><i class="fa-solid fa-eye"></i></a>
+                                            <div class="dropdown dropstart ms-3" style=" display: inline;">
+                                                <a href="javascript:void(0)" class="text-muted" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </a>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="width: 400px;">
+                                                    <li class="m-2">
+                                                        {{ product.description|raw }}
+                                                    </li>
+                                                </ul>
+                                            </div>
                                             {% endif %}
                                         </td>
                                         <td>{{ product.dateBegin|date('d/m/Y') }}</td>
                                         <td>{{ product.dateEnd|date('d/m/Y') }}</td>
+                                        <td>{{ product.ca|number_format(2, ',', '') }}€</td>
                                         <td>{% if product.quantityMax is empty %}-{% else %}{{ product.quantityMax }}{% endif %}</td>
                                         <td>{{ product.quantitySales }}</td>
                                         <td>{% if product.quantityMax is empty %}-{% else %}{{ product.quantityAvailable }}{% endif %}</td>
@@ -139,7 +150,8 @@
                                                 <a href="javascript:void(0)" class="text-muted" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                                     <iconify-icon icon="solar:menu-dots-bold"></iconify-icon>
                                                 </a>
-                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="">
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="width: 175px;">
+                                                    {% if product.quantityMax is not empty and product.quantityAvailable > 0 %}
                                                     <li>
                                                         <a href="{{ ea_url()
                                                             .setDashboard('App\\Controller\\Admin\\DashboardController')
@@ -150,10 +162,11 @@
                                                             .set('projectId', project.id)
                                                             .setEntityId(null)
 
-                                                        }}"  class="btn  text-black py-1 px-3">
+                                                        }}"  class="btn  text-black">
                                                             <i class="fa fa-euro-sign me-3"></i> Créer une vente
                                                         </a>
                                                     </li>
+                                                    {% endif %}
                                                     <li>
                                                         {% if instanceOf(product, 'App\\Entity\\ProductPackageVip') %}
                                                             <a href="{{ ea_url()
