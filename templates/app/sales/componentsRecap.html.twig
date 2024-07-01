@@ -115,7 +115,8 @@
             <table class="table table-striped" {{ stimulus_controller('datatable-simple') }}  data-loading="addClass(opacity-50)">
                 <thead>
                 <tr>
-                    <th>Date de l'encodage</th>
+                    <th class="col-1">Date de l'encodage</th>
+                    <th></th>
                     <th>Project</th>
                     <th>Client</th>
                     <th>Sales</th>
@@ -128,7 +129,18 @@
                 <tbody>
                     {% for sale in this.sales %}
                         <tr>
-                            <td><h6 class="mb-0">{{ sale.date|date('d/m/Y') }}</h6></td>
+                            <td>
+                                <h6 class="mb-0">{{ sale.date|date('d/m/Y') }}</h6>
+                            </td>
+                            <td>
+                                {% if instanceOf(sale.product, 'App\\Entity\\ProductPackageVip') %}
+                                    <iconify-icon icon="ri:vip-fill" width="25" height="25"></iconify-icon>
+                                {% elseif instanceOf(sale.product, 'App\\Entity\\ProductSponsoring') %}
+                                    <iconify-icon icon="octicon:sponsor-tiers-16" width="25" height="25"></iconify-icon>
+                                {% else %}
+                                    <iconify-icon icon="mdi:flash" width="25" height="25"></iconify-icon>
+                                {% endif %}
+                            </td>
                             <td>
                                 {% if sale.product is not empty %}
                                     <h6 class="mb-0">{{ sale.product.name }}</h6>
@@ -143,7 +155,7 @@
                             </td>
                             <td><h6 class="mb-0">{{ sale.user.fullname }}</h6></td>
                             <td><h6 class="mb-0">{{ sale.price|number_format(2, ',', '') }}€</h6><i>Quantité : {{ sale.quantity }}</i></td>
-                            <td><h6 class="mb-0">Prix final : {{ sale.totalPrice|number_format(2, ',', '') }}€</h6><i>Prix temporaire : {{ sale.totalForecastPrice|number_format(2, ',', '') }}€</i></td>
+                            <td><h6 class="mb-0">Final : {{ sale.totalPrice|number_format(2, ',', '') }}€</h6><i>Temporaire : {{ sale.totalForecastPrice|number_format(2, ',', '') }}€</i></td>
                             <td><h6 class="mb-0">{{ sale.totalVr|number_format(2, ',', '') }}€</h6><i>{% if sale.percentVrType != 'fixed' %}{{ sale.percentVr }}%{% else %}Prix fixe{% endif %}</i></td>
                             <td><h6 class="mb-0">{{ sale.totalCom|number_format(2, ',', '') }}€</h6><i>{% if sale.percentComType != 'fixed' %}{{ sale.percentCom }}%{% endif%} {% if sale.percentComType == 'percent_pv' %}du PV{% elseif sale.percentComType == 'percent_com' %} de la marge TF{% else %}Prix fixe{% endif %}</i></td>
 
@@ -153,6 +165,7 @@
                 <tfoot>
                 <tr>
                     <th>Date de l'encodage</th>
+                    <th></th>
                     <th>Project</th>
                     <th>Client</th>
                     <th>Sales</th>
