@@ -119,6 +119,42 @@ class BaseSalesRepository extends ServiceEntityRepository
         return $return;
     }
 
+    public function getSalesByMonthByUser(?\DateTime $dateBegin, ?\DateTime $dateEnd, ?User $user, ?Project $project, ?string $type): array
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->leftJoin('s.product', 'p');
+
+        if ($dateBegin !== null && $dateEnd !== null) {
+            $qb->where('s.date BETWEEN :start AND :end')
+                ->setParameter('start', $dateBegin->format('Y-m-d'))
+                ->setParameter('end', $dateEnd->format('Y-m-d'));
+        } elseif ($dateBegin !== null && $dateEnd === null) {
+            $qb->where('s.date >= :start')
+                ->setParameter('start', $dateBegin->format('Y-m-d'));
+        } else {
+            $qb->where('s.date >= :end')
+                ->setParameter('end', $dateEnd->format('Y-m-d'));
+        }
+
+        if ($user !== null) {
+            $qb->andWhere('s.user = :user')
+                ->setParameter('user', $user);
+        }
+
+        if ($project !== null) {
+            $qb->andWhere('p.project = :project')
+                ->setParameter('project', $project);
+        }
+
+        if ($type !== null) {
+            $qb->andWhere('p instance of :productType')
+                ->setParameter('productType', $type);
+        }
+
+        $qb->getQuery()
+            ->getResult();
+    }
+
     public function getCommissionsStatsByMonthByUser(int $year, User $user): array
     {
         /** @var Sales[] $sales */

@@ -69,8 +69,8 @@ class ProjectSearchFilterType extends AbstractType
                 ],
                 'choices' => [
                     'Tous' => null,
-                    'sponsoring' => 'sponsoring',
-                    'package' => 'package',
+                    'Sponsoring' => 'sponsoring',
+                    'Package VIP' => 'package',
                 ],
             ])
         ;
