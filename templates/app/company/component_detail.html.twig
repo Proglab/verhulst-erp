@@ -1,0 +1,171 @@
+<div {{ attributes }}>
+    <div class="card">
+        <div class="card-body">
+            <div class="chat-box email-box mh-n100" data-simplebar="init">
+
+                <div class="chat-list chat active-chat" data-user-id="1">
+                    <div class="hstack align-items-start pb-1 align-items-center justify-content-between">
+                        <div class="d-flex align-items-center gap-3">
+                            <div>
+                                <h5 class="fw-semibold fs-4 mb-0">{{ this.company.name }} </h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <h6>Adresse</h6>
+                        </div>
+                        <div class="col-6">
+                            <h6>Facturation</h6>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-black mb-0">{{ this.company.street }}</div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-black mb-0">{{ this.company.billingStreet }}</div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-black mb-0">{{ this.company.pc }} {{ this.company.city }}</div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-black mb-0">{{ this.company.billingPc }} {{ this.company.billingCity }}</div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-black mb-0">{{ this.company.country }}</div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-black mb-0">{{ this.company.billingCountry }}</div>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="mb-2 fs-2">Notes</p>
+                        <p class="mb-3 text-dark">
+                            {{ company.note|raw }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card overflow-hidden chat-application">
+        <div class="d-flex w-100">
+            <div class="d-flex w-100">
+                <div class="min-width-340">
+                    <div class="border-end user-chat-box h-100">
+                        <div class="px-4 pt-9 pb-6 d-none d-lg-block">
+                            <div class="position-relative">
+                                <input type="text" class="form-control search-chat py-2 ps-5" id="text-srh"
+                                       placeholder="Search">
+                                <i class="ti ti-search position-absolute top-50 start-0 translate-middle-y fs-6 text-dark ms-3"></i>
+                            </div>
+                        </div>
+                        <div class="app-chat">
+                            <ul class="chat-users mh-n100" data-simplebar="init">
+                                <div class="simplebar-wrapper" style="margin: 0px;">
+                                    <div class="simplebar-height-auto-observer-wrapper">
+                                        <div class="simplebar-height-auto-observer"></div>
+                                    </div>
+                                    <div class="simplebar-mask">
+                                        <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+                                            <div class="simplebar-content-wrapper" tabindex="0" role="region"
+                                                 aria-label="scrollable content"
+                                                 style="height: auto; overflow: hidden;">
+                                                <div class="simplebar-content" style="padding: 0px; overflow:auto; height: 600px;">
+                                                    {% for contact in company.contact %}
+                                                    <li>
+                                                        <div class="px-4 py-3 bg-hover-light-black d-flex align-items-center chat-user bg-light-subtle">
+                                                            <div class="ms-6 d-inline-block w-75">
+                                                                <h6 class="mb-1 fw-semibold chat-title"><a data-action="live#action" data-live-action-param="viewContact" data-live-contact-param="{{ contact.id }}">{{ contact.fullName }}</a></h6>
+                                                                <div class="fs-2 text-body-color d-block">{{ contact.email }}</div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="simplebar-placeholder" style="height: 600px;"></div>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-100" data-loading="addClass(opacity-50)">
+                {% if this.contact is not null %}
+                    <div class="chat-container h-100 w-100">
+                        <div class="chat-box-inner-part h-100">
+                            <div class="chatting-box app-email-chatting-box">
+                                <div class="p-9 py-3 border-bottom chat-meta-user d-flex align-items-center justify-content-between">
+                                    <h5 class="text-dark mb-0 fs-5">Détail du contact</h5>
+                                </div>
+                                <div class="position-relative overflow-hidden">
+                                    <div class="position-relative">
+                                        <div class="chat-box email-box mh-n100 p-9" data-simplebar="init">
+
+                                            <div class="chat-list chat active-chat" data-user-id="1">
+                                                <div class="hstack align-items-start mb-7 pb-1 align-items-center justify-content-between">
+                                                    <div class="d-flex align-items-center gap-3">
+                                                        <div>
+                                                            <h6 class="fw-semibold fs-4 mb-0">{{ this.contact.fullName }} </h6>
+                                                            <p class="mb-0">{{ this.contact.function }}</p>
+                                                            <p class="mb-0">{{ this.company.name }}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-2 mb-7">
+                                                        <p class="mb-1 fs-2">Téléphone</p>
+                                                        <h6 class="fw-semibold mb-0">{{ this.contact.phone }}</h6>
+                                                    </div>
+
+                                                    <div class="col-2 mb-7">
+                                                        <p class="mb-1 fs-2">Gsm</p>
+                                                        <h6 class="fw-semibold mb-0">{{ this.contact.gsm }}</h6>
+                                                    </div>
+                                                    <div class="col-8 mb-7">
+                                                        <p class="mb-1 fs-2">Email address</p>
+                                                        <h6 class="fw-semibold mb-0"><a href="mailto:{{ contact.email }}">{{ this.contact.email }}</a></h6>
+                                                    </div>
+                                                    <div class="col-12 mb-9">
+                                                        <p class="mb-1 fs-2">Addresse</p>
+                                                        <h6 class="fw-semibold mb-0">{{ this.contact.street }}</h6>
+                                                    </div>
+                                                    <div class="col-4 mb-7">
+                                                        <p class="mb-1 fs-2">Ville</p>
+                                                        <h6 class="fw-semibold mb-0">{{ this.contact.pc }} {{ this.contact.city }}</h6>
+                                                    </div>
+                                                    <div class="col-8 mb-7">
+                                                        <p class="mb-1 fs-2">Pays</p>
+                                                        <h6 class="fw-semibold mb-0">{{ this.contact.country }}</h6>
+                                                    </div>
+                                                </div>
+                                                <div class="pb-7 mb-4">
+                                                    <p class="mb-2 fs-2">Notes</p>
+                                                    <p class="mb-3 text-dark">
+                                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+                                                        bibendum
+                                                        hendrerit lobortis. Nullam ut lacus eros. Sed at luctus urna, eu
+                                                        fermentum
+                                                        diam.
+                                                        In et tristique mauris.
+                                                    </p>
+                                                    <p class="mb-0 text-dark">Ut id ornare metus, sed auctor enim.
+                                                        Pellentesque
+                                                        nisi magna, laoreet a augue eget, tempor volutpat diam.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

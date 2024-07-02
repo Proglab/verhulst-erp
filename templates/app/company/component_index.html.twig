@@ -18,10 +18,36 @@
                 {% for company in this.companies %}
                     <div class="col-3">
                         <div class="card">
-                            <div class="card-header text-center">
-                                <h6 class="lh-base">
-                                    {{ company.name }}
-                                </h6>
+                            <div class="card-header d-md-flex justify-content-between">
+                                <a href="{{ path('company_details', {id: company.id}) }}">
+                                    <h6 class="lh-base">
+                                        {{ company.name }}
+                                    </h6>
+                                </a>
+                                <div class="dropdown dropstart">
+                                    <a href="javascript:void(0)" class="text-muted" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <iconify-icon icon="solar:menu-dots-bold"></iconify-icon>
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="width: 175px;">
+                                        <li>
+                                            <a href="{{ path('company_details', {id: company.id}) }}" class="btn  py-1 px-3  text-black">
+                                                <i class="fa fa-eye me-3"></i> Voir
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <button type="button" class="btn  py-1 px-3  text-black  " data-action="live#action"
+                                                    data-live-action-param="deleteProduct" data-live-id-param="1">
+                                                <i class="fa fa-edit me-3"></i> Modifier
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button type="button" class="btn  py-1 px-3  text-black  " data-action="live#action"
+                                                    data-live-action-param="deleteProduct" data-live-id-param="1">
+                                                <i class="fa fa-trash me-3"></i> Supprimer
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
 
                             </div>
                             <div class="card-body my-0 p-1 mx-3">
@@ -34,9 +60,8 @@
                                      {{ company.vatNumber }}
                                 {% endif %}
                             </div>
-                            <div class="card-footer text-end my-0 p-1 mx-3">
+                            <div class="card-footer d-md-flex justify-content-between my-0 p-1 mx-0">
                                 {% if company.note is not empty %}
-
                                     <div class="dropdown dropstart ms-3" style=" display: inline;">
                                         <a href="javascript:void(0)" class="text-muted" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                             <iconify-icon icon="material-symbols:note-outline" width="25" height="25"></iconify-icon>
@@ -47,6 +72,8 @@
                                             </li>
                                         </ul>
                                     </div>
+                                    {% else %}
+                                        <div></div>
                                 {% endif %}
                                 <button type="button" class="btn m-0 p-1">
                                     <iconify-icon icon="mdi:user" width="25" height="25"></iconify-icon>
