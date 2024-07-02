@@ -1,0 +1,66 @@
+<div {{ attributes }}>
+
+    <div class="row">
+        <div locale="fr">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="project_search_filter_name" class="form-label">Recherchez</label>
+                            <input type="text" id="project_search_filter_name" name="project_search_filter[name]" data-model="query" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+                {% for company in this.companies %}
+                    <div class="col-3">
+                        <div class="card">
+                            <div class="card-header text-center">
+                                <h6 class="lh-base">
+                                    {{ company.name }}
+                                </h6>
+
+                            </div>
+                            <div class="card-body my-0 p-1 mx-3">
+                                {{ company.street }}<br>
+                                {{ company.pc }} {{ company.city }}<br>
+
+                                <img class="country-flag" height="17" alt="" title="" src="/bundles/easyadmin/images/flags/{{ company.country }}.svg">
+
+                                {% if company.vatNumber is not empty and company.vatNumber != '' %}
+                                     {{ company.vatNumber }}
+                                {% endif %}
+                            </div>
+                            <div class="card-footer text-end my-0 p-1 mx-3">
+                                {% if company.note is not empty %}
+
+                                    <div class="dropdown dropstart ms-3" style=" display: inline;">
+                                        <a href="javascript:void(0)" class="text-muted" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <iconify-icon icon="material-symbols:note-outline" width="25" height="25"></iconify-icon>
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="width: 400px;">
+                                            <li class="m-2">
+                                                {{ company.note|raw }}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                                <button type="button" class="btn m-0 p-1">
+                                    <iconify-icon icon="mdi:user" width="25" height="25"></iconify-icon>
+                                    <span class="badge ms-auto text-bg-primary">{{ company.contact|length }}</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+            <div class="navigation">
+                {{ knp_pagination_render(this.companies) }}
+            </div>
+        </div>
+    </div>
+</div>
