@@ -6,16 +6,13 @@ namespace App\Twig\Components;
 
 use App\Entity\Company;
 use App\Entity\CompanyContact;
+use App\Entity\User;
 use App\Form\Type\NewCompanyContactType;
 use App\Repository\CompanyContactRepository;
 use App\Repository\CompanyRepository;
-use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Knp\Component\Pager\Pagination\PaginationInterface;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveArg;
@@ -27,9 +24,9 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 #[AsLiveComponent('society_choice', template: 'app/sales/flash/componentsSearchContact.html.twig')]
 class SocietyChoice extends AbstractController
 {
-    use DefaultActionTrait;
-    use ComponentWithFormTrait;
     use ComponentToolsTrait;
+    use ComponentWithFormTrait;
+    use DefaultActionTrait;
 
     #[LiveProp(writable: true)]
     public ?string $queryCompany = null;
@@ -58,18 +55,21 @@ class SocietyChoice extends AbstractController
         if (empty($this->queryCompany)) {
             return [];
         }
+
         return $this->companyRepository->search($this->queryCompany);
     }
+
     public function getContacts(): array
     {
         if (empty($this->queryContact)) {
             return [];
         }
+
         return $this->companyContactRepository->search($this->queryContact);
     }
 
     #[LiveAction]
-    public function selectContact(#[LiveArg('id')] int $contactId)
+    public function selectContact(#[LiveArg('id')] int $contactId): RedirectResponse
     {
         $this->contact = $this->companyContactRepository->find($contactId);
         $this->company = $this->contact->getCompany();
@@ -78,24 +78,24 @@ class SocietyChoice extends AbstractController
             'contact' => $this->contact->getId(),
         ]);
     }
-    #[LiveAction]
-    public function selectCompany(#[LiveArg('id')] int $companyId)
-    {
 
+    #[LiveAction]
+    public function selectCompany(#[LiveArg('id')] int $companyId): void
+    {
         $this->company_create = false;
         $this->company = $this->companyRepository->find($companyId);
         $this->dispatchBrowserEvent('modal:open');
-
     }
 
     #[LiveAction]
-    public function createContact()
+    public function createContact(): void
     {
         $this->contact_create = true;
         $this->contact = null;
     }
+
     #[LiveAction]
-    public function createCompany()
+    public function createCompany(): void
     {
         $this->company_create = true;
         $this->company = null;
@@ -103,7 +103,7 @@ class SocietyChoice extends AbstractController
     }
 
     #[LiveAction]
-    public function noCompany()
+    public function noCompany(): void
     {
         $this->company_create = false;
         $this->company = null;
@@ -111,7 +111,7 @@ class SocietyChoice extends AbstractController
     }
 
     #[LiveAction]
-    public function save()
+    public function save(): RedirectResponse
     {
         $this->submitForm();
 
@@ -129,7 +129,7 @@ class SocietyChoice extends AbstractController
         }
 
         if (!empty($this->form->get('email')->getData())) {
-            if ($this->form->get('mailing')->getData() === true) {
+            if (true === $this->form->get('mailing')->getData()) {
                 $companyContact->setMailing(true);
             } else {
                 $companyContact->setMailing(false);
@@ -137,16 +137,15 @@ class SocietyChoice extends AbstractController
         } else {
             $companyContact->setMailing(false);
         }
-
-        $companyContact->setAddedBy($this->getUser());
+        /** @var User $user */
+        $user = $this->getUser();
+        $companyContact->setAddedBy($user);
 
         $this->companyContactRepository->save($companyContact, true);
 
         return $this->redirectToRoute('sales_flash_create_sale', [
             'contact' => $companyContact->getId(),
         ]);
-
-
     }
 
     protected function instantiateForm(): FormInterface

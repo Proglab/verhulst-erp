@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Form\Type;
@@ -18,42 +19,42 @@ class FlashSalesFilterType extends AbstractType
     {
         $builder
             ->add('min', DateType::class, [
-                    'label' => 'Du',
-                    'attr' => [
-                        'data-model' => 'min',
-                        'data-controller' => 'flatpickr',
-                    ],
-                    'html5' => true,
-                    'widget' => 'single_text',
-                    'constraints' => [
-                        new Assert\Date(),
-                    ],
-                ]
+                'label' => 'Du',
+                'attr' => [
+                    'data-model' => 'min',
+                    'data-controller' => 'flatpickr',
+                ],
+                'html5' => true,
+                'widget' => 'single_text',
+                'constraints' => [
+                    new Assert\Date(),
+                ],
+            ]
             )
             ->add('max', DateType::class, [
-                    'label' => 'Au',
-                    'attr' => [
-                        'data-model' => 'max',
-                        'data-controller' => 'flatpickr',
-                    ],
-                    'html5' => true,
-                    'widget' => 'single_text',
-                    'constraints' => [
-                        new Assert\Date(),
-                    ],
-                ]
+                'label' => 'Au',
+                'attr' => [
+                    'data-model' => 'max',
+                    'data-controller' => 'flatpickr',
+                ],
+                'html5' => true,
+                'widget' => 'single_text',
+                'constraints' => [
+                    new Assert\Date(),
+                ],
+            ]
             )
             ->add('users', EntityType::class, [
-                    'class' => User::class,
-                    'multiple' => true,
-                    'expanded' => true,
-                    'placeholder' => '',
-                    'required' => true,
-                    'query_builder' => function (UserRepository $er) {
-                        return $er->getCommercialsQb();
-                    },
-                    'label' => 'Commercial'
-                ]
+                'class' => User::class,
+                'multiple' => true,
+                'expanded' => true,
+                'placeholder' => '',
+                'required' => true,
+                'query_builder' => function (UserRepository $er) {
+                    return $er->getCommercialsQb();
+                },
+                'label' => 'Commercial',
+            ]
             )
         ;
     }
@@ -61,7 +62,6 @@ class FlashSalesFilterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-
         ]);
     }
 }

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace App\Twig\Components\Budget\Invoice;
 
 use App\Controller\Admin\Budget\DashboardController;
@@ -10,6 +13,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -19,25 +23,18 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 #[AsLiveComponent('edit_invoice_component', template: 'components/budget/invoice/edit.html.twig')]
 class EditInvoiceComponent extends AbstractController
 {
-    use DefaultActionTrait;
     use ComponentWithFormTrait;
+    use DefaultActionTrait;
 
     #[LiveProp]
     public ?Invoice $invoice = null;
 
     public function __construct(private AdminUrlGenerator $adminUrlGenerator)
     {
-
-    }
-
-    protected function instantiateForm(): FormInterface
-    {
-        // we can extend AbstractController to get the normal shortcuts
-        return $this->createForm(BudgetInvoiceEditFormType::class, $this->invoice);
     }
 
     #[LiveAction]
-    public function save(EntityManagerInterface $entityManager)
+    public function save(EntityManagerInterface $entityManager): RedirectResponse
     {
         // Submit the form! If validation fails, an exception is thrown
         // and the component is automatically re-rendered with the errors
@@ -45,16 +42,13 @@ class EditInvoiceComponent extends AbstractController
 
         /** @var Invoice $post */
         $post = $this->getForm()->getData();
-        if ($post->getEvent() === null) {
+        if (null === $post->getEvent()) {
             $post->setSupplier(null);
         }
 
-        if ($post->getSupplier() === null) {
+        if (null === $post->getSupplier()) {
             $post->resetProduct();
         }
-
-
-
 
         $entityManager->persist($post);
         $entityManager->flush();
@@ -65,8 +59,13 @@ class EditInvoiceComponent extends AbstractController
                 ->setAction(Action::INDEX)
                 ->setEntityId(null)
             ->setDashboard(DashboardController::class)
-
+            ->generateUrl()
         );
+    }
 
+    protected function instantiateForm(): FormInterface
+    {
+        // we can extend AbstractController to get the normal shortcuts
+        return $this->createForm(BudgetInvoiceEditFormType::class, $this->invoice);
     }
 }

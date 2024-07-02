@@ -14,14 +14,14 @@ class SecurityChecker
     {
     }
 
-    public function isGrantedByUser(User $user, string $attribute, object $object = null): bool
+    public function isGrantedByUser(User $user, string $attribute, ?object $object = null): bool
     {
         $token = new UsernamePasswordToken($user, 'none', $user->getRoles());
 
         return $this->accessDecisionManager->decide($token, [$attribute], $object);
     }
 
-    public function isGrantedByRole(string|array $role, string $attribute, object $object = null): bool
+    public function isGrantedByRole(string|array $role, string $attribute, ?object $object = null): bool
     {
         $user = new User();
         if (\is_array($role)) {

@@ -1,15 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Twig\Components\Projects;
 
 use App\Entity\Project;
 use App\Form\Type\NewProjectType;
 use App\Repository\ProjectRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -22,9 +23,8 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 #[AsLiveComponent('new_project_form', template: 'app/projects/components/new_form.html.twig')]
 class NewProjectComponent extends AbstractController
 {
-    use DefaultActionTrait;
     use ComponentWithFormTrait;
-
+    use DefaultActionTrait;
 
     #[LiveProp]
     public string $locale;
@@ -35,17 +35,15 @@ class NewProjectComponent extends AbstractController
     #[LiveProp(writable: true)]
     public ?string $errorFile = null;
 
+    #[LiveProp(writable: true)]
+    public ?Project $project = null;
+
     public function __construct(private ProjectRepository $projectRepository, private KernelInterface $kernel, private ValidatorInterface $validator)
     {
     }
 
-    protected function instantiateForm(): FormInterface
-    {
-        return $this->createForm(NewProjectType::class);
-    }
-
     #[LiveAction]
-    public function save()
+    public function save(): RedirectResponse
     {
         $this->submitForm();
         /** @var Project $post */
@@ -58,11 +56,12 @@ class NewProjectComponent extends AbstractController
         $this->projectRepository->save($post, true);
 
         $this->addFlash('success', 'Project saved!');
+
         return $this->redirectToRoute('project_details', ['project' => $post->getId()]);
     }
 
     #[LiveAction]
-    public function uploadFile(Request $request)
+    public function uploadFile(Request $request): ?string
     {
         $file = $request->files->get('my_file');
         if ($file) {
@@ -76,22 +75,25 @@ class NewProjectComponent extends AbstractController
                         'application/x-pdf',
                     ],
                     'mimeTypesMessage' => 'Ce fichier n\'est pas un PDF valide',
-                ])
+                ]),
             ];
 
             $validate = $this->validator->validate($file, $constraint);
 
-            if (count($validate) > 0) {
+            if (\count($validate) > 0) {
                 $this->errorFile = $validate[0]->getMessage();
                 unlink($file->getPathname());
                 $this->filename = null;
             } else {
-                $file->move($this->kernel->getProjectDir().DIRECTORY_SEPARATOR.$this->getParameter('files.projects.upload_dir'), $filename);
+                $file->move($this->kernel->getProjectDir() . \DIRECTORY_SEPARATOR . $this->getParameter('files.projects.upload_dir'), $filename);
                 $this->filename = $filename;
                 $this->errorFile = null;
+
                 return $filename;
             }
         }
+
+        return null;
     }
 
     public function getFileUrl(): string
@@ -101,10 +103,16 @@ class NewProjectComponent extends AbstractController
 
     public function getFileDetails(): array
     {
-        $path = $this->kernel->getProjectDir().DIRECTORY_SEPARATOR.$this->getParameter('files.projects.upload_dir').DIRECTORY_SEPARATOR.$this->filename;
+        $path = $this->kernel->getProjectDir() . \DIRECTORY_SEPARATOR . $this->getParameter('files.projects.upload_dir') . \DIRECTORY_SEPARATOR . $this->filename;
+
         return [
             'size' => filesize($path),
-            'mime' => mime_content_type($path)
+            'mime' => mime_content_type($path),
         ];
+    }
+
+    protected function instantiateForm(): FormInterface
+    {
+        return $this->createForm(NewProjectType::class, $this->project);
     }
 }

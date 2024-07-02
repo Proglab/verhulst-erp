@@ -41,7 +41,8 @@ class ProductSponsoringRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-    public function searchEventsByProject(Project $project, ?string $queryEvent)
+
+    public function searchEventsByProject(Project $project, ?string $queryEvent): ?array
     {
         $qb = $this->createQueryBuilder('p')
             ->join('p.project', 'pr')
@@ -52,6 +53,5 @@ class ProductSponsoringRepository extends ServiceEntityRepository
             ->orderBy('p.date_begin', 'DESC');
 
         return $qb->getQuery()->getResult();
-
     }
 }

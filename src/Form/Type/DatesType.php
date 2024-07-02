@@ -4,18 +4,11 @@ declare(strict_types=1);
 
 namespace App\Form\Type;
 
-use PhpOffice\PhpSpreadsheet\Style\NumberFormat\Wizard\DateTime;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class DatesType extends AbstractType
 {
@@ -29,26 +22,26 @@ class DatesType extends AbstractType
                 'widget' => 'single_text',
                 'html5' => false,
             ])
-            ->add('date_end', DateType::class,  [
+            ->add('date_end', DateType::class, [
                 'label' => 'Date de fin',
                 'required' => true,
                 'mapped' => true,
                 'widget' => 'single_text',
                 'html5' => false,
                 'label_attr' => [
-                    'class' => 'mt-3'
-                ]
+                    'class' => 'mt-3',
+                ],
             ])
-            ->add('create_all_date', CheckboxType::class,  [
+            ->add('create_all_date', CheckboxType::class, [
                 'label' => 'Créer un produit pour chaque date ?',
                 'required' => false,
                 'mapped' => false,
                 'attr' => [
-                    'class' => 'form-check form-check-inline mt-3'
+                    'class' => 'form-check form-check-inline mt-3',
                 ],
                 'label_attr' => [
-                    'class' => 'mt-3'
-                ]
+                    'class' => 'mt-3',
+                ],
             ])
         ;
     }

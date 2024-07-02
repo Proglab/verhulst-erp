@@ -20,9 +20,9 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfonycasts\DynamicForms\DependentField;
 use Symfonycasts\DynamicForms\DynamicFormBuilder;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class SalesRecapFilters extends AbstractType
 {
@@ -31,44 +31,44 @@ class SalesRecapFilters extends AbstractType
         $builder = new DynamicFormBuilder($builder);
         $builder
             ->add('from', DateType::class, [
-                    'html5' => true,
-                    'widget' => 'single_text',
-                    'label' => 'Du',
-                    'attr' => [
-                        'data-model' => 'on(change)|from',
-                        'data-controller' => 'flatpickr',
-                    ],
-                    'constraints' => [
-                        new Assert\Date(),
-                    ],
-                ]
+                'html5' => true,
+                'widget' => 'single_text',
+                'label' => 'Du',
+                'attr' => [
+                    'data-model' => 'on(change)|from',
+                    'data-controller' => 'flatpickr',
+                ],
+                'constraints' => [
+                    new Assert\Date(),
+                ],
+            ]
             )
             ->add('to', DateType::class, [
-                    'html5' => true,
-                    'widget' => 'single_text',
-                    'label' => 'Au',
-                    'attr' => [
-                        'data-model' => 'to',
-                        'data-controller' => 'flatpickr',
-                    ],
-                    'constraints' => [
-                        new Assert\Date(),
-                    ],
-                ]
+                'html5' => true,
+                'widget' => 'single_text',
+                'label' => 'Au',
+                'attr' => [
+                    'data-model' => 'to',
+                    'data-controller' => 'flatpickr',
+                ],
+                'constraints' => [
+                    new Assert\Date(),
+                ],
+            ]
             )
             ->add('project', EntityType::class, [
-                    'class' => Project::class,
-                    'multiple' => false,
-                    'expanded' => false,
-                    'placeholder' => '',
-                    'label' => 'Projet',
-                    'required' => false,
-                    'query_builder' => function (ProjectRepository $er) {
-                        return $er->createQueryBuilder('p')
-                            ->where('p.archive = false')
-                            ->orderBy('p.name', 'ASC');
-                    },
-                ]
+                'class' => Project::class,
+                'multiple' => false,
+                'expanded' => false,
+                'placeholder' => '',
+                'label' => 'Projet',
+                'required' => false,
+                'query_builder' => function (ProjectRepository $er) {
+                    return $er->createQueryBuilder('p')
+                        ->where('p.archive = false')
+                        ->orderBy('p.name', 'ASC');
+                },
+            ]
             )
             ->addDependent('product', ['project'], function (DependentField $field, ?Project $project) {
                 if (empty($project)) {
@@ -93,17 +93,17 @@ class SalesRecapFilters extends AbstractType
                 ]);
             })
             ->add('company', EntityType::class, [
-                    'class' => Company::class,
-                    'multiple' => false,
-                    'expanded' => false,
-                    'placeholder' => '',
-                    'required' => false,
-                    'query_builder' => function (CompanyRepository $er) {
-                        return $er->createQueryBuilder('c')
-                            ->orderBy('c.name', 'ASC');
-                    },
-                    'label' => 'Société',
-                ]
+                'class' => Company::class,
+                'multiple' => false,
+                'expanded' => false,
+                'placeholder' => '',
+                'required' => false,
+                'query_builder' => function (CompanyRepository $er) {
+                    return $er->createQueryBuilder('c')
+                        ->orderBy('c.name', 'ASC');
+                },
+                'label' => 'Société',
+            ]
             )
             ->addDependent('contact', ['company'], function (DependentField $field, ?Company $company) {
                 if (empty($company)) {
@@ -127,36 +127,35 @@ class SalesRecapFilters extends AbstractType
                 ]);
             })
             ->add('user', EntityType::class, [
-                    'class' => User::class,
-                    'multiple' => false,
-                    'expanded' => false,
-                    'placeholder' => '',
-                    'required' => false,
-                    'query_builder' => function (UserRepository $er) {
-                        return $er->getCommercialsQb();
-                    },
-                    'label' => 'Commercial',
-                    'attr' => [
-                        'data-model' => 'user',
-                    ],
-                ]
+                'class' => User::class,
+                'multiple' => false,
+                'expanded' => false,
+                'placeholder' => '',
+                'required' => false,
+                'query_builder' => function (UserRepository $er) {
+                    return $er->getCommercialsQb();
+                },
+                'label' => 'Commercial',
+                'attr' => [
+                    'data-model' => 'user',
+                ],
+            ]
             )
             ->add('archive', ChoiceType::class, [
-                    'choices'  => [
-                        'Tous' => 'all',
-                        'Non' => '0',
-                        'Oui' => '1',
-                    ],
-                    'multiple' => false,
-                    'expanded' => false,
-                    'required' => true,
-                    'label' => 'Archivé ?',
-                    'attr' => [
-                        'data-model' => 'archive',
-                    ],
-                ]
+                'choices' => [
+                    'Tous' => 'all',
+                    'Non' => '0',
+                    'Oui' => '1',
+                ],
+                'multiple' => false,
+                'expanded' => false,
+                'required' => true,
+                'label' => 'Archivé ?',
+                'attr' => [
+                    'data-model' => 'archive',
+                ],
+            ]
             );
-
     }
 
     public function configureOptions(OptionsResolver $resolver): void

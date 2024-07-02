@@ -1,15 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Twig\Components\Projects\Products;
 
 use App\Entity\ProductPackageVip;
 use App\Entity\Project;
 use App\Form\Type\NewProductPackageType;
 use App\Repository\ProductPackageVipRepository;
-use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -20,24 +21,19 @@ use Symfony\UX\LiveComponent\LiveCollectionTrait;
 #[AsLiveComponent('create_package_component', template: 'app/projects/products/components/create_package_component.html.twig')]
 class CreatePackageComponent extends AbstractController
 {
-    use DefaultActionTrait;
     use ComponentWithFormTrait;
+    use DefaultActionTrait;
     use LiveCollectionTrait;
 
     #[LiveProp]
     public Project $project;
 
-    public function __construct(private ProductPackageVipRepository $productPackageRepository, private RequestStack $requestStack, private AdminUrlGenerator $adminUrlGenerator)
+    public function __construct(private ProductPackageVipRepository $productPackageRepository)
     {
-    }
-
-    protected function instantiateForm(): FormInterface
-    {
-        return $this->createForm(NewProductPackageType::class);
     }
 
     #[LiveAction]
-    public function save()
+    public function save(): RedirectResponse
     {
         $this->submitForm();
 
@@ -47,8 +43,8 @@ class CreatePackageComponent extends AbstractController
         $events = [];
 
         // dates
-        if ($typeDAte === 'date') {
-            if ($form->get('dates')->get('create_all_date')->getData() === true) {
+        if ('date' === $typeDAte) {
+            if (true === $form->get('dates')->get('create_all_date')->getData()) {
                 for ($date = $form->get('dates')->get('date_begin')->getData(); $form->get('dates')->get('date_end')->getData() >= $date; $date->modify('+1 day')) {
                     $event = $this->getNewProductEvent();
                     $event->setDateBegin(new \DateTime($date->format('Y-m-d')));
@@ -71,32 +67,32 @@ class CreatePackageComponent extends AbstractController
         }
 
         foreach ($events as $event) {
-            //quantity max
+            // quantity max
             $event->setQuantityMax($form->get('quantityMax')->getData());
             // percents commerciaux
-            if ($form->get('percentFreelance')->getData() === 'other') {
-                $event->setPercentFreelance($form->get('percentFreelanceCustom')->getData() * 100);
+            if ('other' === $form->get('percentFreelance')->getData()) {
+                $event->setPercentFreelance((string) $form->get('percentFreelanceCustom')->getData());
             } else {
-                $event->setPercentFreelance($form->get('percentFreelance')->getData() * 100);
+                $event->setPercentFreelance((string) $form->get('percentFreelance')->getData());
             }
-            if ($form->get('percentSalarie')->getData() === 'other') {
-                $event->setPercentSalarie($form->get('percentSalarieCustom')->getData() * 100);
+            if ('other' === $form->get('percentSalarie')->getData()) {
+                $event->setPercentSalarie((string) $form->get('percentSalarieCustom')->getData());
             } else {
-                $event->setPercentSalarie($form->get('percentSalarie')->getData() * 100);
+                $event->setPercentSalarie((string) $form->get('percentSalarie')->getData());
             }
-            if ($form->get('percentTv')->getData() === 'other') {
-                $event->setPercentTv($form->get('percentTvCustom')->getData() * 100);
+            if ('other' === $form->get('percentTv')->getData()) {
+                $event->setPercentTv((string) $form->get('percentTvCustom')->getData());
             } else {
-                $event->setPercentTv($form->get('percentTv')->getData() * 100);
+                $event->setPercentTv((string) $form->get('percentTv')->getData());
             }
 
             // prices
-            if($form->get('type_com')->getData() === 'percent') {
+            if ('percent' === $form->get('type_com')->getData()) {
                 $event->setPercentVr($form->get('com1')->get('percent_vr')->getData() * 100);
                 $event->setCa($form->get('com1')->get('pv')->getData());
                 $event->setPa($form->get('com1')->get('pv')->getData() - $form->get('com1')->get('pv')->getData() * $form->get('com1')->get('percent_vr')->getData());
             } else {
-                $event->setPercentVr( ($form->get('com2')->get('pv')->getData() - $form->get('com2')->get('pa')->getData() )/ $form->get('com2')->get('pa')->getData() * 100);
+                $event->setPercentVr(($form->get('com2')->get('pv')->getData() - $form->get('com2')->get('pa')->getData()) / $form->get('com2')->get('pa')->getData() * 100);
                 $event->setCa($form->get('com2')->get('pv')->getData());
                 $event->setPa($form->get('com2')->get('pa')->getData());
             }
@@ -109,12 +105,18 @@ class CreatePackageComponent extends AbstractController
             $this->generateUrl('project_details', ['project' => $this->project->getId()]));
     }
 
+    protected function instantiateForm(): FormInterface
+    {
+        return $this->createForm(NewProductPackageType::class);
+    }
+
     private function getNewProductEvent(): ProductPackageVip
     {
         $event = new ProductPackageVip();
         $event->setProject($this->project);
         $event->setName($this->form->get('name')->getData());
         $event->setDescription($this->form->get('description')->getData());
+
         return $event;
     }
 }

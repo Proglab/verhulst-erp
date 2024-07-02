@@ -1,5 +1,5 @@
 <div {{ attributes }}>
-
+    <div data-loading="addClass(opacity-50)">
     {{ form_start(form, {
         attr: {
             'data-action': 'live#action:prevent',
@@ -28,10 +28,11 @@
     </div>
 
     <div class="row mt-3">
-        <div class="col-4">
+        <div class="col-4 border">
             {{ form_label(form.type_vente) }}
             {{ form_widget(form.type_vente) }}
             {{ form_errors(form.type_vente) }}
+            <div class="col-12 mt-3 mb-3">
             {% if form.forecast_price is defined %}
                 {{ form_label(form.forecast_price) }}
                 {{ form_widget(form.forecast_price) }}
@@ -44,31 +45,53 @@
 
 
                 {% if form.validate is defined %}
-                    <div class="col-12 mt-3">
+                    <div class="col-12 mt-3 mb-3">
                         {{ form_label(form.validate) }}
                         {{ form_widget(form.validate) }}
                         {{ form_errors(form.validate) }}
                     </div>
                 {% endif %}
             {% endif %}
+            </div>
         </div>
 
-        <div class="col-2">
-            {{ form_label(form.type_com) }}
-            {{ form_widget(form.type_com) }}
-            {{ form_errors(form.type_com) }}
-            {% if form.com1 is defined %}
-                <div class="col-12">
-                    {{ form_label(form.com1) }}
-                    {{ form_widget(form.com1) }}
-                    {{ form_errors(form.com1) }}
+        <div class="col-2 border">
+            {{ form_label(form.percent_vr_type) }}
+            {{ form_widget(form.percent_vr_type) }}
+            {{ form_errors(form.percent_vr_type) }}
+            {% if form.percent_vr is defined %}
+                <div class="col-12 mt-3 mb-3">
+                    {{ form_label(form.percent_vr) }}
+                    {{ form_widget(form.percent_vr) }}
+                    {{ form_errors(form.percent_vr) }}
+                </div>
+            {% endif %}
+            {% if form.pa is defined %}
+                <div class="col-12 mt-3 mb-3">
+                    {{ form_label(form.pa) }}
+                    {{ form_widget(form.pa) }}
+                    {{ form_errors(form.pa) }}
                 </div>
             {% endif %}
         </div>
-        <div class="col-2">
-            {{ form_label(form.percent_com) }}
-            {{ form_widget(form.percent_com) }}
-            {{ form_errors(form.percent_com) }}
+        <div class="col-2 border">
+            {{ form_label(form.percent_com_type) }}
+            {{ form_widget(form.percent_com_type) }}
+            {{ form_errors(form.percent_com_type) }}
+            {% if form.percent_com is defined %}
+                <div class="col-12 mt-3 mb-3">
+                    {{ form_label(form.percent_com) }}
+                    {{ form_widget(form.percent_com) }}
+                    {{ form_errors(form.percent_com) }}
+                </div>
+            {% endif %}
+            {% if form.percent_com_eur is defined %}
+                <div class="col-12 mt-3 mb-3">
+                    {{ form_label(form.percent_com_eur) }}
+                    {{ form_widget(form.percent_com_eur) }}
+                    {{ form_errors(form.percent_com_eur) }}
+                </div>
+            {% endif %}
         </div>
 
         <div class="col-4">
@@ -77,10 +100,15 @@
             {{ form_errors(form.date) }}
         </div>
     </div>
-
+        {% if this.sale == null %}
     <button name="submitbtn" class="btn btn-primary mt-3" type="submit">
         {{ 'Créer la vente'|trans }}
     </button>
+        {% else %}
+            <button name="submitbtn" class="btn btn-primary mt-3" type="submit">
+                {{ 'Modifier la vente'|trans }}
+            </button>
+        {% endif %}
 
     <a href="{{ path('sales_flash_create') }}" class="btn btn-danger mt-3">
         {{ 'Annuler'|trans }}
@@ -88,5 +116,5 @@
 
 
     {{ form_end(form) }}
-
+    </div>
 </div>

@@ -65,7 +65,7 @@ class SecurityController extends BaseController
      * Permet à l'utilisateur de modifier la langue du site.
      */
     #[Route(path: '/switch-locale/{locale}', name: 'switch_locale', methods: ['GET'])]
-    public function switchLocale(Request $request, string $locale = null): Response
+    public function switchLocale(Request $request, ?string $locale = null): Response
     {
         if (!\in_array($locale, $this->enabledLocales, true)) {
             throw new BadRequestHttpException();
@@ -90,7 +90,7 @@ class SecurityController extends BaseController
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     #[Route(path: '/renvoyer-confirmation-email/{token}', name: 'app_resend_confirmation_email')]
-    public function resendConfirmationEmailAction(string $token = null): RedirectResponse
+    public function resendConfirmationEmailAction(?string $token = null): RedirectResponse
     {
         if (null === $token) {
             $this->addCustomFlash(

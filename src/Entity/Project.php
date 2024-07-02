@@ -14,6 +14,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
 class Project
 {
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
+    protected ?string $doc = null;
+
+    /**
+     * @var Collection<int, Product>
+     */
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: Product::class, cascade: ['remove'])]
+    #[ORM\OrderBy(['date_begin' => 'ASC'])]
+    protected Collection $products;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -25,18 +35,6 @@ class Project
     private ?string $name = null;
 
     private ?bool $mail = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\Length(max: 255)]
-    protected ?string $doc = null;
-
-    #[ORM\OneToMany(mappedBy: 'project', targetEntity: ProductPackageVip::class, cascade: ['persist'], orphanRemoval: true)]
-    private Collection $product_package;
-
-    #[ORM\OneToMany(mappedBy: 'project', targetEntity: ProductSponsoring::class, cascade: ['persist'], orphanRemoval: true)]
-    private Collection $product_sponsoring;
-
-
     #[ORM\Column]
     private ?bool $archive = false;
 
@@ -46,14 +44,16 @@ class Project
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date_end = null;
 
-    #[ORM\OneToMany(mappedBy: 'project', targetEntity: Todo::class)]
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: Todo::class, cascade: ['remove'])]
     private Collection $todos;
+
+    #[ORM\Column]
+    private ?bool $new = true;
 
     public function __construct()
     {
-        $this->product_package = new ArrayCollection();
-        $this->product_sponsoring = new ArrayCollection();
         $this->todos = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     public function __toString()
@@ -66,8 +66,6 @@ class Project
         if ($this->id) {
             $this->id = null;
             $this->name .= ' (clone)';
-            $this->product_package = new ArrayCollection();
-            $this->product_sponsoring = new ArrayCollection();
         }
     }
 
@@ -84,66 +82,6 @@ class Project
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, ProductPackageVip>
-     */
-    public function getProductPackage(): Collection
-    {
-        return $this->product_package;
-    }
-
-    public function addProductPackage(ProductPackageVip $productPackage): self
-    {
-        if (!$this->product_package->contains($productPackage)) {
-            $this->product_package->add($productPackage);
-            $productPackage->setProject($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProductPackage(ProductPackageVip $productPackage): self
-    {
-        if ($this->product_package->removeElement($productPackage)) {
-            // set the owning side to null (unless already changed)
-            if ($productPackage->getProject() === $this) {
-                $productPackage->setProject(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, ProductSponsoring>
-     */
-    public function getProductSponsoring(): Collection
-    {
-        return $this->product_sponsoring;
-    }
-
-    public function addProductSponsoring(ProductSponsoring $productSponsoring): self
-    {
-        if (!$this->product_sponsoring->contains($productSponsoring)) {
-            $this->product_sponsoring->add($productSponsoring);
-            $productSponsoring->setProject($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProductSponsoring(ProductSponsoring $productSponsoring): self
-    {
-        if ($this->product_sponsoring->removeElement($productSponsoring)) {
-            // set the owning side to null (unless already changed)
-            if ($productSponsoring->getProject() === $this) {
-                $productSponsoring->setProject(null);
-            }
-        }
 
         return $this;
     }
@@ -250,5 +188,71 @@ class Project
         }
 
         return '';
+    }
+
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): static
+    {
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
+            $product->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): static
+    {
+        if ($this->products->removeElement($product)) {
+            // set the owning side to null (unless already changed)
+            if ($product->getProject() === $this) {
+                $product->setProject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getProductSponsoring(): array
+    {
+        $return = [];
+        foreach ($this->getProducts() as $product) {
+            if ($product instanceof ProductSponsoring) {
+                $return[] = $product;
+            }
+        }
+
+        return $return;
+    }
+
+    public function getProductPackage(): array
+    {
+        $return = [];
+        foreach ($this->getProducts() as $product) {
+            if ($product instanceof ProductPackageVip) {
+                $return[] = $product;
+            }
+        }
+
+        return $return;
+    }
+
+    public function isNew(): ?bool
+    {
+        return $this->new;
+    }
+
+    public function setNew(bool $new): static
+    {
+        $this->new = $new;
+
+        return $this;
     }
 }

@@ -8,18 +8,22 @@ use App\Entity\BaseSales;
 use App\Entity\Company;
 use App\Entity\CompanyContact;
 use App\Entity\Product;
+use App\Entity\ProductPackageVip;
+use App\Entity\ProductSponsoring;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Form\Type\SalesRecapFilters;
 use App\Repository\BaseSalesRepository;
 use App\Repository\CompanyRepository;
 use App\Repository\ProjectRepository;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveArg;
@@ -27,13 +31,12 @@ use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\LiveComponent\ValidatableComponentTrait;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[AsLiveComponent('sales_recap', template: 'app/sales/componentsRecap.html.twig')]
 class SalesRecap extends AbstractController
 {
-    use DefaultActionTrait;
     use ComponentWithFormTrait;
+    use DefaultActionTrait;
     use ValidatableComponentTrait;
 
     #[LiveProp(writable: true, format: 'Y-m-d')]
@@ -74,13 +77,13 @@ class SalesRecap extends AbstractController
     #[LiveAction]
     public function previousPage(): void
     {
-        $this->page--;
+        --$this->page;
     }
 
     #[LiveAction]
     public function nextPage(): void
     {
-        $this->page++;
+        ++$this->page;
     }
 
     #[LiveAction]
@@ -89,7 +92,7 @@ class SalesRecap extends AbstractController
         $this->page = $page;
     }
 
-    public function getSales()
+    public function getSales(): PaginationInterface
     {
         $qb = $this->salesRepository->searchQb(
             from : $this->from,
@@ -102,10 +105,7 @@ class SalesRecap extends AbstractController
             archive : 'all' === $this->archive ? null : (bool) $this->archive,
         );
 
-        $paginator = $this->paginator->paginate($qb, $this->page, 10);
-        return $paginator;
-
-
+        return $this->paginator->paginate($qb, $this->page, 10);
     }
 
     public function getTotalSales(): float
@@ -150,13 +150,8 @@ class SalesRecap extends AbstractController
         );
     }
 
-    protected function instantiateForm(): FormInterface
-    {
-        return $this->createForm(SalesRecapFilters::class);
-    }
-
     #[LiveAction]
-    public function export()
+    public function export(): RedirectResponse
     {
         $datas = $this->salesRepository->search(
             from : $this->from,
@@ -187,13 +182,16 @@ class SalesRecap extends AbstractController
         $worksheet->getCell('K1')->setValue('Marge net VR');
 
         /**
-         * @var int $key
+         * @var int       $key
          * @var BaseSales $data
          */
         foreach ($datas as $key => $data) {
+            /** @var ProductSponsoring|ProductPackageVip|null $product */
+            $product = $data->getProduct();
+
             $worksheet->getCell('A' . ($key + 2))->setValue($data->getDate()->format('d/m/Y'));
-            $worksheet->getCell('B' . ($key + 2))->setValue(!empty($data->getProduct()) && !empty($data->getProduct()->getProject()) ? $data->getProduct()->getProject()->getName() : '-');
-            $worksheet->getCell('C' . ($key + 2))->setValue(!empty($data->getProduct()) ? $data->getProduct()->getName() : '-');
+            $worksheet->getCell('B' . ($key + 2))->setValue(!empty($product) && !empty($product->getProject()) ? $product->getProject()->getName() : '-');
+            $worksheet->getCell('C' . ($key + 2))->setValue(!empty($product) ? $product->getName() : '-');
             $worksheet->getCell('D' . ($key + 2))->setValue(!empty($data->getContact()->getCompany()) ? $data->getContact()->getCompany()->getName() : '-');
             $worksheet->getCell('E' . ($key + 2))->setValue($data->getContact()->getFullName());
             $worksheet->getCell('F' . ($key + 2))->setValue($data->getUser()->getFullName());
@@ -206,17 +204,23 @@ class SalesRecap extends AbstractController
 
         $id = uniqid();
 
-        $writer->save( $id. '.xls');
+        $writer->save($id . '.xls');
+
         return $this->redirectToRoute('download_file', ['filename' => $id . '.xls']);
     }
 
     #[LiveAction]
-    public function initForm()
+    public function initForm(): void
     {
         $this->resetForm();
         $this->from = null;
         $this->to = null;
         $this->form->get('from')->setData(null);
         $this->form->get('to')->setData(null);
+    }
+
+    protected function instantiateForm(): FormInterface
+    {
+        return $this->createForm(SalesRecapFilters::class);
     }
 }

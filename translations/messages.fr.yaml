@@ -94,6 +94,8 @@ email.user.account_confirmation.body1: 'Une dernière étape avant de pouvoir pr
 email.user.account_confirmation.body2: 'Ce lien expirera dans'
 email.user.account_confirmation.body3: "Ça n'est pas vous ? Ignorez simplement ce mail, et le compte qui y est associé sera prochainement supprimé."
 email.user.account_confirmation.submit: 'Confirmer mon inscription'
+email.new.project.subject: 'Nouveaux projets'
+email.new.project.p1: 'Liste des nouveaux projets'
 admin.menu.website: 'Retour sur le site internet'
 admin.menu.dashboard: 'Tableau de bord - Gestion'
 admin.menu.users: Utilisateurs

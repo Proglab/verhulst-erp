@@ -58,6 +58,7 @@
         "symfony/proxy-manager-bridge": "6.4.*",
         "symfony/rate-limiter": "6.4.*",
         "symfony/runtime": "6.4.*",
+        "symfony/scheduler": "6.4.*",
         "symfony/security-bundle": "6.4.*",
         "symfony/serializer": "6.4.*",
         "symfony/stimulus-bundle": "^2.16",
@@ -84,7 +85,7 @@
         "dama/doctrine-test-bundle": "^7.1",
         "dbrekelmans/bdi": "^1.0",
         "deployer/deployer": "^7.1",
-        "doctrine/doctrine-fixtures-bundle": "^3.4",
+        "doctrine/doctrine-fixtures-bundle": "^3.6",
         "icanhazstring/composer-unused": "^0.8.7",
         "phpunit/phpunit": "^9.5",
         "symfony/browser-kit": "6.4.*",
@@ -143,8 +144,14 @@
             "@auto-scripts"
         ],
         "ci": [
-            "docker run --init --rm -v \"%CD%:/project\" -w /project jakzal/phpqa:php8.1-alpine php-cs-fixer fix --config=\"./.php-cs-fixer.dist.php\" --verbose --using-cache=no",
+            "@phpcs",
+            "@phpstan"
+        ],
+        "phpstan": [
             "docker run --init --rm -v \"%CD%:/project\" -w /project jakzal/phpqa phpstan analyse src"
+        ],
+        "phpcs": [
+            "docker run --init --rm -v \"%CD%:/project\" -w /project jakzal/phpqa:php8.1-alpine php-cs-fixer fix --config=\"./.php-cs-fixer.dist.php\" --verbose --using-cache=no"
         ],
         "share": [
             "ngrok http --domain=worm-direct-sheepdog.ngrok-free.app 80"

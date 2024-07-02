@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Twig\Components\Dashboard;
 
 use App\Entity\Todo;
@@ -10,28 +12,28 @@ use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveArg;
 use Symfony\UX\LiveComponent\Attribute\LiveListener;
-use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
 #[AsLiveComponent('todo', template: 'app/dashboard/todos.html.twig')]
 class TodoComponent extends AbstractController
 {
-    use DefaultActionTrait;
     use ComponentToolsTrait;
+    use DefaultActionTrait;
 
     public ?Todo $todo = null;
 
     public function __construct(private TodoRepository $todoRepository, private Security $security)
     {
     }
-    public function getTodos()
+
+    public function getTodos(): array
     {
         return $this->todoRepository->findNext10ByUser($this->security->getUser());
     }
 
     #[LiveAction]
-    public function valid(#[LiveArg] int $id)
+    public function valid(#[LiveArg] int $id): void
     {
         $todo = $this->todoRepository->find($id);
         $todo->setDone(true);
@@ -40,7 +42,7 @@ class TodoComponent extends AbstractController
     }
 
     #[LiveAction]
-    public function unvalid(#[LiveArg] int $id)
+    public function unvalid(#[LiveArg] int $id): void
     {
         $todo = $this->todoRepository->find($id);
         $todo->setDone(false);
@@ -49,7 +51,7 @@ class TodoComponent extends AbstractController
     }
 
     #[LiveAction]
-    public function edit(#[LiveArg] int $id)
+    public function edit(#[LiveArg] int $id): void
     {
         $this->todo = $this->todoRepository->find($id);
         $this->emit('editTodo', ['id' => $id]);
@@ -57,8 +59,7 @@ class TodoComponent extends AbstractController
     }
 
     #[LiveListener('refreshTodo')]
-    public function refresh()
+    public function refresh(): void
     {
-
     }
 }

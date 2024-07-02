@@ -14,7 +14,6 @@ use App\Command\Dto\Subscriber;
 use App\Entity\CompanyContact;
 use App\Entity\User;
 use App\Repository\CompanyContactRepository;
-use App\Repository\TempCompanyContactRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -35,7 +34,7 @@ class SyncCampainMonitorUniqueUpdated extends AbstractCommand
 
     private OutputInterface $output;
 
-    public function __construct(private HttpClientInterface $client, private UserRepository $userRepository, private TempCompanyContactRepository $tempCompanyContactRepository, private CompanyContactRepository $companyContactRepository)
+    public function __construct(private HttpClientInterface $client, private UserRepository $userRepository, private CompanyContactRepository $companyContactRepository)
     {
         parent::__construct();
     }
@@ -56,11 +55,10 @@ class SyncCampainMonitorUniqueUpdated extends AbstractCommand
         foreach ($users as $user) {
             $contacts = $this->companyContactRepository->getUpdatedContact($user);
 
-
-            if (count($contacts) === 0) {
+            if (0 === \count($contacts)) {
                 continue;
             }
-            $progressBar = new ProgressBar($output, count($contacts));
+            $progressBar = new ProgressBar($output, \count($contacts));
 
             $output->writeln('');
             $output->writeln('<info>Traitement des contacts validés de ' . $user->getFullname() . '</info>');
@@ -71,12 +69,12 @@ class SyncCampainMonitorUniqueUpdated extends AbstractCommand
                 }
                 if (!$this->checkContactExist($idList, $companyContact->getEmail())) {
                     $contact = new Subscriber($companyContact->getEmail(), $companyContact->getFullName(), [
-                       new CustomFieldValue('Langue', $companyContact->getLang()),
-                       new CustomFieldValue('Genre', $companyContact->getSex()),
-                       new CustomFieldValue('Formule de politesse', $companyContact->getGreeting()),
-                       new CustomFieldValue('Sale name', $user->getFirstName() . ' ' . $user->getLastName()),
-                       new CustomFieldValue('Sale email', $user->getEmail()),
-                       new CustomFieldValue('Sale phone', $user->getPhone()),
+                        new CustomFieldValue('Langue', $companyContact->getLang()),
+                        new CustomFieldValue('Genre', $companyContact->getSex()),
+                        new CustomFieldValue('Formule de politesse', $companyContact->getGreeting()),
+                        new CustomFieldValue('Sale name', $user->getFirstName() . ' ' . $user->getLastName()),
+                        new CustomFieldValue('Sale email', $user->getEmail()),
+                        new CustomFieldValue('Sale phone', $user->getPhone()),
                     ]);
 
                     $this->createContact($idList, $contact);
@@ -85,7 +83,6 @@ class SyncCampainMonitorUniqueUpdated extends AbstractCommand
 
                     $companyContact->setUpdatedDt(null);
                     $this->companyContactRepository->save($companyContact, true);
-
 
                     // $output->writeln('Création du contact '.$contact->EmailAddress);
                 } else {
@@ -229,13 +226,13 @@ class SyncCampainMonitorUniqueUpdated extends AbstractCommand
         return json_decode($response->getContent(false));
     }
 
-    private function unsubscribeUser(string $idList, CompanyContact $user) {
-
+    private function unsubscribeUser(string $idList, CompanyContact $user): void
+    {
         $data = new \stdClass();
         $data->EmailAddress = $user->getEmail();
         $contact = $this->getContact($idList, $user->getEmail());
-        if ($contact->State === 'Active') {
-            $response = $this->client->request('POST', 'https://api.createsend.com/api/v3.3/subscribers/'.$idList.'/unsubscribe.json', [
+        if ('Active' === $contact->State) {
+            $response = $this->client->request('POST', 'https://api.createsend.com/api/v3.3/subscribers/' . $idList . '/unsubscribe.json', [
                 'auth_basic' => [$this->apiKey, 'the-password'],
                 'body' => json_encode($data),
             ]);

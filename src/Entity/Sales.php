@@ -32,7 +32,6 @@ class Sales extends BaseSales
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $invoiced_dt = null;
 
-
     #[ORM\ManyToMany(targetEntity: SalesBdc::class, mappedBy: 'sales')]
     private Collection $salesBdcs;
 
@@ -81,39 +80,6 @@ class Sales extends BaseSales
         return $this;
     }
 
-    public function getDiffCa(): float
-    {
-        return $this->getMarge() - $this->getEuroCom() - $this->getEuroVr() - ($this->getPa() * $this->getQuantity());
-    }
-
-    public function getTotalPrice(): ?float
-    {
-        if (0 === $this->getQuantity()) {
-            return (int) $this->price;
-        }
-
-        return (int) $this->price * $this->getQuantity();
-    }
-
-    public function getEuroVr(): float
-    {
-        if (empty($this->getPercentVr())) {
-            return 0.0;
-        }
-
-        return $this->getMarge() * ($this->getPercentVr() - $this->getPercentCom()) / 100;
-    }
-
-    public function getEuroCom(): float
-    {
-        return $this->getMarge() * $this->getPercentCom() / 100;
-    }
-
-    public function getMarge(): float
-    {
-        return $this->getTotalPrice() - $this->getDiscount();
-    }
-
     public function isInvoiced(): ?bool
     {
         return $this->invoiced;
@@ -136,11 +102,6 @@ class Sales extends BaseSales
         $this->invoiced_dt = $invoiced_dt;
 
         return $this;
-    }
-
-    public function getNet(): float
-    {
-        return $this->getDiffCa() + $this->getEuroVr();
     }
 
     /**

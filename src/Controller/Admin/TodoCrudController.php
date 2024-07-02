@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use App\Entity\CompanyContactNote;
 use App\Entity\Todo;
 use App\Repository\CompanyContactRepository;
 use App\Repository\TodoRepository;
@@ -171,11 +170,12 @@ class TodoCrudController extends BaseCrudController
                 ->generateUrl();
         } else {
             $url = $this->adminUrlGenerator->setDashboard(DashboardController::class)
-                ->setController(TodoCrudController::class)
+                ->setController(self::class)
                 ->setAction(Crud::PAGE_INDEX)
                 ->setEntityId(null)
                 ->generateUrl();
         }
+
         return $this->redirect($url);
     }
 }

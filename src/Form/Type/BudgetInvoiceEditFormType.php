@@ -34,8 +34,7 @@ class BudgetInvoiceEditFormType extends AbstractType
             'required' => false,
         ]);
 
-
-        $builder->addDependent('supplier', ['event'], function(DependentField $field, ?Event $event) {
+        $builder->addDependent('supplier', ['event'], function (DependentField $field, ?Event $event) {
             if (null === $event) {
                 return; // field not needed
             }
@@ -58,7 +57,7 @@ class BudgetInvoiceEditFormType extends AbstractType
             ]);
         });
 
-        $builder->addDependent('products', ['supplier', 'event'], function(DependentField $field, ?Supplier $supplier) {
+        $builder->addDependent('products', ['supplier', 'event'], function (DependentField $field, ?Supplier $supplier) {
             if (null === $supplier) {
                 return; // field not needed
             }
@@ -70,13 +69,13 @@ class BudgetInvoiceEditFormType extends AbstractType
                     return $er->createQueryBuilder('p')
                         ->andWhere('p.supplier = :supplier')
                         ->setParameter('supplier', $supplier)
-                        ;
+                    ;
                 },
                 'required' => false,
             ]);
         });
 
-        $builder->addDependent('validated', ['products', 'supplier', 'event'], function(DependentField $field, ?PersistentCollection $products) {
+        $builder->addDependent('validated', ['products', 'supplier', 'event'], function (DependentField $field, ?PersistentCollection $products) {
             if (null === $products) {
                 return; // field not needed
             }
@@ -86,14 +85,14 @@ class BudgetInvoiceEditFormType extends AbstractType
             }
 
             $field->add(CheckboxType::class, [
-                'label'    => 'Validée ?',
+                'label' => 'Validée ?',
                 'required' => false,
-                'value' => true
+                'value' => true,
             ]);
         });
 
         $builder->add('valid', SubmitType::class, [
-            'label' => 'Enregistrer'
+            'label' => 'Enregistrer',
         ]);
     }
 }

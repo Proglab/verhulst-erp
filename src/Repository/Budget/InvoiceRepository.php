@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository\Budget;
 
 use App\Entity\Budget\Invoice;
@@ -22,7 +24,7 @@ class InvoiceRepository extends ServiceEntityRepository
         parent::__construct($registry, Invoice::class);
     }
 
-    public function getInvoiceToValidate(User $user): bool|float|int|null|string
+    public function getInvoiceToValidate(User $user): bool|float|int|string|null
     {
         $qb = $this->createQueryBuilder('i');
         $qb->select('count(i.id)')
@@ -31,6 +33,7 @@ class InvoiceRepository extends ServiceEntityRepository
             ->andWhere('i.validated = :validated')
             ->setParameter('validated', false)
         ;
+
         return $qb->getQuery()->getSingleScalarResult();
     }
 }

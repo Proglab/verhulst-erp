@@ -49,6 +49,7 @@ class TwigExtraExtension extends AbstractExtension
             new TwigFunction('encore_entry_css_source', $this->getEncoreEntryCssSource(...)),
             new TwigFunction('login_target_path', $this->loginTargetPath(...)),
             new TwigFunction('getLocales', $this->getLocales(...)),
+            new TwigFunction('instanceOf', $this->instanceOf(...)),
         ];
     }
 
@@ -90,7 +91,7 @@ class TwigExtraExtension extends AbstractExtension
         return $source;
     }
 
-    public function getMoneyFormat(null|float|int $number): ?string
+    public function getMoneyFormat(float|int|null $number): ?string
     {
         return MoneyHelper::format($number);
     }
@@ -107,7 +108,7 @@ class TwigExtraExtension extends AbstractExtension
         return $class;
     }
 
-    public function equalsString(string $current, string $expected, string $onTrue = null, string $onFalse = null): ?string
+    public function equalsString(string $current, string $expected, ?string $onTrue = null, ?string $onFalse = null): ?string
     {
         if ($current === $expected) {
             return $onTrue;
@@ -155,5 +156,10 @@ class TwigExtraExtension extends AbstractExtension
         }
 
         return $locales;
+    }
+
+    public function instanceOf(mixed $entity, string $class): bool
+    {
+        return $entity instanceof $class;
     }
 }

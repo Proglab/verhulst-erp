@@ -112,34 +112,41 @@
                 <button class="btn btn-danger" data-action="live#action" data-live-action-param="initForm">Réinistialser le formulaire</button>
                 <button class="btn btn-primary" data-action="live#action" data-live-action-param="export">Exporter les données</button>
             </div>
-            <table class="table table-striped" {{ stimulus_controller('datatable-simple') }}>
+            <table class="table table-striped" {{ stimulus_controller('datatable-simple') }}  data-loading="addClass(opacity-50)">
                 <thead>
                 <tr>
-                    <th>
-                        Date de l'encodage
-                    </th>
-                    <th>Project
-                    </th>
+                    <th class="col-1">Date de l'encodage</th>
+                    <th></th>
+                    <th>Project</th>
                     <th>Client</th>
-                    <th>
-                            Sales
-                    </th>
+                    <th>Sales</th>
                     <th>Prix unitaire</th>
                     <th>Prix de vente</th>
-                    <th>Com Sales</th>
                     <th>Com TF</th>
+                    <th>Com Sales</th>
                 </tr>
                 </thead>
                 <tbody>
                     {% for sale in this.sales %}
                         <tr>
-                            <td><h6 class="mb-0">{{ sale.date|date('d/m/Y') }}</h6></td>
+                            <td>
+                                <h6 class="mb-0">{{ sale.date|date('d/m/Y') }}</h6>
+                            </td>
+                            <td>
+                                {% if instanceOf(sale.product, 'App\\Entity\\ProductPackageVip') %}
+                                    <iconify-icon icon="ri:vip-fill" width="25" height="25"></iconify-icon>
+                                {% elseif instanceOf(sale.product, 'App\\Entity\\ProductSponsoring') %}
+                                    <iconify-icon icon="octicon:sponsor-tiers-16" width="25" height="25"></iconify-icon>
+                                {% else %}
+                                    <iconify-icon icon="mdi:flash" width="25" height="25"></iconify-icon>
+                                {% endif %}
+                            </td>
                             <td>
                                 {% if sale.product is not empty %}
                                     <h6 class="mb-0">{{ sale.product.name }}</h6>
                                     <i>{{ sale.product.project.name }}</i>
                                 {% else %}
-                                    {{ sale.name }} - PO {{ sale.po }}
+                                    <h6 class="mb-0">{{ sale.name }} - PO {{ sale.po }}</h6>
                                 {% endif %}
                             </td>
                             <td>
@@ -148,28 +155,24 @@
                             </td>
                             <td><h6 class="mb-0">{{ sale.user.fullname }}</h6></td>
                             <td><h6 class="mb-0">{{ sale.price|number_format(2, ',', '') }}€</h6><i>Quantité : {{ sale.quantity }}</i></td>
-                            <td><h6 class="mb-0">{{ (sale.price * sale.quantity)|number_format(2, ',', '') }}€</h6></td>
-                            <td>
-                                <h6 class="mb-0">{{ (sale.percentCom / 100 * sale.price * sale.quantity)|number_format(2, ',', '') }}€</h6>
-                                <i>{{ sale.percentCom }}%</i>
-                            </td>
-                            <td>
-                                <h6 class="mb-0">{{ (sale.percentVr / 100 * sale.price * sale.quantity)|number_format(2, ',', '') }}€</h6>
-                                <i>{{ sale.percentVr }}%</i>
-                            </td>
+                            <td><h6 class="mb-0">Final : {{ sale.totalPrice|number_format(2, ',', '') }}€</h6><i>Temporaire : {{ sale.totalForecastPrice|number_format(2, ',', '') }}€</i></td>
+                            <td><h6 class="mb-0">{{ sale.totalVr|number_format(2, ',', '') }}€</h6><i>{% if sale.percentVrType != 'fixed' %}{{ sale.percentVr }}%{% else %}Prix fixe{% endif %}</i></td>
+                            <td><h6 class="mb-0">{{ sale.totalCom|number_format(2, ',', '') }}€</h6><i>{% if sale.percentComType != 'fixed' %}{{ sale.percentCom }}%{% endif%} {% if sale.percentComType == 'percent_pv' %}du PV{% elseif sale.percentComType == 'percent_com' %} de la marge TF{% else %}Prix fixe{% endif %}</i></td>
+
                         </tr>
                     {% endfor %}
                 </tbody>
                 <tfoot>
                 <tr>
-                    <th>Date de la vente</th>
-                    <th>Projet<br><i>Produit</i></th>
-                    <th>Client<br><i>Société</i></th>
+                    <th>Date de l'encodage</th>
+                    <th></th>
+                    <th>Project</th>
+                    <th>Client</th>
                     <th>Sales</th>
                     <th>Prix unitaire</th>
                     <th>Prix de vente</th>
+                    <th>Com TF</th>
                     <th>Com Sales</th>
-                    <th>Com The Friends</th>
                 </tr>
                 </tfoot>
             </table>

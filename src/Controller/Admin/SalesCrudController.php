@@ -241,7 +241,7 @@ class SalesCrudController extends BaseCrudController
                 $contact, $contactTel, $contactGsm, $contactEmail,
                 $panelProduct,
                 $project, $product, $dateBegin, $dateEnd, $user, $userMail, $description,
-                ],
+            ],
             default => [$product, $contacts, $quantity, $pa, $price, $discount_eur, $discount_percent, $date, $discount],
         };
 
@@ -278,11 +278,6 @@ class SalesCrudController extends BaseCrudController
         $user = $this->getUser();
         $entityInstance->setUser($user);
         $entityInstance->setPercentVr($entityInstance->getProduct()->getPercentVr());
-
-        if ($entityInstance->getProduct()->getPercentVr() > 0) {
-            $entityInstance->setPa($entityInstance->getDiffCa() / $entityInstance->getQuantity());
-        }
-
         /** @var Commission $com */
         $com = $entityManager->getRepository(Commission::class)->findOneBy(['product' => $entityInstance->getProduct(), 'user' => $this->getUser()]);
 
@@ -340,6 +335,7 @@ class SalesCrudController extends BaseCrudController
         $year = $context->getRequest()->get('year', date('Y'));
 
         $sales = $this->salesRepository->getSalesByYear($user, (int) $year);
+
         return $this->render('admin/sales/index.html.twig', [
             'user' => $user,
             'year' => $year,
@@ -374,8 +370,8 @@ class SalesCrudController extends BaseCrudController
         $company = $repo->search($request->get('search'));
 
         return $this->render('admin/sales/ajax/search_client.html.twig', [
-                'companies' => $company,
-            ]
+            'companies' => $company,
+        ]
         );
     }
 
@@ -395,10 +391,10 @@ class SalesCrudController extends BaseCrudController
         }
 
         return $this->render('admin/sales/list_project.html.twig', [
-                'contact' => $contact,
-                'context' => $context,
-                'projects' => $projects,
-            ]
+            'contact' => $contact,
+            'context' => $context,
+            'projects' => $projects,
+        ]
         );
     }
 
@@ -411,11 +407,11 @@ class SalesCrudController extends BaseCrudController
         $products = $this->entityManager->getRepository(Product::class)->findBy(['project' => $project]);
 
         return $this->render('admin/sales/list_product.html.twig', [
-                'products' => $products,
-                'project' => $project,
-                'contact' => $contact,
-                'context' => $context,
-            ]
+            'products' => $products,
+            'project' => $project,
+            'contact' => $contact,
+            'context' => $context,
+        ]
         );
     }
 
@@ -427,9 +423,9 @@ class SalesCrudController extends BaseCrudController
         $projects = $repo->search($request->get('search'));
 
         return $this->render('admin/sales/ajax/search_product.html.twig', [
-                'projects' => $projects,
-                'contact_id' => $request->get('contactId'),
-            ]
+            'projects' => $projects,
+            'contact_id' => $request->get('contactId'),
+        ]
         );
     }
 
@@ -459,6 +455,10 @@ class SalesCrudController extends BaseCrudController
         $product = $this->entityManager->getRepository(Product::class)->find($context->getRequest()->get('productId'));
         $entity->setProduct($product);
         $entity->setContact($contact);
+
+        $entity->setPercentComType('percent_pv');
+        $entity->setPercentVrType('percent');
+
         $entity->setUser($this->getUser());
         if ($product instanceof ProductPackageVip || $product instanceof ProductSponsoring) {
             $entity->setPrice((string) $product->getCa());
@@ -476,6 +476,7 @@ class SalesCrudController extends BaseCrudController
 
             $event = new BeforeEntityPersistedEvent($entityInstance);
             $this->container->get('event_dispatcher')->dispatch($event);
+            /** @var Sales $entityInstance */
             $entityInstance = $event->getEntityInstance();
 
             $this->persistEntity($this->container->get('doctrine')->getManagerForClass($context->getEntity()->getFqcn()), $entityInstance);
@@ -549,9 +550,16 @@ class SalesCrudController extends BaseCrudController
                 }
 
                 if (null === $project) {
-                    $project = $sale->getProduct()->getProject();
+                    /** @var ProductPackageVip|ProductSponsoring|null $product */
+                    $product = $sale->getProduct();
+
+                    $project = empty($product) ? '-' : $product->getProject();
                 } else {
-                    if ($project !== $sale->getProduct()->getProject()) {
+                    /** @var ProductPackageVip|ProductSponsoring|null $product */
+                    $product = $sale->getProduct();
+
+                    $project2 = empty($product) ? '-' : $product->getProject();
+                    if ($project !== $project2) {
                         $this->addFlash('danger', 'Un bon de commande doit être pour le même projet');
 
                         return $this->redirect($this->adminUrlGenerator->setAction(Action::INDEX)->generateUrl());

@@ -24,35 +24,89 @@ class BaseSales
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $name = null;
 
+    /**
+     * @var string|null $po Numéro de PO
+     */
     #[ORM\Column(length: 255, nullable: true)]
     protected ?string $po = null;
 
+    /**
+     * @var string|null $price Prix de vente
+     */
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     #[Assert\Length(max: 11)]
     protected ?string $price = null;
 
+    /**
+     * @var string|null $forecast_price Prix de vente prévisionnel
+     */
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    #[Assert\Length(max: 11)]
+    #[Assert\PositiveOrZero]
+    protected ?string $forecast_price = null;
+
+    /**
+     * @var string|null $pa Prix d'achat
+     */
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: false)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 11)]
     #[Assert\PositiveOrZero]
     protected ?string $pa = '0';
 
+    /**
+     * @var string|null $percent_vr % de commission VR
+     */
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: false)]
     #[Assert\Length(max: 6)]
     #[Assert\PositiveOrZero]
     protected ?string $percent_vr = null;
 
+    /**
+     * @var string|null $percent_vr_eur commission VR en euros
+     */
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    #[Assert\Length(max: 11)]
+    protected ?string $percent_vr_eur = null;
+
+    /**
+     * @var ?string $percent_com_type Type de commission (sales)
+     */
+    #[ORM\Column(nullable: false)]
+    #[Assert\Choice(choices: ['percent_com', 'percent_pv', 'fixed'])]
+    protected ?string $percent_com_type = '';
+
+    /**
+     * @var ?string $percent_vr_type Type de commission (Verhulst)
+     */
+    #[ORM\Column(nullable: false)]
+    #[Assert\Choice(choices: ['percent', 'fixed'])]
+    protected ?string $percent_vr_type = '';
+
+    /**
+     * @var string|null $percent_com % de commission sales
+     */
     #[ORM\Column(type: Types::DECIMAL, precision: 4, scale: 2, nullable: false)]
     #[Assert\Length(max: 5)]
     #[Assert\PositiveOrZero]
     protected ?string $percent_com = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    protected ?\DateTimeInterface $date = null;
+    /**
+     * @var string|null $percent_com_eur commission sales en euros
+     */
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    #[Assert\Length(max: 11)]
+    protected ?string $percent_com_eur = null;
 
     #[ORM\Column(nullable: false)]
     #[Assert\Positive]
     protected int $quantity = 1;
+
+    /**
+     * @var \DateTimeInterface|null $date date d'encodage
+     */
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    protected ?\DateTimeInterface $date = null;
 
     #[ORM\ManyToOne(inversedBy: 'sales')]
     #[ORM\JoinColumn(nullable: false)]
@@ -65,10 +119,90 @@ class BaseSales
     protected ?CompanyContact $contact = null;
 
     #[ORM\ManyToOne(inversedBy: 'sales')]
-    #[ORM\JoinColumn(nullable: true)]
-    #[Assert\NotBlank]
     private ?Product $product = null;
 
+    #[ORM\Column]
+    private bool $validate = false;
+
+    public function isValidate(): ?bool
+    {
+        return $this->validate;
+    }
+
+    public function setValidate(bool $validate): static
+    {
+        $this->validate = $validate;
+
+        return $this;
+    }
+
+    public function totalCalculPrice(): float
+    {
+        if (null === $this->price || 0 === (int) $this->price) {
+            return $this->getForecastPrice() * $this->getQuantity();
+        }
+
+        return (float) $this->totalPrice();
+    }
+
+    public function totalPrice(): float
+    {
+        return $this->getPrice() * $this->getQuantity();
+    }
+
+    public function totalForecastPrice(): float
+    {
+        return $this->getForecastPrice() * $this->getQuantity();
+    }
+
+    public function totalPa(): float
+    {
+        switch ($this->percent_vr_type) {
+            case 'percent':
+                return $this->totalPrice() - ($this->totalPrice() * $this->getPercentVr() / 100);
+            case 'fixed':
+                return (float) $this->getPa() * $this->getQuantity();
+            default:
+                return (float) $this->getPa() * $this->getQuantity();
+        }
+    }
+
+    public function totalVr(): float
+    {
+        switch ($this->percent_vr_type) {
+            case 'percent':
+                return $this->totalCalculPrice() * $this->getPercentVr() / 100;
+            case 'fixed':
+                return (float) $this->getPercentVrEur() * $this->getQuantity();
+            default:
+                return (float) $this->totalCalculPrice() * $this->getPercentVr() / 100;
+        }
+    }
+
+    public function totalCom(): float
+    {
+        switch ($this->percent_com_type) {
+            case 'percent_pv':
+                return $this->totalCalculPrice() * $this->getPercentCom() / 100;
+            case 'percent_com':
+                return $this->totalVr() * $this->getPercentCom() / 100;
+            case 'fixed':
+                return (float) $this->getPercentComEur() * $this->getQuantity();
+            default:
+        }
+
+        return $this->totalPrice() * $this->getPercentCom() / 100;
+    }
+
+    public function totalVrNet(): float
+    {
+        return $this->totalVr() - $this->totalCom();
+    }
+
+    public function marge(): float
+    {
+        return $this->totalCalculPrice() - $this->totalPa() - $this->totalVr();
+    }
 
     public function getId(): ?int
     {
@@ -80,18 +214,19 @@ class BaseSales
         return $this->name;
     }
 
-    public function setName(string|null $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
+
     public function getPo(): ?string
     {
         return $this->po;
     }
 
-    public function setPo(string|null $po): self
+    public function setPo(?string $po): self
     {
         $this->po = $po;
 
@@ -121,7 +256,6 @@ class BaseSales
 
         return $this;
     }
-
 
     public function getUser(): ?User
     {
@@ -183,7 +317,6 @@ class BaseSales
         return $this;
     }
 
-
     public function getContact(): ?CompanyContact
     {
         return $this->contact;
@@ -196,18 +329,67 @@ class BaseSales
         return $this;
     }
 
+    public function getForecastPrice(): ?float
+    {
+        return (float) $this->forecast_price;
+    }
+
+    public function setForecastPrice(string|float|null $forecastPrice): self
+    {
+        $this->forecast_price = (string) str_replace(',', '.', (string) $forecastPrice);
+
+        return $this;
+    }
+
+    public function getPercentVrEur(): ?string
+    {
+        return $this->percent_vr_eur;
+    }
+
+    public function setPercentVrEur(?string $percent_vr_eur): void
+    {
+        $this->percent_vr_eur = (string) str_replace(',', '.', (string) $percent_vr_eur);
+    }
+
+    public function getPercentComType(): string
+    {
+        return $this->percent_com_type;
+    }
+
+    public function setPercentComType(?string $percent_com_type): void
+    {
+        $this->percent_com_type = $percent_com_type;
+    }
+
+    public function getPercentComEur(): ?string
+    {
+        return $this->percent_com_eur;
+    }
+
+    public function setPercentComEur(?string $percent_com_eur): void
+    {
+        $this->percent_com_eur = (string) str_replace(',', '.', (string) $percent_com_eur);
+    }
+
+    public function getPercentVrType(): string
+    {
+        return $this->percent_vr_type;
+    }
+
+    public function setPercentVrType(?string $percent_vr_type): void
+    {
+        $this->percent_vr_type = $percent_vr_type;
+    }
+
     public function getProduct(): ?Product
     {
         return $this->product;
     }
 
-    public function setProduct(?Product $product): self
+    public function setProduct(?Product $product): static
     {
         $this->product = $product;
 
         return $this;
     }
-
-
-
 }

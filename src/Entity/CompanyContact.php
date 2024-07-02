@@ -9,8 +9,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CompanyContactRepository::class)]
 #[UniqueEntity('email')]
@@ -81,7 +81,7 @@ class CompanyContact
     #[ORM\ManyToOne(inversedBy: 'companyContacts')]
     private ?User $added_by = null;
 
-    #[ORM\OneToMany(mappedBy: 'contact', targetEntity: Sales::class)]
+    #[ORM\OneToMany(mappedBy: 'contact', targetEntity: BaseSales::class)]
     private Collection $sales;
 
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Todo::class, orphanRemoval: true)]
@@ -102,18 +102,11 @@ class CompanyContact
     #[ORM\Column]
     private ?bool $mailing = true;
 
-    /**
-     * @var Collection<int, FastSales>
-     */
-    #[ORM\OneToMany(mappedBy: 'client', targetEntity: FastSales::class, orphanRemoval: true)]
-    private Collection $fastSales;
-
     public function __construct()
     {
         $this->sales = new ArrayCollection();
         $this->todos = new ArrayCollection();
         $this->notes = new ArrayCollection();
-        $this->fastSales = new ArrayCollection();
     }
 
     public function __toString()
@@ -435,36 +428,6 @@ class CompanyContact
     public function setMailing(bool $mailing): static
     {
         $this->mailing = $mailing;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, FastSales>
-     */
-    public function getFastSales(): Collection
-    {
-        return $this->fastSales;
-    }
-
-    public function addFastSale(FastSales $fastSale): static
-    {
-        if (!$this->fastSales->contains($fastSale)) {
-            $this->fastSales->add($fastSale);
-            $fastSale->setClient($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFastSale(FastSales $fastSale): static
-    {
-        if ($this->fastSales->removeElement($fastSale)) {
-            // set the owning side to null (unless already changed)
-            if ($fastSale->getClient() === $this) {
-                $fastSale->setClient(null);
-            }
-        }
 
         return $this;
     }

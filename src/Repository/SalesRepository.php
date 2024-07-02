@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\Company;
 use App\Entity\CompanyContact;
 use App\Entity\Product;
-use App\Entity\Project;
 use App\Entity\Sales;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -73,9 +71,9 @@ class SalesRepository extends ServiceEntityRepository
         $datas = [];
         foreach ($sales as $sale) {
             if (!isset($datas[$sale->getDate()->format('m-Y')])) {
-                $datas[$sale->getDate()->format('m-Y')] = $sale->getMarge();
+                $datas[$sale->getDate()->format('m-Y')] = $sale->totalPrice();
             } else {
-                $datas[$sale->getDate()->format('m-Y')] += $sale->getMarge();
+                $datas[$sale->getDate()->format('m-Y')] += $sale->totalPrice();
             }
         }
         $return = [];
@@ -90,8 +88,6 @@ class SalesRepository extends ServiceEntityRepository
     {
         /** @var Sales[] $sales */
         $sales = $this->createQueryBuilder('s')
-            ->addSelect('p')
-            ->join('s.product', 'p')
             ->where('s.date BETWEEN :start AND :end')
             ->setParameter('start', $year . '-01-01')
             ->setParameter('end', $year . '-12-31')
@@ -103,9 +99,9 @@ class SalesRepository extends ServiceEntityRepository
         $datas = [];
         foreach ($sales as $sale) {
             if (!isset($datas[$sale->getDate()->format('m-Y')])) {
-                $datas[$sale->getDate()->format('m-Y')] = $sale->getMarge();
+                $datas[$sale->getDate()->format('m-Y')] = $sale->totalPrice();
             } else {
-                $datas[$sale->getDate()->format('m-Y')] += $sale->getMarge();
+                $datas[$sale->getDate()->format('m-Y')] += $sale->totalPrice();
             }
         }
         $return = [];
@@ -133,9 +129,9 @@ class SalesRepository extends ServiceEntityRepository
         $datas = [];
         foreach ($sales as $sale) {
             if (!isset($datas[$sale->getDate()->format('m-Y')])) {
-                $datas[$sale->getDate()->format('m-Y')] = $sale->getEuroCom();
+                $datas[$sale->getDate()->format('m-Y')] = $sale->totalCom();
             } else {
-                $datas[$sale->getDate()->format('m-Y')] += $sale->getEuroCom();
+                $datas[$sale->getDate()->format('m-Y')] += $sale->totalCom();
             }
         }
         $return = [];
@@ -193,16 +189,12 @@ class SalesRepository extends ServiceEntityRepository
     public function getSalesByYear(User $user, int $year): array
     {
         return $this->createQueryBuilder('s')
-            ->addSelect('p')
-            ->join('s.product', 'p')
-            ->join('p.project', 'pr')
             ->join('s.contact', 'c')
             ->join('c.company', 'co')
             ->andWhere('s.user = :user')
             ->setParameter('user', $user)
             ->andWhere('YEAR(s.date) = :year')
             ->setParameter('year', $year)
-            ->orderBy('pr.name', 'ASC')
             ->addOrderBy('co.name', 'ASC')
             ->getQuery()
             ->getResult();

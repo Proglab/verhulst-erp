@@ -1,0 +1,245 @@
+<div {{ attributes }}>
+    <div class="card">
+        <div class="card-body">
+            {{ form_start(form) }}
+            <div class="row">
+                <div class = "col-4" >
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name) }}
+                </div>
+                <div class = "col-2" >
+                    {{ form_label(form.type) }}
+                    {{ form_widget(form.type) }}
+                </div>
+                <div class = "col-2" >
+                    {{ form_label(form.from) }}
+                    {{ form_widget(form.from) }}
+                </div>
+                <div class = "col-2" >
+                    {{ form_label(form.to) }}
+                    {{ form_widget(form.to) }}
+                </div>
+                <div class = "col-1" >
+                    {{ form_label(form.archived) }}
+                    {{ form_widget(form.archived) }}
+                </div>
+                <div class = "col-1 text-end" >
+                    <a href="{{ path('project_index') }}" class="btn btn-primary">Reset</a>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="text-end mb-3">
+                <a href="{{ path('project_new') }}" class="btn btn-primary">Créer un nouveau projet</a>
+            </div>
+            <table class="table" data-loading="addClass(opacity-50)">
+                <tbody>
+                {% for project in this.projects %}
+                    <tr class="table-primary">
+                        <td class="col-6"><h6 class="mb-0">{{ project.name }}</h6></td>
+                        <td class="col-2"><h6 class="mb-0">{{ project.dateBegin|date('d/m/Y') }}</h6></td>
+                        <td class="col-2"><h6 class="mb-0">{{ project.dateEnd|date('d/m/Y') }}</h6></td>
+                        <td class="col-2 text-end">
+                            <div class="dropdown dropstart">
+                                <a href="javascript:void(0)" class="text-muted" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <iconify-icon icon="solar:menu-dots-bold"></iconify-icon>
+                                </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="">
+                                <li>
+                                    {% if not project.archive %}
+                                        <button type="button" class="btn text-black py-1 px-3" data-action="live#action"
+                                                data-live-action-param="archive" data-live-id-param="{{ project.id }}">
+                                            <i class="action-icon fa-solid fa-box-archive me-3"></i> Archiver
+                                        </button>
+                                    {% else %}
+                                        <button type="button" class="btn text-black py-1 px-3" data-action="live#action"
+                                                data-live-action-param="unarchive" data-live-id-param="{{ project.id }}">
+                                            <i class="fa-solid fa-file-zipper me-3"></i> Désarchiver
+                                        </button>
+                                    {% endif %}
+                                </li>
+                                <li>
+                                    <a href="#"  class="btn text-black py-1 px-3">
+                                        <i class="action-icon fa-solid fa-clone me-3"></i> Cloner
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('project_add_package',{_locale: app.locale, project: project.id}) }}" class="btn text-black py-1 px-3 ">
+                                        <iconify-icon icon="ri:vip-fill" class="me-3"></iconify-icon> Créer un package VIP
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('project_add_sponsoring',{_locale: app.locale, project: project.id}) }}" class="btn text-black py-1 px-3 ">
+                                        <iconify-icon icon="octicon:sponsor-tiers-16" class="me-3"></iconify-icon> Créer un Sponsoring
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('project_details', {project: project.id})}}" class="btn text-black py-1 px-3 ">
+                                        <i class="action-icon fa-solid fa-eye me-3"></i> Voir
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('project_edit', {project: project.id})}}"  type="button" class="btn text-black  py-1 px-3 ">
+                                        <i class="action-icon fa-solid fa-edit me-3"></i> Modifier
+                                    </a>
+                                </li>
+                                <li>
+                                    <button type="button" class="btn text-black py-1 px-3 " data-action="live#action"
+                                            data-live-action-param="deleteProject" data-live-id-param="{{ project.id }}" data-bs-toggle="modal" data-bs-target="#danger-header-modal">
+                                        <i class="action-icon fa-solid fa-trash me-3"></i> Supprimer
+                                    </button>
+                                </li>
+                            </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    {% if project.products|length > 0 %}
+                    <tr>
+                        <td colspan="4">
+                            <table class="table table-hover table-sm">
+                                <thead>
+                                <tr>
+                                    <th class="col-6">Produit</th>
+                                    <th class="col-1">Date début</th>
+                                    <th class="col-1">Date fin</th>
+                                    <th class="col-1">Prix</th>
+                                    <th class="col-1">Qt max</th>
+                                    <th class="col-1">Qt vendue</th>
+                                    <th class="col-1">Qt dispo</th>
+                                    <th class="col-1"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for product in project.products %}
+                                    <tr {% if product.quantityMax is not empty and product.quantityAvailable <= 0 %}class="table-light" {% else %}class="table-success"{% endif %}>
+                                        <td>
+                                            {% if instanceOf(product, 'App\\Entity\\ProductPackageVip') %}
+                                                <a href="#" class="ms-3" data-bs-toggle="tooltip" data-bs-original-title="Package VIP">
+                                                    <iconify-icon icon="ri:vip-fill" class="me-3" style="font-size: 25px"></iconify-icon>
+                                                </a>
+                                            {% else %}
+                                                <a href="#" class="ms-3" data-bs-toggle="tooltip" data-bs-original-title="Sponsoring">
+                                                    <iconify-icon icon="octicon:sponsor-tiers-16" class="me-3" style="font-size: 25px"></iconify-icon>
+                                                </a>
+                                            {% endif %}
+                                            {{ product.name }}
+                                            {% if product.description|striptags is not empty %}
+                                            <div class="dropdown dropstart ms-3" style=" display: inline;">
+                                                <a href="javascript:void(0)" class="text-muted" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </a>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="width: 400px;">
+                                                    <li class="m-2">
+                                                        {{ product.description|raw }}
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ product.dateBegin|date('d/m/Y') }}</td>
+                                        <td>{{ product.dateEnd|date('d/m/Y') }}</td>
+                                        <td>{{ product.ca|number_format(2, ',', '') }}€</td>
+                                        <td>{% if product.quantityMax is empty %}-{% else %}{{ product.quantityMax }}{% endif %}</td>
+                                        <td>{{ product.quantitySales }}</td>
+                                        <td>{% if product.quantityMax is empty %}-{% else %}{{ product.quantityAvailable }}{% endif %}</td>
+                                        <td class="text-end">
+                                            <div class="dropdown dropstart">
+                                                <a href="javascript:void(0)" class="text-muted" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <iconify-icon icon="solar:menu-dots-bold"></iconify-icon>
+                                                </a>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="width: 175px;">
+                                                    {% if product.quantityMax is not empty and product.quantityAvailable > 0 %}
+                                                    <li>
+                                                        <a href="{{ ea_url()
+                                                            .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                            .setController('App\\Controller\\Admin\\SalesCrudController')
+                                                            .setAction('new')
+                                                            .set('entityFqcn', 'App\\Entity\\Sales')
+                                                            .set('productId', product.id)
+                                                            .set('projectId', project.id)
+                                                            .setEntityId(null)
+
+                                                        }}"  class="btn  text-black">
+                                                            <i class="fa fa-euro-sign me-3"></i> Créer une vente
+                                                        </a>
+                                                    </li>
+                                                    {% endif %}
+                                                    <li>
+                                                        {% if instanceOf(product, 'App\\Entity\\ProductPackageVip') %}
+                                                            <a href="{{ ea_url()
+                                                                .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                                .setController('App\\Controller\\Admin\\ProductPackageVipCrudController')
+                                                                .setAction('edit')
+                                                                .setEntityId(product.id) }}" class="btn py-1 px-3 text-black">
+                                                                <i class="fa fa-pen-to-square me-3"></i> Modifier
+                                                            </a>
+                                                        {% else %}
+                                                            <a href="{{ ea_url()
+                                                                .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                                .setController('App\\Controller\\Admin\\ProductSponsoringCrudController')
+                                                                .setAction('edit')
+                                                                .setEntityId(product.id) }}" class="btn  py-1 px-3 text-black">
+                                                                <i class="fa fa-pen-to-square me-3"></i> Modifier
+                                                            </a>
+                                                        {% endif %}
+                                                    </li>
+                                                    <li>
+                                                        <button type="button" class="btn  py-1 px-3  text-black  " data-action="live#action"
+                                                                data-live-action-param="deleteProduct" data-live-id-param="{{ product.id }}">
+                                                            <i class="fa fa-trash me-3"></i> Supprimer
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="navigation">
+                {{ knp_pagination_render(this.projects) }}
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="danger-header-modal" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="danger-header-modalLabel" aria-modal="true" role="dialog" {{ stimulus_controller('bootstrap-modal') }}>
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header modal-colored-header bg-danger text-white">
+                    <h4 class="modal-title text-white" id="danger-header-modalLabel">
+                        Cette action est irréversible !
+                    </h4>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-action="live#action" data-live-action-param="abordDeleteProject"></button>
+                </div>
+                {% if this.projectToDelete %}
+                <div class="modal-body">
+                    <h5 class="mt-0">{{ this.projectToDelete.name }}</h5>
+                    <p>
+                        Désirez-vous vraiment supprimer cet élément ?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" data-action="live#action" data-live-action-param="abordDeleteProject">
+                        Non
+                    </button>
+                    <button type="button" class="btn bg-danger-subtle text-danger"  data-action="live#action" data-live-action-param="confirmDeleteProject" data-live-id-param="{{ this.projectToDelete.id }}">
+                        Oui
+                    </button>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

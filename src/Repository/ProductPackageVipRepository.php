@@ -42,7 +42,7 @@ class ProductPackageVipRepository extends ServiceEntityRepository
         }
     }
 
-    public function searchEventsByProject(Project $project, ?string $queryEvent)
+    public function searchEventsByProject(Project $project, ?string $queryEvent): ?array
     {
         $qb = $this->createQueryBuilder('p')
             ->join('p.project', 'pr')
@@ -53,6 +53,5 @@ class ProductPackageVipRepository extends ServiceEntityRepository
             ->orderBy('p.date_begin', 'DESC');
 
         return $qb->getQuery()->getResult();
-
     }
 }

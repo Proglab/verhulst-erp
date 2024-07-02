@@ -35,8 +35,7 @@ class UserCrudController extends BaseCrudController
         private UserRepository $userRepository,
         protected SecurityChecker $securityChecker,
         private AdminUrlGenerator $adminUrlGenerator
-    )
-    {
+    ) {
         parent::__construct($securityChecker);
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Form\Type;
@@ -28,7 +29,7 @@ class NewCompanyContactType extends AbstractType
                     'label' => 'Société',
                     'required' => true,
                     'constraints' => [
-                        new NotBlank()
+                        new NotBlank(),
                     ],
                 ]);
         }
@@ -62,7 +63,7 @@ class NewCompanyContactType extends AbstractType
                 'mapped' => true,
                 'attr' => [
                     'class' => 'form-check-input',
-                    'checked' => 'checked'
+                    'checked' => 'checked',
                 ],
             ]);
         });
@@ -76,16 +77,16 @@ class NewCompanyContactType extends AbstractType
             'company_create' => false,
         ]);
         $resolver->setAllowedTypes('company', [Company::class, 'null']);
-        $resolver->setAllowedTypes('company_create','boolean');
+        $resolver->setAllowedTypes('company_create', 'boolean');
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         parent::buildView($view, $form, $options);
 
-        $view->vars = array_merge($view->vars, array(
+        $view->vars = array_merge($view->vars, [
             'company' => $options['company'],
             'company_create' => $options['company_create'],
-        ));
+        ]);
     }
 }

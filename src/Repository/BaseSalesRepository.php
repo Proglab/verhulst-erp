@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\BaseSales;
+use App\Entity\Commission;
 use App\Entity\Company;
 use App\Entity\CompanyContact;
-use App\Entity\FastSales;
 use App\Entity\Product;
+use App\Entity\ProductPackageVip;
+use App\Entity\ProductSponsoring;
 use App\Entity\Project;
 use App\Entity\Sales;
 use App\Entity\User;
@@ -29,6 +31,24 @@ class BaseSalesRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, BaseSales::class);
+    }
+
+    public function save(BaseSales $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(BaseSales $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
     }
 
     public function getQuantitySaleByProduct(Product $product): int
@@ -58,9 +78,9 @@ class BaseSalesRepository extends ServiceEntityRepository
         $datas = [];
         foreach ($sales as $sale) {
             if (!isset($datas[$sale->getDate()->format('m-Y')])) {
-                $datas[$sale->getDate()->format('m-Y')] = $sale->getMarge();
+                $datas[$sale->getDate()->format('m-Y')] = $sale->totalPrice();
             } else {
-                $datas[$sale->getDate()->format('m-Y')] += $sale->getMarge();
+                $datas[$sale->getDate()->format('m-Y')] += $sale->totalPrice();
             }
         }
         $return = [];
@@ -75,8 +95,6 @@ class BaseSalesRepository extends ServiceEntityRepository
     {
         /** @var Sales[] $sales */
         $sales = $this->createQueryBuilder('s')
-            ->addSelect('p')
-            ->join('s.product', 'p')
             ->where('s.date BETWEEN :start AND :end')
             ->setParameter('start', $year . '-01-01')
             ->setParameter('end', $year . '-12-31')
@@ -88,9 +106,9 @@ class BaseSalesRepository extends ServiceEntityRepository
         $datas = [];
         foreach ($sales as $sale) {
             if (!isset($datas[$sale->getDate()->format('m-Y')])) {
-                $datas[$sale->getDate()->format('m-Y')] = $sale->getMarge();
+                $datas[$sale->getDate()->format('m-Y')] = $sale->totalPrice();
             } else {
-                $datas[$sale->getDate()->format('m-Y')] += $sale->getMarge();
+                $datas[$sale->getDate()->format('m-Y')] += $sale->totalPrice();
             }
         }
         $return = [];
@@ -101,12 +119,46 @@ class BaseSalesRepository extends ServiceEntityRepository
         return $return;
     }
 
+    public function getSalesByMonthByUser(?\DateTime $dateBegin, ?\DateTime $dateEnd, ?User $user, ?Project $project, ?string $type): array
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->leftJoin('s.product', 'p');
+
+        if ($dateBegin !== null && $dateEnd !== null) {
+            $qb->where('s.date BETWEEN :start AND :end')
+                ->setParameter('start', $dateBegin->format('Y-m-d'))
+                ->setParameter('end', $dateEnd->format('Y-m-d'));
+        } elseif ($dateBegin !== null && $dateEnd === null) {
+            $qb->where('s.date >= :start')
+                ->setParameter('start', $dateBegin->format('Y-m-d'));
+        } else {
+            $qb->where('s.date >= :end')
+                ->setParameter('end', $dateEnd->format('Y-m-d'));
+        }
+
+        if ($user !== null) {
+            $qb->andWhere('s.user = :user')
+                ->setParameter('user', $user);
+        }
+
+        if ($project !== null) {
+            $qb->andWhere('p.project = :project')
+                ->setParameter('project', $project);
+        }
+
+        if ($type !== null) {
+            $qb->andWhere('p instance of :productType')
+                ->setParameter('productType', $type);
+        }
+
+        $qb->getQuery()
+            ->getResult();
+    }
+
     public function getCommissionsStatsByMonthByUser(int $year, User $user): array
     {
         /** @var Sales[] $sales */
         $sales = $this->createQueryBuilder('s')
-            ->addSelect('p')
-            ->join('s.product', 'p')
             ->where('s.date BETWEEN :start AND :end')
             ->setParameter('start', $year . '-01-01')
             ->setParameter('end', $year . '-12-31')
@@ -118,9 +170,9 @@ class BaseSalesRepository extends ServiceEntityRepository
         $datas = [];
         foreach ($sales as $sale) {
             if (!isset($datas[$sale->getDate()->format('m-Y')])) {
-                $datas[$sale->getDate()->format('m-Y')] = $sale->getEuroCom();
+                $datas[$sale->getDate()->format('m-Y')] = $sale->totalCom();
             } else {
-                $datas[$sale->getDate()->format('m-Y')] += $sale->getEuroCom();
+                $datas[$sale->getDate()->format('m-Y')] += $sale->totalCom();
             }
         }
         $return = [];
@@ -133,22 +185,21 @@ class BaseSalesRepository extends ServiceEntityRepository
 
     public function getSalesStatsByMonthByUser(int $year, User $user, ?Project $project): array
     {
-         $qb = $this->createQueryBuilder('s')
-            ->addSelect('p')
-            ->leftJoin('s.product', 'p')
-            ->leftJoin('p.project', 'project')
-            ->where('s.date BETWEEN :start AND :end')
-            ->setParameter('start', $year . '-01-01')
-            ->setParameter('end', $year . '-12-31')
-            ->andWhere('s.user = :user')
-            ->setParameter('user', $user);
+        $qb = $this->createQueryBuilder('s')
+           ->addSelect('p')
+           ->leftJoin('s.product', 'p')
+           ->leftJoin('p.project', 'project')
+           ->where('s.date BETWEEN :start AND :end')
+           ->setParameter('start', $year . '-01-01')
+           ->setParameter('end', $year . '-12-31')
+           ->andWhere('s.user = :user')
+           ->setParameter('user', $user);
 
-         if (!empty($project)) {
-             $qb
-                 ->andWhere('project = :project')
-                 ->setParameter('project', $project);
-         }
-
+        if (!empty($project)) {
+            $qb
+                ->andWhere('project = :project')
+                ->setParameter('project', $project);
+        }
 
         /** @var Sales[] $sales */
         $sales = $qb->getQuery()
@@ -156,9 +207,9 @@ class BaseSalesRepository extends ServiceEntityRepository
         $datas = [];
         foreach ($sales as $sale) {
             if (!isset($datas[$sale->getDate()->format('m-Y')])) {
-                $datas[$sale->getDate()->format('m-Y')] = $sale->getPrice() * $sale->getQuantity();
+                $datas[$sale->getDate()->format('m-Y')] = $sale->totalPrice();
             } else {
-                $datas[$sale->getDate()->format('m-Y')] += $sale->getPrice() * $sale->getQuantity();
+                $datas[$sale->getDate()->format('m-Y')] += $sale->totalPrice();
             }
         }
         $return = [];
@@ -188,11 +239,13 @@ class BaseSalesRepository extends ServiceEntityRepository
 
         $datas = [];
         foreach ($sales as $sale) {
-            $project = strtolower($sale->getProduct()->getProject()->getName());
+            /** @var ProductSponsoring|ProductPackageVip|null $product */
+            $product = $sale->getProduct();
+            $project = empty($product) ? '-' : strtolower($product->getProject()->getName());
             if (!isset($datas[$project])) {
-                $datas[$project] = $sale->getPrice() * $sale->getQuantity();
+                $datas[$project] = $sale->totalPrice();
             } else {
-                $datas[$project] += $sale->getPrice() * $sale->getQuantity();
+                $datas[$project] += $sale->totalPrice();
             }
         }
 
@@ -202,16 +255,16 @@ class BaseSalesRepository extends ServiceEntityRepository
             }
         }
 
-        ksort($datas, CASE_LOWER);
+        ksort($datas, \CASE_LOWER);
 
         $return = [];
 
         foreach ($datas as $project => $price) {
             $return[] = ['project' => $project, 'price' => number_format($price, 2, '.', '')];
         }
+
         return $return;
     }
-
 
     public function findLastSale(User $user, CompanyContact $companyContact): ?Sales
     {
@@ -245,7 +298,6 @@ class BaseSalesRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-
     public function searchQb(?\DateTime $from, ?\DateTime $to, ?Project $project, ?Product $product, ?Company $company, ?CompanyContact $contact, ?User $user, ?bool $archive): QueryBuilder
     {
         $qb = $this->createQueryBuilder('s')
@@ -253,7 +305,6 @@ class BaseSalesRepository extends ServiceEntityRepository
             ->leftJoin('s.contact', 'c')
             ->leftJoin('s.product', 'product')
             ->leftJoin('product.project', 'project');
-
 
         if (null !== $archive) {
             $qb
@@ -303,7 +354,6 @@ class BaseSalesRepository extends ServiceEntityRepository
             ->orderBy('s.date', 'DESC');
     }
 
-
     public function search(?\DateTime $from, ?\DateTime $to, ?Project $project, ?Product $product, ?Company $company, ?CompanyContact $contact, ?User $user, ?bool $archive): array
     {
         $qb = $this->searchQb($from, $to, $project, $product, $company, $contact, $user, $archive);
@@ -314,7 +364,6 @@ class BaseSalesRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-
     public function searchTotal(?\DateTime $from, ?\DateTime $to, ?Project $project, ?Product $product, ?Company $company, ?CompanyContact $contact, ?User $user, ?bool $archive): float
     {
         $qb = $this->createQueryBuilder('s')
@@ -322,7 +371,6 @@ class BaseSalesRepository extends ServiceEntityRepository
             ->leftJoin('s.contact', 'c')
             ->leftJoin('s.product', 'product')
             ->leftJoin('product.project', 'project');
-
 
         if (null !== $archive) {
             $qb
@@ -382,8 +430,6 @@ class BaseSalesRepository extends ServiceEntityRepository
             ->leftJoin('s.product', 'product')
             ->leftJoin('product.project', 'project');
 
-
-
         if (null !== $archive) {
             $qb
                 ->andWhere('project.archive = :archive')
@@ -441,8 +487,6 @@ class BaseSalesRepository extends ServiceEntityRepository
             ->leftJoin('s.contact', 'c')
             ->leftJoin('s.product', 'product')
             ->leftJoin('product.project', 'project');
-
-
 
         if (null !== $archive) {
             $qb
@@ -509,5 +553,46 @@ class BaseSalesRepository extends ServiceEntityRepository
             ->orderBy('s.date', 'DESC')
             ->getQuery()
             ->getResult();
+    }
+
+    public function getSalesStatsByDateByUser(\DateTime $date_begin, \DateTime $date_end, Project $project, array $users, array $month): array
+    {
+        $sql = "
+        SELECT SUM(sales.price * sales.quantity) as total, CONCAT(YEAR(sales.date), '-',MONTH(sales.date)) as date, sales.user_id
+FROM sales
+JOIN product ON (sales.product_id = product.id)
+JOIN project ON (product.project_id = project.id)
+WHERE project.id = " . $project->getId() . " and sales.date BETWEEN '" . $date_begin->format('Y-m-d') . "' AND '" . $date_end->format('Y-m-d') . "'
+GROUP BY CONCAT(YEAR(sales.date), '-', MONTH(sales.date)), user_id
+ORDER BY CONCAT(YEAR(sales.date), '-', MONTH(sales.date)) ASC, `sales`.`user_id` ASC
+        ";
+
+        $query = $this->getEntityManager()->getConnection()->executeQuery($sql);
+
+        $results = $query->fetchAllAssociative();
+
+        $datas = [];
+        foreach ($month as $m) {
+            foreach ($users as $user) {
+                foreach ($results as $result) {
+                    $dateSearched = new \DateTime($m . '-01');
+                    $dateFinded = new \DateTime($result['date'] . '-01');
+
+                    if (!isset($datas[$user->getId()])) {
+                        $datas[$user->getId()] = [];
+                    }
+
+                    if (!isset($datas[$user->getId()][$m])) {
+                        $datas[$user->getId()][$m] = 0;
+                    }
+
+                    if ($dateSearched->format('Ym') === $dateFinded->format('Ym') && (int) $result['user_id'] === $user->getId()) {
+                        $datas[$user->getId()][$m] += $result['total'];
+                    }
+                }
+            }
+        }
+
+        return $datas;
     }
 }

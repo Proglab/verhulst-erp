@@ -61,22 +61,12 @@ class AdminProjectSubscriber implements EventSubscriberInterface
         $users = $this->userRepository->getCommercials();
         /** @var User $user */
         foreach ($users as $user) {
-            foreach ($entity->getProductEvent() as $event) {
-                if (null === $event->getId()) {
-                    $this->createCom($user, $event);
-                }
-            }
             foreach ($entity->getProductPackage() as $event) {
                 if (null === $event->getId()) {
                     $this->createCom($user, $event);
                 }
             }
             foreach ($entity->getProductSponsoring() as $event) {
-                if (null === $event->getId()) {
-                    $this->createCom($user, $event);
-                }
-            }
-            foreach ($entity->getProductDivers() as $event) {
                 if (null === $event->getId()) {
                     $this->createCom($user, $event);
                 }
@@ -96,16 +86,10 @@ class AdminProjectSubscriber implements EventSubscriberInterface
         $users = $this->userRepository->getCommercials();
         /** @var User $user */
         foreach ($users as $user) {
-            foreach ($entity->getProductEvent() as $event) {
-                $this->createCom($user, $event, true);
-            }
             foreach ($entity->getProductPackage() as $event) {
                 $this->createCom($user, $event, true);
             }
             foreach ($entity->getProductSponsoring() as $event) {
-                $this->createCom($user, $event, true);
-            }
-            foreach ($entity->getProductDivers() as $event) {
                 $this->createCom($user, $event, true);
             }
         }
@@ -120,10 +104,7 @@ class AdminProjectSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->deleteDocs($entity->getProductSponsoring());
-        $this->deleteDocs($entity->getProductEvent());
-        $this->deleteDocs($entity->getProductDivers());
-        $this->deleteDocs($entity->getProductPackage());
+        $this->deleteDocs($entity->getProducts());
     }
 
     /**

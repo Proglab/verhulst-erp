@@ -14,6 +14,8 @@ export default class extends Flatpickr {
             locale: 'fr',
             time_24hr: true,
             weekNumbers: true,
+            altInput: true,
+            altFormat: 'd/m/Y',
         };
     }
 }

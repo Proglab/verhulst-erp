@@ -62,7 +62,7 @@ class Product
 
     public function __toString(): string
     {
-        return $this->getSubCategory()->getCategory()->getBudget()->getName(). ' - ' . $this->getSubCategory()->getCategory()->getName(). ' - ' . $this->getSubCategory()->getName().' - '. $this->getTitle();
+        return $this->getSubCategory()->getCategory()->getBudget()->getName() . ' - ' . $this->getSubCategory()->getCategory()->getName() . ' - ' . $this->getSubCategory()->getName() . ' - ' . $this->getTitle();
     }
 
     public function getId(): ?int

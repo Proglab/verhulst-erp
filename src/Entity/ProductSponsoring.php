@@ -12,7 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ProductSponsoringRepository::class)]
 class ProductSponsoring extends Product
 {
-
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     #[Assert\PositiveOrZero]
     private ?int $quantity_max = null;
@@ -32,16 +31,6 @@ class ProductSponsoring extends Product
         $this->quantity_max = $quantity_max;
 
         return $this;
-    }
-
-    public function getQuantitySales(): int
-    {
-        $quantity = 0;
-        foreach ($this->getSales() as $sale) {
-            $quantity += $sale->getQuantity();
-        }
-
-        return $quantity;
     }
 
     public function getQuantityAvailable(): ?int
