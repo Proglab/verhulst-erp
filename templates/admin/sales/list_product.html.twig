@@ -4,24 +4,7 @@
 {% block page_title %}Verhulst & Friends - ERP - {{ block('content_title') }}{% endblock %}
 
 {% block page_actions %}
-    {% set url = ea_url()
-        .setController('App\\Controller\\Admin\\ProductEventCrudController')
-        .setAction('new')
-        .set('referrer', context.request.requestUri)
-    %}
-    {% set url2 = ea_url()
-        .setController('App\\Controller\\Admin\\ProductDiversCrudController')
-        .setAction('new')
-        .set('referrer', context.request.requestUri)
-    %}
-    <div class="global-actions">
-        <a class=" action-new btn btn-primary" href="{{ url }}" data-action-name="new">
-            <i class="action-icon fa fa-plus-square"></i> <span class="action-label">Créer un event</span>
-        </a>
-        <a class=" action-new btn btn-primary" href="{{ url2 }}" data-action-name="new">
-            <i class="action-icon fa fa-plus-square"></i> <span class="action-label">Créer un divers</span>
-        </a>
-    </div>
+
 {% endblock %}
 
 {% block main %}
