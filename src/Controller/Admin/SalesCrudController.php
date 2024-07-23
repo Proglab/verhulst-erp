@@ -278,6 +278,7 @@ class SalesCrudController extends BaseCrudController
         $user = $this->getUser();
         $entityInstance->setUser($user);
         $entityInstance->setPercentVr($entityInstance->getProduct()->getPercentVr());
+        $entityInstance->setValidate(true);
         /** @var Commission $com */
         $com = $entityManager->getRepository(Commission::class)->findOneBy(['product' => $entityInstance->getProduct(), 'user' => $this->getUser()]);
 
