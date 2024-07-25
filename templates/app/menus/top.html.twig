@@ -30,15 +30,7 @@
                                 <span class="hide-menu">{{ 'app.menus.top.dashboard.general'|trans }}</span>
                             </a>
                         </li> #}
-                        <li class="sidebar-item">
-                            <a href="{{ ea_url()
-                                .setDashboard('App\\Controller\\Admin\\DashboardController')
-                                .setController('App\\Controller\\Admin\\SalesCrudController')
-                                .setAction('sales_by_users_list') }}" class="sidebar-link">
-                                <iconify-icon icon="carbon:dashboard" width="25" height="25"></iconify-icon>
-                                <span class="hide-menu">{{ 'app.menus.top.dashboard.commercial'|trans }}</span>
-                            </a>
-                        </li>
+
                         <li class="sidebar-item">
                             <a href="{{ path('sales_recap') }}" class="sidebar-link">
                                 <iconify-icon icon="streamline:graph-solid" width="25" height="25"></iconify-icon>
