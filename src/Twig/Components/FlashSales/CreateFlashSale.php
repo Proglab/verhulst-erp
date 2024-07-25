@@ -55,7 +55,10 @@ class CreateFlashSale extends AbstractController
     protected function instantiateForm(): FormInterface
     {
         if (null !== $this->sale) {
-            return $this->createForm(NewFlashSaleType::class, $this->sale);
+            $form = $this->createForm(NewFlashSaleType::class, $this->sale);
+            $form->get('percent_vr')->setData($this->sale->getPercentVr() / 100);
+            $form->get('percent_com')->setData($this->sale->getPercentCom() / 100);
+            return $form;
         }
         $flashSale = new FastSales();
         $flashSale->setContact($this->contact);
