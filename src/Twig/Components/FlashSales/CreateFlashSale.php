@@ -8,6 +8,7 @@ use App\Entity\CompanyContact;
 use App\Entity\FastSales;
 use App\Entity\User;
 use App\Form\Type\NewFlashSaleType;
+use App\Form\Type\UpdateFlashSaleType;
 use App\Repository\FastSalesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -55,9 +56,13 @@ class CreateFlashSale extends AbstractController
     protected function instantiateForm(): FormInterface
     {
         if (null !== $this->sale) {
-            $form = $this->createForm(NewFlashSaleType::class, $this->sale);
-            $form->get('percent_vr')->setData($this->sale->getPercentVr() / 100);
-            $form->get('percent_com')->setData($this->sale->getPercentCom() / 100);
+            $form = $this->createForm(UpdateFlashSaleType::class, $this->sale);
+            if ($form->has('percent_vr')) {
+                $form->get('percent_vr')->setData($this->sale->getPercentVr() / 100);
+            }
+            if ($form->has('percent_com')) {
+                $form->get('percent_com')->setData($this->sale->getPercentCom() / 100);
+            }
             return $form;
         }
         $flashSale = new FastSales();
