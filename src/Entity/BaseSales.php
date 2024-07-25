@@ -74,14 +74,14 @@ class BaseSales
      */
     #[ORM\Column(nullable: false)]
     #[Assert\Choice(choices: ['percent_com', 'percent_pv', 'fixed'])]
-    protected ?string $percent_com_type = '';
+    protected ?string $percent_com_type = null;
 
     /**
      * @var ?string $percent_vr_type Type de commission (Verhulst)
      */
     #[ORM\Column(nullable: false)]
     #[Assert\Choice(choices: ['percent', 'fixed'])]
-    protected ?string $percent_vr_type = '';
+    protected ?string $percent_vr_type = null;
 
     /**
      * @var string|null $percent_com % de commission sales

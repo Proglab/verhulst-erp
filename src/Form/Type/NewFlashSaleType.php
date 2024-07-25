@@ -51,14 +51,13 @@ class NewFlashSaleType extends AbstractType
             'mapped' => true,
             'placeholder' => 'Sélectionnez un type de commission',
             'choices' => [
-                '% sur la com TF' => 'percent_com',
                 '% sur le PV' => 'percent_pv',
+                '% sur la com TF' => 'percent_com',
                 'Prix fixe' => 'fixed',
             ],
             'constraints' => [
                 new NotBlank(),
             ],
-            'data' => 'percent_pv',
         ])
         ->addDependent('percent_com', 'percent_com_type', function (DependentField $field, ?string $com_type) {
             if (null === $com_type) {
@@ -118,7 +117,6 @@ class NewFlashSaleType extends AbstractType
             'constraints' => [
                 new NotBlank(),
             ],
-            'data' => 'percent',
         ])
         ->addDependent('percent_vr', 'percent_vr_type', function (DependentField $field, ?string $date_type) {
             if (null === $date_type) {
