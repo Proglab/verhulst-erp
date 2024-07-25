@@ -28,32 +28,58 @@
     </div>
 
     <div class="row mt-3">
-        <div class="col-4 border">
-            {{ form_label(form.type_vente) }}
-            {{ form_widget(form.type_vente) }}
-            {{ form_errors(form.type_vente) }}
-            <div class="col-12 mt-3 mb-3">
-            {% if form.forecast_price is defined %}
-                {{ form_label(form.forecast_price) }}
-                {{ form_widget(form.forecast_price) }}
-                {{ form_errors(form.forecast_price) }}
-            {% endif %}
-            {% if form.price is defined %}
-                {{ form_label(form.price) }}
-                {{ form_widget(form.price) }}
-                {{ form_errors(form.price) }}
-
-
-                {% if form.validate is defined %}
-                    <div class="col-12 mt-3 mb-3">
-                        {{ form_label(form.validate) }}
-                        {{ form_widget(form.validate) }}
-                        {{ form_errors(form.validate) }}
-                    </div>
+        {% if form.type_vente is defined %}
+            <div class="col-4 border">
+                {{ form_label(form.type_vente) }}
+                {{ form_widget(form.type_vente) }}
+                {{ form_errors(form.type_vente) }}
+                <div class="col-12 mt-3 mb-3">
+                {% if form.forecast_price is defined %}
+                    {{ form_label(form.forecast_price) }}
+                    {{ form_widget(form.forecast_price) }}
+                    {{ form_errors(form.forecast_price) }}
                 {% endif %}
-            {% endif %}
+                {% if form.price is defined %}
+                    {{ form_label(form.price) }}
+                    {{ form_widget(form.price) }}
+                    {{ form_errors(form.price) }}
+
+
+                    {% if form.validate is defined %}
+                        <div class="col-12 mt-3 mb-3">
+                            {{ form_label(form.validate) }}
+                            {{ form_widget(form.validate) }}
+                            {{ form_errors(form.validate) }}
+                        </div>
+                    {% endif %}
+                {% endif %}
+                </div>
             </div>
-        </div>
+        {% else %}
+            <div class="col-4 border">
+                <div class="col-12 mt-3 mb-3">
+                    {% if form.price is defined %}
+                        {{ form_label(form.price) }}
+                        {{ form_widget(form.price) }}
+                        {{ form_errors(form.price) }}
+
+
+                        {% if form.validate is defined %}
+                            <div class="col-12 mt-3 mb-3">
+                                {{ form_label(form.validate) }}
+                                {{ form_widget(form.validate) }}
+                                {{ form_errors(form.validate) }}
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                    {% if form.forecast_price is defined %}
+                        {{ form_label(form.forecast_price) }}
+                        {{ form_widget(form.forecast_price) }}
+                        {{ form_errors(form.forecast_price) }}
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
 
         <div class="col-2 border">
             {{ form_label(form.percent_vr_type) }}

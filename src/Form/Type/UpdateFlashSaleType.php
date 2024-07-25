@@ -151,60 +151,27 @@ class UpdateFlashSaleType extends AbstractType
                 ]);
             }
         })
-        ->add('type_vente', ChoiceType::class, [
-            'label' => 'Connaissez-vous le prix définitif ?',
-            'attr' => [
-                'class' => 'col-md-4 mb-3',
-            ],
-            'choices' => [
-                'Oui' => '1',
-                'Non' => '0',
-            ],
-            'required' => true,
-            'placeholder' => 'Sélectionnez une option',
-            'mapped' => false,
+        ->add('forecast_price', MoneyType::class, [
+            'label' => 'Prix de vente unitaire prévisionnel',
             'constraints' => [
                 new NotBlank(),
             ],
-            'data' => '1',
+            'mapped' => true,
+            'required' => true,
         ])
-        ->addDependent('forecast_price', 'type_vente', function (DependentField $field, ?string $sale_type) {
-            if ('1' === $sale_type || null === $sale_type) {
-                return;
-            }
-            $field->add(MoneyType::class, [
-                'label' => 'Prix de vente unitaire prévisionnel',
-                'constraints' => [
-                    new NotBlank(),
-                ],
-                'mapped' => true,
-                'required' => true,
-            ]);
-        })
-        ->addDependent('price', 'type_vente', function (DependentField $field, ?string $sale_type) {
-            if ('1' !== $sale_type) {
-                return;
-            }
-            $field->add(MoneyType::class, [
-                'label' => 'Prix de vente unitaire définitif',
-                'constraints' => [
-                    new NotBlank(),
-                ],
-                'mapped' => true,
-                'required' => true,
-            ]);
-        })
-        ->addDependent('validate', 'price', function (DependentField $field, ?string $money) {
-            if (null === $money) {
-                return;
-            }
-
-            $field->add(CheckboxType::class, [
-                'label' => 'Valider la vente (vous ne pourrez plus modifier les informations)',
-                'mapped' => true,
-                'required' => false,
-            ]);
-        })
+        ->add('price', MoneyType::class, [
+            'label' => 'Prix de vente unitaire définitif',
+            'constraints' => [
+                new NotBlank(),
+            ],
+            'mapped' => true,
+            'required' => true,
+        ])
+        ->add('validate', CheckboxType::class, [
+            'label' => 'Valider la vente (vous ne pourrez plus modifier les informations)',
+            'mapped' => true,
+            'required' => false,
+        ])
         ->add('date', DateType::class, [
             'label' => 'Date d\'encodage',
             'required' => false,
