@@ -55,6 +55,8 @@ class SalesFixtures extends Fixture implements DependentFixtureInterface
             $commission->setPrice($com['price']);
             $commission->setPercentVr($p->getPercentVr());
             $commission->setPercentCom(15);
+            $commission->setPercentComType('percent_pv');
+            $commission->setPercentVrType('percent');
 
             $manager->persist($commission);
         }

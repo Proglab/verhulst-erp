@@ -94,6 +94,30 @@ class UserFixtures extends Fixture
         $user = UserFactory::new()
             ->enabled()
             ->verified()
+            ->boss()
+            ->create([
+                'firstname' => 'Martin',
+                'lastname' => 'Depaire',
+                'email' => 'martin@insideweb.be',
+                'password' => 'martin',
+            ]);
+        ++$i;
+        $this->addReference('user_' . $i, $user->object());
+        $user = UserFactory::new()
+            ->enabled()
+            ->verified()
+            ->boss()
+            ->create([
+                'firstname' => 'Martin',
+                'lastname' => 'Manderveld',
+                'email' => 'martin.m@insideweb.be',
+                'password' => 'martin',
+            ]);
+        ++$i;
+        $this->addReference('user_' . $i, $user->object());
+        $user = UserFactory::new()
+            ->enabled()
+            ->verified()
             ->create([
                 'firstname' => 'Gonzague', // 1
                 'lastname' => 'Lefere',

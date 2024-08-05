@@ -30,7 +30,7 @@ class CommissionFixtures extends Fixture implements DependentFixtureInterface
         }
 
         foreach ($projects as $project) {
-            foreach ($project->getProductEvent() as $productEvent) {
+            /*foreach ($project->getProductEvent() as $productEvent) {
                 foreach ($users as $user) {
                     $com = new Commission();
                     $com->setUser($user);
@@ -48,7 +48,7 @@ class CommissionFixtures extends Fixture implements DependentFixtureInterface
                     $com->setPercentCom(random_int(5, 20));
                     $manager->persist($com);
                 }
-            }
+            }*/
 
             foreach ($project->getProductPackage() as $productPackage) {
                 foreach ($users as $user) {
