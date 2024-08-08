@@ -13,8 +13,6 @@ use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveArg;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
-use Symfony\UX\TwigComponent\Event\PostRenderEvent;
-use Symfony\UX\TwigComponent\Event\PreRenderEvent;
 
 #[AsLiveComponent('company-details', template: 'app/company/components/detail.html.twig')]
 class CompanyDetail

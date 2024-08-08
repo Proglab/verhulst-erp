@@ -63,6 +63,7 @@ class CreateFlashSale extends AbstractController
             if ($form->has('percent_com')) {
                 $form->get('percent_com')->setData($this->sale->getPercentCom() / 100);
             }
+
             return $form;
         }
         $flashSale = new FastSales();

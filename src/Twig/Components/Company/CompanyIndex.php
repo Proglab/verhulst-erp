@@ -18,8 +18,8 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 #[AsLiveComponent('company-index', template: 'app/company/components/index.html.twig')]
 class CompanyIndex
 {
-    use DefaultActionTrait;
     use ComponentToolsTrait;
+    use DefaultActionTrait;
 
     #[LiveProp(writable: true)]
     public ?string $query = null;
@@ -44,9 +44,10 @@ class CompanyIndex
         } else {
             $qb = $this->companyRepository->search($this->query);
         }
-        return $this->paginator->paginate($qb, $this->page, 12);
 
+        return $this->paginator->paginate($qb, $this->page, 12);
     }
+
     #[LiveAction]
     public function previousPage(): void
     {
@@ -82,7 +83,7 @@ class CompanyIndex
     {
         $company = $this->companyRepository->find($id);
         $contacts = $company->getContact();
-        foreach($contacts as $contact) {
+        foreach ($contacts as $contact) {
             $contact->setCompany(null);
             $this->companyContactRepository->save($contact);
         }

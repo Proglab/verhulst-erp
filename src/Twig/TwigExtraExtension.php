@@ -56,7 +56,7 @@ class TwigExtraExtension extends AbstractExtension
     public function minimizeString(string $text, int $max = 30): string
     {
         if ($text && \strlen($text) > $max) {
-            return sprintf('%s...', substr($text, 0, $max - 3));
+            return \sprintf('%s...', substr($text, 0, $max - 3));
         }
 
         return $text;
@@ -134,7 +134,7 @@ class TwigExtraExtension extends AbstractExtension
 
         $template = '<span class="badge bg-%s %s">%s</span>';
 
-        return sprintf(
+        return \sprintf(
             $template,
             $color,
             $pill,

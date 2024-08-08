@@ -42,7 +42,7 @@ class MaxProductSalesValidator extends ConstraintValidator
 
         if (null === $sales->getId() && null !== $product->getQuantityMax() && $quantity_sales + $sales->getQuantity() > $product->getQuantityMax()) {
             $this->context
-                ->buildViolation(sprintf($constraint->maxSalesExceededMessage, $quantity_sales, $product->getQuantityMax()))
+                ->buildViolation(\sprintf($constraint->maxSalesExceededMessage, $quantity_sales, $product->getQuantityMax()))
                 ->atPath('Sales.quantity')
                 ->addViolation();
         }
@@ -52,7 +52,7 @@ class MaxProductSalesValidator extends ConstraintValidator
             $this->entityManager->refresh($sales);
             if (null !== $product->getQuantityMax() && $quantity_sales - $sales->getQuantity() + $newSales->getQuantity() > $product->getQuantityMax()) {
                 $this->context
-                    ->buildViolation(sprintf($constraint->maxSalesExceededMessage, $quantity_sales - $sales->getQuantity(), $product->getQuantityMax()))
+                    ->buildViolation(\sprintf($constraint->maxSalesExceededMessage, $quantity_sales - $sales->getQuantity(), $product->getQuantityMax()))
                     ->atPath('Sales.quantity')
                     ->addViolation();
             }

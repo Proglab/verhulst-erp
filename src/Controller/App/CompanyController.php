@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\App;
 
 use App\Entity\Company;
-use App\Entity\Project;
 use App\Entity\User;
 use App\Repository\CompanyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

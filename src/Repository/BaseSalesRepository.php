@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\BaseSales;
-use App\Entity\Commission;
 use App\Entity\Company;
 use App\Entity\CompanyContact;
 use App\Entity\Product;
@@ -124,11 +123,11 @@ class BaseSalesRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('s')
             ->leftJoin('s.product', 'p');
 
-        if ($dateBegin !== null && $dateEnd !== null) {
+        if (null !== $dateBegin && null !== $dateEnd) {
             $qb->where('s.date BETWEEN :start AND :end')
                 ->setParameter('start', $dateBegin->format('Y-m-d'))
                 ->setParameter('end', $dateEnd->format('Y-m-d'));
-        } elseif ($dateBegin !== null && $dateEnd === null) {
+        } elseif (null !== $dateBegin && null === $dateEnd) {
             $qb->where('s.date >= :start')
                 ->setParameter('start', $dateBegin->format('Y-m-d'));
         } else {
@@ -136,17 +135,17 @@ class BaseSalesRepository extends ServiceEntityRepository
                 ->setParameter('end', $dateEnd->format('Y-m-d'));
         }
 
-        if ($user !== null) {
+        if (null !== $user) {
             $qb->andWhere('s.user = :user')
                 ->setParameter('user', $user);
         }
 
-        if ($project !== null) {
+        if (null !== $project) {
             $qb->andWhere('p.project = :project')
                 ->setParameter('project', $project);
         }
 
-        if ($type !== null) {
+        if (null !== $type) {
             $qb->andWhere('p instance of :productType')
                 ->setParameter('productType', $type);
         }

@@ -42,7 +42,7 @@ class Enabled2faComponent
 
         if (!$user->isTotpAuthenticationEnabled()) {
             $totpAuthenticator = $this->totpAuthenticator;
-            $totpCode = $this->cache->get(sprintf('2fa_activation_totp_%s', str_replace('@', '', $user->getEmail())),
+            $totpCode = $this->cache->get(\sprintf('2fa_activation_totp_%s', str_replace('@', '', $user->getEmail())),
                 function (ItemInterface $item) use ($totpAuthenticator) {
                     $item->expiresAfter(900);
 
@@ -61,8 +61,8 @@ class Enabled2faComponent
             $user->setIsTotpEnabled(true);
             $this->entityManager->persist($user);
             $this->entityManager->flush();
-            $this->cache->delete(sprintf('2fa_activation_totp_%s', str_replace('@', '', $user->getEmail())));
-            $this->cache->delete(sprintf('2fa_activation_qr_code_%s', str_replace('@', '', $user->getEmail())));
+            $this->cache->delete(\sprintf('2fa_activation_totp_%s', str_replace('@', '', $user->getEmail())));
+            $this->cache->delete(\sprintf('2fa_activation_qr_code_%s', str_replace('@', '', $user->getEmail())));
             /** @var Session $session */
             $session = $this->requestStack->getSession();
             $session->getFlashBag()->add('success', $this->translator->trans('2fa.enable.success_message'));

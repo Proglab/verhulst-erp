@@ -47,7 +47,7 @@ class UserChecker implements UserCheckerInterface
             $resendConfirmationEmailRequest = new ResendConfirmationEmailRequest();
             $resendConfirmationEmailRequest->setHashedToken(rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '='))
                 ->setUser($user)
-                ->setExpiresAt(new \DateTimeImmutable(sprintf('+%d days', 7)));
+                ->setExpiresAt(new \DateTimeImmutable(\sprintf('+%d days', 7)));
 
             $this->manager->persist($resendConfirmationEmailRequest);
             $this->manager->flush();
