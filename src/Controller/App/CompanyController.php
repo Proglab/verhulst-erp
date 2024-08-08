@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\App;
 
+use App\Entity\Company;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Repository\CompanyRepository;
@@ -28,12 +29,27 @@ class CompanyController extends AbstractController
         ]);
     }
 
-
-    #[Route('/app/{_locale}/company/{id}/details', name: 'company_details')]
-    public function detail(string $_locale, int $id): Response
+    #[Route('/app/{_locale}/company/{company}/details', name: 'company_details')]
+    public function detail(string $_locale, Company $company): Response
     {
-        $company = $this->companyRepository->find($id);
         return $this->render('app/company/details.html.twig', [
+            'locale' => $_locale,
+            'company' => $company,
+        ]);
+    }
+
+    #[Route('/app/{_locale}/company/create', name: 'company_create')]
+    public function create(Request $request, string $_locale): Response
+    {
+        return $this->render('app/company/new.html.twig', [
+            'locale' => $_locale,
+        ]);
+    }
+
+    #[Route('/app/{_locale}/company/{company}/edit', name: 'company_edit')]
+    public function edit(Request $request, string $_locale, Company $company): Response
+    {
+        return $this->render('app/company/edit.html.twig', [
             'locale' => $_locale,
             'company' => $company,
         ]);

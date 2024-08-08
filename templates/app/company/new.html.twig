@@ -1,6 +1,6 @@
 {% extends 'app/templates/base.html.twig' %}
 
-{% block title %}Modifier un projet{% endblock %}
+{% block title %}Créer une nouvelle société{% endblock %}
 
 {% block breadcrumb %}
     <div class="row">
@@ -9,7 +9,7 @@
                 <div class="row align-items-center">
                     <div class="col-12">
                         <div class="d-sm-flex align-items-center justify-space-between">
-                            <h4 class="mb-4 mb-md-0 card-title">Modifier un projet</h4>
+                            <h4 class="mb-4 mb-md-0 card-title">Créer une nouvelle société</h4>
                             <nav aria-label="breadcrumb" class="ms-auto">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item d-flex align-items-center">
@@ -18,20 +18,14 @@
                                         </a>
                                     </li>
                                     <li class="breadcrumb-item" aria-current="page">
-                                        <a class="text-muted text-decoration-none d-flex" href="{{ path('project_index') }}">
-                                            <iconify-icon icon="fa6-solid:diagram-project" class="fs-6 me-3"></iconify-icon> Projets
+                                        <a class="text-muted text-decoration-none d-flex" href="{{ path('company_index') }}">
+                                            <iconify-icon icon="mdi:company" class="fs-6 me-2"></iconify-icon> Sociétés
                                         </a>
                                     </li>
                                     <li class="breadcrumb-item" aria-current="page">
-                                        <a class="text-muted text-decoration-none d-flex" href="{{ path('project_details', {project: project.id}) }}">
-                                            <iconify-icon icon="fa6-solid:diagram-project" class="fs-6 me-3"></iconify-icon>
-                                            {{ project.name }}
-                                        </a>
-                                    </li>
-                                    <li class="breadcrumb-item" aria-current="page">
-                                          <span class="badge fw-medium fs-2 bg-primary-subtle text-primary">
-                                            Modifier le projet
-                                          </span>
+                                        <span class="badge fw-medium fs-2 bg-primary-subtle text-primary">
+                                            Créer une nouvelle société
+                                        </span>
                                     </li>
                                 </ol>
                             </nav>
@@ -45,6 +39,6 @@
 
 {% block body %}
     <div class="row">
-        {{ component('new_project_form', {locale: locale, project: project}) }}
+        {{ component('company_form', {locale: locale}) }}
     </div>
 {% endblock %}

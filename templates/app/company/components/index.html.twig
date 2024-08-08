@@ -1,0 +1,122 @@
+<div {{ attributes }}>
+
+    <div class="row">
+        <div locale="fr">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6 order-sm-2 d-flex">
+                            <a href="{{ path('company_create') }}" class="btn btn-primary mb-4 mb-sm-0 mt-sm-auto ms-auto">Créer une société</a>
+                        </div>
+                        <div class="col-sm-6 order-sm-1">
+                            <label for="project_search_filter_name" class="form-label">Recherchez</label>
+                            <input type="text" id="project_search_filter_name" name="project_search_filter[name]" data-model="query" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        {% for company in this.companies %}
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="card">
+                    <div class="card-header d-md-flex justify-content-between">
+                        <a href="{{ path('company_details', {company: company.id}) }}">
+                            <h6 class="lh-base">
+                                {{ company.name }}
+                            </h6>
+                        </a>
+                        <div class="dropdown dropstart">
+                            <a href="javascript:void(0)" class="text-muted" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                <iconify-icon icon="solar:menu-dots-bold"></iconify-icon>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="width: 175px;">
+                                <li>
+                                    <a href="{{ path('company_details', {company: company.id}) }}" class="btn  py-1 px-3  text-black">
+                                        <i class="fa fa-eye me-3"></i> Voir
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('company_edit', {company: company.id})}}"  type="button" class="btn text-black  py-1 px-3">
+                                        <i class="action-icon fa-solid fa-edit me-3"></i> Modifier
+                                    </a>
+                                </li>
+                                <li>
+                                    <button type="button" class="btn text-black py-1 px-3" data-action="live#action"
+                                            data-live-action-param="delete" data-live-id-param="{{ company.id }}" data-bs-toggle="modal" data-bs-target="#danger-header-modal">
+                                        <i class="action-icon fa-solid fa-trash me-3"></i> Supprimer
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <div class="card-body my-0 p-1 mx-3">
+                        {{ company.street }}<br>
+                        {{ company.pc }} {{ company.city }}<br>
+
+                        <img class="country-flag" height="17" alt="" title="" src="/bundles/easyadmin/images/flags/{{ company.country }}.svg">
+
+                        {% if company.vatNumber is not empty and company.vatNumber != '' %}
+                                {{ company.vatNumber }}
+                        {% endif %}
+                    </div>
+                    <div class="card-footer d-md-flex justify-content-between my-0 p-1 mx-0">
+                        {% if company.note is not empty %}
+                            <div class="dropdown dropstart ms-3" style=" display: inline;">
+                                <a href="javascript:void(0)" class="text-muted" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <iconify-icon icon="material-symbols:note-outline" width="25" height="25"></iconify-icon>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="width: 400px;">
+                                    <li class="m-2">
+                                        {{ company.note|raw }}
+                                    </li>
+                                </ul>
+                            </div>
+                            {% else %}
+                                <div></div>
+                        {% endif %}
+                        <button type="button" class="btn m-0 p-1">
+                            <iconify-icon icon="mdi:user" width="25" height="25"></iconify-icon>
+                            <span class="badge ms-auto text-bg-primary">{{ company.contact|length }}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="row">
+        <div class="col navigation">
+            {{ knp_pagination_render(this.companies) }}
+        </div>
+    </div>
+<div id="danger-header-modal" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="danger-header-modalLabel" aria-modal="true" role="dialog" {{ stimulus_controller('bootstrap-modal') }}>
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header modal-colored-header bg-danger text-white">
+                <h4 class="modal-title text-white" id="danger-header-modalLabel">
+                    Cette action est irréversible !
+                </h4>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-action="live#action" data-live-action-param="abordDelete"></button>
+            </div>
+            {% if this.toDelete %}
+            <div class="modal-body">
+                <h5 class="mt-0">{{ this.toDelete.name }}</h5>
+                <p>
+                    Désirez-vous vraiment supprimer cet élément ?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal" data-action="live#action" data-live-action-param="abordDelete">
+                    Non
+                </button>
+                <button type="button" class="btn bg-danger-subtle text-danger"  data-action="live#action" data-live-action-param="confirmDelete" data-live-id-param="{{ this.toDelete.id }}">
+                    Oui
+                </button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+</div>

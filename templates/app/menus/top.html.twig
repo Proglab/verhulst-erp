@@ -51,9 +51,9 @@
                 <!-- ============================= -->
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ path('project_index') }}">
-                  <span>
-                    <iconify-icon icon="fa6-solid:diagram-project" width="25" height="25"></iconify-icon>
-                  </span>
+                        <span>
+                            <iconify-icon icon="fa6-solid:diagram-project" width="25" height="25"></iconify-icon>
+                        </span>
                         <span class="hide-menu">Projets</span>
                     </a>
                 </li>
@@ -74,10 +74,7 @@
                     </a>
                     <ul aria-expanded="false" class="collapse first-level">
                         <li class="sidebar-item">
-                            <a href="{{ ea_url()
-                                .setDashboard('App\\Controller\\Admin\\DashboardController')
-                                .setController('App\\Controller\\Admin\\CompanyCrudController')
-                                .setAction('index') }}" class="sidebar-link">
+                            <a href="{{ path('company_index') }}" class="sidebar-link">
                                 <iconify-icon icon="mdi:company" width="25" height="25"></iconify-icon>
                                 <span class="hide-menu">Société</span>
                             </a>
