@@ -66,6 +66,8 @@ class CompanyRepository extends ServiceEntityRepository
             ->orWhere('CONCAT(contact.lastname, \' \' ,contact.firstname) LIKE :search')
             ->orWhere('CONCAT(contact.firstname, \' \' ,contact.lastname) LIKE :search')
             ->setParameter('search', '%' . $search . '%')
-            ->orderBy('c.name, contact.firstname, contact.lastname');
+            ->orderBy('c.name, contact.firstname, contact.lastname')
+            ->getQuery()
+            ->getResult();
     }
 }

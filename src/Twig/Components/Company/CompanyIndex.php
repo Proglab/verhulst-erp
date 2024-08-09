@@ -7,6 +7,7 @@ namespace App\Twig\Components\Company;
 use App\Entity\Company;
 use App\Repository\CompanyContactRepository;
 use App\Repository\CompanyRepository;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
@@ -37,7 +38,7 @@ class CompanyIndex
     ) {
     }
 
-    public function companies()
+    public function companies(): PaginationInterface
     {
         if (null === $this->query) {
             $qb = $this->companyRepository->findBy([], ['name' => 'ASC']);

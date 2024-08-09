@@ -7,7 +7,6 @@ namespace App\Twig\Components\Company;
 use App\Entity\Company;
 use App\Entity\CompanyContact;
 use App\Repository\CompanyContactRepository;
-use App\Repository\CompanyRepository;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveArg;
@@ -26,7 +25,6 @@ class CompanyDetail
     public ?CompanyContact $contact = null;
 
     public function __construct(
-        private CompanyRepository $companyRepository,
         private CompanyContactRepository $companyContactRepository,
     ) {
     }

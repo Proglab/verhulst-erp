@@ -156,7 +156,7 @@ class CompanyCrudController extends BaseCrudController
     {
         return $this->redirectToRoute('company_create');
 
-        $event = new BeforeCrudActionEvent($context);
+        /*$event = new BeforeCrudActionEvent($context);
         $this->container->get('event_dispatcher')->dispatch($event);
         if ($event->isPropagationStopped()) {
             return $event->getResponse();
@@ -178,7 +178,7 @@ class CompanyCrudController extends BaseCrudController
         $newForm = $this->createNewForm($context->getEntity(), $context->getCrud()->getNewFormOptions(), $context);
         $newForm->handleRequest($context->getRequest());
 
-        /** @var Company $entityInstance */
+        /** @var Company $entityInstance * /
         $entityInstance = $newForm->getData();
         $context->getEntity()->setInstance($entityInstance);
 
@@ -209,7 +209,7 @@ class CompanyCrudController extends BaseCrudController
             return $event->getResponse();
         }
 
-        return $responseParameters;
+        return $responseParameters;*/
     }
 
     /**

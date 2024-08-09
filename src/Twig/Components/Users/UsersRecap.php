@@ -56,7 +56,7 @@ class UsersRecap extends AbstractController
         ++$this->page;
     }
 
-    public function getSales()
+    public function getSales(): ?array
     {
         return $this->salesRepository->getSalesByMonthByUser($this->date_begin, $this->date_end, $this->user, $this->project, $this->type);
     }
@@ -64,7 +64,9 @@ class UsersRecap extends AbstractController
     protected function instantiateForm(): FormInterface
     {
         $sale = new BaseSales();
-        $sale->setUser($this->getUser());
+        /** @var User $user */
+        $user = $this->getUser();
+        $sale->setUser($user);
 
         return $this->createForm(SalesRecapUsersFilterType::class, $sale);
     }

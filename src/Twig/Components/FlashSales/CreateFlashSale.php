@@ -69,7 +69,9 @@ class CreateFlashSale extends AbstractController
         $flashSale = new FastSales();
         $flashSale->setContact($this->contact);
         if ($this->getUser() instanceof User) {
-            $flashSale->setUser($this->getUser());
+            /** @var User $user */
+            $user = $this->getUser();
+            $flashSale->setUser($user);
         }
 
         return $this->createForm(NewFlashSaleType::class, $flashSale);

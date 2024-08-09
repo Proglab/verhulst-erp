@@ -150,7 +150,7 @@ class BaseSalesRepository extends ServiceEntityRepository
                 ->setParameter('productType', $type);
         }
 
-        $qb->getQuery()
+        return $qb->getQuery()
             ->getResult();
     }
 

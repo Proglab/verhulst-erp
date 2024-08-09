@@ -10,8 +10,6 @@ use App\Repository\CompanyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -30,7 +28,7 @@ class CompanyForm extends AbstractController
     #[LiveProp(writable: true)]
     public ?Company $company = null;
 
-    public function __construct(private CompanyRepository $companyRepository, private KernelInterface $kernel, private ValidatorInterface $validator)
+    public function __construct(private CompanyRepository $companyRepository)
     {
     }
 
