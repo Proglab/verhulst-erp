@@ -14,7 +14,7 @@ use Symfony\UX\LiveComponent\Attribute\LiveArg;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
-#[AsLiveComponent('company-details', template: 'app/company/component_detail.html.twig')]
+#[AsLiveComponent('company-details', template: 'app/company/components/detail.html.twig')]
 class CompanyDetail
 {
     use DefaultActionTrait;
@@ -30,7 +30,6 @@ class CompanyDetail
         private CompanyContactRepository $companyContactRepository,
     ) {
     }
-
 
     #[LiveAction]
     public function viewContact(#[LiveArg] int $contact): void

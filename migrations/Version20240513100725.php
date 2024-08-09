@@ -20,7 +20,7 @@ final class Version20240513100725 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP TABLE mika');
+        $this->addSql('DROP TABLE IF EXISTS mika');
         $this->addSql('ALTER TABLE company_contact CHANGE interests interests JSON DEFAULT NULL');
         $this->addSql('ALTER TABLE user CHANGE roles roles JSON NOT NULL');
     }

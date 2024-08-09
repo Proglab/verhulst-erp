@@ -1,0 +1,111 @@
+<div class="col-12" {{ attributes }}>
+    {{ form_start(form, {
+        attr: {
+            'data-action': 'live#action:prevent',
+            'data-live-action-param': 'save'
+        }
+    }) }}
+    <div class="row">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Société</h4>
+                </div>
+                <div class="card-body">
+                    <fieldset class="row mb-3">
+                        <div class="col">
+                            {{ form_label(form.name) }}
+                            {{ form_widget(form.name) }}
+                        </div>
+                    </fieldset>
+                    <fieldset class="row mb-3">
+                        <div class="col">
+                            {{ form_label(form.street) }}
+                            {{ form_widget(form.street) }}
+                        </div>
+                    </fieldset>
+                    <fieldset class="row mb-3">
+                        <div class="col">
+                            {{ form_label(form.pc) }}
+                            {{ form_widget(form.pc) }}
+                        </div>
+                        <div class="col">
+                            {{ form_label(form.city) }}
+                            {{ form_widget(form.city) }}
+                        </div>
+                    </fieldset>
+                    <fieldset class="row mb-3">
+                        <div class="col">
+                            {{ form_label(form.country) }}
+                            {{ form_widget(form.country) }}
+                        </div>
+                    </fieldset>
+                    <fieldset class="row mb-3">
+                        <div class="col">
+                            {{ form_label(form.note) }}
+                            {{ form_widget(form.note) }}
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Facturation</h4>
+                </div>
+                <div class="card-body">
+                    <fieldset class="row mb-3">
+                        <div class="col">
+                            {{ form_label(form.vat_number) }}
+                            {{ form_widget(form.vat_number) }}
+                        </div>
+                    </fieldset>
+                    <fieldset class="row mb-3">
+                        <div class="col">
+                            {{ form_label(form.vat_na) }}
+                            {{ form_widget(form.vat_na) }}
+                        </div>
+                    </fieldset>
+                    <fieldset class="row mb-3">
+                        <div class="col">
+                            {{ form_label(form.billing_street) }}
+                            {{ form_widget(form.billing_street) }}
+                        </div>
+                    </fieldset>
+                    <fieldset class="row mb-3">
+                        <div class="col">
+                            {{ form_label(form.billing_pc) }}
+                            {{ form_widget(form.billing_pc) }}
+                        </div>
+                        <div class="col">
+                            {{ form_label(form.billing_city) }}
+                            {{ form_widget(form.billing_city) }}
+                        </div>
+                    </fieldset>
+                    <fieldset class="row mb-3">
+                        <div class="col">
+                            {{ form_label(form.billing_country) }}
+                            {{ form_widget(form.billing_country) }}
+                        </div>
+                    </fieldset>
+                    <fieldset class="row mb-3">
+                        <div class="col">
+                            {{ form_label(form.billing_mail) }}
+                            {{ form_widget(form.billing_mail) }}
+                        </div>
+                    </fieldset>
+                    {{ form_rest(form) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-end">
+                    <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form_end(form) }}
+</div>

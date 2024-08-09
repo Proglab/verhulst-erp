@@ -93,7 +93,7 @@ class SalesRecapUsersFilterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => BaseSales::class
+            'data_class' => BaseSales::class,
         ]);
     }
 }

@@ -139,8 +139,23 @@ class CompanyCrudController extends BaseCrudController
     /**
      * @return KeyValueStore|Response
      */
+    public function detail(AdminContext $context)
+    {
+        return $this->redirect($this->generateUrl('company_details', ['company' => $context->getEntity()->getPrimaryKeyValue()]));
+    }
+
+    public function index(AdminContext $context)
+    {
+        return $this->redirect($this->generateUrl('company_index'));
+    }
+
+    /**
+     * @return KeyValueStore|Response
+     */
     public function new(AdminContext $context)
     {
+        return $this->redirectToRoute('company_create');
+
         $event = new BeforeCrudActionEvent($context);
         $this->container->get('event_dispatcher')->dispatch($event);
         if ($event->isPropagationStopped()) {

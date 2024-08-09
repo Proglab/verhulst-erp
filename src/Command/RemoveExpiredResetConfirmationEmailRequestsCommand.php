@@ -27,7 +27,7 @@ class RemoveExpiredResetConfirmationEmailRequestsCommand extends AbstractCommand
 
         $intRemoved = $this->repository->removeExpiredResetConfirmationEmailRequests();
 
-        $output->writeln(sprintf('Garbage collection successful. Removed %s reset confirmation email request object(s).', $intRemoved));
+        $output->writeln(\sprintf('Garbage collection successful. Removed %s reset confirmation email request object(s).', $intRemoved));
 
         return Command::SUCCESS;
     }

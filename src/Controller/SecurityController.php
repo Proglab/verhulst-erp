@@ -202,7 +202,7 @@ class SecurityController extends BaseController
     {
         $user = $this->getUser();
 
-        return $this->cache->get(sprintf('2fa_activation_qr_code_%s', str_replace('@', '', $user->getEmail())),
+        return $this->cache->get(\sprintf('2fa_activation_qr_code_%s', str_replace('@', '', $user->getEmail())),
             function (ItemInterface $item) use ($user) {
                 $item->expiresAfter(900);
                 $qrCodeContent = $this->totpAuthenticator->getQRContent($user);

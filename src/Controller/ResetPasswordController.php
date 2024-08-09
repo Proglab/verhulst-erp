@@ -100,7 +100,7 @@ class ResetPasswordController extends BaseController
             $user = $this->resetPasswordHelper->validateTokenAndFetchUser($token);
         } catch (ResetPasswordExceptionInterface $e) {
             $this->addFlash('danger', new TranslatableMessage('reset_password.reset.flash_error', [
-                '%message%' => $this->translator->trans(sprintf('reset_password.errors.%s', $e->getReason())),
+                '%message%' => $this->translator->trans(\sprintf('reset_password.errors.%s', $e->getReason())),
             ]));
 
             return $this->redirectToRoute('app_forgot_password_request');
@@ -160,10 +160,10 @@ class ResetPasswordController extends BaseController
         try {
             $resetToken = $this->resetPasswordHelper->generateResetToken($user);
         } catch (ResetPasswordExceptionInterface $e) {
-            $this->addFlash('reset_password_error', sprintf(
+            $this->addFlash('reset_password_error', \sprintf(
                 '%s - %s',
                 $this->translator->trans(ResetPasswordExceptionInterface::MESSAGE_PROBLEM_HANDLE, [], 'ResetPasswordBundle'),
-                $this->translator->trans(sprintf('reset_password.errors.%s', $e->getReason()))
+                $this->translator->trans(\sprintf('reset_password.errors.%s', $e->getReason()))
             ));
 
             return $this->redirectToRoute('app_forgot_password_request');

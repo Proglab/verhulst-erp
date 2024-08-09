@@ -44,7 +44,7 @@ class CompanyRepository extends ServiceEntityRepository
     public function search(?string $search): array
     {
         return $this->createQueryBuilder('c')
-            ->join('c.contact', 'contact')
+            ->leftJoin('c.contact', 'contact')
             ->where('c.name LIKE :search')
             ->orWhere('contact.firstname LIKE :search')
             ->orWhere('contact.lastname LIKE :search')

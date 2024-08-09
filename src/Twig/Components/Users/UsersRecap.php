@@ -7,7 +7,6 @@ namespace App\Twig\Components\Users;
 use App\Entity\BaseSales;
 use App\Entity\Project;
 use App\Entity\User;
-use App\Form\Type\SalesRecapFilters;
 use App\Form\Type\SalesRecapUsersFilterType;
 use App\Repository\BaseSalesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,8 +20,8 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 #[AsLiveComponent('users_recap', template: 'app/dashboard/recap/component.html.twig')]
 class UsersRecap extends AbstractController
 {
-    use DefaultActionTrait;
     use ComponentWithFormTrait;
+    use DefaultActionTrait;
     #[LiveProp(writable: true, url: true)]
     public int $page = 1;
 
@@ -40,7 +39,6 @@ class UsersRecap extends AbstractController
 
     #[LiveProp(writable: true)]
     public ?User $user = null;
-
 
     public function __construct(private BaseSalesRepository $salesRepository)
     {
@@ -67,6 +65,7 @@ class UsersRecap extends AbstractController
     {
         $sale = new BaseSales();
         $sale->setUser($this->getUser());
+
         return $this->createForm(SalesRecapUsersFilterType::class, $sale);
     }
 }

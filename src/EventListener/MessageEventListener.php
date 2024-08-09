@@ -46,7 +46,7 @@ class MessageEventListener implements EventSubscriberInterface
             $email->to(new Address($this->mailerFrom, $this->mailerFromLabel));
         }
 
-        $email->subject(sprintf(
+        $email->subject(\sprintf(
             '%s - %s',
             $this->translator->trans('layout.site_name'),
             $email->getSubject()

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Twig\Components\Dashboard;
 
-use App\Entity\BaseSales;
 use App\Entity\User;
 use App\Repository\BaseSalesRepository;
 use App\Service\SalesService;
@@ -18,6 +17,7 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 class LastSalesComponent
 {
     use DefaultActionTrait;
+
     public function __construct(private BaseSalesRepository $salesRepository, private Security $security, private SalesService $salesService)
     {
     }
@@ -29,6 +29,7 @@ class LastSalesComponent
 
         return $this->salesRepository->get10LastSalesByUser($me);
     }
+
     #[LiveAction]
     public function validate(#[LiveArg] int $id): void
     {

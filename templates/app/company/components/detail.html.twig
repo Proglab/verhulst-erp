@@ -7,34 +7,36 @@
                     <div class="hstack align-items-start pb-1 align-items-center justify-content-between">
                         <div class="d-flex align-items-center gap-3">
                             <div>
-                                <h5 class="fw-semibold fs-4 mb-0">{{ this.company.name }} </h5>
+                                <h5 class="fw-semibold fs-4 mb-0">
+                                    {{ this.company.name }}
+                                    <a href="{{ path('company_edit', {company: company.id})}}" class="ms-2 btn btn-primary btn-sm">
+                                        <small><i class="action-icon fa-solid fa-edit me-1"></i> Modifier</small>
+                                    </a>
+                                </h5>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-6">
                             <h6>Adresse</h6>
+                            <div class="text-black">
+                                <address>
+                                    {{ this.company.street }}<br>
+                                    {{ this.company.pc }} {{ this.company.city }}<br>
+                                    {{ this.company.country }}
+                                </address>
+                            </div>
                         </div>
                         <div class="col-6">
                             <h6>Facturation</h6>
-                        </div>
-                        <div class="col-6">
-                            <div class="text-black mb-0">{{ this.company.street }}</div>
-                        </div>
-                        <div class="col-6">
-                            <div class="text-black mb-0">{{ this.company.billingStreet }}</div>
-                        </div>
-                        <div class="col-6">
-                            <div class="text-black mb-0">{{ this.company.pc }} {{ this.company.city }}</div>
-                        </div>
-                        <div class="col-6">
-                            <div class="text-black mb-0">{{ this.company.billingPc }} {{ this.company.billingCity }}</div>
-                        </div>
-                        <div class="col-6">
-                            <div class="text-black mb-0">{{ this.company.country }}</div>
-                        </div>
-                        <div class="col-6">
-                            <div class="text-black mb-0">{{ this.company.billingCountry }}</div>
+                            <div class="text-black">
+                                <address>
+                                    {{ this.company.billingStreet }}<br>
+                                    {{ this.company.billingPc }} {{ this.company.billingCity }}<br>
+                                    {{ this.company.billingCountry }}
+                                </address>
+                                <a href="mailto:{{ this.company.billingMail }}" title="E-mail {{ this.company.name }}">{{ this.company.billingMail }}</a>
+                            </div>
                         </div>
                     </div>
                     <div>
@@ -49,18 +51,18 @@
     </div>
 
 
+    {% if company.contact|length > 0 %}
     <div class="card overflow-hidden chat-application">
         <div class="d-flex w-100">
             <div class="d-flex w-100">
                 <div class="min-width-340">
                     <div class="border-end user-chat-box h-100">
-                        <div class="px-4 pt-9 pb-6 d-none d-lg-block">
+                        {#<div class="px-4 pt-9 pb-6 d-none d-lg-block">
                             <div class="position-relative">
-                                <input type="text" class="form-control search-chat py-2 ps-5" id="text-srh"
-                                       placeholder="Search">
+                                <input type="text" class="form-control search-chat py-2 ps-5" id="text-srh" placeholder="Search">
                                 <i class="ti ti-search position-absolute top-50 start-0 translate-middle-y fs-6 text-dark ms-3"></i>
                             </div>
-                        </div>
+                        </div>#}
                         <div class="app-chat">
                             <ul class="chat-users mh-n100" data-simplebar="init">
                                 <div class="simplebar-wrapper" style="margin: 0px;">
@@ -77,8 +79,14 @@
                                                     <li>
                                                         <div class="px-4 py-3 bg-hover-light-black d-flex align-items-center chat-user bg-light-subtle">
                                                             <div class="ms-6 d-inline-block w-75">
-                                                                <h6 class="mb-1 fw-semibold chat-title"><a data-action="live#action" data-live-action-param="viewContact" data-live-contact-param="{{ contact.id }}">{{ contact.fullName }}</a></h6>
-                                                                <div class="fs-2 text-body-color d-block">{{ contact.email }}</div>
+                                                                <h6 class="mb-1 fw-semibold chat-title">
+                                                                    <a data-action="live#action" data-live-action-param="viewContact" data-live-contact-param="{{ contact.id }}" style="cursor:pointer" title="Détails">
+                                                                        {{ contact.fullName }}
+                                                                    </a>
+                                                                </h6>
+                                                                <div class="fs-2 text-body-color d-block">
+                                                                    <a href="mailto:{{ contact.email }}" title="E-mail {{ contact.fullName }}">{{ contact.email }}</a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </li>
@@ -94,7 +102,13 @@
                     </div>
                 </div>
                 <div class="w-100" data-loading="addClass(opacity-50)">
+                {% set contact = null %}
+                {% if company.contact %}
+                    {% set contact = company.contact[0] %}
+                {% endif %}
                 {% if this.contact is not null %}
+                    {% set contact = this.contact %}
+                {% endif %}
                     <div class="chat-container h-100 w-100">
                         <div class="chat-box-inner-part h-100">
                             <div class="chatting-box app-email-chatting-box">
@@ -109,40 +123,72 @@
                                                 <div class="hstack align-items-start mb-7 pb-1 align-items-center justify-content-between">
                                                     <div class="d-flex align-items-center gap-3">
                                                         <div>
-                                                            <h6 class="fw-semibold fs-4 mb-0">{{ this.contact.fullName }} </h6>
-                                                            <p class="mb-0">{{ this.contact.function }}</p>
-                                                            <p class="mb-0">{{ this.company.name }}</p>
+                                                            <h6 class="fw-semibold fs-4 mb-0">
+                                                                {{ contact.fullName }}
+                                                                <a href="{{ ea_url()
+                                                                    .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                                    .setController('App\\Controller\\Admin\\CompanyContactCrudController')
+                                                                    .setAction('detail')
+                                                                    .set('entityFqcn', 'App\\Entity\\Contact')
+                                                                    .setEntityId(contact.id)
+                                                                }}" class="ms-2 btn btn-primary btn-sm">
+                                                                    <small><i class="action-icon fa-solid fa-eye me-1"></i> Détails</small>
+                                                                </a>
+                                                                <a href="{{ ea_url()
+                                                                    .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                                    .setController('App\\Controller\\Admin\\CompanyContactCrudController')
+                                                                    .setAction('edit')
+                                                                    .set('entityFqcn', 'App\\Entity\\Contact')
+                                                                    .setEntityId(contact.id)
+                                                                }}" class="ms-2 btn btn-primary btn-sm">
+                                                                    <small><i class="action-icon fa-solid fa-edit me-1"></i> Modifier</small>
+                                                                </a>
+                                                            </h6>
+                                                            <p class="mb-0">{{ contact.function }}</p>
+                                                            <p class="mb-0">{{ company.name }}</p>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-2 mb-7">
                                                         <p class="mb-1 fs-2">Téléphone</p>
-                                                        <h6 class="fw-semibold mb-0">{{ this.contact.phone }}</h6>
+                                                        <h6 class="fw-semibold mb-0">
+                                                            <a href="tel:{{ contact.phone|replace({' ': '', ':': '', '/': '', '(': '', ')': ''}) }}" title="Phone {{ contact.fullName }}">
+                                                                {{ contact.phone }}
+                                                            </a>
+                                                        </h6>
                                                     </div>
 
                                                     <div class="col-2 mb-7">
                                                         <p class="mb-1 fs-2">Gsm</p>
-                                                        <h6 class="fw-semibold mb-0">{{ this.contact.gsm }}</h6>
+                                                        <h6 class="fw-semibold mb-0">
+                                                            <a href="tel:{{ contact.gsm|replace({' ': '', ':': '', '/': '', '(': '', ')': ''}) }}" title="GSM {{ contact.fullName }}">
+                                                                {{ contact.gsm }}
+                                                            </a>
+                                                        </h6>
                                                     </div>
                                                     <div class="col-8 mb-7">
                                                         <p class="mb-1 fs-2">Email address</p>
-                                                        <h6 class="fw-semibold mb-0"><a href="mailto:{{ contact.email }}">{{ this.contact.email }}</a></h6>
+                                                        <h6 class="fw-semibold mb-0">
+                                                            <a href="mailto:{{ contact.email }}" title="E-mail {{ contact.fullName }}">
+                                                                {{ contact.email }}
+                                                            </a>
+                                                        </h6>
                                                     </div>
                                                     <div class="col-12 mb-9">
                                                         <p class="mb-1 fs-2">Addresse</p>
-                                                        <h6 class="fw-semibold mb-0">{{ this.contact.street }}</h6>
+                                                        <h6 class="fw-semibold mb-0">{{ contact.street }}</h6>
                                                     </div>
                                                     <div class="col-4 mb-7">
                                                         <p class="mb-1 fs-2">Ville</p>
-                                                        <h6 class="fw-semibold mb-0">{{ this.contact.pc }} {{ this.contact.city }}</h6>
+                                                        <h6 class="fw-semibold mb-0">{{ contact.pc }} {{ contact.city }}</h6>
                                                     </div>
                                                     <div class="col-8 mb-7">
                                                         <p class="mb-1 fs-2">Pays</p>
-                                                        <h6 class="fw-semibold mb-0">{{ this.contact.country }}</h6>
+                                                        <h6 class="fw-semibold mb-0">{{ contact.country }}</h6>
                                                     </div>
                                                 </div>
-                                                <div class="pb-7 mb-4">
+                                                {#<div class="pb-7 mb-4">
                                                     <p class="mb-2 fs-2">Notes</p>
                                                     <p class="mb-3 text-dark">
                                                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
@@ -155,7 +201,7 @@
                                                     <p class="mb-0 text-dark">Ut id ornare metus, sed auctor enim.
                                                         Pellentesque
                                                         nisi magna, laoreet a augue eget, tempor volutpat diam.</p>
-                                                </div>
+                                                </div>#}
                                             </div>
                                         </div>
                                     </div>
@@ -163,9 +209,9 @@
                             </div>
                         </div>
                     </div>
-                {% endif %}
                 </div>
             </div>
         </div>
     </div>
+    {% endif %}
 </div>

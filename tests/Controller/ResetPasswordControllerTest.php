@@ -38,7 +38,7 @@ final class ResetPasswordControllerTest extends AbstractControllerTest
         $user = $this->userRepository->findOneBy(['email' => 'gonzague@verhulst.be']);
         $resetToken = $this->resetPasswordHelper->generateResetToken($user);
 
-        $this->client->request('GET', sprintf('/reinitialiser-mon-mot-de-passe/reinitialiser/%s', $resetToken->getToken()));
+        $this->client->request('GET', \sprintf('/reinitialiser-mon-mot-de-passe/reinitialiser/%s', $resetToken->getToken()));
         self::assertResponseRedirects('/reinitialiser-mon-mot-de-passe/reinitialiser');
         $crawler = $this->client->followRedirect();
 
