@@ -54,7 +54,7 @@ class CompanyContactMailCrudController extends BaseCrudController
         private CompanyContactRepository $companyContactRepository,
         private TempCompanyContactRepository $tempCompanyContactRepository,
         private CompanyRepository $companyRepository,
-        private RequestStack $requestStack
+        private RequestStack $requestStack,
     ) {
         parent::__construct($securityChecker);
     }

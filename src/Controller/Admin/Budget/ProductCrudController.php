@@ -29,7 +29,7 @@ class ProductCrudController extends BaseCrudController
     public function __construct(
         RequestStack $requestStack,
         private readonly SubCategoryRepository $subCategoryRepository,
-        private readonly AdminUrlGenerator $adminUrlGenerator
+        private readonly AdminUrlGenerator $adminUrlGenerator,
     ) {
         $this->request = $requestStack->getCurrentRequest();
     }

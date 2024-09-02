@@ -22,7 +22,7 @@ class RegistrationFormType extends AbstractType
 {
     public function __construct(
         private readonly TranslatorInterface $translator,
-        private readonly bool $disableSecurePassword
+        private readonly bool $disableSecurePassword,
     ) {
     }
 

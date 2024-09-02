@@ -29,7 +29,7 @@ class BudgetCrudController extends BaseCrudController
         RequestStack $requestStack,
         private readonly EventRepository $eventRepository,
         private readonly AdminUrlGenerator $adminUrlGenerator,
-        private readonly CategoryRepositoryRef $categoryRepositoryRef
+        private readonly CategoryRepositoryRef $categoryRepositoryRef,
     ) {
         $this->request = $requestStack->getCurrentRequest();
     }

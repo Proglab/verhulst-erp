@@ -19,7 +19,7 @@ class UserChecker implements UserCheckerInterface
     public function __construct(
         private readonly EntityManagerInterface $manager,
         private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly TranslatorInterface $translator
+        private readonly TranslatorInterface $translator,
     ) {
     }
 

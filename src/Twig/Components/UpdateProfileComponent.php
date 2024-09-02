@@ -24,7 +24,7 @@ class UpdateProfileComponent
         private readonly FormFactoryInterface $formFactory,
         private readonly Security $security,
         private readonly RequestStack $requestStack,
-        private readonly TranslatorInterface $translator
+        private readonly TranslatorInterface $translator,
     ) {
     }
 

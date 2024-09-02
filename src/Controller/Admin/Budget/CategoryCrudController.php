@@ -24,7 +24,7 @@ class CategoryCrudController extends BaseCrudController
     public function __construct(
         RequestStack $requestStack,
         private readonly BudgetRepository $budgetRepository,
-        private readonly AdminUrlGenerator $adminUrlGenerator
+        private readonly AdminUrlGenerator $adminUrlGenerator,
     ) {
         $this->request = $requestStack->getCurrentRequest();
     }

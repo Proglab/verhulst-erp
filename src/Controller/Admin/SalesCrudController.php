@@ -71,7 +71,7 @@ class SalesCrudController extends BaseCrudController
         protected SecurityChecker $securityChecker,
         private SalesRepository $salesRepository,
         private SalesBdcRepository $bdcRepository,
-        private MailerInterface $mailer
+        private MailerInterface $mailer,
     ) {
         parent::__construct($securityChecker);
     }

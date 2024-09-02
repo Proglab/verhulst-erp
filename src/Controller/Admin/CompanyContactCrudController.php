@@ -56,7 +56,7 @@ class CompanyContactCrudController extends BaseCrudController
         private CompanyContactRepository $companyContactRepository,
         private TempCompanyContactRepository $tempCompanyContactRepository,
         private CompanyRepository $companyRepository,
-        private RequestStack $requestStack
+        private RequestStack $requestStack,
     ) {
         parent::__construct($securityChecker);
     }
@@ -101,7 +101,7 @@ class CompanyContactCrudController extends BaseCrudController
     public function createNewForm(
         EntityDto $entityDto,
         KeyValueStore $formOptions,
-        AdminContext $context
+        AdminContext $context,
     ): FormInterface {
         if ($this->requestStack->getCurrentRequest()->get('company_id')) {
             $company = $this->companyRepository->find($this->requestStack->getCurrentRequest()->get('company_id'));
