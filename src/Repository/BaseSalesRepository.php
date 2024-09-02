@@ -489,7 +489,6 @@ class BaseSalesRepository extends ServiceEntityRepository
 
         if (null !== $archive) {
             $qb
-
                 ->andWhere('project.archive = :archive')
                 ->orWhere('project.archive IS NULL')
                 ->setParameter('archive', $archive);

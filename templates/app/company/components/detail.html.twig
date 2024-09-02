@@ -4,17 +4,15 @@
             <div class="chat-box email-box mh-n100" data-simplebar="init">
 
                 <div class="chat-list chat active-chat" data-user-id="1">
-                    <div class="hstack align-items-start pb-1 align-items-center justify-content-between">
-                        <div class="d-flex align-items-center gap-3">
-                            <div>
-                                <h5 class="fw-semibold fs-4 mb-0">
-                                    {{ this.company.name }}
-                                    <a href="{{ path('company_edit', {company: company.id})}}" class="ms-2 btn btn-primary btn-sm">
-                                        <small><i class="action-icon fa-solid fa-edit me-1"></i> Modifier</small>
-                                    </a>
-                                </h5>
-                            </div>
-                        </div>
+                    <div class="pb-1">
+                        <h5 class="fw-semibold mb-0 d-flex h3 text-primary">
+                            {{ this.company.name }}
+                            <span class="ms-auto">
+                                <a href="{{ path('company_edit', {company: company.id})}}" class="ms-2 btn btn-primary btn-sm">
+                                    <small><i class="action-icon fa-solid fa-edit me-1"></i> Modifier</small>
+                                </a>
+                            </span>
+                        </h5>
                     </div>
                     <div class="row mb-3">
                         <div class="col-6">
@@ -55,6 +53,13 @@
     <div class="card overflow-hidden chat-application">
         <div class="d-flex w-100">
             <div class="d-flex w-100">
+                {% set contact = null %}
+                {% if company.contact %}
+                    {% set contact = company.contact[0] %}
+                {% endif %}
+                {% if this.contact is not null %}
+                    {% set contact = this.contact %}
+                {% endif %}
                 <div class="min-width-340">
                     <div class="border-end user-chat-box h-100">
                         {#<div class="px-4 pt-9 pb-6 d-none d-lg-block">
@@ -75,17 +80,17 @@
                                                  aria-label="scrollable content"
                                                  style="height: auto; overflow: hidden;">
                                                 <div class="simplebar-content" style="padding: 0px; overflow:auto; height: 600px;">
-                                                    {% for contact in company.contact %}
+                                                    {% for item in company.contact %}
                                                     <li>
-                                                        <div class="px-4 py-3 bg-hover-light-black d-flex align-items-center chat-user bg-light-subtle">
+                                                        <div class="px-4 py-3 d-flex align-items-center chat-user {% if item.id == contact.id %}primary-gradient{% else %}bg-light-subtle{% endif %}">
                                                             <div class="ms-6 d-inline-block w-75">
                                                                 <h6 class="mb-1 fw-semibold chat-title">
-                                                                    <a data-action="live#action" data-live-action-param="viewContact" data-live-contact-param="{{ contact.id }}" style="cursor:pointer" title="Détails">
-                                                                        {{ contact.fullName }}
+                                                                    <a data-action="live#action" data-live-action-param="viewContact" data-live-contact-param="{{ item.id }}" style="cursor:pointer" title="Détails">
+                                                                        <i class="pe-1 fa-regular fa-folder{% if item.id == contact.id %}-open{% endif %}"></i> {{ item.fullName }}
                                                                     </a>
                                                                 </h6>
                                                                 <div class="fs-2 text-body-color d-block">
-                                                                    <a href="mailto:{{ contact.email }}" title="E-mail {{ contact.fullName }}">{{ contact.email }}</a>
+                                                                    <a href="mailto:{{ item.email }}" title="E-mail {{ item.fullName }}">{{ item.email }}</a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -102,18 +107,33 @@
                     </div>
                 </div>
                 <div class="w-100" data-loading="addClass(opacity-50)">
-                {% set contact = null %}
-                {% if company.contact %}
-                    {% set contact = company.contact[0] %}
-                {% endif %}
-                {% if this.contact is not null %}
-                    {% set contact = this.contact %}
-                {% endif %}
                     <div class="chat-container h-100 w-100">
                         <div class="chat-box-inner-part h-100">
                             <div class="chatting-box app-email-chatting-box">
-                                <div class="p-9 py-3 border-bottom chat-meta-user d-flex align-items-center justify-content-between">
-                                    <h5 class="text-dark mb-0 fs-5">Détail du contact</h5>
+                                <div class="p-9 py-3 border-bottom chat-meta-user align-items-center justify-content-between">
+                                    <h5 class="text-dark mb-0 fs-5 d-flex">
+                                        Infos du contact
+                                        <span class="ms-auto">
+                                            <a href="{{ ea_url()
+                                                .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                .setController('App\\Controller\\Admin\\CompanyContactCrudController')
+                                                .setAction('detail')
+                                                .set('entityFqcn', 'App\\Entity\\Contact')
+                                                .setEntityId(contact.id)
+                                            }}" class="ms-2 btn btn-primary btn-sm">
+                                                <small><i class="action-icon fa-solid fa-eye me-1"></i> Détails</small>
+                                            </a>
+                                            <a href="{{ ea_url()
+                                                .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                .setController('App\\Controller\\Admin\\CompanyContactCrudController')
+                                                .setAction('edit')
+                                                .set('entityFqcn', 'App\\Entity\\Contact')
+                                                .setEntityId(contact.id)
+                                            }}" class="ms-2 btn btn-primary btn-sm">
+                                                <small><i class="action-icon fa-solid fa-edit me-1"></i> Modifier</small>
+                                            </a>
+                                        </span>
+                                    </h5>
                                 </div>
                                 <div class="position-relative overflow-hidden">
                                     <div class="position-relative">
@@ -125,31 +145,14 @@
                                                         <div>
                                                             <h6 class="fw-semibold fs-4 mb-0">
                                                                 {{ contact.fullName }}
-                                                                <a href="{{ ea_url()
-                                                                    .setDashboard('App\\Controller\\Admin\\DashboardController')
-                                                                    .setController('App\\Controller\\Admin\\CompanyContactCrudController')
-                                                                    .setAction('detail')
-                                                                    .set('entityFqcn', 'App\\Entity\\Contact')
-                                                                    .setEntityId(contact.id)
-                                                                }}" class="ms-2 btn btn-primary btn-sm">
-                                                                    <small><i class="action-icon fa-solid fa-eye me-1"></i> Détails</small>
-                                                                </a>
-                                                                <a href="{{ ea_url()
-                                                                    .setDashboard('App\\Controller\\Admin\\DashboardController')
-                                                                    .setController('App\\Controller\\Admin\\CompanyContactCrudController')
-                                                                    .setAction('edit')
-                                                                    .set('entityFqcn', 'App\\Entity\\Contact')
-                                                                    .setEntityId(contact.id)
-                                                                }}" class="ms-2 btn btn-primary btn-sm">
-                                                                    <small><i class="action-icon fa-solid fa-edit me-1"></i> Modifier</small>
-                                                                </a>
                                                             </h6>
                                                             <p class="mb-0">{{ contact.function }}</p>
-                                                            <p class="mb-0">{{ company.name }}</p>
+                                                            {% if contact.addedBy %}<p class="mb-0"><strong>Commercial:</strong> {{ contact.addedBy.fullName }}</p>{% endif %}
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
+                                                    {% if contact.phone %}
                                                     <div class="col-2 mb-7">
                                                         <p class="mb-1 fs-2">Téléphone</p>
                                                         <h6 class="fw-semibold mb-0">
@@ -158,7 +161,8 @@
                                                             </a>
                                                         </h6>
                                                     </div>
-
+                                                    {% endif %}
+                                                    {% if contact.gsm %}
                                                     <div class="col-2 mb-7">
                                                         <p class="mb-1 fs-2">Gsm</p>
                                                         <h6 class="fw-semibold mb-0">
@@ -167,6 +171,8 @@
                                                             </a>
                                                         </h6>
                                                     </div>
+                                                    {% endif %}
+                                                    {% if contact.email %}
                                                     <div class="col-8 mb-7">
                                                         <p class="mb-1 fs-2">Email address</p>
                                                         <h6 class="fw-semibold mb-0">
@@ -175,19 +181,32 @@
                                                             </a>
                                                         </h6>
                                                     </div>
+                                                    {% endif %}
+                                                </div>
+                                                {% if contact.street %}
+                                                <div class="row">
                                                     <div class="col-12 mb-9">
                                                         <p class="mb-1 fs-2">Addresse</p>
                                                         <h6 class="fw-semibold mb-0">{{ contact.street }}</h6>
                                                     </div>
+                                                </div>
+                                                {% endif %}
+                                                {% if contact.pc or contact.city or contact.country %}
+                                                <div class="row">
+                                                    {% if contact.pc or contact.city %}
                                                     <div class="col-4 mb-7">
                                                         <p class="mb-1 fs-2">Ville</p>
                                                         <h6 class="fw-semibold mb-0">{{ contact.pc }} {{ contact.city }}</h6>
                                                     </div>
+                                                    {% endif %}
+                                                    {% if contact.country %}
                                                     <div class="col-8 mb-7">
                                                         <p class="mb-1 fs-2">Pays</p>
                                                         <h6 class="fw-semibold mb-0">{{ contact.country }}</h6>
                                                     </div>
+                                                    {% endif %}
                                                 </div>
+                                                {% endif %}
                                                 {#<div class="pb-7 mb-4">
                                                     <p class="mb-2 fs-2">Notes</p>
                                                     <p class="mb-3 text-dark">

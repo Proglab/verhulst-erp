@@ -117,7 +117,18 @@ class TodoCrudController extends BaseCrudController
     {
         $dateReminder = DateField::new('date_reminder')->setLabel('Date rappel')->setRequired(true)->setFormat('dd/MM/yy');
         $hourReminder = TimeField::new('hour_reminder')->setLabel('Heure de rappel')->setRequired(false)->setFormat('hh:mm');
-        $contact = AssociationField::new('client')->setLabel('Client')->setRequired(false);
+        $contact = AssociationField::new('client')
+            ->setLabel('Client')
+            ->setRequired(false)
+            ->setFormTypeOptions([
+                'query_builder' => function (CompanyContactRepository $companyContactRepository) {
+                    return $companyContactRepository->createQueryBuilder('e')
+                        ->andWhere('e.firstname IS NOT NULL')
+                        ->andWhere('e.lastname IS NOT NULL')
+                        ->orderBy('e.firstname', 'ASC');
+                },
+                'by_reference' => false,
+            ]);
         $todo = TextEditorField::new('todo')->setLabel('Texte du to do')->setRequired(true)->setPermission('ROLE_COMMERCIAL');
         $done = BooleanField::new('done')->setLabel('Fait ?');
         $user = AssociationField::new('user')->setLabel('Sales')->setRequired(false);
