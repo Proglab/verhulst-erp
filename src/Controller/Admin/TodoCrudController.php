@@ -127,13 +127,14 @@ class TodoCrudController extends BaseCrudController
                         ->andWhere('e.lastname IS NOT NULL')
                         ->orderBy('e.firstname', 'ASC');
                 },
-                'by_reference' => false,
+                'by_reference' => true,
             ]);
         $todo = TextEditorField::new('todo')->setLabel('Texte du to do')->setRequired(true)->setPermission('ROLE_COMMERCIAL');
         $done = BooleanField::new('done')->setLabel('Fait ?');
         $user = AssociationField::new('user')->setLabel('Sales')->setRequired(false);
         $dateDone = DateTimeField::new('date_done')->setLabel('Date de réalisation');
         $projet = AssociationField::new('project')->setLabel('Projet')->setRequired(false);
+        $typeText = TextField::new('type')->setLabel('Type de To do')->setRequired(true);
         $type = AssociationField::new('type')->setLabel('Type de To do')->setRequired(true);
         $societe = TextField::new('client.company')->setLabel('Sociéte')->setRequired(false);
 
@@ -142,8 +143,8 @@ class TodoCrudController extends BaseCrudController
         $response = match ($pageName) {
             Crud::PAGE_NEW => [$type, $dateReminder, $hourReminder, $user, $projet, $contact, $todo],
             Crud::PAGE_EDIT => [$type, $dateReminder, $hourReminder, $user, $projet, $contact, $todo, $done],
-            Crud::PAGE_DETAIL => [$type, $dateReminder, $user, $projet, $contact, $todoTxt, $done, $dateDone],
-            default => [$type, $dateReminder, $user, $projet, $contact, $societe, $todo, $done],
+            Crud::PAGE_DETAIL => [$typeText, $dateReminder, $user, $projet, $contact, $todoTxt, $done, $dateDone],
+            default => [$typeText, $dateReminder, $user, $projet, $contact, $societe, $todo, $done],
         };
 
         return $response;

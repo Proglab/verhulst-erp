@@ -21,7 +21,7 @@ class Todo
     #[Assert\NotBlank]
     private ?\DateTimeInterface $date_reminder = null;
 
-    #[ORM\ManyToOne(inversedBy: 'todos')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'todos')]
     #[ORM\JoinColumn(nullable: true)]
     private ?CompanyContact $client = null;
 
@@ -35,14 +35,14 @@ class Todo
     #[ORM\Column]
     private ?bool $done = false;
 
-    #[ORM\ManyToOne(inversedBy: 'todos')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'todos')]
     #[ORM\JoinColumn(nullable: true)]
     private ?User $user = null;
 
-    #[ORM\ManyToOne(inversedBy: 'todos')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'todos')]
     private ?Project $project = null;
 
-    #[ORM\ManyToOne(inversedBy: 'todos')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'todos')]
     #[ORM\JoinColumn(nullable: false)]
     private ?TodoType $type = null;
 
