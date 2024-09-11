@@ -176,10 +176,11 @@ class SalesRecap extends AbstractController
         $worksheet->getCell('E1')->setValue('Contact');
         $worksheet->getCell('F1')->setValue('Vendeur');
         $worksheet->getCell('G1')->setValue('Quantité');
-        $worksheet->getCell('H1')->setValue('Prix final');
-        $worksheet->getCell('I1')->setValue('Com sale');
-        $worksheet->getCell('J1')->setValue('Com VR');
-        $worksheet->getCell('K1')->setValue('Marge net VR');
+        $worksheet->getCell('H1')->setValue('Prix unitaire');
+        $worksheet->getCell('I1')->setValue('Prix total');
+        $worksheet->getCell('J1')->setValue('Com sale');
+        $worksheet->getCell('K1')->setValue('Com VR');
+        $worksheet->getCell('L1')->setValue('Marge net VR');
 
         /**
          * @var int       $key
@@ -197,16 +198,19 @@ class SalesRecap extends AbstractController
             $worksheet->getCell('F' . ($key + 2))->setValue($data->getUser()->getFullName());
             $worksheet->getCell('G' . ($key + 2))->setValue($data->getQuantity());
             $worksheet->getCell('H' . ($key + 2))->setValue($data->getPrice());
-            $worksheet->getCell('I' . ($key + 2))->setValue($data->getPercentCom() / 100 * $data->getPrice());
-            $worksheet->getCell('J' . ($key + 2))->setValue($data->getPercentVr() / 100 * $data->getPrice());
-            $worksheet->getCell('K' . ($key + 2))->setValue('=J' . ($key + 2) . '-I' . ($key + 2));
+            $worksheet->getCell('I' . ($key + 2))->setValue('=G' . ($key + 2) . '*H' . ($key + 2));
+            // $worksheet->getCell('J' . ($key + 2))->setValue($data->getPercentCom() / 100 * ($data->getPrice() * $data->getQuantity()));
+            // $worksheet->getCell('K' . ($key + 2))->setValue($data->getPercentVr() / 100 * ($data->getPrice() * $data->getQuantity()));
+            $worksheet->getCell('J' . ($key + 2))->setValue('=' . ($data->getPercentCom() / 100) . '*I' . ($key + 2));
+            $worksheet->getCell('K' . ($key + 2))->setValue('=' . ($data->getPercentVr() / 100) . '*I' . ($key + 2));
+            $worksheet->getCell('L' . ($key + 2))->setValue('=K' . ($key + 2) . '-J' . ($key + 2));
         }
 
         $id = uniqid();
 
-        $writer->save($id . '.xls');
+        $writer->save($id . '.xlsx');
 
-        return $this->redirectToRoute('download_file', ['filename' => $id . '.xls']);
+        return $this->redirectToRoute('download_file', ['filename' => $id . '.xlsx']);
     }
 
     #[LiveAction]
