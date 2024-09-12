@@ -68,17 +68,16 @@
     <div class="col-12">
         <div class="card card-body py-3">
             {{ form_start(form, {'attr': {'data-model': '*'}}) }}
-            <div class="d-flex justify-content-between bd-highlight mb-3 p-3 border">
-                <div class="p-1">
+            <div class="d-flex justify-content-between bd-highlight mb-3 p-3 row border">
+                <div class="col-md-6 order-md-3 order-xl-1 col-xl-2">
                     <div>
                         {{ form_label(form.from) }} {{ form_widget(form.from) }}
-
                     </div>
                     <div class="mt-2">
                         {{ form_label(form.to) }} {{ form_widget(form.to) }}
                     </div>
                 </div>
-                <div class="p-1">
+                <div class="col-md-6 order-md-1 order-xl-2 col-xl-4">
                     <div>
                         {{ form_label(form.project) }} {{ form_widget(form.project) }}
                     </div>
@@ -88,7 +87,7 @@
                         {% endif %}
                     </div>
                 </div>
-                <div class="p-1">
+                <div class="col-md-6 order-md-2 order-xl-3 col-xl-4">
                     <div>
                         {{ form_label(form.company) }} {{ form_widget(form.company) }}
                     </div>
@@ -98,7 +97,7 @@
                         {% endif %}
                     </div>
                 </div>
-                <div class="p-1">
+                <div class="col-md-6 order-md-4 order-xl-4 col-xl-2">
                     <div>
                         {{ form_label(form.user) }} {{ form_widget(form.user) }}
                     </div>
