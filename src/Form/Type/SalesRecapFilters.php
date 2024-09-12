@@ -63,6 +63,7 @@ class SalesRecapFilters extends AbstractType
                 'placeholder' => '',
                 'label' => 'Projet',
                 'required' => false,
+                'autocomplete' => true,
                 'query_builder' => function (ProjectRepository $er) {
                     return $er->createQueryBuilder('p')
                         ->where('p.archive = false')
@@ -98,6 +99,7 @@ class SalesRecapFilters extends AbstractType
                 'expanded' => false,
                 'placeholder' => '',
                 'required' => false,
+                'autocomplete' => true,
                 'query_builder' => function (CompanyRepository $er) {
                     return $er->createQueryBuilder('c')
                         ->orderBy('c.name', 'ASC');
@@ -132,6 +134,7 @@ class SalesRecapFilters extends AbstractType
                 'expanded' => false,
                 'placeholder' => '',
                 'required' => false,
+                'autocomplete' => true,
                 'query_builder' => function (UserRepository $er) {
                     return $er->getCommercialsQb();
                 },
@@ -155,7 +158,7 @@ class SalesRecapFilters extends AbstractType
                     'data-model' => 'archive',
                 ],
             ]
-            );
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver): void

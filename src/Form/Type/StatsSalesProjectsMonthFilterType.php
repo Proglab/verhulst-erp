@@ -57,6 +57,7 @@ class StatsSalesProjectsMonthFilterType extends AbstractType
                 'expanded' => false,
                 'placeholder' => '',
                 'label' => 'Projet',
+                'autocomplete' => true,
                 'attr' => [
                     'data-model' => 'project',
                 ],

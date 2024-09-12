@@ -27,3 +27,15 @@
     left: -430px;
   }
 }
+
+select[data-controller="symfony--ux-autocomplete--autocomplete"] {
+	&+ .ts-wrapper.form-select {
+		padding: 0;
+    background: none;
+
+		> .ts-control {
+			background: none;
+		    border: none;
+		}
+	}
+}

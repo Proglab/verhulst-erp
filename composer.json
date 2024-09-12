@@ -65,6 +65,7 @@
         "symfony/string": "6.4.*",
         "symfony/translation": "6.4.*",
         "symfony/twig-bundle": "6.4.*",
+        "symfony/ux-autocomplete": "^2.19",
         "symfony/ux-chartjs": "^2.7",
         "symfony/ux-live-component": "^2.16",
         "symfony/validator": "6.4.*",
