@@ -63,13 +63,13 @@
                         </td>
 
                         <td>
-                            <h6 class="mb-0">{{ (sale.price)|number_format(2, ',', '') }} €</h6>
+                            <h6 class="mb-0">{{ (sale.price)|number_format(2, ',', '.') }} €</h6>
                             <i>Quantité : {{ (sale.quantity) }}</i>
                         </td>
-                        <td><h6 class="mb-0">Prix final : {{ sale.totalPrice|number_format(2, ',', '') }}€</h6><i>Prix temporaire : {{ sale.totalForecastPrice|number_format(2, ',', '') }}€</i></td>
-                        <td><h6 class="mb-0">{{ sale.totalVr|number_format(2, ',', '') }}€</h6><i>{% if sale.percentVrType != 'fixed' %}{{ sale.percentVr }}%{% else %}Prix fixe{% endif %}</i></td>
+                        <td><h6 class="mb-0">Prix final : {{ sale.totalPrice|number_format(2, ',', '.') }}€</h6><i>Prix temporaire : {{ sale.totalForecastPrice|number_format(2, ',', '.') }}€</i></td>
+                        <td><h6 class="mb-0">{{ sale.totalVr|number_format(2, ',', '.') }}€</h6><i>{% if sale.percentVrType != 'fixed' %}{{ sale.percentVr }}%{% else %}Prix fixe{% endif %}</i></td>
 
-                        <td><h6 class="mb-0">{{ sale.totalCom|number_format(2, ',', '') }}€</h6><i>{% if sale.percentComType != 'fixed' %}{{ sale.percentCom }}%{% endif %} {% if sale.percentComType == 'percent_pv' %}du PV{% elseif sale.percentComType == 'percent_com' %} de la marge TF{% else %}Prix fixe{% endif %}</i></td>
+                        <td><h6 class="mb-0">{{ sale.totalCom|number_format(2, ',', '.') }}€</h6><i>{% if sale.percentComType != 'fixed' %}{{ sale.percentCom }}%{% endif %} {% if sale.percentComType == 'percent_pv' %}du PV{% elseif sale.percentComType == 'percent_com' %} de la marge TF{% else %}Prix fixe{% endif %}</i></td>
                         <td>{% if sale.validate %}<i class="fa-solid fa-check text-success"></i>{% else %}<i class="fa-solid fa-xmark text-danger"></i>{% endif %}</td>
                         <td>
                             {% if sale.product is not empty %}

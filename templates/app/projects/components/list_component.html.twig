@@ -141,7 +141,7 @@
                                         </td>
                                         <td>{{ product.dateBegin|date('d/m/Y') }}</td>
                                         <td>{{ product.dateEnd|date('d/m/Y') }}</td>
-                                        <td>{{ product.ca|number_format(2, ',', '') }}€</td>
+                                        <td>{{ product.ca|number_format(2, ',', '.') }}€</td>
                                         <td>{% if product.quantityMax is empty %}-{% else %}{{ product.quantityMax }}{% endif %}</td>
                                         <td>{{ product.quantitySales }}</td>
                                         <td>{% if product.quantityMax is empty %}-{% else %}{{ product.quantityAvailable }}{% endif %}</td>

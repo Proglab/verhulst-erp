@@ -158,7 +158,7 @@ class SalesRecapFilters extends AbstractType
                     'data-model' => 'archive',
                 ],
             ]
-        );
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver): void
