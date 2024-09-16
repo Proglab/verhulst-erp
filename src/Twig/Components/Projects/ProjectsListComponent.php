@@ -30,10 +30,10 @@ class ProjectsListComponent extends AbstractController
     #[LiveProp(writable: true)]
     public ?string $query = null;
 
-    #[LiveProp(writable: true, format: 'Y-m-d')]
+    #[LiveProp(writable: true)]
     public ?\DateTime $from = null;
 
-    #[LiveProp(writable: true, format: 'Y-m-d')]
+    #[LiveProp(writable: true)]
     public ?\DateTime $to = null;
 
     #[LiveProp(writable: true)]

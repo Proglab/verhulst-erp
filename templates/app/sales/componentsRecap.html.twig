@@ -108,7 +108,7 @@
             </div>
             {{ form_end(form) }}
             <div class="text-end">
-                <button class="btn btn-danger" data-action="live#action" data-live-action-param="initForm">Réinistialser le formulaire</button>
+                <a class="btn btn-danger" href="{{ path('sales_recap') }}">Réinistialser le formulaire</a>
                 <button class="btn btn-primary" data-action="live#action" data-live-action-param="export">Exporter les données</button>
             </div>
             <table class="table table-striped" {{ stimulus_controller('datatable-simple') }}  data-loading="addClass(opacity-50)">

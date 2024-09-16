@@ -24,9 +24,9 @@ class FlashSaleIndex extends AbstractController
     use ComponentWithFormTrait;
     use DefaultActionTrait;
 
-    #[LiveProp(writable: true, format: 'Y-m-d')]
+    #[LiveProp(writable: true)]
     public ?\DateTime $min = null;
-    #[LiveProp(writable: true, format: 'Y-m-d')]
+    #[LiveProp(writable: true)]
     public ?\DateTime $max = null;
     #[LiveProp(writable: true)]
     public ?array $users = [];

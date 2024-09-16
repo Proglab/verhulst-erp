@@ -87,11 +87,11 @@ class ProjectRepository extends ServiceEntityRepository
             $qb->orWhere('products.name LIKE :query)')
                 ->setParameter('query', '%' . $query . '%');
         }
-        if ($from) {
+        if ($from && '00:00:000000' === $from->format('i:s:u')) {
             $qb->andWhere('p.date_begin >= :from')
                 ->setParameter('from', $from);
         }
-        if ($to) {
+        if ($to && '00:00:000000' === $to->format('i:s:u')) {
             $qb->andWhere('p.date_end <= :to')
                 ->setParameter('to', $to);
         }

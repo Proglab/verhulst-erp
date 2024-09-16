@@ -28,6 +28,7 @@ class ProjectSearchFilterType extends AbstractType
                 'html5' => true,
                 'widget' => 'single_text',
                 'label' => 'Du',
+                'required' => false,
                 'attr' => [
                     'data-model' => 'on(change)|from',
                     'data-controller' => 'flatpickr',
@@ -41,6 +42,7 @@ class ProjectSearchFilterType extends AbstractType
                 'html5' => true,
                 'widget' => 'single_text',
                 'label' => 'Au',
+                'required' => false,
                 'attr' => [
                     'data-model' => 'on(change)|to',
                     'data-controller' => 'flatpickr',

@@ -312,12 +312,12 @@ class BaseSalesRepository extends ServiceEntityRepository
                 ->setParameter('archive', $archive);
         }
 
-        if ($from) {
+        if ($from && '00:00:000000' === $from->format('i:s:u')) {
             $qb->andWhere('s.date >= :from')
                 ->setParameter('from', $from);
         }
 
-        if ($to) {
+        if ($to && '00:00:000000' === $to->format('i:s:u')) {
             $qb->andWhere('s.date <= :to')
                 ->setParameter('to', $to);
         }
@@ -378,12 +378,12 @@ class BaseSalesRepository extends ServiceEntityRepository
                 ->setParameter('archive', $archive);
         }
 
-        if ($from) {
+        if ($from && '00:00:000000' === $from->format('i:s:u')) {
             $qb->andWhere('s.date >= :from')
                 ->setParameter('from', $from);
         }
 
-        if ($to) {
+        if ($to && '00:00:000000' === $to->format('i:s:u')) {
             $qb->andWhere('s.date <= :to')
                 ->setParameter('to', $to);
         }
@@ -436,12 +436,12 @@ class BaseSalesRepository extends ServiceEntityRepository
                 ->setParameter('archive', $archive);
         }
 
-        if ($from) {
+        if ($from && '00:00:000000' === $from->format('i:s:u')) {
             $qb->andWhere('s.date >= :from')
                 ->setParameter('from', $from);
         }
 
-        if ($to) {
+        if ($to && '00:00:000000' === $to->format('i:s:u')) {
             $qb->andWhere('s.date <= :to')
                 ->setParameter('to', $to);
         }
@@ -494,12 +494,12 @@ class BaseSalesRepository extends ServiceEntityRepository
                 ->setParameter('archive', $archive);
         }
 
-        if ($from) {
+        if ($from && '00:00:000000' === $from->format('i:s:u')) {
             $qb->andWhere('s.date >= :from')
                 ->setParameter('from', $from);
         }
 
-        if ($to) {
+        if ($to && '00:00:000000' === $to->format('i:s:u')) {
             $qb->andWhere('s.date <= :to')
                 ->setParameter('to', $to);
         }

@@ -41,12 +41,12 @@ class FastSalesRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('fs');
 
-        if ($min) {
+        if ($min && '00:00:000000' === $min->format('i:s:u')) {
             $qb->andWhere('fs.date >= :min')
                 ->setParameter('min', $min);
         }
 
-        if ($max) {
+        if ($max && '00:00:000000' === $max->format('i:s:u')) {
             $qb->andWhere('fs.date <= :max')
                 ->setParameter('max', $max);
         }

@@ -39,14 +39,14 @@ class SalesRecap extends AbstractController
     use DefaultActionTrait;
     use ValidatableComponentTrait;
 
-    #[LiveProp(writable: true, format: 'Y-m-d')]
-    #[Assert\Valid]
-    #[Assert\Date]
+    #[LiveProp(writable: true)]
+    // #[Assert\Valid]
+    // #[Assert\Date]
     public ?\DateTime $from = null;
 
-    #[LiveProp(writable: true, format: 'Y-m-d')]
-    #[Assert\Valid]
-    #[Assert\Date]
+    #[LiveProp(writable: true)]
+    // #[Assert\Valid]
+    // #[Assert\Date]
     public ?\DateTime $to = null;
 
     #[LiveProp(writable: true)]
@@ -221,6 +221,8 @@ class SalesRecap extends AbstractController
         $this->to = null;
         $this->form->get('from')->setData(null);
         $this->form->get('to')->setData(null);
+        $this->formValues['from'] = null;
+        $this->formValues['to'] = null;
     }
 
     protected function instantiateForm(): FormInterface
