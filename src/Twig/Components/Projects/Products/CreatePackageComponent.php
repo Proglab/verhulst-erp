@@ -68,7 +68,7 @@ class CreatePackageComponent extends AbstractController
 
         foreach ($events as $event) {
             // quantity max
-            $event->setQuantityMax($form->get('quantityMax')->getData());
+            $event->setQuantityMax((int) $form->get('quantityMax')->getData());
             // percents commerciaux
             if ('other' === $form->get('percentFreelance')->getData()) {
                 $event->setPercentFreelance((string) $form->get('percentFreelanceCustom')->getData());
