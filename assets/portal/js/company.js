@@ -1,8 +1,8 @@
 const $ = require('jquery');
 
-$( document ).ready(function() {
+$(function() {
     var company = $( "#Company_vat_number" );
-    company.change(function() {
+    company.on('change', function() {
 
         $('#Company_vat_number').parent().append("<i class=\"fas fa-spinner fa-pulse\" id=\"loading\"></i>");
 

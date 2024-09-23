@@ -25,6 +25,7 @@ Encore
     .addEntry('app', './assets/app.js')
     .addEntry('htmx', './assets/htmx.js')
     .addEntry('company', './assets/portal/js/company.js')
+    .addEntry('company_vat', './assets/portal/js/company_vat.js')
     
     .addEntry('app_matdash_custom', './assets/styles/app_matdash_custom.scss')
 

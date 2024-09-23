@@ -55,12 +55,14 @@
                     <h4>Facturation</h4>
                 </div>
                 <div class="card-body">
+                    {% if form.vat_number is defined %}
                     <fieldset class="row mb-3">
                         <div class="col">
                             {{ form_label(form.vat_number) }}
                             {{ form_widget(form.vat_number) }}
                         </div>
                     </fieldset>
+                    {% endif %}
                     <fieldset class="row mb-3">
                         <div class="col">
                             {{ form_label(form.vat_na) }}
@@ -108,4 +110,5 @@
         </div>
     </div>
     {{ form_end(form) }}
+    {{ encore_entry_script_tags('company_vat') }}
 </div>
