@@ -13,7 +13,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
-#[UniqueEntity(['vat_number', 'name'])]
+#[UniqueEntity(['vat_number'])]
+#[UniqueEntity(['name'])]
 class Company
 {
     #[ORM\Id]

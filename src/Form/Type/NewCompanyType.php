@@ -48,16 +48,16 @@ class NewCompanyType extends AbstractType
             'required' => false,
         ]);
         // VAT & Billing
-        /*$builder->add('vat_number', null, [
+        $builder->add('vat_number', null, [
             'label' => 'TVA',
             'required' => false,
-        ]);*/
+        ]);
         $builder->add('vat_na', null, [
             'label' => 'Non assujetti',
             'required' => false,
         ]);
 
-        $builder->addDependent('vat_number', 'vat_na', function (DependentField $field, ?bool $vat_na) {
+        /*$builder->addDependent('vat_number', 'vat_na', function (DependentField $field, ?bool $vat_na) {
             if (true === $vat_na) {
                 return;
             }
@@ -65,7 +65,7 @@ class NewCompanyType extends AbstractType
                 'label' => 'TVA',
                 'required' => true,
             ]);
-        });
+        });*/
 
         $builder->add('billing_street', null, [
             'label' => 'Rue',
