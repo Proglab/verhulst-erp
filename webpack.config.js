@@ -26,6 +26,8 @@ Encore
     .addEntry('htmx', './assets/htmx.js')
     .addEntry('company', './assets/portal/js/company.js')
     .addEntry('company_vat', './assets/portal/js/company_vat.js')
+    .addEntry('package_vip', './assets/portal/js/package_vip.js')
+    .addEntry('sponsoring', './assets/portal/js/sponsoring.js')
     
     .addEntry('app_matdash_custom', './assets/styles/app_matdash_custom.scss')
 

@@ -164,15 +164,15 @@
                                 {% if instanceOf(sale.product, 'App\\Entity\\ProductPackageVip') %}
                                     <a class="p-1 m-1 d-inline" href="{{ ea_url()
                                         .setDashboard('App\\Controller\\Admin\\DashboardController')
-                                        .setController('App\\Controller\\Admin\\SalesCrudController')
+                                        .setController('App\\Controller\\Admin\\ProductPackageVipCrudController')
                                         .setAction('edit')
-                                        .setEntityId(sale.id)}}"><iconify-icon icon="ic:outline-edit"></iconify-icon>
+                                        .setEntityId(sale.product.id)}}"><iconify-icon icon="ic:outline-edit"></iconify-icon>
                                     </a>
                                     <a class="p-1 m-1 d-inline" href="{{ ea_url()
                                         .setDashboard('App\\Controller\\Admin\\DashboardController')
-                                        .setController('App\\Controller\\Admin\\SalesCrudController')
+                                        .setController('App\\Controller\\Admin\\ProductPackageVipCrudController')
                                         .setAction('detail')
-                                        .setEntityId(sale.id)}}"><iconify-icon icon="mdi:eye"></iconify-icon>
+                                        .setEntityId(sale.product.id)}}"><iconify-icon icon="mdi:eye"></iconify-icon>
                                     </a>
                                 {% elseif instanceOf(sale.product, 'App\\Entity\\ProductSponsoring') %}
                                     <a class="p-1 m-1 d-inline" href="{{ ea_url()
