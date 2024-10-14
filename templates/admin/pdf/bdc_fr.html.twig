@@ -145,8 +145,13 @@
                 </tr>
                 {% else %}
                     <tr>
-                        <td style="border-color: #FFFFFF;">{{ sale.product.name }}<br>
-                            {{ sale.product.description|raw }}
+                        <td style="border-color: #FFFFFF;">{{ sale.product.name }}
+                            {% if sale.product.project is not empty %}
+                                <br><i>{{ sale.product.project.name }}</i>
+                            {% endif %}
+                            {% if sale.product.description is not empty %}
+                                <br>{{ sale.product.description|raw }}
+                            {% endif %}
                         </td>
                         <td style="text-align: center;border-color: #FFFFFF;">{{ sale.quantity }}</td>
                         <td style="text-align: right;border-color: #FFFFFF;">{{ sale.totalPrice|number_format(2, ',', '.') }} €</td>
