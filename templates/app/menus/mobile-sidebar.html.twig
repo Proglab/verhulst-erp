@@ -99,11 +99,7 @@
                                                         </a>
                                                     </li>
                                                     <li class="sidebar-item">
-                                                        <a href="{{ ea_url()
-                                                            .setDashboard('App\\Controller\\Admin\\DashboardController')
-                                                            .setController('App\\Controller\\Admin\\CompanyContactCrudController')
-                                                            .setAction('index')
-                                                            .set('entityFqcn', 'App\\Entity\\CompanyContact') }}" class="sidebar-link">
+                                                        <a href="{{ path('contact_index') }}" class="sidebar-link">
                                                             <iconify-icon icon="teenyicons:contact-solid" width="25" height="25"></iconify-icon>
                                                             <span class="hide-menu">Contact</span>
                                                         </a>

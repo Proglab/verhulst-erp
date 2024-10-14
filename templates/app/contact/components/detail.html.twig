@@ -1,0 +1,395 @@
+<div {{ attributes }}>
+    <div class="card">
+        <div class="card-body">
+            <div class="pb-1">
+                <h1 class="fw-semibold d-flex h3 text-primary">
+                    <iconify-icon icon="teenyicons:contact-solid" width="25" height="25" class="me-2 mt-1"></iconify-icon> {{ contact.fullname }}
+                    <span class="ms-auto">
+                        {#<button type="button" class="ms-2 btn btn-danger btn-sm" data-action="live#action"
+                                data-live-action-param="delete" data-live-id-param="{{ contact.id }}" data-bs-toggle="modal" data-bs-target="#danger-header-modal">
+                            <small><i class="action-icon fa-solid fa-trash me-1"></i> Supprimer</small>
+                        </button>#}
+                        <a href="{{ ea_url()
+                            .setDashboard('App\\Controller\\Admin\\DashboardController')
+                            .setController('App\\Controller\\Admin\\CompanyContactCrudController')
+                            .setAction('transfertContact')
+                            .set('entityFqcn', 'App\\Entity\\Contact')
+                            .setEntityId(contact.id)
+                        }}" class="ms-2 btn btn-primary btn-sm">
+                            <small><i class="action-icon fa-solid fa-exchange me-1"></i> Transférer</small>
+                        </a>
+                        <a href="{{ path('contact_edit', {contact: contact.id})}}" class="ms-2 btn btn-primary btn-sm">
+                            <small><i class="action-icon fa-solid fa-edit me-1"></i> Modifier</small>
+                        </a>
+                    </span>
+                </h1>
+            </div>
+            <div class="row mb-3">
+                <div class="col-6">
+                    {% if contact.function %}<p class="fw-semibold">{{ contact.function }}</p>{% endif %}
+                    {% if contact.addedBy %}<p class=""><strong>Commercial:</strong> {{ contact.addedBy.fullName }}</p>{% endif %}
+                    {% if contact.phone %}
+                        <h4 class="mb-1 fs-2 fw-normal">Téléphone</h4>
+                        <p class="fw-semibold">
+                            <a href="tel:{{ contact.phone|replace({' ': '', ':': '', '/': '', '(': '', ')': ''}) }}" title="Phone {{ contact.fullName }}">
+                                {{ contact.phone }}
+                            </a>
+                        </p>
+                    {% endif %}
+                    {% if contact.gsm %}
+                        <h4 class="mb-1 fs-2 fw-normal">Gsm</h4>
+                        <p class="fw-semibold">
+                            <a href="tel:{{ contact.gsm|replace({' ': '', ':': '', '/': '', '(': '', ')': ''}) }}" title="GSM {{ contact.fullName }}">
+                                {{ contact.gsm }}
+                            </a>
+                        </p>
+                    {% endif %}
+                    {% if contact.email %}
+                        <h4 class="mb-1 fs-2 fw-normal">E-mail</h4>
+                        <p class="fw-semibold">
+                            <a href="mailto:{{ contact.email }}" title="E-mail {{ contact.fullName }}">
+                                {{ contact.email }}
+                            </a>
+                        </p>
+                    {% endif %}
+                </div>
+                <div class="col-6">
+                    {% if contact.street %}
+                        <h4 class="mb-1 fs-2 fw-normal">Adresse</h4>
+                        <p class="fw-semibold">{{ contact.street }}</p>
+                    {% endif %}
+                    {% if contact.pc or contact.city or contact.country %}
+                        {% if contact.pc or contact.city %}
+                            <h4 class="mb-1 fs-2 fw-normal">Ville</h4>
+                            <p class="fw-semibold">{{ contact.pc }} {{ contact.city }}</p>
+                        {% endif %}
+                        {% if contact.country %}
+                            <h4 class="mb-1 fs-2 fw-normal">Pays</h4>
+                            <p class="fw-semibold">{{ contact.country }}</p>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="fw-semibold h5 text-primary d-flex">
+                        <iconify-icon icon="lucide:list-todo" width="25" height="25" class="me-2"></iconify-icon> To do    
+                        <a href="{{ ea_url()
+                            .setDashboard('App\\Controller\\Admin\\DashboardController')
+                            .setController('App\\Controller\\Admin\\CompanyContactCrudController')
+                            .setAction('createTodo')
+                            .set('entityFqcn', 'App\\Entity\\Contact')
+                            .setEntityId(contact.id)
+                        }}" class="ms-auto btn btn-primary btn-sm"><small>Ajouter une "to do"</small></a>
+                    </h2>
+                    {% if contact.todos|length > 0 %}
+                        {% for todo in contact.todos %}
+                            <div class="border-start ps-3 mb-3">
+                                <blockquote class="blockquote">{{ todo.todo|raw }}</blockquote>
+                                <figcaption class="blockquote-footer">
+                                    {{ todo.user }}
+                                    <br><small class="ms-3">{{ todo.dateReminder|date("d/m/Y i:s") }}</small>
+                                    <br><cite class="ms-3" title="Source Title">{{ todo.project.name }}</cite>
+                                </figcaption>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="fw-semibold h5 text-primary d-flex">
+                        <i class="action-icon fa-solid fa-comment me-2"></i> Notes   
+                        <a href="{{ ea_url()
+                            .setDashboard('App\\Controller\\Admin\\DashboardController')
+                            .setController('App\\Controller\\Admin\\CompanyContactCrudController')
+                            .setAction('createNote')
+                            .set('entityFqcn', 'App\\Entity\\Contact')
+                            .setEntityId(contact.id)
+                        }}" class="ms-auto btn btn-primary btn-sm"><small>Ajouter une note</small></a>
+                    </h2>
+                    {% if contact.notes|length > 0 %}
+                        {% for note in contact.notes %}
+                            <div class="border-start ps-3 mb-3">
+                                <blockquote class="blockquote">{{ note.note|raw }}</blockquote>
+                                <figcaption class="blockquote-footer">
+                                    {{ note.user }}
+                                    <br><small class="ms-3">{{ note.createdDt|date("d/m/Y i:s") }}</small>
+                                </figcaption>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if contact.company %}
+    <div class="card">
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-12">
+                    <h2 class="fw-semibold h4 text-primary d-flex">
+                        <iconify-icon icon="mdi:company" width="25" height="25" class="me-2"></iconify-icon> Société
+                        <span class="ms-auto">
+                            <a href="{{ path('company_details', {company: contact.company.id})}}" class="ms-2 btn btn-primary btn-sm">
+                                <small><i class="action-icon fa-solid fa-eye me-1"></i> Détails</small>
+                            </a>
+                            <a href="{{ path('company_edit', {company: contact.company.id})}}" class="ms-2 btn btn-primary btn-sm">
+                                <small><i class="action-icon fa-solid fa-edit me-1"></i> Modifier</small>
+                            </a>
+                        </span>
+                    </h2>
+                </div>
+                <div class="col-md-6">
+                    <h3 class="fw-semibold h5 text-primary">Contact</h3>
+                    {% if contact.company.name %}
+                    <h4 class="mb-1 fs-2 fw-normal">Société</h4>
+                    <p class="fw-semibold">{{ contact.company.name }}</p>
+                    {% endif %}
+                    {% if contact.company.street %}
+                    <h4 class="mb-1 fs-2 fw-normal">Adresse</h4>
+                    <p class="fw-semibold">{{ contact.company.street }}</p>
+                    {% endif %}
+                    {% if contact.company.pc or contact.company.city %}
+                    <h4 class="mb-1 fs-2 fw-normal">Ville</h4>
+                    <p class="fw-semibold">{{ contact.company.pc }} {{ contact.company.city }}</p>
+                    {% endif %}
+                    {% if contact.company.country %}
+                    <h4 class="mb-1 fs-2 fw-normal">Pays</h4>
+                    <p class="fw-semibold">{{ contact.company.country }}</p>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <h3 class="fw-semibold h5 text-primary">Facturation</h3>
+                    <h4 class="mb-1 fs-2 fw-normal">Non assujetti</h4>
+                    <p class="fw-semibold">{{ (contact.company.vatNa)? 'Oui' : 'Non' }}</p>
+                    {% if contact.company.vatNumber %}
+                    <h4 class="mb-1 fs-2 fw-normal">Numéro de TVA</h4>
+                    <p class="fw-semibold">{{ contact.company.vatNumber }}</p>
+                    {% endif %}
+                    {% if contact.company.billingMail %}
+                    <h4 class="mb-1 fs-2 fw-normal">E-mail</h4>
+                    <p class="fw-semibold">
+                        <a href="mailto:{{ contact.company.billingMail }}" title="E-mail {{ contact.company.name }}">
+                            {{ contact.company.billingMail }}
+                        </a>
+                    </p>
+                    {% endif %}
+                    {% if contact.company.billingStreet %}
+                    <h4 class="mb-1 fs-2 fw-normal">Adresse</h4>
+                    <p class="fw-semibold">{{ contact.company.billingStreet }}</p>
+                    {% endif %}
+                    {% if contact.company.billingPc or contact.company.billingCity %}
+                    <h4 class="mb-1 fs-2 fw-normal">Ville</h4>
+                    <p class="fw-semibold">{{ contact.company.billingPc }} {{ contact.company.billingCity }}</p>
+                    {% endif %}
+                    {% if contact.company.billingCountry %}
+                    <h4 class="mb-1 fs-2 fw-normal">Pays</h4>
+                    <p class="fw-semibold">{{ contact.company.billingCountry }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+
+    {#% if company.contact|length > 0 %}
+    <div class="card overflow-hidden chat-application">
+        <div class="d-flex w-100">
+            <div class="d-flex w-100">
+                {% set contact = null %}
+                {% if company.contact %}
+                    {% set contact = company.contact[0] %}
+                {% endif %}
+                {% if this.contact is not null %}
+                    {% set contact = this.contact %}
+                {% endif %}
+                <div class="min-width-340">
+                    <div class="border-end user-chat-box h-100">
+                        <div class="app-chat">
+                            <ul class="chat-users mh-n100" data-simplebar="init">
+                                <div class="simplebar-wrapper" style="margin: 0px;">
+                                    <div class="simplebar-height-auto-observer-wrapper">
+                                        <div class="simplebar-height-auto-observer"></div>
+                                    </div>
+                                    <div class="simplebar-mask">
+                                        <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+                                            <div class="simplebar-content-wrapper" tabindex="0" role="region"
+                                                 aria-label="scrollable content"
+                                                 style="height: auto; overflow: hidden;">
+                                                <div class="simplebar-content" style="padding: 0px; overflow:auto; height: 600px;">
+                                                    {% for item in company.contact %}
+                                                    <li>
+                                                        <div class="px-4 py-3 d-flex align-items-center chat-user {% if item.id == contact.id %}primary-gradient{% else %}bg-light-subtle{% endif %}">
+                                                            <div class="ms-6 d-inline-block w-75">
+                                                                <h6 class="mb-1 fw-semibold chat-title">
+                                                                    <a data-action="live#action" data-live-action-param="viewContact" data-live-contact-param="{{ item.id }}" style="cursor:pointer" title="Détails">
+                                                                        <i class="pe-1 fa-regular fa-folder{% if item.id == contact.id %}-open{% endif %}"></i> {{ item.fullName }}
+                                                                    </a>
+                                                                </h6>
+                                                                <div class="fs-2 text-body-color d-block">
+                                                                    <a href="mailto:{{ item.email }}" title="E-mail {{ item.fullName }}">{{ item.email }}</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="simplebar-placeholder" style="height: 600px;"></div>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-100" data-loading="addClass(opacity-50)">
+                    <div class="chat-container h-100 w-100">
+                        <div class="chat-box-inner-part h-100">
+                            <div class="chatting-box app-email-chatting-box">
+                                <div class="p-9 py-3 border-bottom chat-meta-user align-items-center justify-content-between">
+                                    <h5 class="text-dark mb-0 fs-5 d-flex">
+                                        Infos du contact
+                                        <span class="ms-auto">
+                                            <a href="{{ ea_url()
+                                                .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                .setController('App\\Controller\\Admin\\CompanyContactCrudController')
+                                                .setAction('detail')
+                                                .set('entityFqcn', 'App\\Entity\\Contact')
+                                                .setEntityId(contact.id)
+                                            }}" class="ms-2 btn btn-primary btn-sm">
+                                                <small><i class="action-icon fa-solid fa-eye me-1"></i> Détails</small>
+                                            </a>
+                                            <a href="{{ ea_url()
+                                                .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                                .setController('App\\Controller\\Admin\\CompanyContactCrudController')
+                                                .setAction('edit')
+                                                .set('entityFqcn', 'App\\Entity\\Contact')
+                                                .setEntityId(contact.id)
+                                            }}" class="ms-2 btn btn-primary btn-sm">
+                                                <small><i class="action-icon fa-solid fa-edit me-1"></i> Modifier</small>
+                                            </a>
+                                        </span>
+                                    </h5>
+                                </div>
+                                <div class="position-relative overflow-hidden">
+                                    <div class="position-relative">
+                                        <div class="chat-box email-box mh-n100 p-9" data-simplebar="init">
+
+                                            <div class="chat-list chat active-chat" data-user-id="1">
+                                                <div class="hstack align-items-start mb-7 pb-1 align-items-center justify-content-between">
+                                                    <div class="d-flex align-items-center gap-3">
+                                                        <div>
+                                                            <h6 class="fw-semibold fs-4 mb-0">
+                                                                {{ contact.fullName }}
+                                                            </h6>
+                                                            <p class="mb-0">{{ contact.function }}</p>
+                                                            {% if contact.addedBy %}<p class="mb-0"><strong>Commercial:</strong> {{ contact.addedBy.fullName }}</p>{% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    {% if contact.phone %}
+                                                    <div class="col-2 mb-7">
+                                                        <p class="mb-1 fs-2">Téléphone</p>
+                                                        <h6 class="fw-semibold mb-0">
+                                                            <a href="tel:{{ contact.phone|replace({' ': '', ':': '', '/': '', '(': '', ')': ''}) }}" title="Phone {{ contact.fullName }}">
+                                                                {{ contact.phone }}
+                                                            </a>
+                                                        </h6>
+                                                    </div>
+                                                    {% endif %}
+                                                    {% if contact.gsm %}
+                                                    <div class="col-2 mb-7">
+                                                        <p class="mb-1 fs-2">Gsm</p>
+                                                        <h6 class="fw-semibold mb-0">
+                                                            <a href="tel:{{ contact.gsm|replace({' ': '', ':': '', '/': '', '(': '', ')': ''}) }}" title="GSM {{ contact.fullName }}">
+                                                                {{ contact.gsm }}
+                                                            </a>
+                                                        </h6>
+                                                    </div>
+                                                    {% endif %}
+                                                    {% if contact.email %}
+                                                    <div class="col-8 mb-7">
+                                                        <p class="mb-1 fs-2">Email address</p>
+                                                        <h6 class="fw-semibold mb-0">
+                                                            <a href="mailto:{{ contact.email }}" title="E-mail {{ contact.fullName }}">
+                                                                {{ contact.email }}
+                                                            </a>
+                                                        </h6>
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
+                                                {% if contact.street %}
+                                                <div class="row">
+                                                    <div class="col-12 mb-9">
+                                                        <p class="mb-1 fs-2">Adresse</p>
+                                                        <h6 class="fw-semibold mb-0">{{ contact.street }}</h6>
+                                                    </div>
+                                                </div>
+                                                {% endif %}
+                                                {% if contact.pc or contact.city or contact.country %}
+                                                <div class="row">
+                                                    {% if contact.pc or contact.city %}
+                                                    <div class="col-4 mb-7">
+                                                        <p class="mb-1 fs-2">Ville</p>
+                                                        <h6 class="fw-semibold mb-0">{{ contact.pc }} {{ contact.city }}</h6>
+                                                    </div>
+                                                    {% endif %}
+                                                    {% if contact.country %}
+                                                    <div class="col-8 mb-7">
+                                                        <p class="mb-1 fs-2">Pays</p>
+                                                        <h6 class="fw-semibold mb-0">{{ contact.country }}</h6>
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %#}
+    <div id="danger-header-modal" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="danger-header-modalLabel" aria-modal="true" role="dialog" {{ stimulus_controller('bootstrap-modal') }}>
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header modal-colored-header bg-danger text-white">
+                    <h4 class="modal-title text-white" id="danger-header-modalLabel">
+                        Cette action est irréversible !
+                    </h4>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-action="live#action" data-live-action-param="abordDelete"></button>
+                </div>
+                {% if this.toDelete %}
+                <div class="modal-body">
+                    <h5 class="mt-0">{{ this.toDelete.fullname }}</h5>
+                    <p>
+                        Désirez-vous vraiment supprimer cet élément ?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" data-action="live#action" data-live-action-param="abordDelete">
+                        Non
+                    </button>
+                    <button type="button" class="btn bg-danger-subtle text-danger"  data-action="live#action" data-live-action-param="confirmDelete" data-live-id-param="{{ this.toDelete.id }}">
+                        Oui
+                    </button>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,50 @@
+{% extends 'app/templates/base.html.twig' %}
+
+{% block title %}Modifier le contact{% endblock %}
+
+{% block breadcrumb %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-body py-3">
+                <div class="row align-items-center">
+                    <div class="col-12">
+                        <div class="d-sm-flex align-items-center justify-space-between">
+                            <h4 class="mb-4 mb-md-0 card-title">Modifier le contact</h4>
+                            <nav aria-label="breadcrumb" class="ms-auto">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item d-flex align-items-center">
+                                        <a class="text-muted text-decoration-none d-flex" href="{{ path('app') }}">
+                                            <iconify-icon icon="solar:home-2-line-duotone" class="fs-6"></iconify-icon>
+                                        </a>
+                                    </li>
+                                    <li class="breadcrumb-item" aria-current="page">
+                                        <a class="text-muted text-decoration-none d-flex" href="{{ path('contact_index') }}">
+                                            <iconify-icon icon="teenyicons:contact-solid" class="fs-6 me-2"></iconify-icon> Contacts
+                                        </a>
+                                    </li>
+                                    <li class="breadcrumb-item" aria-current="page">
+                                        <a class="text-muted text-decoration-none d-flex" href="{{ path('contact_details', {contact: contact.id}) }}">
+                                            <iconify-icon icon="mdi:company" class="fs-6 me-2"></iconify-icon>
+                                            {{ contact.fullName }}
+                                        </a>
+                                    </li>
+                                    <li class="breadcrumb-item" aria-current="page">
+                                        <span class="badge fw-medium fs-2 bg-primary-subtle text-primary">
+                                            Modifier le contact
+                                        </span>
+                                    </li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        {{ component('contact_form', {locale: locale, contact: contact}) }}
+    </div>
+{% endblock %}

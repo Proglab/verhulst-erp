@@ -1,0 +1,114 @@
+<div class="col-12" {{ attributes }}>
+    {{ form_start(form, {
+        attr: {
+            'data-action': 'live#action:prevent',
+            'data-live-action-param': 'save'
+        }
+    }) }}
+    <div class="row">
+        <div class="col-lg-4 col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5>Contact</h5>
+                    <fieldset class="mb-3">
+                        {{ form_label(form.firstname) }}
+                        {{ form_widget(form.firstname) }}
+                    </fieldset>
+                    <fieldset class="mb-3">
+                        {{ form_label(form.lastname) }}
+                        {{ form_widget(form.lastname) }}
+                    </fieldset>
+                    <fieldset class="mb-3">
+                        {{ form_label(form.lang) }}
+                        {{ form_widget(form.lang) }}
+                    </fieldset>
+                    <fieldset class="mb-3">
+                        {{ form_label(form.sex) }}
+                        {{ form_widget(form.sex) }}
+                    </fieldset>
+                    <fieldset class="mb-3">
+                        {{ form_label(form.email) }}
+                        {{ form_widget(form.email) }}
+                        {% if form.mailing is defined %}
+                            <div class="mt-2">
+                                {{ form_label(form.mailing) }}
+                                {{ form_widget(form.mailing) }}
+                            </div>
+                        {% endif %}
+                    </fieldset>
+                    <fieldset class="mb-3">
+                        {{ form_label(form.phone) }}
+                        {{ form_widget(form.phone) }}
+                    </fieldset>
+                    <fieldset class="mb-3">
+                        {{ form_label(form.gsm) }}
+                        {{ form_widget(form.gsm) }}
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5>Adresse</h5>
+                    <fieldset class="mb-3">
+                        {{ form_label(form.street) }}
+                        {{ form_widget(form.street) }}
+                    </fieldset>
+                    <fieldset class="mb-3">
+                        {{ form_label(form.pc) }}
+                        {{ form_widget(form.pc) }}
+                    </fieldset>
+                    <fieldset class="mb-3">
+                        {{ form_label(form.city) }}
+                        {{ form_widget(form.city) }}
+                    </fieldset>
+                    <fieldset class="mb-3">
+                        {{ form_label(form.country) }}
+                        {{ form_widget(form.country) }}
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5>Autres</h5>
+                    <fieldset class="mb-3">
+                        {{ form_label(form.company) }}
+                        {{ form_widget(form.company) }}
+                    </fieldset>
+                    <fieldset class="mb-3">
+                        {{ form_label(form.function) }}
+                        {{ form_widget(form.function) }}
+                    </fieldset>
+                    <fieldset class="mb-3">
+                        {{ form_label(form.interests) }}
+                        {{ form_widget(form.interests) }}
+                    </fieldset>
+                    <fieldset class="mb-3">
+                        {{ form_label(form.greeting) }}
+                        {{ form_widget(form.greeting) }}
+                    </fieldset>
+                    <fieldset class="mb-3">
+                        {{ form_label(form.added_by) }}
+                        {{ form_widget(form.added_by) }}
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    {{ form_rest(form) }}
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form_end(form) }}
+</div>

@@ -4,32 +4,32 @@
         <div class="card card-body py-3">
             {{ form_start(form) }}
             <div class="row">
-                        <div class="col-3">
-                            {{ form_row(form.min) }}
-                        </div>
+                <div class="col-3">
+                    {{ form_row(form.min) }}
+                </div>
 
-                        <div class="col-3">
-                            {{ form_row(form.max) }}
-                        </div>
-                        <div class="col-4 d-flex justify-content-start">
+                <div class="col-3">
+                    {{ form_row(form.max) }}
+                </div>
+                <div class="col-4 d-flex justify-content-start">
 
-                        </div>
-                        <div class="col-2 text-end">
-                            <a href="{{ path('sales_flash_create') }}" class="btn btn-primary">Créer une vente flash</a>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="row mt-3">
-                                <label class="form-label">Sales</label>
-                                {% for user in form.users %}
-                                    <div class="col-2">
-                                        {{ form_label(user)}}
-                                        {{ form_widget(user, {'attr': {'data-model': 'users[]'}}) }}
-                                    </div>
-                                {% endfor %}
+                </div>
+                <div class="col-2 text-end">
+                    <a href="{{ path('sales_flash_create') }}" class="btn btn-primary">Créer une vente flash</a>
+                </div>
+                <div class="col-lg-12">
+                    <div class="row mt-3">
+                        <label class="form-label">Sales</label>
+                        {% for user in form.users %}
+                            <div class="col-2">
+                                {{ form_label(user)}}
+                                {{ form_widget(user, {'attr': {'data-model': 'users[]'}}) }}
                             </div>
-                        </div>
-            {{ form_end(form) }}
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
+            {{ form_end(form) }}
         </div>
         <div class="card card-body py-3">
             <table class="table table-striped" data-loading="addClass(opacity-50)">

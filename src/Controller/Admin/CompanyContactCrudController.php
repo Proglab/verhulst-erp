@@ -581,9 +581,38 @@ class CompanyContactCrudController extends BaseCrudController
         return $response;
     }
 
-    public function index(AdminContext $context): Response
+    /*public function index(AdminContext $context): Response
     {
         return $this->render('admin/contact/search.html.twig', [
         ]);
+    }*/
+
+    public function index(AdminContext $context)
+    {
+        return $this->redirect($this->generateUrl('contact_index'));
+    }
+
+    /**
+     * @return KeyValueStore|Response
+     */
+    public function new(AdminContext $context)
+    {
+        return $this->redirectToRoute('contact_create');
+    }
+
+    /**
+     * @return KeyValueStore|Response
+     */
+    public function detail(AdminContext $context)
+    {
+        return $this->redirect($this->generateUrl('contact_details', ['contact' => $context->getEntity()->getPrimaryKeyValue()]));
+    }
+
+    /**
+     * @return KeyValueStore|Response
+     */
+    public function edit(AdminContext $context)
+    {
+        return $this->redirect($this->generateUrl('contact_edit', ['contact' => $context->getEntity()->getPrimaryKeyValue()]));
     }
 }

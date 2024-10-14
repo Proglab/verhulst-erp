@@ -1,0 +1,120 @@
+<div {{ attributes }}>
+
+    <div class="row">
+        <div locale="fr">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6 order-sm-2 d-flex">
+                            <a href="{{ path('contact_create') }}" class="btn btn-primary mb-4 mb-sm-0 mt-sm-auto ms-auto">Créer un contact</a>
+                        </div>
+                        <div class="col-sm-6 order-sm-1">
+                            <label for="project_search_filter_name" class="form-label">Recherchez</label>
+                            <input type="text" id="project_search_filter_name" name="project_search_filter[name]" data-model="query" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="card card-body py-3">
+            <table class="table table-striped" data-loading="addClass(opacity-50)">
+                <thead>
+                <tr>
+                    <th>Société</th>
+                    <th>Nom</th>
+                    <th>Langue</th>
+                    <th>Email</th>
+                    <th>Tél </th>
+                    <th>GSM</th>
+                    <th>Sales</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for contact in this.contacts %}
+                    <tr>
+                        <td>{% if contact.company %}{{ contact.company.name }}{% endif %}</td>
+                        <td><a href="{{ path('contact_details', {contact: contact.id}) }}">{{ contact.fullName }}</a></td>
+                        <td>{{ contact.lang }}</td>
+                        <td><a href="mailto:{{ contact.email }}">{{ contact.email }}</a></td>
+                        <td><a href="tel:{{ contact.phone|replace({' ': '', ':': '', '/': '', '(': '', ')': ''}) }}">{{ contact.phone }}</a></td>
+                        <td><a href="tel:{{ contact.gsm|replace({' ': '', ':': '', '/': '', '(': '', ')': ''}) }}">{{ contact.gsm }}</a></td>
+                        <td>{{ contact.addedBy }}</td>
+                        <td>
+                            <div class="dropdown dropstart">
+                                <a href="javascript:void(0)" class="text-muted" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <iconify-icon icon="solar:menu-dots-bold"></iconify-icon>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="">
+                                    <li>
+                                        <a href="{{ path('contact_details', {contact: contact.id}) }}" class="dropdown-item d-flex align-items-center gap-3">
+                                            <i class="fa-solid fa-eye"></i> Détails
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('contact_edit', {contact: contact.id}) }}" class="dropdown-item d-flex align-items-center gap-3">
+                                            <i class="fa-solid fa-pen-to-square"></i> Modifier
+                                        </a>
+                                    </li>
+                                    {#<li>
+                                        <a href="#" data-action="live#action" data-live-action-param="delete" data-live-id-param="{{ contact.id }}" class="dropdown-item d-flex align-items-center gap-3">
+                                            <i class="fa-solid fa-trash"></i> Supprimer
+                                        </a>
+                                    </li>#}
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th>Société</th>
+                    <th>Nom</th>
+                    <th>Langue</th>
+                    <th>Email</th>
+                    <th>Tél </th>
+                    <th>GSM</th>
+                    <th>Sales</th>
+                    <th></th>
+                </tr>
+                </tfoot>
+
+            </table>
+            <div class="navigation">
+                {{ knp_pagination_render(this.contacts) }}
+            </div>
+        </div>
+    </div>
+        
+    <div id="danger-header-modal" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="danger-header-modalLabel" aria-modal="true" role="dialog" {{ stimulus_controller('bootstrap-modal') }}>
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header modal-colored-header bg-danger text-white">
+                    <h4 class="modal-title text-white" id="danger-header-modalLabel">
+                        Cette action est irréversible !
+                    </h4>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" data-action="live#action" data-live-action-param="abordDelete"></button>
+                </div>
+                {% if this.toDelete %}
+                <div class="modal-body">
+                    <h5 class="mt-0">{{ this.toDelete.fullname }}</h5>
+                    <p>
+                        Désirez-vous vraiment supprimer cet élément ?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal" data-action="live#action" data-live-action-param="abordDelete">
+                        Non
+                    </button>
+                    <button type="button" class="btn bg-danger-subtle text-danger"  data-action="live#action" data-live-action-param="confirmDelete" data-live-id-param="{{ this.toDelete.id }}">
+                        Oui
+                    </button>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
