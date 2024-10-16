@@ -307,8 +307,7 @@ class BaseSalesRepository extends ServiceEntityRepository
 
         if (null !== $archive) {
             $qb
-                ->andWhere('project.archive = :archive')
-                ->orWhere('project.archive IS NULL')
+                ->andWhere('project.archive = :archive OR project.archive IS NULL')
                 ->setParameter('archive', $archive);
         }
 
@@ -373,8 +372,7 @@ class BaseSalesRepository extends ServiceEntityRepository
 
         if (null !== $archive) {
             $qb
-                ->andWhere('project.archive = :archive')
-                ->orWhere('project.archive IS NULL')
+                ->andWhere('project.archive = :archive OR project.archive IS NULL')
                 ->setParameter('archive', $archive);
         }
 
@@ -425,116 +423,310 @@ class BaseSalesRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('s')
             ->select('SUM(s.quantity * s.price * s.percent_com / 100) as total')
+            ->where('s.percent_com_type = :com_type')
+            ->setParameter('com_type', 'percent_pv')
+            ->andWhere('s.percent_com > 0')
             ->leftJoin('s.contact', 'c')
             ->leftJoin('s.product', 'product')
             ->leftJoin('product.project', 'project');
 
         if (null !== $archive) {
             $qb
-                ->andWhere('project.archive = :archive')
-                ->orWhere('project.archive IS NULL')
+                ->andWhere('project.archive = :archive OR project.archive IS NULL')
                 ->setParameter('archive', $archive);
         }
-
         if ($from && '00:00:000000' === $from->format('i:s:u')) {
             $qb->andWhere('s.date >= :from')
                 ->setParameter('from', $from);
         }
-
         if ($to && '00:00:000000' === $to->format('i:s:u')) {
             $qb->andWhere('s.date <= :to')
                 ->setParameter('to', $to);
         }
-
         if ($product) {
             $qb
                 ->andWhere('s.product = :product')
                 ->setParameter('product', $product);
         }
-
         if ($project) {
             $qb
                 ->andWhere('product.project = :project')
                 ->setParameter('project', $project);
         }
-
         if ($company) {
             $qb->andWhere('c.company = :company')
                 ->setParameter('company', $company);
         }
-
         if ($contact) {
             $qb->andWhere('s.contact = :contact')
                 ->setParameter('contact', $contact);
         }
+        if ($user) {
+            $qb->andWhere('s.user = :user')
+                ->setParameter('user', $user);
+        }
+        $totalWithPercentPV = (float) $qb
+            ->orderBy('s.date', 'DESC')
+            ->getQuery()
+            ->getSingleScalarResult();
 
+        $qb = $this->createQueryBuilder('s')
+            ->select('SUM(s.percent_vr_eur * s.quantity * s.percent_com / 100) as total')
+            ->where('s.percent_com_type = :percent_com_type')
+            ->setParameter('percent_com_type', 'percent_com')
+            ->andWhere('s.percent_vr_type = :percent_vr_type')
+            ->setParameter('percent_vr_type', 'fixed')
+            ->andWhere('s.percent_com > 0')
+            ->leftJoin('s.contact', 'c')
+            ->leftJoin('s.product', 'product')
+            ->leftJoin('product.project', 'project');
+
+        if (null !== $archive) {
+            $qb
+                ->andWhere('project.archive = :archive OR project.archive IS NULL')
+                ->setParameter('archive', $archive);
+        }
+        if ($from && '00:00:000000' === $from->format('i:s:u')) {
+            $qb->andWhere('s.date >= :from')
+                ->setParameter('from', $from);
+        }
+        if ($to && '00:00:000000' === $to->format('i:s:u')) {
+            $qb->andWhere('s.date <= :to')
+                ->setParameter('to', $to);
+        }
+        if ($product) {
+            $qb
+                ->andWhere('s.product = :product')
+                ->setParameter('product', $product);
+        }
+        if ($project) {
+            $qb
+                ->andWhere('product.project = :project')
+                ->setParameter('project', $project);
+        }
+        if ($company) {
+            $qb->andWhere('c.company = :company')
+                ->setParameter('company', $company);
+        }
+        if ($contact) {
+            $qb->andWhere('s.contact = :contact')
+                ->setParameter('contact', $contact);
+        }
         if ($user) {
             $qb->andWhere('s.user = :user')
                 ->setParameter('user', $user);
         }
 
-        return (float) $qb
+        $totalWithPercentComFixed = (float) $qb
             ->orderBy('s.date', 'DESC')
             ->getQuery()
             ->getSingleScalarResult();
+
+        $qb = $this->createQueryBuilder('s')
+            ->select('SUM((s.quantity * s.price * s.percent_vr / 100) * s.percent_com / 100) as total')
+            ->where('s.percent_com_type = :percent_com_type')
+            ->setParameter('percent_com_type', 'percent_com')
+            ->andWhere('s.percent_vr_type != :percent_vr_type')
+            ->setParameter('percent_vr_type', 'fixed')
+            ->andWhere('s.percent_com > 0')
+            ->andWhere('s.percent_vr > 0')
+            ->leftJoin('s.contact', 'c')
+            ->leftJoin('s.product', 'product')
+            ->leftJoin('product.project', 'project');
+
+        if (null !== $archive) {
+            $qb
+                ->andWhere('project.archive = :archive OR project.archive IS NULL')
+                ->setParameter('archive', $archive);
+        }
+        if ($from && '00:00:000000' === $from->format('i:s:u')) {
+            $qb->andWhere('s.date >= :from')
+                ->setParameter('from', $from);
+        }
+        if ($to && '00:00:000000' === $to->format('i:s:u')) {
+            $qb->andWhere('s.date <= :to')
+                ->setParameter('to', $to);
+        }
+        if ($product) {
+            $qb
+                ->andWhere('s.product = :product')
+                ->setParameter('product', $product);
+        }
+        if ($project) {
+            $qb
+                ->andWhere('product.project = :project')
+                ->setParameter('project', $project);
+        }
+        if ($company) {
+            $qb->andWhere('c.company = :company')
+                ->setParameter('company', $company);
+        }
+        if ($contact) {
+            $qb->andWhere('s.contact = :contact')
+                ->setParameter('contact', $contact);
+        }
+        if ($user) {
+            $qb->andWhere('s.user = :user')
+                ->setParameter('user', $user);
+        }
+
+        $totalWithPercentComNotFixed = (float) $qb
+            ->orderBy('s.date', 'DESC')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $qb = $this->createQueryBuilder('s')
+            ->select('SUM(s.percent_com_eur * s.quantity) as total')
+            ->andWhere('s.percent_com = 0')
+            ->andWhere('s.percent_com_eur IS NOT NULL')
+            ->leftJoin('s.contact', 'c')
+            ->leftJoin('s.product', 'product')
+            ->leftJoin('product.project', 'project');
+
+        if (null !== $archive) {
+            $qb
+                ->andWhere('project.archive = :archive OR project.archive IS NULL')
+                ->setParameter('archive', $archive);
+        }
+        if ($from && '00:00:000000' === $from->format('i:s:u')) {
+            $qb->andWhere('s.date >= :from')
+                ->setParameter('from', $from);
+        }
+        if ($to && '00:00:000000' === $to->format('i:s:u')) {
+            $qb->andWhere('s.date <= :to')
+                ->setParameter('to', $to);
+        }
+        if ($product) {
+            $qb
+                ->andWhere('s.product = :product')
+                ->setParameter('product', $product);
+        }
+        if ($project) {
+            $qb
+                ->andWhere('product.project = :project')
+                ->setParameter('project', $project);
+        }
+        if ($company) {
+            $qb->andWhere('c.company = :company')
+                ->setParameter('company', $company);
+        }
+        if ($contact) {
+            $qb->andWhere('s.contact = :contact')
+                ->setParameter('contact', $contact);
+        }
+        if ($user) {
+            $qb->andWhere('s.user = :user')
+                ->setParameter('user', $user);
+        }
+
+        $totalFixed = (float) $qb
+            ->orderBy('s.date', 'DESC')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $totalWithPercentPV + $totalWithPercentComFixed + $totalWithPercentComNotFixed + $totalFixed;
     }
 
     public function searchTotalVr(?\DateTime $from, ?\DateTime $to, ?Project $project, ?Product $product, ?Company $company, ?CompanyContact $contact, ?User $user, ?bool $archive): float
     {
         $qb = $this->createQueryBuilder('s')
             ->select('SUM(s.quantity * s.price * s.percent_vr / 100) as total')
+            ->andWhere('s.percent_vr > 0')
             ->leftJoin('s.contact', 'c')
             ->leftJoin('s.product', 'product')
             ->leftJoin('product.project', 'project');
 
         if (null !== $archive) {
             $qb
-                ->andWhere('project.archive = :archive')
-                ->orWhere('project.archive IS NULL')
+                ->andWhere('project.archive = :archive OR project.archive IS NULL')
                 ->setParameter('archive', $archive);
         }
-
         if ($from && '00:00:000000' === $from->format('i:s:u')) {
             $qb->andWhere('s.date >= :from')
                 ->setParameter('from', $from);
         }
-
         if ($to && '00:00:000000' === $to->format('i:s:u')) {
             $qb->andWhere('s.date <= :to')
                 ->setParameter('to', $to);
         }
-
         if ($product) {
             $qb
                 ->andWhere('s.product = :product')
                 ->setParameter('product', $product);
         }
-
         if ($project) {
             $qb
                 ->andWhere('product.project = :project')
                 ->setParameter('project', $project);
         }
-
         if ($company) {
             $qb->andWhere('c.company = :company')
                 ->setParameter('company', $company);
         }
-
         if ($contact) {
             $qb->andWhere('s.contact = :contact')
                 ->setParameter('contact', $contact);
         }
-
         if ($user) {
             $qb->andWhere('s.user = :user')
                 ->setParameter('user', $user);
         }
 
-        return (float) $qb
+        $totalWithPercent = (float) $qb
             ->orderBy('s.date', 'DESC')
             ->getQuery()
             ->getSingleScalarResult();
+
+        $qb = $this->createQueryBuilder('s')
+            ->select('SUM(s.percent_vr_eur) as total')
+            ->andWhere('s.percent_vr = 0')
+            ->andWhere('s.percent_vr_eur IS NOT NULL')
+            ->leftJoin('s.contact', 'c')
+            ->leftJoin('s.product', 'product')
+            ->leftJoin('product.project', 'project');
+
+        if (null !== $archive) {
+            $qb
+                ->andWhere('project.archive = :archive OR project.archive IS NULL')
+                ->setParameter('archive', $archive);
+        }
+        if ($from && '00:00:000000' === $from->format('i:s:u')) {
+            $qb->andWhere('s.date >= :from')
+                ->setParameter('from', $from);
+        }
+        if ($to && '00:00:000000' === $to->format('i:s:u')) {
+            $qb->andWhere('s.date <= :to')
+                ->setParameter('to', $to);
+        }
+        if ($product) {
+            $qb
+                ->andWhere('s.product = :product')
+                ->setParameter('product', $product);
+        }
+        if ($project) {
+            $qb
+                ->andWhere('product.project = :project')
+                ->setParameter('project', $project);
+        }
+        if ($company) {
+            $qb->andWhere('c.company = :company')
+                ->setParameter('company', $company);
+        }
+        if ($contact) {
+            $qb->andWhere('s.contact = :contact')
+                ->setParameter('contact', $contact);
+        }
+        if ($user) {
+            $qb->andWhere('s.user = :user')
+                ->setParameter('user', $user);
+        }
+
+        $totalFixed = (float) $qb
+            ->orderBy('s.date', 'DESC')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $totalWithPercent + $totalFixed;
     }
 
     /**

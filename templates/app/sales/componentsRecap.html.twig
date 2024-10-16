@@ -152,7 +152,7 @@
                             </td>
                             <td>
                                 <h6 class="mb-0">{{ sale.contact.fullname }}</h6>
-                                <i>{{ sale.contact.company.name }}</i>
+                                {% if sale.contact.company %}<i>{{ sale.contact.company.name }}</i>{% endif %}
                             </td>
                             <td><h6 class="mb-0">{{ sale.user.fullname }}</h6></td>
                             <td><h6 class="mb-0">{{ sale.price|number_format(2, ',', '.') }}€</h6><i>Quantité : {{ sale.quantity }}</i></td>
