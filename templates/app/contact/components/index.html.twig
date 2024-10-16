@@ -6,11 +6,32 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-6 order-sm-2 d-flex">
-                            <a href="{{ path('contact_create') }}" class="btn btn-primary mb-4 mb-sm-0 mt-sm-auto ms-auto">Créer un contact</a>
+                            <a href="{{ ea_url()
+                                .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                .setController('App\\Controller\\Admin\\CompanyContactCrudController')
+                                .set('entityFqcn', 'App\\Entity\\CompanyContact')
+                                .setAction('export')
+                            }}" class="btn btn-outline-primary mb-4 mt-sm-auto ms-auto"><i class="action-icon fa fa-file-export"></i> Exporter les contacts</a>
+                            <a href="{{ ea_url()
+                                .setDashboard('App\\Controller\\Admin\\DashboardController')
+                                .setController('App\\Controller\\Admin\\CompanyContactCrudController')
+                                .set('entityFqcn', 'App\\Entity\\CompanyContact')
+                                .setAction('import')
+                            }}" class="btn btn-outline-primary mb-4 mt-sm-auto ms-2"><i class="action-icon fa fa-file-import"></i> Importer des contacts</a>
+                            <a href="{{ path('contact_create') }}" class="btn btn-primary mb-4 mt-sm-auto ms-2">Créer un contact</a>
                         </div>
                         <div class="col-sm-6 order-sm-1">
                             <label for="project_search_filter_name" class="form-label">Recherchez</label>
                             <input type="text" id="project_search_filter_name" name="project_search_filter[name]" data-model="query" class="form-control">
+                        </div>
+                        <div class="col-sm-6 order-sm-3 mt-3">
+                            <label for="project_search_filter_commercial" class="form-label">Commercial</label>
+                            <select type="text" id="project_search_filter_commercial" name="project_search_filter[commercial]" data-model="addedBy" class="form-control">
+                                <option value="0" selected>Tous</option>
+                                {% for commercial in this.commercials %}
+                                    <option value="{{ commercial.id }}">{{ commercial.fullName }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
                 </div>

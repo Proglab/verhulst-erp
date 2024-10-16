@@ -6,6 +6,7 @@ namespace App\Twig\Components\CompanyContact;
 
 use App\Entity\CompanyContact;
 use App\Repository\CompanyContactRepository;
+use App\Repository\UserRepository;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,6 +28,9 @@ class ContactIndex extends AbstractController
     public ?string $query = null;
 
     #[LiveProp(writable: true)]
+    public ?int $addedBy = null;
+
+    #[LiveProp(writable: true)]
     public int $page = 1;
 
     #[LiveProp(writable: true)]
@@ -34,6 +38,7 @@ class ContactIndex extends AbstractController
 
     public function __construct(
         private CompanyContactRepository $companyContactRepository,
+        private UserRepository $userRepository,
         private PaginatorInterface $paginator,
     ) {
     }
@@ -41,12 +46,26 @@ class ContactIndex extends AbstractController
     public function contacts(): PaginationInterface
     {
         if (null === $this->query) {
-            $qb = $this->companyContactRepository->findBy([], ['firstname' => 'ASC', 'lastname' => 'ASC']);
+            if (null === $this->addedBy || 0 === $this->addedBy) {
+                $qb = $this->companyContactRepository->findBy([], ['firstname' => 'ASC', 'lastname' => 'ASC']);
+            } else {
+                $qb = $this->companyContactRepository->findBy(
+                    ['added_by' => $this->addedBy], ['firstname' => 'ASC', 'lastname' => 'ASC']
+                );
+            }
         } else {
-            $qb = $this->companyContactRepository->search($this->query);
+            $qb = $this->companyContactRepository->search(
+                $this->query,
+                (0 !== $this->addedBy) ? $this->addedBy : null
+            );
         }
 
         return $this->paginator->paginate($qb, $this->page, 12);
+    }
+
+    public function commercials(): array
+    {
+        return $this->userRepository->getCommercials();
     }
 
     #[LiveAction]

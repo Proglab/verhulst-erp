@@ -56,8 +56,20 @@ class CompanyContactRepository extends ServiceEntityRepository
         return $contacts;
     }
 
-    public function search(string $query): array
+    public function search(string $query, ?int $addedBy = null): array
     {
+        // dd($addedBy);
+        if (null !== $addedBy) {
+            return $this->createQueryBuilder('c')
+                ->leftJoin('c.company', 'company')
+                ->where('c.added_by = :addedBy')
+                ->setParameter('addedBy', $addedBy)
+                ->andWhere('(c.email LIKE :query OR c.firstname LIKE :query OR c.lastname LIKE :query OR company.name LIKE :query)')
+                ->setParameter('query', "%$query%")
+                ->getQuery()
+                ->getResult();
+        }
+
         return $this->createQueryBuilder('c')
             ->leftJoin('c.company', 'company')
             ->andWhere('c.email LIKE :query')

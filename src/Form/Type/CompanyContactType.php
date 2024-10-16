@@ -27,6 +27,11 @@ class CompanyContactType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $lang = 'fr';
+        if (isset($options['data']) && '' !== $options['data']->getLang()) {
+            $lang = $options['data']->getLang();
+        }
+        // dd($options['data']->getLang());//->getData());
         $builder = new DynamicFormBuilder($builder);
         /*if ($options['company_create']) {
             $builder
@@ -52,6 +57,7 @@ class CompanyContactType extends AbstractType
             'required' => true,
             'autocomplete' => true,
             'placeholder' => 'Sélectionnez une langue',
+            'data' => $lang,
         ]);
         $builder->add('sex', ChoiceType::class, [
             'label' => 'Genre',
@@ -162,6 +168,12 @@ class CompanyContactType extends AbstractType
             'expanded' => false,
             'required' => false,
             'disabled' => true,
+            'label_attr' => [
+                'class' => empty($options['data']) ? 'd-none' : '',
+            ],
+            'attr' => [
+                'class' => empty($options['data']) ? 'd-none' : '',
+            ],
             'query_builder' => function (UserRepository $userRepository) {
                 return $userRepository->getCommercialsQb();
             },
