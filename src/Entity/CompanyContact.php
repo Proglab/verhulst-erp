@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Trait\PrimaryKeyTrait;
 use App\Repository\CompanyContactRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -16,10 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueEntity('email')]
 class CompanyContact
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private int $id;
+    use PrimaryKeyTrait;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
@@ -112,11 +110,6 @@ class CompanyContact
     public function __toString()
     {
         return $this->getFirstname() . ' ' . $this->getLastname() . ' (' . $this->lang . ')';
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getFirstname(): ?string

@@ -14,8 +14,8 @@ class InvoiceGetter
 
     public function getInvoices(): array
     {
-        /** @var bool|Connection $inbox */
-        $inbox = imap_open($this->hostname, $this->username, $this->password) || exit('Cannot connect to your mail: ' . imap_last_error());
+        /** @var Connection $inbox */
+        $inbox = imap_open($this->hostname, $this->username, $this->password) || exit('Cannot connect to your mail: ' . imap_last_error()); // @phpstan-ignore-line
         $emails = imap_search($inbox, 'ALL');
 
         $return = [];

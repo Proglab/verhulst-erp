@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Trait\PrimaryKeyTrait;
 use App\Repository\CommissionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,10 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueEntity(fields: ['product', 'user'])]
 class Commission
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private int $id;
+    use PrimaryKeyTrait;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
     #[Assert\Length(max: 6)]
@@ -31,11 +29,6 @@ class Commission
     #[ORM\ManyToOne(inversedBy: 'commissions')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getPercentCom(): ?float
     {

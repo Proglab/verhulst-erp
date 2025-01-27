@@ -19,7 +19,7 @@ class Sales extends BaseSales
     #[ORM\Column(type: Types::DECIMAL, precision: 8, scale: 2, nullable: true)]
     #[Assert\Length(max: 9)]
     #[Assert\PositiveOrZero]
-    private ?string $discount = '0.0';
+    private string $discount = '0.0';
 
     #[Assert\PositiveOrZero]
     private ?float $discount_eur;
@@ -42,10 +42,6 @@ class Sales extends BaseSales
 
     public function getDiscount(): float
     {
-        if (null === $this->discount) {
-            return 0;
-        }
-
         return (float) $this->discount;
     }
 

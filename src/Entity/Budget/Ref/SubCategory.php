@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Budget\Ref;
 
+use App\Entity\Trait\PrimaryKeyTrait;
 use App\Repository\Budget\Ref\SubCategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,10 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: SubCategoryRepository::class)]
 class SubCategory
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    use PrimaryKeyTrait;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -36,11 +34,6 @@ class SubCategory
     public function __toString()
     {
         return $this->getName();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getName(): ?string

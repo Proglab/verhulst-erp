@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Trait\PrimaryKeyTrait;
 use App\Repository\CompanyContactNoteRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,10 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: CompanyContactNoteRepository::class)]
 class CompanyContactNote
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private int $id;
+    use PrimaryKeyTrait;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $note = null;
@@ -33,11 +31,6 @@ class CompanyContactNote
     public function __toString()
     {
         return strip_tags($this->note);
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getNote(): ?string
