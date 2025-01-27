@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\Entity\Commission;
+use App\Entity\Company;
 use App\Entity\Product;
+use App\Entity\Project;
 use App\Entity\Sales;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -24,7 +27,7 @@ class SalesFixtures extends Fixture implements DependentFixtureInterface
         $this->projects = [];
 
         for ($i = 1; $i <= $count_project; ++$i) {
-            $this->projects[] = $this->getReference('project_' . $i);
+            $this->projects[] = $this->getReference('project_' . $i, Project::class);
         }
 
         $count_user = 6;
@@ -32,7 +35,7 @@ class SalesFixtures extends Fixture implements DependentFixtureInterface
         $this->users = [];
 
         for ($i = 1; $i <= $count_user; ++$i) {
-            $this->users[] = $this->getReference('user_' . $i);
+            $this->users[] = $this->getReference('user_' . $i, User::class);
         }
 
         $count_client = 29;
@@ -40,7 +43,7 @@ class SalesFixtures extends Fixture implements DependentFixtureInterface
         $this->clients = [];
 
         for ($i = 1; $i <= $count_client; ++$i) {
-            $this->clients[] = $this->getReference('client_' . $i);
+            $this->clients[] = $this->getReference('client_' . $i, Company::class);
         }
 
         foreach ($this->getDatas() as $com) {

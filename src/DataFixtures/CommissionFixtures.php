@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\Entity\Commission;
+use App\Entity\Project;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -18,7 +20,7 @@ class CommissionFixtures extends Fixture implements DependentFixtureInterface
         $projects = [];
 
         for ($i = 1; $i <= $count_project; ++$i) {
-            $projects[] = $this->getReference('project_' . $i);
+            $projects[] = $this->getReference('project_' . $i, Project::class);
         }
 
         $count_user = 6;
@@ -26,7 +28,7 @@ class CommissionFixtures extends Fixture implements DependentFixtureInterface
         $users = [];
 
         for ($i = 1; $i <= $count_user; ++$i) {
-            $users[] = $this->getReference('user_' . $i);
+            $users[] = $this->getReference('user_' . $i, User::class);
         }
 
         foreach ($projects as $project) {
