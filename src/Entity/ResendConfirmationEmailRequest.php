@@ -66,7 +66,7 @@ class ResendConfirmationEmailRequest
         return $this->requestedAt;
     }
 
-    public function setRequestedAt(\DateTimeInterface $requestedAt): void
+    public function setRequestedAt(?\DateTimeInterface $requestedAt): void
     {
         $this->requestedAt = $requestedAt;
     }

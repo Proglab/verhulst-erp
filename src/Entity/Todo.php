@@ -51,6 +51,13 @@ class Todo
         return $this->id;
     }
 
+    public function setId(?int $id): static
+    {
+        $this->id = $id;
+        
+        return $this;
+    }
+
     public function getHourReminder(): ?\DateTimeInterface
     {
         return $this->date_reminder;
@@ -122,7 +129,7 @@ class Todo
         return $this->done;
     }
 
-    public function setDone(bool $done): self
+    public function setDone(?bool $done): self
     {
         $this->done = $done;
 

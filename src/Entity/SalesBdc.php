@@ -48,6 +48,13 @@ class SalesBdc
         return $this->id;
     }
 
+    public function setId(?int $id): static
+    {
+        $this->id = $id;
+        
+        return $this;
+    }
+
     public function getCreationDate(): ?\DateTimeInterface
     {
         return $this->creationDate;
@@ -101,7 +108,7 @@ class SalesBdc
         return $this->validate;
     }
 
-    public function setValidate(bool $validate): static
+    public function setValidate(?bool $validate): static
     {
         $this->validate = $validate;
 

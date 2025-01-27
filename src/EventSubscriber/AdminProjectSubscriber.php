@@ -97,13 +97,13 @@ class AdminProjectSubscriber implements EventSubscriberInterface
 
     public function beforeEntityDeletedEvent(BeforeEntityDeletedEvent $event): void
     {
-        /** @var Project $entity */
         $entity = $event->getEntityInstance();
 
         if (!($entity instanceof Project)) {
             return;
         }
 
+        /** @var Project $entity */
         $this->deleteDocs($entity->getProducts());
     }
 

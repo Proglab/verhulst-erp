@@ -10,6 +10,7 @@ parameters:
         - src
         - tests
     level: 6
+    treatPhpDocTypesAsCertain: false
     ignoreErrors:
     - identifier: missingType.iterableValue
     - identifier: missingType.generics

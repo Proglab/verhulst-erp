@@ -23,7 +23,7 @@ class Invoice
     private ?string $doc = null;
 
     #[ORM\Column]
-    private ?bool $validated = false;
+    private bool $validated = false;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $validated_date = null;
@@ -52,6 +52,13 @@ class Invoice
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(?int $id): static
+    {
+        $this->id = $id;
+        
+        return $this;
     }
 
     public function getDoc(): ?string

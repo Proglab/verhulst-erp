@@ -127,7 +127,7 @@ class BaseSalesRepository extends ServiceEntityRepository
             $qb->where('s.date BETWEEN :start AND :end')
                 ->setParameter('start', $dateBegin->format('Y-m-d'))
                 ->setParameter('end', $dateEnd->format('Y-m-d'));
-        } elseif (null !== $dateBegin && null === $dateEnd) {
+        } elseif (null !== $dateBegin) {
             $qb->where('s.date >= :start')
                 ->setParameter('start', $dateBegin->format('Y-m-d'));
         } else {

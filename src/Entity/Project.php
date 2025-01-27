@@ -74,6 +74,13 @@ class Project
         return $this->id;
     }
 
+    public function setId(?int $id): static
+    {
+        $this->id = $id;
+        
+        return $this;
+    }
+
     public function getName(): ?string
     {
         return $this->name;
@@ -103,7 +110,7 @@ class Project
         return $this->archive;
     }
 
-    public function setArchive(bool $archive): self
+    public function setArchive(?bool $archive): self
     {
         $this->archive = $archive;
 
@@ -249,7 +256,7 @@ class Project
         return $this->new;
     }
 
-    public function setNew(bool $new): static
+    public function setNew(?bool $new): static
     {
         $this->new = $new;
 

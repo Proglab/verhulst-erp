@@ -65,6 +65,13 @@ class Event
         return $this->id;
     }
 
+    public function setId(?int $id): static
+    {
+        $this->id = $id;
+        
+        return $this;
+    }
+
     public function getName(): ?string
     {
         return $this->name;
@@ -184,7 +191,7 @@ class Event
         return $this->archived;
     }
 
-    public function setArchived(bool $archived): static
+    public function setArchived(?bool $archived): static
     {
         $this->archived = $archived;
 

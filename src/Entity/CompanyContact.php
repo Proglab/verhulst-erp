@@ -19,7 +19,7 @@ class CompanyContact
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
@@ -153,7 +153,7 @@ class CompanyContact
         return $this->lang;
     }
 
-    public function setLang(string $lang): self
+    public function setLang(?string $lang): self
     {
         $this->lang = $lang;
 
@@ -425,7 +425,7 @@ class CompanyContact
         return $this->mailing;
     }
 
-    public function setMailing(bool $mailing): static
+    public function setMailing(?bool $mailing): static
     {
         $this->mailing = $mailing;
 

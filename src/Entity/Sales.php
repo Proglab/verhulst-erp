@@ -85,7 +85,7 @@ class Sales extends BaseSales
         return $this->invoiced;
     }
 
-    public function setInvoiced(bool $invoiced): self
+    public function setInvoiced(?bool $invoiced): self
     {
         $this->invoiced = $invoiced;
 
