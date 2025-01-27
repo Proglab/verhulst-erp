@@ -103,7 +103,6 @@ class AdminProjectSubscriber implements EventSubscriberInterface
             return;
         }
 
-        /** @var Project $entity */
         $this->deleteDocs($entity->getProducts());
     }
 

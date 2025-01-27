@@ -34,6 +34,7 @@ return (new PhpCsFixer\Config())
         'class_attributes_separation' => [
             'elements' => ['method' => 'one'],
         ],
+        'native_type_declaration_casing' => false,
     ])
     ->setFinder($finder)
     ->setCacheFile(__DIR__ . '/var/.php_cs.cache')

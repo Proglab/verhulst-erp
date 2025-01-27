@@ -46,7 +46,7 @@ class Supplier
     public function setId(?int $id): static
     {
         $this->id = $id;
-        
+
         return $this;
     }
 

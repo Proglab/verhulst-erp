@@ -44,7 +44,7 @@ class TodoType
     public function setId(?int $id): static
     {
         $this->id = $id;
-        
+
         return $this;
     }
 
