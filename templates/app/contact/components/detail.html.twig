@@ -9,6 +9,7 @@
                                 data-live-action-param="delete" data-live-id-param="{{ contact.id }}" data-bs-toggle="modal" data-bs-target="#danger-header-modal">
                             <small><i class="action-icon fa-solid fa-trash me-1"></i> Supprimer</small>
                         </button>#}
+                        {% if (null == contact.addedBy) or (contact.addedBy.id == app.user.id) or is_granted('ROLE_ADMIN') %}
                         <a href="{{ ea_url()
                             .setDashboard('App\\Controller\\Admin\\DashboardController')
                             .setController('App\\Controller\\Admin\\CompanyContactCrudController')
@@ -18,6 +19,7 @@
                         }}" class="ms-2 btn btn-primary btn-sm">
                             <small><i class="action-icon fa-solid fa-exchange me-1"></i> Transférer</small>
                         </a>
+                        {% endif %}
                         <a href="{{ path('contact_edit', {contact: contact.id})}}" class="ms-2 btn btn-primary btn-sm">
                             <small><i class="action-icon fa-solid fa-edit me-1"></i> Modifier</small>
                         </a>
