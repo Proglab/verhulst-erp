@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Budget;
 
+use App\Entity\Trait\PrimaryKeyTrait;
 use App\Entity\User;
 use App\Repository\Budget\InvoiceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,10 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: InvoiceRepository::class)]
 class Invoice
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    use PrimaryKeyTrait;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $doc = null;
@@ -47,18 +45,6 @@ class Invoice
     public function __construct()
     {
         $this->products = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setId(?int $id): static
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     public function getDoc(): ?string

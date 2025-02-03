@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Trait\PrimaryKeyTrait;
 use App\Repository\TodoRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,10 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: TodoRepository::class)]
 class Todo
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    use PrimaryKeyTrait;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Assert\NotBlank]
@@ -45,18 +43,6 @@ class Todo
     #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'todos')]
     #[ORM\JoinColumn(nullable: false)]
     private ?TodoType $type = null;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setId(?int $id): static
-    {
-        $this->id = $id;
-
-        return $this;
-    }
 
     public function getHourReminder(): ?\DateTimeInterface
     {

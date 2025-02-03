@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Budget;
 
+use App\Entity\Trait\PrimaryKeyTrait;
 use App\Repository\Budget\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -14,10 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    use PrimaryKeyTrait;
 
     #[ORM\Column(length: 255)]
     private ?string $title = null;
@@ -63,18 +61,6 @@ class Product
     public function __toString(): string
     {
         return $this->getSubCategory()->getCategory()->getBudget()->getName() . ' - ' . $this->getSubCategory()->getCategory()->getName() . ' - ' . $this->getSubCategory()->getName() . ' - ' . $this->getTitle();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setId(?int $id): static
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     public function getTitle(): ?string

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Budget;
 
+use App\Entity\Trait\PrimaryKeyTrait;
 use App\Repository\Budget\VatRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -14,10 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: VatRepository::class)]
 class Vat
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    use PrimaryKeyTrait;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
     private ?string $percent = null;
@@ -33,18 +31,6 @@ class Vat
     public function __toString()
     {
         return $this->percent . '%';
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setId(?int $id): static
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     public function getPercent(): ?float

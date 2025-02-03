@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Trait\PrimaryKeyTrait;
 use App\Repository\SalesBdcRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,10 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: SalesBdcRepository::class)]
 class SalesBdc
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    use PrimaryKeyTrait;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $creationDate = null;
@@ -41,18 +39,6 @@ class SalesBdc
     {
         $this->sales = new ArrayCollection();
         $this->creationDate = new \DateTime('now');
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setId(?int $id): static
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     public function getCreationDate(): ?\DateTimeInterface

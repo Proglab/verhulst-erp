@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Trait\PrimaryKeyTrait;
 use App\Repository\TempCompanyContactRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -11,10 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: TempCompanyContactRepository::class)]
 class TempCompanyContact
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    use PrimaryKeyTrait;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
@@ -75,18 +73,6 @@ class TempCompanyContact
     public function __toString()
     {
         return $this->getFirstname() . ' ' . $this->getLastname() . ' (' . $this->lang . ')';
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setId(?int $id): static
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     public function getFirstname(): ?string

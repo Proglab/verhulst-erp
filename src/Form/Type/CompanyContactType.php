@@ -167,13 +167,7 @@ class CompanyContactType extends AbstractType
             'multiple' => false,
             'expanded' => false,
             'required' => false,
-            'disabled' => true,
-            'label_attr' => [
-                'class' => empty($options['data']) ? 'd-none' : '',
-            ],
-            'attr' => [
-                'class' => empty($options['data']) ? 'd-none' : '',
-            ],
+            'disabled' => !empty($options['data']),
             'query_builder' => function (UserRepository $userRepository) {
                 return $userRepository->getCommercialsQb();
             },

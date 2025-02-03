@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Trait\PrimaryKeyTrait;
 use App\Repository\TempCompanyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,10 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueEntity('vat_number')]
 class TempCompany
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    use PrimaryKeyTrait;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\NotBlank]
@@ -62,18 +60,6 @@ class TempCompany
     public function __toString(): string
     {
         return $this->getName();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setId(?int $id): static
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     public function getName(): ?string

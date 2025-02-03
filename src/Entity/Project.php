@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Trait\PrimaryKeyTrait;
 use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -14,6 +15,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
 class Project
 {
+    use PrimaryKeyTrait;
+
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
     protected ?string $doc = null;
@@ -24,10 +27,6 @@ class Project
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: Product::class, cascade: ['remove'])]
     #[ORM\OrderBy(['date_begin' => 'ASC'])]
     protected Collection $products;
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
@@ -67,18 +66,6 @@ class Project
             $this->id = null;
             $this->name .= ' (clone)';
         }
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setId(?int $id): static
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     public function getName(): ?string

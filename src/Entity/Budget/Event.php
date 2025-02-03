@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Budget;
 
+use App\Entity\Trait\PrimaryKeyTrait;
 use App\Entity\User;
 use App\Repository\Budget\EventRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -15,10 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 class Event
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    use PrimaryKeyTrait;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -58,18 +56,6 @@ class Event
     public function __toString()
     {
         return $this->getName();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setId(?int $id): static
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     public function getName(): ?string
