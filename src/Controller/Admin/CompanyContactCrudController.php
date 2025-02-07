@@ -538,7 +538,9 @@ class CompanyContactCrudController extends BaseCrudController
 
     public function export(AdminContext $context): StreamedResponse
     {
-        $contacts = $this->companyContactRepository->findBy(['added_by' => $this->getUser()]);
+        $contacts = ($this->isGranted('ROLE_ADMIN'))
+            ? $this->companyContactRepository->findAll()
+            : $contacts = $this->companyContactRepository->findBy(['added_by' => $this->getUser()]);
 
         $spreadsheet = new Spreadsheet();
         $spreadsheet->getDefaultStyle()->getNumberFormat()->setFormatCode('#');
@@ -551,6 +553,7 @@ class CompanyContactCrudController extends BaseCrudController
         $activeWorksheet->setCellValue('E1', 'Téléphone');
         $activeWorksheet->setCellValue('F1', 'Gsm');
         $activeWorksheet->setCellValue('G1', 'Langue');
+        $activeWorksheet->setCellValue('H1', 'Sales');
 
         $row = '2';
 
@@ -562,6 +565,7 @@ class CompanyContactCrudController extends BaseCrudController
             $activeWorksheet->setCellValueExplicit('E' . $row, $contact->getPhone(), DataType::TYPE_STRING);
             $activeWorksheet->setCellValueExplicit('F' . $row, $contact->getGsm(), DataType::TYPE_STRING);
             $activeWorksheet->setCellValue('G' . $row, $contact->getLang());
+            $activeWorksheet->setCellValue('H' . $row, $contact->getAddedBy());
 
             ++$row;
         }
