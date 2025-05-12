@@ -58,26 +58,30 @@ class CompanyContactRepository extends ServiceEntityRepository
 
     public function search(string $query, ?int $addedBy = null): array
     {
-        // dd($addedBy);
+        $qb = $this->createQueryBuilder('c')
+            ->leftJoin('c.company', 'company');
+
         if (null !== $addedBy) {
-            return $this->createQueryBuilder('c')
-                ->leftJoin('c.company', 'company')
-                ->where('c.added_by = :addedBy')
-                ->setParameter('addedBy', $addedBy)
-                ->andWhere('(c.email LIKE :query OR c.firstname LIKE :query OR c.lastname LIKE :query OR company.name LIKE :query)')
-                ->setParameter('query', "%$query%")
-                ->getQuery()
-                ->getResult();
+            $qb->where('c.added_by = :addedBy')
+                ->setParameter('addedBy', $addedBy);
         }
 
-        return $this->createQueryBuilder('c')
-            ->leftJoin('c.company', 'company')
-            ->andWhere('c.email LIKE :query')
-            ->orWhere('c.firstname LIKE :query')
-            ->orWhere('c.lastname LIKE :query')
-            ->orWhere('company.name LIKE :query')
-            ->setParameter('query', "%$query%")
-            ->getQuery()
-            ->getResult();
+        $words = preg_split('/\s+/', trim($query));
+
+        foreach ($words as $index => $word) {
+            $param = "word{$index}";
+            $likeExpr = "%{$word}%";
+            $orX = $qb->expr()->orX();
+            $orX->add($qb->expr()->like('c.firstname', ":$param"));
+            $orX->add($qb->expr()->like('c.lastname', ":$param"));
+            $orX->add($qb->expr()->like('c.email', ":$param"));
+            $orX->add($qb->expr()->like('company.name', ":$param"));
+
+            $qb->setParameter($param, $likeExpr);
+
+            $qb->andWhere($orX);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }

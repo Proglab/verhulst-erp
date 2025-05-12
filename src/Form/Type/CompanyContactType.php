@@ -10,6 +10,7 @@ use App\Entity\User;
 use App\Repository\CompanyRepository;
 use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -25,13 +26,29 @@ use Symfonycasts\DynamicForms\DynamicFormBuilder;
 
 class CompanyContactType extends AbstractType
 {
+    public function __construct(private Security $security)
+    {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        /** @var User $user */
+        $user = $this->security->getUser();
+
         $lang = 'fr';
-        if (isset($options['data']) && '' !== $options['data']->getLang()) {
-            $lang = $options['data']->getLang();
+        $added_by = null;
+
+        if (isset($options['data'])) {
+            if ('' !== $options['data']->getLang()) {
+                $lang = $options['data']->getLang();
+            }
+            if ('' !== $options['data']->getAddedBy()) {
+                $added_by = $options['data']->getAddedBy();
+            }
+        } elseif ($user->hasRole(User::ROLE_COMMERCIAL)) {
+            $added_by = $user;
         }
-        // dd($options['data']->getLang());//->getData());
+
         $builder = new DynamicFormBuilder($builder);
         /*if ($options['company_create']) {
             $builder
@@ -168,6 +185,7 @@ class CompanyContactType extends AbstractType
             'expanded' => false,
             'required' => false,
             'disabled' => !empty($options['data']),
+            'data' => $added_by,
             'query_builder' => function (UserRepository $userRepository) {
                 return $userRepository->getCommercialsQb();
             },

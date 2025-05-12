@@ -24,7 +24,7 @@ jobs:
               run: COMPOSER_MEMORY_LIMIT=-1 composer update --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
             - name: Create Pull Request
-              uses: peter-evans/create-pull-request@v4
+              uses: peter-evans/create-pull-request@v7
               with:
                 token: ${{ secrets.GITHUB_TOKEN }}
                 commit-message: '⬆ auto update'
