@@ -54,15 +54,15 @@
         <header class="topbar">
             {{ include('app/menus/mobile-topbar.html.twig') }}
             <div class="app-header with-horizontal">
-                <nav class="navbar navbar-expand-xl container-fluid p-0">
+                <nav class="navbar navbar-expand-lg container-fluid p-0">
                     <ul class="navbar-nav align-items-center">
-                        <li class="nav-item d-flex d-xl-none">
+                        <li class="nav-item d-flex d-lg-none">
                             <a class="nav-link sidebartoggler nav-icon-hover-bg rounded-circle" id="sidebarCollapse"
                                href="javascript:void(0)">
                                 <iconify-icon icon="solar:hamburger-menu-line-duotone" class="fs-7"></iconify-icon>
                             </a>
                         </li>
-                        <li class="nav-item d-none d-xl-flex align-items-center">
+                        <li class="nav-item d-none d-lg-flex align-items-center">
                             <a href="{{ path('app') }}" class="text-nowrap nav-link">
                                 <img src="/app-logo.png" alt="matdash-img" width="200"/>
                             </a>
@@ -73,7 +73,7 @@
                         </li>
                         {% endif %}
                     </ul>
-                    <div class="d-block d-xl-none">
+                    <div class="d-block d-lg-none">
                         <a href="{{ path('app') }}" class="text-nowrap nav-link">
                             <img src="/app-logo.png" alt="matdash-img" width="200"/>
                         </a>
@@ -95,7 +95,7 @@
                                         <iconify-icon icon="solar:sun-2-line-duotone" class="sun fs-6"></iconify-icon>
                                     </a>
                                 </li>
-                                <li class="nav-item d-block d-xl-none">
+                                <li class="nav-item d-block d-lg-none">
                                     <a class="nav-link nav-icon-hover-bg rounded-circle" href="javascript:void(0)"
                                        data-bs-toggle="modal" data-bs-target="#exampleModal">
                                         <iconify-icon icon="solar:magnifer-line-duotone" class="fs-6"></iconify-icon>
@@ -118,7 +118,7 @@
         <div class="body-wrapper">
             <div class="container-fluid mw-100">
                 {% if app.environment == 'dev' %}
-                    <div class="d-xl-none mb-3">
+                    <div class="d-lg-none mb-3">
                     {% include 'partials/_staging.html.twig' %}
                     </div>
                 {% endif %}
