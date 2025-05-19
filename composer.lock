@@ -1953,16 +1953,16 @@
         },
         {
             "name": "easycorp/easyadmin-bundle",
-            "version": "v4.24.6",
+            "version": "v4.24.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EasyCorp/EasyAdminBundle.git",
-                "reference": "c5e4496c4c96d67385c48e285c463e0f5a8947e7"
+                "reference": "b61cd46c454d853438ded3ca21eac1ad537589aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/c5e4496c4c96d67385c48e285c463e0f5a8947e7",
-                "reference": "c5e4496c4c96d67385c48e285c463e0f5a8947e7",
+                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/b61cd46c454d853438ded3ca21eac1ad537589aa",
+                "reference": "b61cd46c454d853438ded3ca21eac1ad537589aa",
                 "shasum": ""
             },
             "require": {
@@ -2043,7 +2043,7 @@
             ],
             "support": {
                 "issues": "https://github.com/EasyCorp/EasyAdminBundle/issues",
-                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v4.24.6"
+                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v4.24.7"
             },
             "funding": [
                 {
@@ -2051,7 +2051,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-04-12T13:53:15+00:00"
+            "time": "2025-05-14T17:55:05+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -3981,16 +3981,16 @@
         },
         {
             "name": "microsoft/microsoft-graph-beta",
-            "version": "v2.36.0",
+            "version": "v2.37.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/microsoftgraph/msgraph-beta-sdk-php.git",
-                "reference": "21f5c75b0a6cd65b75517cfeb2f5b4077376048b"
+                "reference": "a7b940e4a9d2ff469677e5903d079f1f30c61eef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/microsoftgraph/msgraph-beta-sdk-php/zipball/21f5c75b0a6cd65b75517cfeb2f5b4077376048b",
-                "reference": "21f5c75b0a6cd65b75517cfeb2f5b4077376048b",
+                "url": "https://api.github.com/repos/microsoftgraph/msgraph-beta-sdk-php/zipball/a7b940e4a9d2ff469677e5903d079f1f30c61eef",
+                "reference": "a7b940e4a9d2ff469677e5903d079f1f30c61eef",
                 "shasum": ""
             },
             "require": {
@@ -4022,9 +4022,9 @@
             "homepage": "https://developer.microsoft.com/en-us/graph",
             "support": {
                 "issues": "https://github.com/microsoftgraph/msgraph-beta-sdk-php/issues",
-                "source": "https://github.com/microsoftgraph/msgraph-beta-sdk-php/tree/v2.36.0"
+                "source": "https://github.com/microsoftgraph/msgraph-beta-sdk-php/tree/v2.37.0"
             },
-            "time": "2025-05-07T12:31:13+00:00"
+            "time": "2025-05-13T13:27:51+00:00"
         },
         {
             "name": "microsoft/microsoft-graph-core",
@@ -4251,16 +4251,16 @@
         },
         {
             "name": "open-telemetry/api",
-            "version": "1.2.3",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opentelemetry-php/api.git",
-                "reference": "199d7ddda88f5f5619fa73463f1a5a7149ccd1f1"
+                "reference": "4e3bb38e069876fb73c2ce85c89583bf2b28cd86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opentelemetry-php/api/zipball/199d7ddda88f5f5619fa73463f1a5a7149ccd1f1",
-                "reference": "199d7ddda88f5f5619fa73463f1a5a7149ccd1f1",
+                "url": "https://api.github.com/repos/opentelemetry-php/api/zipball/4e3bb38e069876fb73c2ce85c89583bf2b28cd86",
+                "reference": "4e3bb38e069876fb73c2ce85c89583bf2b28cd86",
                 "shasum": ""
             },
             "require": {
@@ -4317,7 +4317,7 @@
                 "issues": "https://github.com/open-telemetry/opentelemetry-php/issues",
                 "source": "https://github.com/open-telemetry/opentelemetry-php"
             },
-            "time": "2025-03-05T21:42:54+00:00"
+            "time": "2025-05-07T12:32:21+00:00"
         },
         {
             "name": "open-telemetry/context",
@@ -4380,16 +4380,16 @@
         },
         {
             "name": "open-telemetry/sdk",
-            "version": "1.3.0",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opentelemetry-php/sdk.git",
-                "reference": "05d9ceb6773b5bddcf485af6d4a6f543bbeb980b"
+                "reference": "939d3a28395c249a763676458140dad44b3a8011"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opentelemetry-php/sdk/zipball/05d9ceb6773b5bddcf485af6d4a6f543bbeb980b",
-                "reference": "05d9ceb6773b5bddcf485af6d4a6f543bbeb980b",
+                "url": "https://api.github.com/repos/opentelemetry-php/sdk/zipball/939d3a28395c249a763676458140dad44b3a8011",
+                "reference": "939d3a28395c249a763676458140dad44b3a8011",
                 "shasum": ""
             },
             "require": {
@@ -4466,7 +4466,7 @@
                 "issues": "https://github.com/open-telemetry/opentelemetry-php/issues",
                 "source": "https://github.com/open-telemetry/opentelemetry-php"
             },
-            "time": "2025-05-01T23:20:43+00:00"
+            "time": "2025-05-07T12:32:21+00:00"
         },
         {
             "name": "open-telemetry/sem-conv",
@@ -6252,16 +6252,16 @@
         },
         {
             "name": "stduritemplate/stduritemplate",
-            "version": "2.0.3",
+            "version": "2.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/std-uritemplate/std-uritemplate-php.git",
-                "reference": "d67cc4ac2aa84a90665063e8d6b47b9a1e126117"
+                "reference": "57f10976540d2fba3df5475c84dad6243eb3f36e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/std-uritemplate/std-uritemplate-php/zipball/d67cc4ac2aa84a90665063e8d6b47b9a1e126117",
-                "reference": "d67cc4ac2aa84a90665063e8d6b47b9a1e126117",
+                "url": "https://api.github.com/repos/std-uritemplate/std-uritemplate-php/zipball/57f10976540d2fba3df5475c84dad6243eb3f36e",
+                "reference": "57f10976540d2fba3df5475c84dad6243eb3f36e",
                 "shasum": ""
             },
             "require": {
@@ -6285,9 +6285,9 @@
             ],
             "description": "Std UriTemplate, RFC 6570 implementation",
             "support": {
-                "source": "https://github.com/std-uritemplate/std-uritemplate-php/tree/2.0.3"
+                "source": "https://github.com/std-uritemplate/std-uritemplate-php/tree/2.0.5"
             },
-            "time": "2025-02-07T12:23:19+00:00"
+            "time": "2025-05-14T13:10:06+00:00"
         },
         {
             "name": "stof/doctrine-extensions-bundle",
@@ -11298,16 +11298,16 @@
         },
         {
             "name": "symfony/stimulus-bundle",
-            "version": "v2.24.0",
+            "version": "v2.25.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/stimulus-bundle.git",
-                "reference": "e09840304467cda3324cc116c7f4ee23c8ff227c"
+                "reference": "520ba148f3b87b137fc3763f81a2fc3c43badabc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/stimulus-bundle/zipball/e09840304467cda3324cc116c7f4ee23c8ff227c",
-                "reference": "e09840304467cda3324cc116c7f4ee23c8ff227c",
+                "url": "https://api.github.com/repos/symfony/stimulus-bundle/zipball/520ba148f3b87b137fc3763f81a2fc3c43badabc",
+                "reference": "520ba148f3b87b137fc3763f81a2fc3c43badabc",
                 "shasum": ""
             },
             "require": {
@@ -11347,7 +11347,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/stimulus-bundle/tree/v2.24.0"
+                "source": "https://github.com/symfony/stimulus-bundle/tree/v2.25.0"
             },
             "funding": [
                 {
@@ -11363,7 +11363,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-03-09T21:10:04+00:00"
+            "time": "2025-05-06T04:28:20+00:00"
         },
         {
             "name": "symfony/stopwatch",
@@ -11955,16 +11955,16 @@
         },
         {
             "name": "symfony/ux-autocomplete",
-            "version": "v2.24.0",
+            "version": "v2.25.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-autocomplete.git",
-                "reference": "27379e70b6dc6079b0cef1c559217ba06a75f1a5"
+                "reference": "83e8e3cf2f450a7fba267a717e47fc78e3640329"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-autocomplete/zipball/27379e70b6dc6079b0cef1c559217ba06a75f1a5",
-                "reference": "27379e70b6dc6079b0cef1c559217ba06a75f1a5",
+                "url": "https://api.github.com/repos/symfony/ux-autocomplete/zipball/83e8e3cf2f450a7fba267a717e47fc78e3640329",
+                "reference": "83e8e3cf2f450a7fba267a717e47fc78e3640329",
                 "shasum": ""
             },
             "require": {
@@ -12025,7 +12025,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-autocomplete/tree/v2.24.0"
+                "source": "https://github.com/symfony/ux-autocomplete/tree/v2.25.0"
             },
             "funding": [
                 {
@@ -12041,20 +12041,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-03-17T21:06:48+00:00"
+            "time": "2025-04-26T09:38:11+00:00"
         },
         {
             "name": "symfony/ux-chartjs",
-            "version": "v2.24.0",
+            "version": "v2.25.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-chartjs.git",
-                "reference": "8fe776864ef8e08225d509be9d49cc06b90d7043"
+                "reference": "8a4af5647ab587e7988d1b7f0681b36edec8c758"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-chartjs/zipball/8fe776864ef8e08225d509be9d49cc06b90d7043",
-                "reference": "8fe776864ef8e08225d509be9d49cc06b90d7043",
+                "url": "https://api.github.com/repos/symfony/ux-chartjs/zipball/8a4af5647ab587e7988d1b7f0681b36edec8c758",
+                "reference": "8a4af5647ab587e7988d1b7f0681b36edec8c758",
                 "shasum": ""
             },
             "require": {
@@ -12105,7 +12105,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-chartjs/tree/v2.24.0"
+                "source": "https://github.com/symfony/ux-chartjs/tree/v2.25.0"
             },
             "funding": [
                 {
@@ -12121,20 +12121,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-03-09T21:10:04+00:00"
+            "time": "2025-04-26T09:38:11+00:00"
         },
         {
             "name": "symfony/ux-live-component",
-            "version": "v2.24.0",
+            "version": "v2.25.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-live-component.git",
-                "reference": "ee1a8e5d01f5b3f2f8e6856941fa8c944677e41c"
+                "reference": "11f2c3a6f7db18845799095a500713c78f6acd79"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-live-component/zipball/ee1a8e5d01f5b3f2f8e6856941fa8c944677e41c",
-                "reference": "ee1a8e5d01f5b3f2f8e6856941fa8c944677e41c",
+                "url": "https://api.github.com/repos/symfony/ux-live-component/zipball/11f2c3a6f7db18845799095a500713c78f6acd79",
+                "reference": "11f2c3a6f7db18845799095a500713c78f6acd79",
                 "shasum": ""
             },
             "require": {
@@ -12143,8 +12143,8 @@
                 "symfony/property-access": "^5.4.5|^6.0|^7.0",
                 "symfony/property-info": "^5.4|^6.0|^7.0",
                 "symfony/stimulus-bundle": "^2.9",
-                "symfony/ux-twig-component": "^2.8",
-                "twig/twig": "^3.8.0"
+                "symfony/ux-twig-component": "^2.25",
+                "twig/twig": "^3.10.3"
             },
             "conflict": {
                 "symfony/config": "<5.4.0"
@@ -12165,6 +12165,7 @@
                 "symfony/security-bundle": "^5.4|^6.0|^7.0",
                 "symfony/serializer": "^5.4|^6.0|^7.0",
                 "symfony/twig-bundle": "^5.4|^6.0|^7.0",
+                "symfony/uid": "^5.4|^6.0|^7.0",
                 "symfony/validator": "^5.4|^6.0|^7.0",
                 "zenstruck/browser": "^1.2.0",
                 "zenstruck/foundry": "^2.0"
@@ -12199,7 +12200,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-live-component/tree/v2.24.0"
+                "source": "https://github.com/symfony/ux-live-component/tree/v2.25.0"
             },
             "funding": [
                 {
@@ -12215,20 +12216,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-03-12T08:41:47+00:00"
+            "time": "2025-05-17T14:48:50+00:00"
         },
         {
             "name": "symfony/ux-twig-component",
-            "version": "v2.24.0",
+            "version": "v2.25.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-twig-component.git",
-                "reference": "48a46e4c6215d41cc97ba8dff0cff21ea9b255a8"
+                "reference": "442debb5d18c73cf4e2733b172f463a7738f8ff0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-twig-component/zipball/48a46e4c6215d41cc97ba8dff0cff21ea9b255a8",
-                "reference": "48a46e4c6215d41cc97ba8dff0cff21ea9b255a8",
+                "url": "https://api.github.com/repos/symfony/ux-twig-component/zipball/442debb5d18c73cf4e2733b172f463a7738f8ff0",
+                "reference": "442debb5d18c73cf4e2733b172f463a7738f8ff0",
                 "shasum": ""
             },
             "require": {
@@ -12237,7 +12238,7 @@
                 "symfony/deprecation-contracts": "^2.2|^3.0",
                 "symfony/event-dispatcher": "^5.4|^6.0|^7.0",
                 "symfony/property-access": "^5.4|^6.0|^7.0",
-                "twig/twig": "^3.8"
+                "twig/twig": "^3.10.3"
             },
             "conflict": {
                 "symfony/config": "<5.4.0"
@@ -12282,7 +12283,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-twig-component/tree/v2.24.0"
+                "source": "https://github.com/symfony/ux-twig-component/tree/v2.25.0"
             },
             "funding": [
                 {
@@ -12298,7 +12299,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-03-21T20:14:36+00:00"
+            "time": "2025-05-17T04:50:09+00:00"
         },
         {
             "name": "symfony/validator",
