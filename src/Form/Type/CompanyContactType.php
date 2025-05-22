@@ -103,7 +103,7 @@ class CompanyContactType extends AbstractType
                 'mapped' => true,
                 'attr' => [
                     'class' => 'form-check-input',
-                    'checked' => 'checked',
+                    // 'checked' => 'checked',
                 ],
             ]);
         });

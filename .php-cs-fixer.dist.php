@@ -38,4 +38,5 @@ return (new PhpCsFixer\Config())
     ])
     ->setFinder($finder)
     ->setCacheFile(__DIR__ . '/var/.php_cs.cache')
+    ->setParallelConfig(PhpCsFixer\Runner\Parallel\ParallelConfigFactory::detect())
 ;

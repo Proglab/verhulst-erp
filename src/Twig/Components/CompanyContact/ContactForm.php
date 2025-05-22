@@ -38,6 +38,7 @@ class ContactForm extends AbstractController
         $this->submitForm();
         /** @var CompanyContact $post */
         $post = $this->getForm()->getData();
+        $post->setUpdatedDt(new \DateTime());
 
         $this->contactRepository->save($post, true);
 
