@@ -37,6 +37,7 @@ class CompanyContactType extends AbstractType
 
         $lang = 'fr';
         $added_by = null;
+        $optin = true;
 
         if (isset($options['data'])) {
             if ('' !== $options['data']->getLang()) {
@@ -44,6 +45,9 @@ class CompanyContactType extends AbstractType
             }
             if ('' !== $options['data']->getAddedBy()) {
                 $added_by = $options['data']->getAddedBy();
+            }
+            if ('' !== $options['data']->isMailing()) {
+                $optin = $options['data']->isMailing();
             }
         } elseif ($user->hasRole(User::ROLE_COMMERCIAL)) {
             $added_by = $user;
@@ -93,18 +97,21 @@ class CompanyContactType extends AbstractType
             'label' => 'Gsm',
             'required' => false,
         ]);
-        $builder->addDependent('mailing', 'email', function (DependentField $field, ?string $email) {
+        $builder->addDependent('mailing', 'email', function (DependentField $field, ?string $email) use ($optin) {
             if (empty($email)) {
                 return;
+            }
+            $attr = [
+                'class' => 'form-check-input',
+            ];
+            if ($optin) {
+                $attr['checked'] = 'checked';
             }
             $field->add(CheckboxType::class, [
                 'label' => 'Ajouter au mailing ?',
                 'required' => false,
                 'mapped' => true,
-                'attr' => [
-                    'class' => 'form-check-input',
-                    // 'checked' => 'checked',
-                ],
+                'attr' => $attr,
             ]);
         });
 
